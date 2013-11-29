@@ -1,0 +1,7 @@
+<?php
+
+  /*
+   * Admin Terminal Commands.
+   */
+
+?>

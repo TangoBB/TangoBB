@@ -1,0 +1,101 @@
+.sceditor-container {
+	border: none;
+	width: 100%;
+	max-width: 100%;
+	min-width: 100%;
+}
+
+.sceditor-container .sceditor-toolbar {
+		background: #424E57;
+		border-bottom: none;
+		padding: 0px 5px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.sceditor-container .sceditor-toolbar .sceditor-group .sceditor-button {
+	padding: 6px 4px;
+	height: 100%;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	border: none;
+	-webkit-transition:background 0.2s ease-in;
+	-moz-transition:background 0.2s ease-in;
+	-o-transition:background 0.2s ease-in;
+	transition:background 0.2s ease-in;
+	margin: 0px;
+}
+
+.sceditor-container .sceditor-toolbar .sceditor-group .sceditor-button:hover  {
+		background: #616B72;
+		margin: 0px;
+}
+
+.sceditor-container .sceditor-toolbar .sceditor-group .sceditor-button:active  {
+	background: #2C3135;	
+	margin: 0px;
+	box-shadow: none;
+}
+
+.sceditor-container .sceditor-toolbar .sceditor-group .sceditor-button div {
+	background-image: url('../img/editor_icons_override.png');
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+}
+
+.sceditor-container iframe {
+	width: 100%;
+	min-height: 100px;
+	max-width: 100%;
+	min-width: 100%;
+	background: #FEFEFE;
+	border: 1px solid #CCCCCC;
+	border-top: none;
+	border-bottom: 2px solid #CCCCCC;
+	padding: 6px;
+	margin-left: 0px;
+	box-sizing: border-box;
+	margin-top: 0px;
+	-moz-border-radius: 0px 0px 3px 3px;
+	-webkit-border-radius: 0px 0px 3px 3px;
+	border-radius: 0px 0px 3px 3px;
+}
+
+.sceditor-container textarea {
+	background: #FEFEFE;
+	color: #555555;
+	padding: 6px;
+	padding-top: 10px;
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	min-width: 100%;
+	min-height: 100px;
+	border: 1px solid #CCCCCC;
+	border-top: none;
+	border-bottom: 2px solid #CCCCCC;
+	-moz-border-radius: 0px 0px 3px 3px;
+	-webkit-border-radius: 0px 0px 3px 3px;
+	border-radius: 0px 0px 3px 3px;
+}
+
+div.savestatus {
+	width: auto;
+	padding: 2px 5px;
+	border: 1px solid #CCCCCC;
+    background: #EFEFEF;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    color: #555555;
+    position: absolute;
+	top:	4px;
+	right: 5px;
+	z-index: 1000;
+	box-shadow: none;
+}

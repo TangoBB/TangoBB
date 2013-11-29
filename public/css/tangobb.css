@@ -1,0 +1,14 @@
+div.savestatus {
+    width: auto;
+    padding:2px 5px;
+    border:1px solid gray;
+    background:#fff6e5;
+    -webkit-box-shadow: 0 0 8px #818181;
+    box-shadow: 0 0 8px #818181;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius:5px;
+    color:red;
+    position:absolute;
+    top:-10px;
+}
