@@ -15,7 +15,7 @@
    * TangoBB Local Details
    */
   define('SITE_URL', '%site_url%');//Without the ending "/"
-  define('TANGOBB_VERSION', '1.0.4');
+  define('TANGOBB_VERSION', '1.0.5');
 
   /*
    * Usergroup Details.
