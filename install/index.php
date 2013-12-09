@@ -14,10 +14,10 @@
 ?>
 <div class="alert alert-danger">
     <strong>Oh snap!</strong>
-    TangoBB is incompatible with your current version of PHP.
+    TangoBB is incompatible with your current PHP version.
 </div>
 Recommended PHP Version: <strong>5.4</strong> or newer.<br />
-Your current PHP Version: <?php echo phpversion(); ?>
+Your current PHP Version: <?php echo phpinfo(); ?>
 <?php
   }
 

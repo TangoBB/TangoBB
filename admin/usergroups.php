@@ -73,7 +73,8 @@
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                               Options <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu" role="menu">
+                            <span class="dropdown-arrow dropdown-arrow-inverse"></span>
+                            <ul class="dropdown-menu dropdown-inverse" role="menu">
                               <li><a href="' . SITE_URL . '/admin/edit_usergroup.php/id/' . $g['id'] . '">Edit Usergroup</a></li>
                               <li><a href="' . SITE_URL . '/admin/usergroups.php/delete_usergroup/' . $g['id'] . '">Delete Usergroup</a></li>
                             </ul>

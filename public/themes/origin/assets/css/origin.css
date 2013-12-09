@@ -20,6 +20,23 @@
 #slide_signin > .container {
     width: 40%;
 }
+.dropdown-messages {
+    width: 265px;
+}
+.btn-group >.alert-title {
+    width: 200px;
+    display: none;
+}
+.btn-group >.alert-content {
+    width: 200px;
+    display: none;
+}
+.btn-group >.alert-content > ul.list-group {
+    width: 250px;
+}
+.popover {
+    padding: 0;
+}
 
 /* Thread Post */
 .post_quote {
@@ -156,6 +173,8 @@ input[type="submit"]:hover, input[type="submit"]:focus, input[type="submit"]:act
 /* HTML Entities */
 pre {
     position: relative;
+    /* Margin */
+    margin-top: 30px;
 }
 pre:before {
     background-color: #cccccc;

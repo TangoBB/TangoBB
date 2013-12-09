@@ -95,8 +95,8 @@
         }
         
         define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
-        define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
-        $content = '<form action="" method="POST">
+        //define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
+        /*$content = '<form action="" method="POST">
                       ' . $notice . '
                       ' . CSRF_INPUT . '
                       <label for="username">Username</label>
@@ -108,6 +108,17 @@
                       <label for="email">Email</label>
                       <input type="text" name="email" id="email" /><br /><br />
                       <input type="submit" name="register" value="Register" />
+                    </form>';*/
+        $content = '<form action="" method="POST">
+                      ' . $notice . '
+                      ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
+                      ' . $FORM->build('text', 'Username', 'username') . '
+                      ' . $FORM->build('password', 'Password', 'password') . '
+                      ' . $FORM->build('password', 'Confirm Password', 'a_password') . '
+                      ' . $FORM->build('text', 'Email', 'email') . '
+                      <br /><br />
+                      ' . $FORM->build('submit', 'Register', 'register', array('value' => 'Register')) . '<br />
+                      By clicking "Register", you agree to abide by the forum rules located <a href="' . SITE_URL . '/members.php/cmd/rules">here</a>.
                     </form>';
 
 ?>

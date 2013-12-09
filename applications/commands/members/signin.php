@@ -54,7 +54,7 @@
       
   }
 
-  $form = '<form action="" method="POST">
+  /*$form = '<form action="" method="POST">
                     <label for="email">Email</label>
                     <input type="text" name="email" id="email" />
                     <label for="password">Password</label>
@@ -64,7 +64,15 @@
                     <label>
                       <input type="checkbox" name="remember"> Remember me
                     </label>
-                  </form>';
+                  </form>';*/
+  $form    = '<form action="" method="POST">
+                ' . $FORM->build('text', 'Email', 'email') . '
+                ' . $FORM->build('password', 'Password', 'password') . '
+                <br /><br />
+                ' . $FORM->build('submit', '', 'signin', array('value' => 'Sign In')) . '
+                ' . $FORM->build('checkbox', 'Remember me', 'remember') . '
+                <a href="' . SITE_URL . '/members.php/cmd/forgetpassword">Forgot Password</a>
+              </form>';
   $content = $content . $form;
 
 ?>

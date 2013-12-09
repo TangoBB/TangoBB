@@ -28,7 +28,8 @@
           $this->addNav(
               'Customization',
               array(
-                  'Usergroups' => SITE_URL . '/admin/usergroups.php'
+                  'Usergroups' => SITE_URL . '/admin/usergroups.php',
+                  'Extensions' => SITE_URL . '/admin/extensions.php'
               )
           );
       }
@@ -83,8 +84,9 @@
           $return = '';
           foreach( $this->links as $link ) {
               $return .= '<li class="dropdown">
-                            <a href="javascript:return false;" class="dropdown-toggle" data-toggle="dropdown">' . $link['name'] . ' <span class="pull-right glyphicon glyphicon-arrow-down"></span></a>
-                            <ul class="dropdown-menu right">';
+                            <a href="javascript:return false;" class="dropdown-toggle" data-toggle="dropdown">' . $link['name'] . ' <span class="caret pull-right" style="margin-top:10px;"></span></a>
+                             <span class="dropdown-arrow dropdown-arrow-inverse"></span>
+                            <ul class="dropdown-menu dropdown-inverse">';
               foreach( $link['links'] as $page ) {
                   $return .= '<li><a href="' . $page['href'] . '">' . $page['value'] . '</a></li>';
               }

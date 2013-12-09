@@ -130,7 +130,7 @@
       $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE in_category = $category ORDER BY node_place");
       $return = '';
       foreach( $query as $n ) {
-          $locked  = ($n['node_locked'] == "1")? ' class="danger" title="Node is locked."' : '';
+          $locked  = ($n['node_locked'] == "1")? ' style="border-left:2px solid #e84040;" title="Node is locked."' : '';
           $return .= '<tr' . $locked . '>
                         <td>
                           <strong><a href="' . SITE_URL . '/node.php/v/' . $n['name_friendly'] . '.' . $n['id'] . '" target="_blank">' . $n['node_name'] . '</a></strong><br />
@@ -149,7 +149,8 @@
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                               Options <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu" role="menu">
+                            <span class="dropdown-arrow dropdown-arrow-inverse"></span>
+                            <ul class="dropdown-menu dropdown-inverse" role="menu">
                               <li><a href="' . SITE_URL . '/admin/edit_node.php/id/' . $n['id'] . '">Edit Node</a></li>
                               <li><a href="' . SITE_URL . '/admin/manage_node.php/delete_node/' . $n['id'] . '">Delete Node</a></li>
                               <li><a href="' . SITE_URL . '/admin/manage_node.php/toggle_lock/' . $n['id'] . '">Toggle Lock</a></li>

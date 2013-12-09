@@ -27,10 +27,10 @@
           NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
           
           $title  = $_POST['node_title'];
-          $desc   = $_POST['node_desc'];
+          $desc   = (!$_POST['node_desc'])? '' : $_POST['node_desc'];
           $locked = (isset($_POST['lock_node']))? '1' : '0';
           
-          if( !$title or !$desc ) {
+          if( !$title ) {
               throw new Exception ('All fields are required!');
           } else {
               
@@ -68,10 +68,11 @@
          <input type="text" name="node_title" id="node_title" class="form-control" />
          <label for="node_desc">Description</label>
          <textarea name="node_desc" id="node_desc" class="form-control"></textarea>
-         <label for="parent">Parent</label>
-         <select name="node_parent" id="parent" class="form-control">
+         <label for="parent">Parent</label><br />
+         <select name="node_parent" id="parent">
            ' . list_category() . '
          </select>
+         <br />
          <label for="additional_option">Additional Options</label><br />
          <input type="checkbox" name="lock_node" value="1" /> Lock Node
          <br />

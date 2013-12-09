@@ -18,23 +18,52 @@
           $this->addParam('bb_stat_threads', stat_threads());
           $this->addParam('bb_stat_posts', stat_posts());
           $this->addParam('bb_stat_users', stat_users());
+          $this->addParam('users_online', users_online());
           
-          $this->addParam(
+          /*$this->addParam(
               'editor_settings',
               '<link rel="stylesheet" href="' . SITE_URL . '/public/css/tangobb.css" />
                <link rel="stylesheet" href="' . SITE_URL . '/public/js/sceditor/themes/modern.min.css" type="text/css" media="all" />
                <script src="' . SITE_URL . '/public/js/jquery.min.js"></script>
                <script>var SITE_URL = \'' . SITE_URL . '\';</script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/autosaveform.js"></script>
+               <script type="text/javascript" src="' . SITE_URL . '/public/js/tangobb.js"></script>
+               <script type="text/javascript" src="' . SITE_URL . '/public/js/typeahead.min.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/sceditor/jquery.sceditor.bbcode.min.js"></script>
                <script>
                  $(function() {
                    $(\'#editor\').sceditor({
                      plugins: "bbcode",
-                     toolbar: "bold,italic,underline,strike|left,center,right|size,color|bulletlist,orderedlist|code|image,youtube|link,unlink|source",
+                     toolbar: "bold,italic,underline,strike|left,center,right|size,color|bulletlist,orderedlist|code|image|link,unlink|source",
                      style: "' . SITE_URL . '/public/js/sceditor/jquery.sceditor.default.min.css"
                    });
                    var emo = $(\'textarea\').sceditor(\'instance\').emoticons(false);
+                 });
+                 var formsave1=new autosaveform({
+                   formid: \'tango_form\',
+                   pause: 1000 //<--no comma following last option!
+                 });
+               </script>'
+          );*/
+          $this->addParam(
+              'editor_settings',
+              '<link rel="stylesheet" href="' . SITE_URL . '/public/css/tangobb.css" />
+               <link rel="stylesheet" href="' . SITE_URL . '/public/js/wysibb/theme/default/wbbtheme.css" />
+               <link rel="stylesheet" href="' . SITE_URL . '/public/js/highlighter/styles/github.css" />
+               <script src="' . SITE_URL . '/public/js/jquery.min.js"></script>
+               <script>var SITE_URL = \'' . SITE_URL . '\';</script>
+               <script type="text/javascript" src="' . SITE_URL . '/public/js/autosaveform.js"></script>
+               <script type="text/javascript" src="' . SITE_URL . '/public/js/tangobb.js"></script>
+               <script type="text/javascript" src="' . SITE_URL . '/public/js/typeahead.min.js"></script>
+               <script type="text/javascript" src="' . SITE_URL . '/public/js/wysibb/jquery.wysibb.min.js"></script>
+               <script type="text/javascript" src="' . SITE_URL . '/public/js/highlighter/highlight.pack.js"></script>
+               <script>
+                 $(document).ready(function() {
+                  $(\'#editor\').wysibb({
+                    buttons :  \'bold,italic,underline,strike,|,fontcolor,fontsize,fontfamily,|,justifyleft,justifycenter,justifyright,|,bullist,numlist,|,img,link,|,code,quote\',
+                    tabInsert: false
+                  });
+                  $(\'pre\').each(function(i, e) {hljs.highlightBlock(e)});
                  });
                  var formsave1=new autosaveform({
                    formid: \'tango_form\',
@@ -123,6 +152,7 @@
       private function bladeSyntax($string) {
           $syntax_blade = array(
               '/{{ (.*) }}/',
+              '/{{-v (.*) = (.*) }}/',
               '/(\s*)@(if|elseif|foreach|for|while)(\s*\(.*\))/',
               '/(\s*)@(endif|endforeach|endfor|endwhile)(\s*)/',
               '/(\s*)@(else)(\s*)/',
@@ -130,6 +160,7 @@
           );
           $syntax_php   = array(
               '<?php echo $1; ?>',
+              '<?php $1 = $2; ?>',
               '$1<?php $2$3: ?>',
               '$1<?php $2; ?>$',
               '$1<?php $2: ?>$3',

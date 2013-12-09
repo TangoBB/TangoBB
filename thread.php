@@ -118,8 +118,11 @@
                   $user['username_style'],
                   date('M jS, Y', $user['date_joined']),
                   $user['post_count'],
-                  $TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])),
-                  html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($user['user_signature'])))),
+                  //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])),
+                  //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])->get_html()),
+                  $TANGO->lib_parse->parse($query['0']['post_content']),
+                  //html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($user['user_signature'])))),
+                  $TANGO->lib_parse->parse($user['user_signature']),
                   date('F j, Y', $query['0']['post_time']),
                   $thread_mod_tools
               )
@@ -179,7 +182,7 @@
                   ), 
                   
               );*/
-              $post['post_content'] = $TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($post['post_content']));
+              //$post['post_content'] = $TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($post['post_content'])->get_html());
               //die($post['post_content']);
               //$die = sscanf($post['post_content'], '<$blockquote$>%s </$blockquote$>');
               /*preg_match_all('/<blockquote>(.*?)<\/blockquote>/', $post['post_content'], $die);
@@ -237,8 +240,11 @@
                       $ur['username_style'],
                       date('M jS, Y', $ur['date_joined']),
                       $ur['post_count'],
-                      $post['post_content'],
-                      html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($ur['user_signature'])))),
+                      $TANGO->lib_parse->parse($post['post_content']),
+                      //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($post['post_content'])->get_html()),
+                      //html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($ur['user_signature'])))),
+                      //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($ur['user_signature'])->get_html()),
+                      $TANGO->lib_parse->parse($ur['user_signature']),
                       date('F j, Y', $post['post_time']),
                       $post_mod_tools
                   )

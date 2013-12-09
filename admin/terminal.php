@@ -21,8 +21,19 @@
           } else {
               
               list($command) = sscanf($cmd, '/%s');
+              $MYSQL->where('command_name', $command);
+              $query = $MYSQL->get('{prefix}terminal');
+
+              if( !empty($query) ) {
+                $list    = sscanf($cmd, '/' . $query['0']['command_syntax']);
+                $command = 'terminal_' . $query['0']['run_function'];
+                $run     = call_user_func_array($command, $list);
+                $notice .= $run;
+              } else {
+                throw new Exception ('Command does not exist.');
+              }
               
-              switch($command) {
+              /*switch($command) {
                   
                   case "cugroup":
                     //die($cmd);
@@ -83,7 +94,7 @@
                     throw new Exception ('Command does not exist!');
                   break;
                   
-              }
+              }*/
               
           }
           

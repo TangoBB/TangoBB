@@ -66,10 +66,6 @@
   //Permissions Library
   require_once(PATH_A . LIB . 'permissions.php');
   $TANGO->perm = new Library_Permissions();
-
-  //BBCode Library
-  require_once(PATH_A . APPLICATION . 'bbcode/BbCode.php');
-  $TANGO->bb->parser = new BbCode();
   
   require_once(PATH_A . LIB . 'parse.php');
   $TANGO->lib_parse  = new Library_Parse();
@@ -84,12 +80,43 @@
   require_once(PATH_A . LIB . 'terminal.php');
   $TERMINAL = new Library_Terminal();
 
+  //Form Builder Library
+  require_once(PATH_A . LIB . 'form.php');
+  $FORM = new Library_FormBuilder();
+
   //Admin Class
   if( $TANGO->perm->check('access_administration') ) {
       require_once(PATH_A . CLA . 'admin.php');
       $ADMIN = new Tango_Admin();
   }
       
+  $FB_USER = false;
+  if( $TANGO->data['facebook_authenticate'] == "1" ) {
+      require_once('facebook.php');
+  } else {
+      if( $TANGO->sess->isLogged ) {
+          $TANGO->user->addUserLink(array(
+              'Log Out' => SITE_URL . '/members.php/cmd/logout'
+          ));
+      }
+  }
+      
+  }
+
+  if( BASEPATH == "Staff" && !defined('Install') ) {
+    if( $handle = opendir('../applications/terminal') ) {
+      while( false !== ($entry = readdir($handle)) ) {
+        if ($entry !== "." && $entry !== ".." && $entry !== 'index.html') {
+          require_once('../applications/terminal/' . $entry);
+        }
+      }
+      closedir($handle);
+   }
+  }
+
+  if( !defined('Install') ) {
+    //Including installed extensions.
+    include_extensions();
   }
 
 ?>

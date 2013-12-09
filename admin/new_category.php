@@ -17,9 +17,9 @@
           NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
           
           $title = $_POST['cat_title'];
-          $desc  = $_POST['cat_desc'];
+          $desc  = (!$_POST['cat_desc'])? '' : $_POST['cat_desc'];
           
-          if( !$title or !$desc ) {
+          if( !$title ) {
               throw new Exception ('All fields are required!');
           } else {
               

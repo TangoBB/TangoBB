@@ -79,7 +79,7 @@
                   SITE_URL . '/public/img/avatars/' . $user['user_avatar'],
                   $userg['group_name'],
                   date('F j, Y', $user['date_joined']),
-                  html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($user['user_signature'])))),
+                  $TANGO->lib_parse->parse($user['user_signature']),
                   $recent_activity,
                   $mod_tools
               )
@@ -123,7 +123,7 @@
                   SITE_URL . '/public/img/avatars/' . $TANGO->sess->data['user_avatar'],
                   $user['group_name'],
                   date('F j, Y', $TANGO->sess->data['date_joined']),
-                  html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($TANGO->sess->data['user_signature'])))),
+                  $TANGO->lib_parse->parse($TANGO->sess->data['user_signature']),
                   $recent_activity,
                   ''
               )

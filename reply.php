@@ -105,7 +105,7 @@
                   'quoted_post_user'
               ),
               array(
-                  $TANGO->bb->parser->parse($TANGO->lib_parse->removeQuote($q_query['0']['post_content'])),
+                  $TANGO->lib_parse->parse($q_query['0']['post_content']),
                   $quote_user['username']
               )
           ) : '';

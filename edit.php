@@ -36,6 +36,8 @@
                   
                   NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
                   
+                  //$con = $MYSQL->escape($_POST['content']);
+                  //die($con);
                   $con = $_POST['content'];
                   
                   if( !$con ) {
@@ -65,13 +67,19 @@
           }
           
           define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
-          define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
+          //define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
           
-          $content = '<form id="tango_form" action="" method="POST">
+          /*$content = '<form id="tango_form" action="" method="POST">
                         ' . CSRF_INPUT . '
                         <textarea id="editor" name="content" style="width:100%;height:300px;max-width:100%;min-width:100%;">' . $query['0']['post_content'] . '</textarea>
                         <br />
                         <input type="submit" name="edit" value="Edit Post" />
+                      </form>';*/
+          $content = '<form id="tango_form" action="" method="POST">
+                        ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
+                        ' . $FORM->build('textarea', '', 'content', array('id' => 'editor', 'style' => 'width:100%;height:300px;max-width:100%;min-width:100%;', 'value' => $query['0']['post_content'])) . '
+                        <br />
+                        ' . $FORM->build('submit', '', 'edit', array('value' => 'Edit Post')) . '
                       </form>';
           
           $TANGO->tpl->addParam(

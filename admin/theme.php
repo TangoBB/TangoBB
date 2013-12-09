@@ -71,13 +71,14 @@
       if( is_dir('../public/themes/' . $t) ) {
           $set     = ($TANGO->data['site_theme'] == $t)? ' class="success" title="Theme is currently set to default."' : '';
           $themes .= '<tr' . $set . '>
-                        <td><h4>' . $t . '</h4></td>
+                        <td>' . $t . '</td>
                         <td>
                           <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                               Options <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu" role="menu">
+                            <span class="dropdown-arrow dropdown-arrow-inverse"></span>
+                            <ul class="dropdown-menu dropdown-inverse" role="menu">
                               <li><a href="' . SITE_URL . '/admin/theme.php/set_default/' . $t . '">Set as Default</a></li>
                               <li><a href="' . SITE_URL . '/admin/theme.php/delete_theme/' . $t . '">Delete Theme</a></li>
                             </ul>

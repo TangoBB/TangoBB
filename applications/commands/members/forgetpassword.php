@@ -21,6 +21,8 @@
           
           $email = $_POST['email'];
           
+          NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
+
           if( !$email ) {
               throw new Exception ('All fields are required!');
           } elseif( !emailTaken($email) ) {
@@ -63,11 +65,20 @@
       }
   }
 
-  $content .= '<form action="" id="tango_form" method="POST">
+  define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
+  //define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
+
+  /*$content .= '<form action="" id="tango_form" method="POST">
                  <label for="email">Email</label>
                  <input type="text" name="email" />
                  <br />
                  <input type="submit" name="forget" value="Reset Password" />
+               </form>';*/
+  $content .= '<form action="" method="POST" id="tango_form">
+                 ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
+                 ' . $FORM->build('text', 'Email', 'email') . '
+                 <br /><br />
+                 ' . $FORM->build('submit', '', 'forget', array('value' => 'Reset Password')) . '
                </form>';
 
   $content = $notice . $content;

@@ -6,6 +6,7 @@
     <!-- Bootstrap -->
     <link href="%site_url%/public/themes/origin/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="%site_url%/public/themes/origin/assets/css/origin.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
     %editor_settings%
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -49,6 +50,9 @@
                   <div class="form-group">
                       <div class="col-sm-offset-2 col-sm-10">
                           <input type="submit" class="btn btn-primary" name="signin" value="Sign in" />
+                          @if ($TANGO->data['facebook_authenticate'] == "1")
+                          <a href="%facebook_login_url%" class="btn btn-info btn-sm"><i class="fa fa-facebook"></i> Sign In with Facebook</a>
+                          @endif
                           <label>
                               <input type="checkbox" name="remember"> Remember me
                           </label>
@@ -91,7 +95,34 @@
                       @endforeach
                   </ul>
               </div>
-              
+              <div class="btn-group">
+                  <a href="%site_url%/members.php/cmd/user/id/{{ $TANGO->sess->data['id']; }}" class="btn btn-default dropdown-toggle user_dropdown" data-toggle="dropdown">
+                      <i class="glyphicon glyphicon-envelope"></i> Messages 
+                      @if (count($TANGO->user->userMessages()) > 0)
+                      <span class="label label-success">{{ count($TANGO->user->userMessages()) }}</span>
+                      @endif
+                  </a>
+                  <ul class="dropdown-menu dropdown-messages" role="menu">
+                      @if (count($TANGO->user->userMessages()) > 0)
+                      
+                      @foreach ($TANGO->user->userMessages() as $msg)
+                      <li><a href="{{ $msg['view_url'] }}">
+                          <h4>
+                              {{ $msg['message_title'] }}
+                              <br />
+                              <small>By {{ $msg['message_sender'] }} at
+                                  {{ date('F j, Y', $msg['message_time']) }}</small>
+                          </h4>
+                          </a>
+                      </li>
+                      @endforeach
+                      
+                      @else
+                      <li role="presentation" class="dropdown-header">No Messages</li>
+                      @endif
+                      <li><a href="%site_url%/conversations.php/cmd/new">New Message</a></li>
+                  </ul>
+              </div>
               @endif
               <form action="%site_url%/search.php" method="POST" class="navbar-form navbar-left pull-right" role="search">
                   <div class="form-group">
@@ -122,7 +153,7 @@
                   </ul>
                   <div class="panel panel-default" style="margin-top:10px;">
                       <div class="panel-heading">
-                          <h3 class="panel-title">Forum Statistics</h3>
+                          <h3 class="panel-title"><i class="glyphicon glyphicon-stats"></i> Forum Statistics</h3>
                       </div>
                       <div class="panel-body">
                           <div class="row">
@@ -133,6 +164,14 @@
                               <div class="col-md-6 text-muted"><small>Users:</small></div>
                               <div class="col-md-6" style="text-align:right;"><small>%bb_stat_users%</small></div>
                           </div>
+                      </div>
+                  </div>
+                  <div class="panel panel-default" style="margin-top:10px;">
+                      <div class="panel-heading">
+                          <h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> Users Online</h3>
+                      </div>
+                      <div class="panel-body">
+                        %users_online%
                       </div>
                   </div>
               </div>

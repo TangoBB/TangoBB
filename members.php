@@ -80,6 +80,20 @@
             )
         );
       break;
+
+      case "rules":
+        require_once('applications/commands/members/rules.php');
+        $TANGO->tpl->addParam(
+            array(
+                'page_title',
+                'content'
+            ),
+            array(
+                $page_title,
+                $content
+            )
+        );
+      break;
       
       default:
         require_once('applications/commands/members/home.php');

@@ -49,6 +49,9 @@
                   <div class="form-group">
                       <div class="col-sm-offset-2 col-sm-10">
                           <input type="submit" class="btn btn-primary" name="signin" value="Sign in" />
+                          @if ($TANGO->data['facebook_authenticate'] == "1")
+                          <a href="%facebook_login_url%" class="btn btn-info btn-sm"><i class="fa fa-facebook"></i> Sign In with Facebook</a>
+                          @endif
                           <label>
                               <input type="checkbox" name="remember"> Remember me
                           </label>
@@ -91,7 +94,34 @@
                       @endforeach
                   </ul>
               </div>
-              
+              <div class="btn-group">
+                  <a href="%site_url%/members.php/cmd/user/id/{{ $TANGO->sess->data['id']; }}" class="btn btn-default dropdown-toggle user_dropdown" data-toggle="dropdown">
+                      <i class="glyphicon glyphicon-envelope"></i> Messages 
+                      @if (count($TANGO->user->userMessages()) > 0)
+                      <span class="label label-success">{{ count($TANGO->user->userMessages()) }}</span>
+                      @endif
+                  </a>
+                  <ul class="dropdown-menu dropdown-messages" role="menu">
+                      @if (count($TANGO->user->userMessages()) > 0)
+                      
+                      @foreach ($TANGO->user->userMessages() as $msg)
+                      <li><a href="{{ $msg['view_url'] }}">
+                          <h4>
+                              {{ $msg['message_title'] }}
+                              <br />
+                              <small>By {{ $msg['message_sender'] }} at
+                                  {{ date('F j, Y', $msg['message_time']) }}</small>
+                          </h4>
+                          </a>
+                      </li>
+                      @endforeach
+                      
+                      @else
+                      <li role="presentation" class="dropdown-header">No Messages</li>
+                      @endif
+                      <li><a href="%site_url%/conversations.php/cmd/new">New Message</a></li>
+                  </ul>
+              </div>
               @endif
               <form action="%site_url%/search.php" method="POST" class="navbar-form navbar-left pull-right" role="search">
                   <div class="form-group">

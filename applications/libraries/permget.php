@@ -21,10 +21,18 @@
         /*
          * The PermGET Function.
          */
-        public function g($param) {
-            if( stristr($_SERVER['REQUEST_URI'], '/'.$param.'/') ){         
+        public function g($param, $callback = null) {
+            if( stristr($_SERVER['REQUEST_URI'], '/'.$param.'/') ){    
                 $value = $this->getBetween($_SERVER['REQUEST_URI'], '/'.$param.'/', '/');
-                return $value;
+                if( is_callable($callback) ) {
+                    
+                    call_user_func($callback, $value);
+                    
+                } else {
+                    
+                    return $value;
+                    
+                }
             }else{
                 $this->error[] = 'Undefined permGET parameter.';
                 return false;  

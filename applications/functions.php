@@ -30,17 +30,59 @@
                               {prefix}users");
       return number_format(count($query));
   }
+  /*
+   * Users that are online over the past 24 hours.
+   */
+  function users_online() {
+    global $MYSQL, $TANGO;
+    $time  = strtotime('24 hours ago');
+    $query = $MYSQL->query("SELECT * FROM {prefix}sessions WHERE session_time <= '{$time}' ORDER BY session_time DESC");
+    $users = array();
+    foreach( $query as $u ) {
+      if( !in_array($u['logged_user'], $users) ) {
+        $users[] = $u['logged_user'];
+      }
+    }
+    //die(var_dump($users));
+
+    $total = array();
+    foreach( $users as $u ) {
+      $us = $TANGO->user($u);
+      $total[] = '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $us['id'] . '">' . $us['username_style'] . '</a>';
+    }
+    //die(var_dump($total));
+    if( !empty($total) ) {
+      return implode(', ', $total);
+    } else {
+      return 'None';
+    }
+  }
 
   /*
    * Cleans string.
    * Does not escape with MySQL because the MySQL Library already does that.
    */
   function clean($string) {
+      //die($string);
       $string = htmlentities($string);
+      //die($string);
+      $string = str_replace(
+        array(
+          '&amp;#65279;',
+          '`'
+        ),
+        array(
+          '',
+          '&#96;'
+        ),
+        $string
+      );
+      $string = str_replace('`', '\`', $string);
+      //$string = $MYSQL->escape($string);
       return $string;
   }
 
-  function randomString($length) {
+  function randomString($length = 16) {
       $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
       $randomString = '';
       for ($i = 0; $i < $length; $i++) {
@@ -131,6 +173,8 @@
       $a = $MYSQL->get('{prefix}users');
       if( $a ) {
           $sha_info = explode('$', $a[0]['user_password']);
+      } elseif( !$a or $a['0']['facebook_id'] !== "0" ) {
+          return false;
       } else {
           return false;
       }
@@ -162,17 +206,27 @@
   /*
    * Get details for a thread.
    */
-  function thread($id) {
+  function thread($id, $callback = null) {
       global $MYSQL;
       $MYSQL->where('id', $id);
       $query = $MYSQL->get('{prefix}forum_posts');
-      return $query['0'];
+      
+      if( is_callable($callback) ) {
+          call_user_func($callback, $query['0']);
+      } else {
+          return $query['0'];
+      }
   }
-  function node($id) {
+  function node($id, $callback = null) {
       global $MYSQL;
       $MYSQL->where('id', $id);
       $query = $MYSQL->get('{prefix}forum_node');
-      return $query['0'];
+      
+      if( is_callable($callback) ) {
+          call_user_func($callback, $query['0']);
+      } else {
+          return $query['0'];
+      }
   }
 
   /*
@@ -187,6 +241,17 @@
       } else {
           return false;
       }
+  }
+
+  /*
+   * Include all installed extensions.
+   */
+  function include_extensions() {
+    global $MYSQL;
+    $query = $MYSQL->get('{prefix}extensions');
+    foreach( $query as $extension ) {
+      require_once('extensions/' . $extension['extension_folder'] . '/manifest.php');
+    }
   }
 
 ?>

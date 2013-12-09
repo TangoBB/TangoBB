@@ -1,3 +1,19 @@
 /*
  * Admin Theme.
  */
+ body {
+ 	font-size: 15px;
+ }
+ .container {
+ 	margin-top: 10px;
+ }
+.options {
+	margin-top: 10px;
+}
+ /* Logo */
+ .logo {
+ 	background-image: url('../img/tango_logo.png');
+ 	height: 100px;
+ 	width: 80px;
+ 	margin: 0 auto;
+ }

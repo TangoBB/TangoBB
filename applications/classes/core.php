@@ -22,7 +22,7 @@
       /*
        * Get every detail from a user using ID.
        */
-      public function user($id) {
+      public function user($id, $callback = null) {
           global $MYSQL;
           $MYSQL->where('id', $id);
           $query = $MYSQL->get('{prefix}users');
@@ -31,7 +31,11 @@
           $query['0']['post_count']     = count($MYSQL->get('{prefix}forum_posts'));
           $query['0']['username_style'] = $this->usergroup($query['0']['user_group'], 'username_style', $query['0']['username']);
                               
-          return $query['0'];
+          if( is_callable($callback) ) {
+              call_user_func($callback, $query['0']);
+          } else {
+              return $query['0'];
+          }
       }
       
       /*

@@ -31,9 +31,16 @@
 				throw new Exception('All fields are required!');
 			}else{
                 
-                $data = array(
+                $rules = '<ul>
+                <li>No spamming.</li>
+                <li>No racist comments.</li>
+                <li>Do not start a political discussion unless permitted.</li>
+                <li>No illegal stuff are to be posted on anywhere in the forum.</li>
+                </ul>';
+                $data  = array(
+                    'site_rules' => $rules,
                     'site_name' => $name,
-                    'site_theme' => 'seda',
+                    'site_theme' => 'origin',
                     'site_language' => 'english',
                     'site_email' => $email
                 );

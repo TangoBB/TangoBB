@@ -23,7 +23,9 @@
                   
                   NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
                   $thread_title = clean($_POST['title']);
+                  //die($_POST['content']);
                   $thread_cont  = $_POST['content'];
+                  //die($thread_title);
                   
                   $c_query      = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = {$TANGO->sess->data['id']} ORDER BY post_time DESC LIMIT 1");
                   
@@ -46,7 +48,8 @@
                           'post_time' => $time,
                           'post_user' => $TANGO->sess->data['id'],
                           'origin_node' => $node,
-                          'post_type' => '1'
+                          'post_type' => '1',
+                          'last_updated' => $time
                       );
                       
                       if( $MYSQL->insert('{prefix}forum_posts', $data) ) {

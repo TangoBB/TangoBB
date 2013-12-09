@@ -56,9 +56,9 @@
   }
 
   define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
-  define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
+  //define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
 
-  $content .= '<form id="tango_form" action="" method="POST">
+  /*$content .= '<form id="tango_form" action="" method="POST">
                  ' . CSRF_INPUT . '
                  <label for="current_password">Current Password</label>
                  <input type="password" name="current_password" id="current_password" />
@@ -66,6 +66,13 @@
                  <input type="password" name="new_password" id="new_password" />
                  <br /><br />
                  <input type="submit" name="edit" value="Save Changes" />
+               // </form>';*/
+  $content .= '<form id="tango_form" action="" method="POST">
+                 ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
+                 ' . $FORM->build('password', 'Current Password', 'current_password') . '
+                 ' . $FORM->build('password', 'New Password', 'new_password') . '
+                 <br /><br />
+                 ' . $FORM->build('submit', '', 'edit', array('value' => 'Save Changes')) . '
                </form>';
 
   $content  = $notice . $content;
