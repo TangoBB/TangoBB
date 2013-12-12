@@ -118,7 +118,7 @@
             //'</blockquote>'
           );
 
-          $var = str_replace($search, $replace, $var);
+          $var = str_replace($search, $replace, nl2br($var));
           //die($var);
           $var = $this->parseQuote($var);
           $var = str_replace(

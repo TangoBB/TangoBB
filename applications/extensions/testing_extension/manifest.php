@@ -1,6 +1,6 @@
 <?php
 
-  global $TANGO;
+  global $TANGO, $MYSQL;
   //An example to make use of the template system and MySQL library.
 
   //Running MySQL stuff.
