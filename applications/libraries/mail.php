@@ -15,6 +15,9 @@
           if( BASEPATH == "Staff" ) {
               $template_file  = '../public/email/template.php';
               $template_style = '../public/css/bootstrap-email.min.css';
+            } elseif( BASEPATH == "Extension" ) {
+              $template_file  = '../../../public/email/template.php';
+              $template_style = '../../../public/css/bootstrap-email.min.css';
           } else {
               $template_file  = 'public/email/template.php';
               $template_style = 'public/css/bootstrap-email.min.css';

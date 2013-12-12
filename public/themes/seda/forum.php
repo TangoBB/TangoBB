@@ -71,6 +71,7 @@
 		<section id="main_container">
 			<div id="main_content">
 				<span class="page_title">%site_name%</span>
+				%shoutbox%
 				%forum_listings%
 			</div>
 			<div id="sidebar">

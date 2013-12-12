@@ -413,6 +413,9 @@
 		$results = array();
 
 		$meta = $stmt->result_metadata();
+		if( !$meta ) {
+			return true;
+		}
 
 		$row = array();
 		while ($field = $meta->fetch_field()) {

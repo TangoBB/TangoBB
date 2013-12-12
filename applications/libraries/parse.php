@@ -118,8 +118,9 @@
             //'</blockquote>'
           );
 
-          $var = str_replace($search, $replace, nl2br($var));
-          $this->parseQuote($var);
+          $var = str_replace($search, $replace, $var);
+          //die($var);
+          $var = $this->parseQuote($var);
           $var = str_replace(
             array(
               //'[quote]',
@@ -144,12 +145,13 @@
           //die($string);
           //die(var_dump($string));
           preg_match_all('/<blockquote>(.*?)<\/blockquote>/', $string, $quotes);
+          //die(var_dump($quotes));
           $return = '';
           //die(var_dump($quotes));
           foreach( $quotes['1'] as $id ) {
-              
+              //die($id);
               $id    = preg_replace('/\s+/', '', $id);
-
+              //die($id);
               $MYSQL->where('id', $id);
               $query = $MYSQL->get('{prefix}forum_posts');
               $user  = (!empty($query))? $TANGO->user($query['0']['post_user']) : array(
@@ -178,6 +180,7 @@
           }
           //$string = str_replace('&amp;', '&', $string);
           //return html_entity_decode($string);
+          //die($string);
           return $string;
       }
       

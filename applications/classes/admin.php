@@ -15,7 +15,7 @@
               'Configuration',
               array(
                   'General' => SITE_URL . '/admin/general.php',
-                  'Theme' => SITE_URL . '/admin/theme.php'
+                  'Extensions' => SITE_URL . '/admin/extensions.php'
               )
           );
           $this->addNav(
@@ -29,7 +29,7 @@
               'Customization',
               array(
                   'Usergroups' => SITE_URL . '/admin/usergroups.php',
-                  'Extensions' => SITE_URL . '/admin/extensions.php'
+                  'Theme' => SITE_URL . '/admin/theme.php'
               )
           );
       }

@@ -11,6 +11,11 @@
       define('PATH_A', '../applications/');
       define('TEMPLATE', '../');
       define('APPLICATION', '');
+  }elseif( BASEPATH == "Extension" ) {
+      define('PATH', '../../../');
+      define('PATH_A', '../../../applications/');
+      define('TEMPLATE', '../../../');
+      define('APPLICATION', '../../../applications/');
   } else {
       define('PATH', '');
       define('PATH_A', '');

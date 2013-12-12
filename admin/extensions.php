@@ -14,30 +14,42 @@
       if( file_exists('../applications/extensions/' . $PGET->g('install') . '/') ) {
 
         $ext = $PGET->g('install');
-        $loc = '../applications/extensions/' . $ext . '/';
-        require_once($loc . 'setup.php');
-        $setup = new Extension_Setup();
+        $MYSQL->where('extension_folder', $ext);
+        $query = $MYSQL->get('{prefix}extensions');
 
-        $data  = array(
-          'extension_name' => $setup->extension_name,
-          'extension_folder' => $ext
-        );
+        if( empty($query) ) {
 
-        if( !$MYSQL->insert('{prefix}extensions', $data) ) {
-          $notice .= $ADMIN->alert(
-            'Error installing extension.',
-            'danger'
+          $loc = '../applications/extensions/' . $ext . '/';
+          require_once($loc . 'setup.php');
+          $setup = new Extension_Setup();
+
+          $data  = array(
+            'extension_name' => $setup->extension_name,
+            'extension_folder' => $ext
           );
-        }
 
-        if( $setup->install() ) {
-          $notice .= $ADMIN->alert(
-            'Extension successfully installed!',
-            'success'
-          );
+          if( !$MYSQL->insert('{prefix}extensions', $data) ) {
+            $notice .= $ADMIN->alert(
+              'Error installing extension.',
+              'danger'
+              );
+          }
+
+          if( $setup->install() ) {
+            $notice .= $ADMIN->alert(
+              'Extension successfully installed!',
+              'success'
+              );
+          } else {
+            $notice .= $ADMIN->alert(
+              'Error installing extension.',
+              'danger'
+            );
+          }
+
         } else {
           $notice .= $ADMIN->alert(
-            'Error installing extension.',
+            'Extension is already installed.',
             'danger'
           );
         }

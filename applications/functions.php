@@ -32,6 +32,7 @@
   }
   /*
    * Users that are online over the past 24 hours.
+   * time >= session_time
    */
   function users_online() {
     global $MYSQL, $TANGO;
