@@ -23,13 +23,25 @@
           $password = $_POST['password'];
           
           if( !$email or !$password ) {
-              throw new Exception ('All fields are required!');
+              throw new Exception ($LANG['global_form_process']['all_fields_required']);
           } elseif( !userExists($email, $password) ) {
-              throw new Exception ('Invalid details!');
+              throw new Exception ($LANG['bb']['members']['invalid_login']);
           }elseif( ($ban = userBanned($email)) !== false ) {
-              throw new Exception ('You are currently banned. Contact staff for details.<br />Unban Date: <b>' . date('F j, Y', $ban['unban_time']) . '</b><br />Ban Reason: <b>' . $ban['ban_reason'] . '</b>');
+              throw new Exception (
+                str_replace(
+                  array(
+                    '%unban_date%',
+                    '%ban_reason%'
+                  ),
+                  array(
+                    date('F j, Y', $ban['unban_time']),
+                    $ban['ban_reason']
+                  ),
+                  $LANG['bb']['members']['banned']
+                )
+              );
           } elseif( !userActivated($email) ) {
-              throw new Exception ('Your email has not been activated yet.');
+              throw new Exception ($LANG['bb']['members']['email_not_activated']);
           } else {
               
               $remember = (isset($_POST['remember']))? true : false;
@@ -39,7 +51,7 @@
               $content .= $TANGO->tpl->entity(
                   'success_notice',
                   'content',
-                  'Successfully logged in! Click <a href="' . SITE_URL . '">here</a> if the page does not redirect you.'
+                  $LANG['bb']['members']['login_success']
               );
               
           }

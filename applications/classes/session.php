@@ -8,7 +8,7 @@
   class Tango_Session {
       
       public $isLogged = false;
-      public $data;
+      public $data, $date;
       private $session;
       
       public function __construct() {
@@ -23,10 +23,21 @@
               $this->data['username_style'] = $TANGO->usergroup($this->data['user_group'], 'username_style', $this->data['username']);
               $this->data['permissions']    = $TANGO->usergroup($this->data['user_group'], 'permissions');
               
+              if( $this->session['session_time'] >= strtotime('24 hours ago') ) {
+                $time = time();
+                $MYSQL->where('session_id', $this->session['session_id']);
+                $MYSQL->update(
+                  '{prefix}sessions',
+                  array(
+                    'session_time' => $time
+                    )
+                );
+              }
+
               //Adding links for users who are logged in and everything else in the template.
               $TANGO->user->addUserLink(array(
                   'Profile' => SITE_URL . '/members.php/cmd/user/',
-                  'Messages' => SITE_URL . '/conversations.php',
+                  'Conversations' => SITE_URL . '/conversations.php',
                   'Personal Details' => SITE_URL . '/profile.php/cmd/edit',
                   'Avatar' => SITE_URL . '/profile.php/cmd/avatar',
                   'Signature' => SITE_URL . '/profile.php/cmd/signature',
@@ -51,13 +62,22 @@
                   array(
                       $this->data['username'],
                       $this->data['username_style'],
-                      SITE_URL . '/public/img/avatars/' . $this->data['user_avatar'],
+                      $this->data['user_avatar'],
                       $user_post_count,
                       $mod_report_integer
                   )
               );
+
+              date_default_timezone_set($this->data['set_timezone']);
+              if( $this->data['chosen_theme'] == "0" ) {
+                $TANGO->tpl->setTheme($TANGO->data['site_theme']);
+              } else {
+                $TANGO->tpl->setTheme($this->data['chosen_theme']);
+              }
           } else {
               $this->data['permissions'] = array();
+              date_default_timezone_set('US/Central');
+              $TANGO->tpl->setTheme($TANGO->data['site_theme']);
           }
       }
       

@@ -21,6 +21,13 @@
 
           $loc = '../applications/extensions/' . $ext . '/';
           require_once($loc . 'setup.php');
+
+          if( !class_exists('Extension_Setup') ) {
+            $notice .= $ADMIN->alert(
+              'Setup does not exist for that extension.',
+              'danger'
+            );
+          }
           $setup = new Extension_Setup();
 
           $data  = array(
@@ -73,6 +80,14 @@
         $ext = $PGET->g('uninstall');
         $loc = '../applications/extensions/' . $ext . '/';
         require_once($loc . 'setup.php');
+
+        if( !class_exists('Extension_Setup') ) {
+          $notice .= $ADMIN->alert(
+            'Setup does not exist for that extension.',
+            'danger'
+          );
+        }
+
         $setup = new Extension_Setup();
 
         $MYSQL->where('extension_folder', $ext);

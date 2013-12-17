@@ -24,6 +24,83 @@
       
       if( !empty($query) ) {
           
+          $node        = node($query['0']['origin_node']);
+          $breadcrumbs = $TANGO->tpl->entity(
+            'breadcrumbs_before',
+            array(
+              'link',
+              'name'
+            ),
+            array(
+              SITE_URL . '/forum.php',
+              $LANG['bb']['forum']
+            )
+          );
+          if( $node['node_type'] == 2 ) {
+
+            $parent_node = node($node['parent_node']);
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/node.php/v/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
+                $parent_node['node_name']
+              )
+            );
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'],
+                $node['node_name']
+              )
+            );
+
+          } elseif( $node['node_type'] == 1 ) {
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'],
+                $node['node_name']
+              )
+            );
+          }
+          $breadcrumbs .= $TANGO->tpl->entity(
+            'breadcrumbs_before',
+            array(
+              'link',
+              'name'
+            ),
+            array(
+              SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
+              $query['0']['post_title']
+            )
+          );
+          $breadcrumbs .= $TANGO->tpl->entity(
+            'breadcrumbs_current',
+            'name',
+            $LANG['bb']['new_reply_breadcrumb']
+          );
+
+          $breadcrumbs = $TANGO->tpl->entity(
+              'breadcrumbs',
+              'bread',
+              //'<li><a href="' . SITE_URL . '">Forum</a></li><li><a href="' . SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'] . '">' . $node['node_name'] . '</a></li><li class="active">' . $query['0']['post_title'] . '</a>'
+              $breadcrumbs
+          );
+
           $q_query = false;
           if( $PGET->g('quote') ) {
               $MYSQL->where('id', $PGET->g('quote'));
@@ -49,9 +126,9 @@
                   $c_query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = {$TANGO->sess->data['id']} ORDER BY post_time DESC LIMIT 1");
                   
                   if( !$cont ) {
-                      throw new Exception ('All fields are required!');
+                      throw new Exception ($LANG['global_form_process']['all_fields_required']);
                   } elseif( $c_query['0']['post_content'] == $cont ) {
-                      throw new Exception ('Please write a different message from your last post.');
+                      throw new Exception ($LANG['global_form_process']['different_message_previous']);
                   } else {
                       
                       $origin = thread($thread);
@@ -77,7 +154,7 @@
                               header('Location: ' . SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id']);
                           }
                       } else {
-                          throw new Exception ('Error replying to thread. Try again later.');
+                          throw new Exception ($LANG['global_form_process']['error_replying_thread']);
                       }
                       
                   }
@@ -113,6 +190,7 @@
           $content = $TANGO->tpl->entity(
               'reply_thread_page',
               array(
+                  'breadcrumbs',
                   'quote_post',
                   'form_id',
                   'csrf_input',
@@ -123,6 +201,7 @@
                   'thread_url'
               ),
               array(
+                  $breadcrumbs,
                   $quote_post,
                   'tango_form',
                   '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '" />',
@@ -142,7 +221,7 @@
                   'content'
               ),
               array(
-                  'New reply in: ' . $query['0']['post_title'],
+                  $LANG['bb']['new_reply_in'] . ' ' . $query['0']['post_title'],
                   $notice . $content
               )
           );

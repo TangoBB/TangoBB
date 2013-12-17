@@ -7,7 +7,7 @@
 
   $content    = '';
   $notice     = '';
-  $page_title = 'Search';
+  $page_title = $LANG['bb']['search'];
 
   if( isset($_POST['search_submit']) ) {
       try {
@@ -19,7 +19,7 @@
           $search_query = $_POST['search_query'];
           
           if( !$search_query ) {
-              throw new Exception ('All fields are required!');
+              throw new Exception ($LANG['global_form_process']['all_fields_required']);
           } else {
               
               $searched_threads = '';
@@ -52,7 +52,7 @@
                       $searched_threads .= $thread;
                   }
               } else {
-                  $searched_threads .= 'No results.';
+                  $searched_threads .= $LANG['global_form_process']['search_no_result'];
               }
               
               $query   = $MYSQL->query("SELECT * FROM
@@ -73,7 +73,7 @@
                       $searched_users .= $u;
                   }
               } else {
-                  $searched_users .= 'No results.';
+                  $searched_users .= $LANG['global_form_process']['search_no_result'];
               }
               
               $content .= $TANGO->tpl->entity(
@@ -101,7 +101,7 @@
       $notice .= $TANGO->tpl->entity(
           'danger_notice',
           'content',
-          'Please enter a search query!'
+          $LANG['global_form_process']['enter_search_query']
       );
   }
 

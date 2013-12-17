@@ -12,8 +12,15 @@
       $query  = $MYSQL->get('{prefix}forum_category');
       $return = '';
       foreach( $query as $s ) {
-          $check   = ($s['id'] == $check)? ' checked' : '';
+          $MYSQL->where('node_type', 1);
+          $MYSQL->where('in_category', $s['id']);
+          $query = $MYSQL->get('{prefix}forum_node');
+          $check   = ($s['id'] == $check)? ' selected' : '';
           $return .= '<option value="' . $s['id'] . '"' . $check . '>' . $s['category_title'] . '</option>';
+          foreach( $query as $n ) {
+            $check_2 = ('&' . $n['id'] == $check)? ' checked' : '';
+            $return .= '<option value="&' . $n['id'] . '"' . $check . '>&nbsp;&nbsp;&nbsp;&nbsp;-' . $n['node_name'] . '</option>';
+          }
       }
       return $return;
   }
@@ -42,14 +49,29 @@
                   if( !$title ) {
                       throw new Exception ('All fields are required!');
                   } else {
-                      
+
+                    if( substr_count($_POST['node_parent'], '&amp;') > 0 ) {
+                      $explode = explode('&amp;', $_POST['node_parent']);
+                      $parent  = node($explode['1']);
                       $data = array(
-                          'node_name' => $title,
-                          'name_friendly' => title_friendly($title),
-                          'node_desc' => $desc,
-                          'node_locked' => $locked,
-                          'in_category' => $_POST['node_parent']
+                        'node_name' => $title,
+                        'node_desc' => $desc,
+                        'name_friendly' => title_friendly($title),
+                        'in_category' => $parent['in_category'],
+                        'node_type' => 2,
+                        'parent_node' => $parent['id']
                       );
+                    } else {
+                      $data = array(
+                        'node_name' => $title,
+                        'name_friendly' => title_friendly($title),
+                        'node_desc' => $desc,
+                        'node_locked' => $locked,
+                        'in_category' => $_POST['node_parent'],
+                        'node_type' => 1
+                      );
+                    }
+                      
                       $MYSQL->where('id', $id);
                       
                       if( $MYSQL->update('{prefix}forum_node', $data) ) {
@@ -67,7 +89,13 @@
                   );
               }
           }
-          
+
+          if( $query['0']['node_type'] !== 1 ) {
+            $in_c = '&' . $query['0']['parent_node'];
+          } else {
+            $in_c = $query['0']['in_category'];
+          }
+
           $token        = NoCSRF::generate('csrf_token');
           $lock_checked = ($query['0']['node_locked'] == "1")? ' checked' : '';
           echo $ADMIN->box(
@@ -81,7 +109,7 @@
                  <textarea name="node_desc" id="cat_desc" class="form-control">' . $query['0']['node_desc'] . '</textarea>
                  <label for="parent">Parent</label><br />
                  <select name="node_parent" id="parent" style="width:100%;">
-                   ' . list_category($query['0']['in_category']) . '
+                   ' . list_category($in_c) . '
                  </select>
                  <br />
                  <label for="additional_option">Additional Options</label><br />

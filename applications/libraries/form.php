@@ -50,7 +50,7 @@
   			  return '<input type="' . $type . '" name="' . $name . '"' . $add . '>' . $label;
   			break;
   			case "textarea":
-          $add = str_replace('value="' . $additional['value'] . '"', '', $add);
+          $add = str_replace('value="' . isset($additional['value']) . '"', '', $add);
   			  return '<label for="' . $name . '">' . $label . '</label>
   			          <textarea name="' . $name . '"' . $add . '>' . $ta_val . '</textarea>';
   			break;

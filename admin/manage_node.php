@@ -41,7 +41,7 @@
       $MYSQL->where('id', $id);
       if( $MYSQL->update('{prefix}forum_node', $data) ) {
           $notice .= $ADMIN->alert(
-              'Lock has successfully been toggled node <strong>' . $query['0']['node_name'] . '</strong>.',
+              'Lock has successfully been toggled on node <strong>' . $query['0']['node_name'] . '</strong>.',
               'success'
           );
       } else {
@@ -127,14 +127,37 @@
 
   function list_manage_node($category) {
       global $MYSQL, $token;
-      $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE in_category = $category ORDER BY node_place");
+      $query = $MYSQL->query("SELECT * FROM
+                              {prefix}forum_node
+                              WHERE
+                              in_category = $category
+                              AND
+                              node_type = 1
+                              ORDER BY
+                              node_place");
       $return = '';
       foreach( $query as $n ) {
+
+          $MYSQL->where('parent_node', $n['id']);
+          $MYSQL->where('node_type', 2);
+          $s_q     = $MYSQL->get('{prefix}forum_node');
+          $s_q_a   = array();
+          foreach( $s_q as $s_f ) {
+            $locked  = ($s_f['node_locked'] == 1)? ' class="text-danger" title="Node Locked"' : '';
+            $s_q_a[] = '<a href="' . SITE_URL . '/node.php/v/' . $s_f['name_friendly'] . '.' . $s_f['id'] . '" target="_blank"' . $locked . '>
+                          ' . $s_f['node_name'] . '
+                          (<a href="' . SITE_URL . '/admin/edit_node.php/id/' . $s_f['id'] . '" title="Edit (' . $s_f['node_name'] . ')"><i class="glyphicon glyphicon-edit"></i></a>)
+                          (<a href="' . SITE_URL . '/admin/manage_node.php/delete_node/' . $s_f['id'] . '" title="Delete (' . $s_f['node_name'] . ')"><i class="glyphicon glyphicon-trash"></i></a>)
+                          (<a href="' . SITE_URL . '/admin/manage_node.php/toggle_lock/' . $s_f['id'] . '" title="Toggle Lock (' . $s_f['node_name'] . ')"><i class="glyphicon glyphicon-warning-sign"></i></a>)
+                        </a>';
+          }
+
           $locked  = ($n['node_locked'] == "1")? ' style="border-left:2px solid #e84040;" title="Node is locked."' : '';
           $return .= '<tr' . $locked . '>
                         <td>
                           <strong><a href="' . SITE_URL . '/node.php/v/' . $n['name_friendly'] . '.' . $n['id'] . '" target="_blank">' . $n['node_name'] . '</a></strong><br />
-                          <small>' . $n['node_desc'] . '</small>
+                          <small>' . $n['node_desc'] . '</small><br />
+                          <small>Sub-Forums: ' . implode(',', $s_q_a) . '</small>
                         </td>
                         <td>
                           <form action="" method="POST">

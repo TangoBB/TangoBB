@@ -15,7 +15,7 @@
 <div class="alert alert-success">%content%</div>
 <!--- tpl:success_notice:end -->
 <!--- tpl:breadcrumbs:start -->
-<ol class="breadcrumb pull-left">
+<ol class="breadcrumb">
     %bread%
 </ol>
 <!--- tpl:breadcrumbs:end -->
@@ -36,8 +36,24 @@
 <!--- tpl:pagination_link_current:start -->
 <li class="active"><a href="#">%page%</a></li>
 <!--- tpl:pagination_link_current:end -->
+<!--- tpl:members_page_head:start -->
+<div style="height:auto;">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <i class="glyphicon glyphicon-sort"></i>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="%sort_date_joined_asc%"><i class="glyphicon glyphicon-sort-by-order"></i> Date Joined Ascending</a></li>
+            <li><a href="%sort_date_joined_desc%"><i class="glyphicon glyphicon-sort-by-order-alt"></i> Date Joined Descending</a></li>
+            <li><a href="%sort_name_asc%"><i class="glyphicon glyphicon-sort-by-alphabet"></i> Username Ascending</a></li>
+            <li><a href="%sort_name_desc%"><i class="glyphicon glyphicon-sort-by-alphabet-alt"></i> Username Descending</a></li>
+        </ul>
+    </div>
+</div>
+%members%
+<!--- tpl:members_page_head:end -->
 <!--- tpl:members_page:start -->
-<div style="padding:10px 0px 10px 0px;border-bottom:dotted 1px #ccc;overflow:auto;">
+<div style="padding:10px 0px 10px 0px;border-bottom:dashed 1px #ccc;overflow:auto;">
     <img src="%avatar%" style="width:65px;height:65px;margin-right:5px;" class="img-thumbnail pull-left" />
     <a href="%profile_url%" >%username%</a><br />
     <small class="text-muted">Joined:</small> <small>%date_joined%</small><br />
@@ -151,8 +167,8 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th style="width:70%;">Forum</th>
-                <th style="width:30%;">Last Post</th>
+                <th style="width:70%;"></th>
+                <th style="width:30%;"></th>
             </tr>
         </thead>
         <tbody>
@@ -163,7 +179,11 @@
 <!--- tpl:forum_listings_category:end -->
 <!--- tpl:forum_listings_node:start -->
 <tr>
-    <td>%node_name%<br /><small>%node_desc%</small></td>
+    <td>
+        %node_name%<br />
+        <small>%node_desc%</small><br />
+        <small>Sub-Forums: %sub_forums%</small>
+    </td>
     <td>
         %latest_post%
     </td>
@@ -174,12 +194,26 @@
 %latest_post%<br /><small>%post_user%, %post_time%</small>
 <!--- tpl:forum_listings_node_latest:end -->
 <!--- tpl:forum_listings_node_threads:start -->
-<p class="pull-left">
-    %breadcrumbs%
-</p>
-<p class="pull-right">
-    %post_thread_button%
-</p>
+%breadcrumbs%
+%sub_forums%
+<div style="height:auto;">
+    <p class="pull-right">
+        %post_thread_button%
+    </p>
+    <p class="pull-left">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <i class="glyphicon glyphicon-sort"></i>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="%sort_latest_created%"><i class="glyphicon glyphicon-sort-by-order"></i> By Latest Created</a></li>
+                <li><a href="%sort_name_desc%"><i class="glyphicon glyphicon-sort-by-alphabet-alt"></i> By Name Descending</a></li>
+                <li><a href="%sort_name_asc%"><i class="glyphicon glyphicon-sort-by-alphabet"></i> By Name Ascending</a></li>
+                <li><a href="%sort_last_updated%"><i class="glyphicon glyphicon-sort-by-attributes-alt"></i> By Last Updated</a></li>
+            </ul>
+        </div>
+    </p>
+</div>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -192,6 +226,34 @@
     </tbody>
 </table>
 <!--- tpl:forum_listings_node_threads:end -->
+<!--- tpl:forum_listings_node_sub_forums:start -->
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th style="width:70%;"></th>
+            <th style="width:30%;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        %nodes%
+    </tbody>
+</table>
+<!--- tpl:forum_listings_node_sub_forums:end -->
+<!--- tpl:forum_listings_node_sub_forums_posts:start -->
+<tr>
+    <td>%node_name%<br /><small>%node_desc%</small></td>
+    <td>
+        %latest_post%
+    </td>
+</tr>
+<!--- tpl:forum_listings_node_sub_forums_posts:end -->
+<!--- tpl:forum_listings_node_sub_forums_latest:start -->
+<img src="%user_avatar%" class="img-thumbnail pull-left" style="width:42;height:42px;margin-right:5px;" />
+<span class="pull-right" style="text-align:right;">
+    %latest_post%<br />
+    <small>%post_user%, %post_time%</small>
+</span>
+<!--- tpl:forum_listings_node_sub_forums_latest:end -->
 <!--- tpl:forum_listings_node_threads_posts:start -->
 <tr>
     <td><img src="%user_avatar%" class="img-thumbnail pull-left" style="width:42;height:42px;margin-right:5px;" />%thread_name%<br /><small>%user%, %post_time%</small></td>
@@ -207,6 +269,7 @@
 </span>
 <!--- tpl:forum_listings_node_threads_latestreply:end -->
 <!--- tpl:create_thread:start -->
+%breadcrumbs%
 <form id="%form_id%" action="%create_thread_form_action%" method="POST">
     %csrf_input%
     <input type="text" name="%title_name%" placeholder="Thread Title..." class="form-control" />
@@ -218,6 +281,7 @@
 </form>
 <!--- tpl:create_thread:end -->
 <!--- tpl:reply_thread_page:start -->
+%breadcrumbs%
 %quote_post%
 <form id="%form_id%" action="%create_thread_form_action%" method="POST">
     %csrf_input%
@@ -288,4 +352,14 @@
     </div>
 </div>
 <!--- tpl:mod_reports:end -->
+<!--- tpl:content_box:start -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">%content_header%</h3>
+    </div>
+    <div class="panel-body">
+        %content_body%
+    </div>
+</div>
+<!--- tpl:content_box:end -->
 <!--- parent:theme_entity_file:end -->

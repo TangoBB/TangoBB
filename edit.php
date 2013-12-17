@@ -19,8 +19,86 @@
               header('Location: ' . SITE_URL);
           }
           
+          $node        = node($query['0']['origin_node']);
+
+          $breadcrumbs = $TANGO->tpl->entity(
+            'breadcrumbs_before',
+            array(
+              'link',
+              'name'
+            ),
+            array(
+              SITE_URL . '/forum.php',
+              $LANG['bb']['forum']
+            )
+          );
+          if( $node['node_type'] == 2 ) {
+
+            $parent_node = node($node['parent_node']);
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/node.php/v/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
+                $parent_node['node_name']
+              )
+            );
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'],
+                $node['node_name']
+              )
+            );
+
+          } elseif( $node['node_type'] == 1 ) {
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'],
+                $node['node_name']
+              )
+            );
+          }
+          $breadcrumbs .= $TANGO->tpl->entity(
+            'breadcrumbs_before',
+            array(
+              'link',
+              'name'
+            ),
+            array(
+              SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
+              $query['0']['post_title']
+            )
+          );
+
+          $breadcrumbs .= $TANGO->tpl->entity(
+            'breadcrumbs_current',
+            'name',
+            $LANG['bb']['edit_post_breadcrumb']
+          );
+
+          $breadcrumb = $TANGO->tpl->entity(
+              'breadcrumbs',
+              'bread',
+              //'<li><a href="' . SITE_URL . '">Forum</a></li><li><a href="' . SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'] . '">' . $node['node_name'] . '</a></li><li class="active">' . $query['0']['post_title'] . '</a>'
+              $breadcrumbs
+          );
+
           $notice        = '';
-          $content       = '';
           $origin_thread = '';
           if( $query['0']['post_type'] == "1" ) {
               $page_title     = $query['0']['post_title'];
@@ -41,7 +119,7 @@
                   $con = $_POST['content'];
                   
                   if( !$con ) {
-                      throw new Exception ('All fields are required!');
+                      throw new Exception ($LANG['global_form_process']['all_fields_required']);
                   } else {
                       
                       $data = array(
@@ -52,7 +130,7 @@
                       if( $MYSQL->update('{prefix}forum_posts', $data) ) {
                           header('Location: ' . SITE_URL . '/thread.php/v/' . $origin_thread);
                       } else {
-                          throw new Exception ('Error updating post. Try again later.');
+                          throw new Exception ($LANG['global_form_process']['error_updating_post']);
                       }
                       
                   }
@@ -75,11 +153,12 @@
                         <br />
                         <input type="submit" name="edit" value="Edit Post" />
                       </form>';*/
-          $content = '<form id="tango_form" action="" method="POST">
+          $content = $breadcrumb . 
+                     '<form id="tango_form" action="" method="POST">
                         ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                         ' . $FORM->build('textarea', '', 'content', array('id' => 'editor', 'style' => 'width:100%;height:300px;max-width:100%;min-width:100%;', 'value' => $query['0']['post_content'])) . '
                         <br />
-                        ' . $FORM->build('submit', '', 'edit', array('value' => 'Edit Post')) . '
+                        ' . $FORM->build('submit', '', 'edit', array('value' => $LANG['bb']['form']['edit_post'])) . '
                       </form>';
           
           $TANGO->tpl->addParam(
@@ -88,7 +167,7 @@
                   'content'
               ),
               array(
-                  'Edit Post in: ' . $page_title,
+                  $LANG['bb']['edit_post_in'] . ' ' . $page_title,
                   $notice . $content
               )
           );

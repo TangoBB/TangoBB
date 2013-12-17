@@ -25,13 +25,17 @@
                   $content .= $TANGO->tpl->entity(
                       'success_notice',
                       'content',
-                      'Thread has been stuck. <a href="' . SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id'] . '">Back to thread</a>.'
+                      str_replace(
+                        '%url%',
+                        SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
+                        $LANG['mod']['stick']['stick_success']
+                      )
                   );
               } else {
                   $content .= $TANGO->tpl->entity(
                       'danger_notice',
                       'content',
-                      'Error sticking thread.'
+                      $LANG['mod']['stick']['stick_error']
                   );
               }
               
@@ -39,7 +43,7 @@
               $content .= $TANGO->tpl->entity(
                   'danger_notice',
                   'content',
-                  'Thread is already stuck.'
+                  $LANG['mod']['stick']['already_stuck']
               );
           }
           
@@ -57,7 +61,7 @@
           'content'
       ),
       array(
-          'Stick Thread',
+          $LANG['mod']['stick']['stick'],
           $content
       )
   );

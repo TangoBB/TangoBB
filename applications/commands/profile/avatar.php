@@ -6,7 +6,7 @@
   if( !defined('BASEPATH') ){ die(); }
   if( !$TANGO->sess->isLogged ) { header('Location: ' . SITE_URL . '/404.php'); }//Check if user is logged in.
 
-  $page_title = 'Avatar';
+  $page_title = $LANG['bb']['profile']['avatar'];
   $content    = '';
   $notice     = '';
 
@@ -20,11 +20,30 @@
               'image/jpg',
               'image/gif'
           );
+
+          $gravatar = ( isset($_POST['gravatar']) )? '1' : '0';
           
-         if( !$_FILES['avatar'] ) {
-             throw new Exception ('All fields are required!');
+         if( $gravatar == "1" ) {
+
+             $data = array(
+              'avatar_type' => '1'
+             );
+             $MYSQL->where('id', $TANGO->sess->data['id']);
+
+             if( $MYSQL->update('{prefix}users', $data) ) {
+                 $notice .= $TANGO->tpl->entity(
+                    'success_notice',
+                    'content',
+                    $LANG['bb']['profile']['successful_adding_gravatar']
+                 );
+             } else {
+                 throw new Exception ($LANG['bb']['profile']['error_adding_gravatar']);
+             }
+
+         } elseif( !$_FILES['avatar'] ) {
+             throw new Exception ($LANG['global_form_process']['all_fields_required']);
          } elseif( !in_array($_FILES['avatar']['type'], $mime) ) {
-             throw new Exception ('Unidentified file format.');
+             throw new Exception ($LANG['global_form_process']['invalid_file_format']);
          } else {
              
              $image   = $_FILES['avatar'];
@@ -33,8 +52,8 @@
              copy($image['tmp_name'], $bin_dir);
              list($width, $height, $type, $attr) = getimagesize($bin_dir);
              
-             if( $width > 200 && $height > 200 ) {
-                 throw new Exception ('Image dimension too big!');
+             if( $width > 500 && $height > 500 ) {
+                 throw new Exception ($LANG['global_form_process']['img_dimension_limit']);
              } else {
                  
                  unlink($bin_dir);
@@ -42,7 +61,8 @@
                  if( copy($image['tmp_name'], $avatar_dir) ) {
                      
                      $data = array(
-                         'user_avatar' => $TANGO->sess->data['id'] . '.png'
+                         'user_avatar' => $TANGO->sess->data['id'] . '.png',
+                         'avatar_type' => '0'
                      );
                      $MYSQL->where('id', $TANGO->sess->data['id']);
                      
@@ -50,17 +70,17 @@
                          $notice .= $TANGO->tpl->entity(
                              'success_notice',
                              'content',
-                             'Avatar suceessfully saved!'
+                             $LANG['bb']['profile']['successful_upload_avatar']
                          );
                      } else {
                          $notice .= $TANGO->tpl->entity(
                              'success_notice',
                              'content',
-                             'Avatar suceessfully saved!'
+                             $LANG['bb']['profile']['successful_upload_avatar']
                          );
                      }
                  } else {
-                     throw new Exception ('Error uploading avatar. Try again later. (1)');
+                     throw new Exception ($LANG['bb']['profile']['error_upload_avatar']);
                  }
                  
              }
@@ -77,11 +97,14 @@
       
   }
 
+  $gravatar_checked = ( $TANGO->sess->data['avatar_type'] == "1" )? ' checked' : '';
   $content .= '<form id="tango_form" action="" method="POST" enctype="multipart/form-data">
-                 <label for="avatar">Change Avatar <small>A maximum of 200x200 Pixels</small></label>
+                 <label for="avatar">' . $LANG['bb']['profile']['change_avatar'] . '</label>
                  <input type="file" name="avatar" id="avatar" />
+                 <br />
+                 <input type="checkbox" id="gravatar" name="gravatar" value="1"' . $gravatar_checked . ' /> <label for="gravatar">' . $LANG['bb']['profile']['use_gravatar'] . '</label>
                  <br /><br />
-                 <input type="submit" name="edit" value="Save Changes" />
+                 <input type="submit" name="edit" value="' . $LANG['bb']['profile']['form_save'] . '" />
                </form>';
 
   $content  = $notice . $content;

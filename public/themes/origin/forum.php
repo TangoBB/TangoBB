@@ -97,7 +97,7 @@
               </div>
               <div class="btn-group">
                   <a href="%site_url%/members.php/cmd/user/id/{{ $TANGO->sess->data['id']; }}" class="btn btn-default dropdown-toggle user_dropdown" data-toggle="dropdown">
-                      <i class="glyphicon glyphicon-envelope"></i> Messages 
+                      <i class="glyphicon glyphicon-envelope"></i> Conversations
                       @if (count($TANGO->user->userMessages()) > 0)
                       <span class="label label-success">{{ count($TANGO->user->userMessages()) }}</span>
                       @endif
@@ -141,7 +141,7 @@
           <div class="row">
               
               <div class="col-md-9 pull-right">
-                  %shoutbox%
+                
                   %forum_listings%
                   
               </div>
@@ -179,10 +179,34 @@
           </div>
           
           <hr size="1" />
-          <footer>
-              <p>
-                  Powered by <a href="http://tangobb.net/">TangoBB</a>
-              </p>
+          <footer style="height:auto;">
+            <p class="pull-left">
+              Powered by <a href="http://tangobb.net/">TangoBB</a>
+            </p>
+              @if($TANGO->sess->isLogged)
+              <div class="btn-group dropup pull-right">
+                <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown" title="Theme Changer">
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  @foreach (listThemes() as $theme)
+                  @if ($theme['theme_name'] == $TANGO->sess->data['chosen_theme'])
+                  <li class="active">
+                    <a href="{{ $theme['change_link'] }}">
+                      {{ $theme['theme_name'] }}
+                    </a>
+                  </li>
+                  @else
+                  <li>
+                    <a href="{{ $theme['change_link'] }}">
+                      {{ $theme['theme_name'] }}
+                    </a>
+                  </li>
+                  @endif
+                  @endforeach
+                </ul>
+              </div>
+              @endif
           </footer>
           
       </div>

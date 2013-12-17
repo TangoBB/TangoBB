@@ -8,7 +8,7 @@
 
   if( $TANGO->sess->isLogged ){ header('Location: ' . SITE_URL); } //If user is logged in.
 
-  $page_title = 'Forget Password';
+  $page_title = $LANG['bb']['members']['forget_password'];
   $content    = '';
   $notice     = '';
 
@@ -24,9 +24,9 @@
           NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
 
           if( !$email ) {
-              throw new Exception ('All fields are required!');
+              throw new Exception ($LANG['global_form_process']['all_fields_required']);
           } elseif( !emailTaken($email) ) {
-              throw new Exception ('Email does not exist in our records!');
+              throw new Exception ($LANG['global_form_process']['email_not_exist']);
           } else {
               
               $new_password = randomString(9);
@@ -48,10 +48,10 @@
                   $notice .= $TANGO->tpl->entity(
                       'success_notice',
                       'content',
-                      'Your new password has been sent to your email!'
+                      $LANG['bb']['member']['new_password_sent']
                   );
               } else {
-                  throw new Exception ('Error resetting password.');
+                  throw new Exception ($LANG['bb']['members']['error_reset_password']);
               }
               
           }
@@ -64,7 +64,7 @@
           );
       }
   }
-
+  //die(var_dump($LANG['bb']['members']));
   define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
   //define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
 
@@ -76,9 +76,9 @@
                </form>';*/
   $content .= '<form action="" method="POST" id="tango_form">
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
-                 ' . $FORM->build('text', 'Email', 'email') . '
+                 ' . $FORM->build('text', $LANG['bb']['members']['form_email'], 'email') . '
                  <br /><br />
-                 ' . $FORM->build('submit', '', 'forget', array('value' => 'Reset Password')) . '
+                 ' . $FORM->build('submit', '', 'forget', array('value' => $LANG['bb']['members']['form_reset_password'])) . '
                </form>';
 
   $content = $notice . $content;

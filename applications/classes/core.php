@@ -30,6 +30,12 @@
           $MYSQL->where('post_user', $id);
           $query['0']['post_count']     = count($MYSQL->get('{prefix}forum_posts'));
           $query['0']['username_style'] = $this->usergroup($query['0']['user_group'], 'username_style', $query['0']['username']);
+
+          if( $query['0']['avatar_type'] == "0" ) {
+            $query['0']['user_avatar'] = SITE_URL . '/public/img/avatars/' . $query['0']['user_avatar'];
+          } else {
+            $query['0']['user_avatar'] = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($query['0']['user_email']))) . "?d=" . urlencode('http://www.somewhere.com/homestar.jpg') . "&s=200";
+          }
                               
           if( is_callable($callback) ) {
               call_user_func($callback, $query['0']);

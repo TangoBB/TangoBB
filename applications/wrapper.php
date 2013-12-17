@@ -48,6 +48,33 @@
 
   require_once(PATH_A . 'functions.php');
   require_once(PATH_A . 'pagination.php');
+  
+  //Using the language package.
+  if( !defined('Install') ) {
+    $MYSQL->where('id', 1);
+    $query   = $MYSQL->get('{prefix}generic');
+    switch( BASEPATH ) {
+      case "Staff":
+        $package = '../applications/languages/' . $query['0']['site_language'] . '.php';
+        $default = '../applications/languages/english.php';
+      break;
+      case "Extension";
+        $package = '../../../applications/languages/' . $query['0']['site_language'] . '.php';
+        $default = '../../../applications/languages/english.php';
+      break;
+      default:
+        $package = 'applications/languages/' . $query['0']['site_language'] . '.php';
+        $default = 'applications/languages/english.php';
+      break;
+    }
+    //die(file_get_contents($package));
+    if( file_exists($package) ) {
+      require_once($package);
+    } else {
+      require_once($default);
+    }
+    //die(var_dump($LANG));
+  }
 
   //Classes to run TangoBB
   require_once(PATH_A . CLA . 'core.php');
@@ -89,6 +116,9 @@
   require_once(PATH_A . LIB . 'form.php');
   $FORM = new Library_FormBuilder();
 
+  //Timezone
+  require_once(PATH_A . 'timezone.php');
+
   //Admin Class
   if( $TANGO->perm->check('access_administration') ) {
       require_once(PATH_A . CLA . 'admin.php');
@@ -106,17 +136,6 @@
       }
   }
       
-  }
-
-  if( BASEPATH == "Staff" && !defined('Install') ) {
-    if( $handle = opendir('../applications/terminal') ) {
-      while( false !== ($entry = readdir($handle)) ) {
-        if ($entry !== "." && $entry !== ".." && $entry !== 'index.html') {
-          require_once('../applications/terminal/' . $entry);
-        }
-      }
-      closedir($handle);
-   }
   }
 
   if( !defined('Install') ) {

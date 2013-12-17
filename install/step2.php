@@ -11,7 +11,7 @@
 				
 			$mysql_host     = $_POST['mysql_h'];//MySQL Host.
     	    $mysql_username = $_POST['mysql_u'];//MySQL Username
-		    $mysql_password = $_POST['mysql_p'];//MySQL Password
+		    $mysql_password = (!$_POST['mysql_p'])? '' : $_POST['mysql_p'];//MySQL Password
 		    $mysql_database = $_POST['mysql_d'];//MySQL Database
 		    $mysql_prefix   = $_POST['mysql_pr'];//MySQL Prefix.
             
@@ -55,7 +55,7 @@
 ");
                 $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "forum_category` (`id` int(11) NOT NULL AUTO_INCREMENT,`category_title` varchar(255) NOT NULL,`category_desc` varchar(255) NOT NULL,`category_place` int(11) NOT NULL DEFAULT '0',PRIMARY KEY (`id`)) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 ");
-                $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "forum_node` (`id` int(11) NOT NULL AUTO_INCREMENT,`node_name` varchar(255) NOT NULL,`name_friendly` varchar(255) NOT NULL,`node_desc` varchar(255) NOT NULL,`in_category` int(11) NOT NULL,`node_locked` int(11) NOT NULL DEFAULT '0',`node_place` int(11) NOT NULL DEFAULT '0',PRIMARY KEY (`id`)) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+                $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "forum_node` (`id` int(11) NOT NULL AUTO_INCREMENT,`node_name` varchar(255) NOT NULL,`name_friendly` varchar(255) NOT NULL,`node_desc` varchar(255) NOT NULL,`in_category` int(11) NOT NULL DEFAULT '0',`node_type` int(11) NOT NULL DEFAULT '1',`parent_node` int(11) NOT NULL DEFAULT '0',`node_locked` int(11) NOT NULL DEFAULT '0',`node_place` int(11) NOT NULL DEFAULT '0',PRIMARY KEY (`id`)) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 ");
                 $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "forum_posts` (`id` int(11) NOT NULL AUTO_INCREMENT,`post_title` varchar(255) NOT NULL DEFAULT '',`title_friendly` varchar(255) NOT NULL,`post_content` text NOT NULL,`post_tags` varchar(255) NOT NULL,`post_time` int(11) NOT NULL,`post_user` int(11) NOT NULL,`origin_thread` int(11) NOT NULL DEFAULT '0',`origin_node` int(11) NOT NULL DEFAULT '0',`post_type` int(11) NOT NULL,`post_sticky` int(11) NOT NULL DEFAULT '0',`post_locked` int(11) NOT NULL DEFAULT '0',`last_updated` int(11) NOT NULL DEFAULT '0',PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
@@ -73,7 +73,7 @@
 ");
                 $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "usergroups` (`id` int(11) NOT NULL AUTO_INCREMENT,`group_name` varchar(255) NOT NULL,`group_style` varchar(255) NOT NULL DEFAULT '%username%',`group_permissions` varchar(255) NOT NULL DEFAULT '0',PRIMARY KEY (`id`)) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 ");
-                $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "users` (`id` int(11) NOT NULL AUTO_INCREMENT,`username` varchar(255) NOT NULL,`user_password` varchar(255) NOT NULL,`user_email` varchar(255) NOT NULL,`user_message` varchar(255) NOT NULL DEFAULT 'User',`user_avatar` varchar(255) NOT NULL DEFAULT 'default.png',`user_signature` varchar(255) NOT NULL,`date_joined` int(11) NOT NULL,`user_birthday` date NOT NULL,`user_group` int(11) NOT NULL DEFAULT '1',`user_disabled` int(11) NOT NULL DEFAULT '0',`is_banned` int(11) NOT NULL DEFAULT '0',`unban_time` int(11) NOT NULL,`ban_reason` varchar(255) NOT NULL DEFAULT 'None',`facebook_id` varchar(100) NOT NULL DEFAULT '0',PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+                $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "users` (`id` int(11) NOT NULL AUTO_INCREMENT,`username` varchar(255) NOT NULL,`user_password` varchar(255) NOT NULL,`user_email` varchar(255) NOT NULL,`user_message` varchar(255) NOT NULL DEFAULT 'User',`user_avatar` varchar(255) NOT NULL DEFAULT 'default.png',`avatar_type` int(11) NOT NULL DEFAULT '0',`user_signature` varchar(255) NOT NULL,`date_joined` int(11) NOT NULL,`user_birthday` date NOT NULL,`user_group` int(11) NOT NULL DEFAULT '1',`chosen_theme` varchar(255) NOT NULL DEFAULT '0',`set_timezone` varchar(255) NOT NULL DEFAULT 'US/Central',`user_disabled` int(11) NOT NULL DEFAULT '0',`is_banned` int(11) NOT NULL DEFAULT '0',`unban_time` int(11) NOT NULL,`ban_reason` varchar(255) NOT NULL DEFAULT 'None',`facebook_id` varchar(100) NOT NULL DEFAULT '0',PRIMARY KEY (`id`)) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 ");
 
                 $MYSQL->query("INSERT INTO `" . $mysql_prefix . "forum_category` (`id`, `category_title`, `category_desc`, `category_place`) VALUES (1, 'First Category', 'First category on this forum!', 0);

@@ -29,16 +29,16 @@
               if( $query['0']['post_type'] == "1" ) {
                   $posts .= '<div style="overflow:auto;border-bottom:1px solid #ccc;">
                                <p>
-                                 Thread: <a href="' . SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id'] . '">' . $query['0']['post_title'] . '</a><br />
-                                 Reason: ' . $report['report_reason'] . '<br />
-                                 Reported Time: ' . date('F j, Y', $report['reported_time']) . '
+                                 ' . $LANG['mod']['reports']['thread'] . ' <a href="' . SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id'] . '">' . $query['0']['post_title'] . '</a><br />
+                                 ' . $LANG['mod']['reports']['reason'] . ' ' . $report['report_reason'] . '<br />
+                                 ' . $LANG['mod']['reports']['reported_time'] . ' ' . date('F j, Y', $report['reported_time']) . '
                                </p>
                              </div>';
               } elseif( $query['0']['post_type'] !== "2" ) {
                   $t      = thread($query['0']['origin_thread']);
                   $posts .= '<div style="overflow:auto;border-bottom:1px solid #ccc;">
                                <p>
-                                 Thread: <a href="' . SITE_URL . '/thread.php/v/' . $t['title_friendly'] . '.' . $t['id'] . '#post-' . $report['reported_post'] . '">' . $t['post_title'] . '</a><br />
+                                 ' . $LANG['mod']['reports']['thread'] . ' <a href="' . SITE_URL . '/thread.php/v/' . $t['title_friendly'] . '.' . $t['id'] . '#post-' . $report['reported_post'] . '">' . $t['post_title'] . '</a><br />
                                  Reason: ' . $report['report_reason'] . '<br />
                                  Reported Time: ' . date('F j, Y', $report['reported_time']) . '
                                </p>
@@ -51,9 +51,9 @@
               
               $users .= '<div style="overflow:auto;border-bottom:1px solid #ccc;">
                                <p>
-                                 User: <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a><br />
-                                 Reason: ' . $report['report_reason'] . '<br />
-                                 Reported Time: ' . date('F j, Y', $report['reported_time']) . '
+                                 ' . $LANG['mod']['reports']['user'] . ' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a><br />
+                                 ' . $LANG['mod']['reports']['reason'] . ' ' . $report['report_reason'] . '<br />
+                                 ' . $LANG['mod']['reports']['reported_time'] . ' ' . date('F j, Y', $report['reported_time']) . '
                                </p>
                              </div>';;
               
@@ -83,7 +83,7 @@
           'content'
       ),
       array(
-          'Reports',
+          $LANG['mod']['reports']['reports'],
           $content
       )
   );

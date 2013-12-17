@@ -7,17 +7,23 @@
 
   class Tango_Template {
       
-      private $output;
+      private $output, $theme;
       private $params = array();
+      private $ent_params = array();
+      private $elapsed_time;
       
       function __construct() {
           global $TANGO;
+
+          $this->elapsed_time = microtime(true);
+
           $this->addParam('site_url', SITE_URL);
           $this->addParam('site_name', $TANGO->data['site_name']);
           
           $this->addParam('bb_stat_threads', stat_threads());
           $this->addParam('bb_stat_posts', stat_posts());
           $this->addParam('bb_stat_users', stat_users());
+          $this->addParam('bb_software_version', TANGOBB_VERSION);
           $this->addParam('users_online', users_online());
           
           /*$this->addParam(
@@ -50,13 +56,14 @@
               '<link rel="stylesheet" href="' . SITE_URL . '/public/css/tangobb.css" />
                <link rel="stylesheet" href="' . SITE_URL . '/public/js/wysibb/theme/default/wbbtheme.css" />
                <link rel="stylesheet" href="' . SITE_URL . '/public/js/highlighter/styles/github.css" />
+               <link rel="stylesheet" href="' . SITE_URL . '/public/css/jquery.tagsinput.css" />
                <script src="' . SITE_URL . '/public/js/jquery.min.js"></script>
                <script>var SITE_URL = \'' . SITE_URL . '\';</script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/autosaveform.js"></script>
-               <script type="text/javascript" src="' . SITE_URL . '/public/js/tangobb.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/typeahead.min.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/wysibb/jquery.wysibb.min.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/highlighter/highlight.pack.js"></script>
+               <script type="text/javascript" src="' . SITE_URL . '/public/js/jquery.tagsinput.min.js"></script>
                <script>
                  $(document).ready(function() {
                   $(\'#editor\').wysibb({
@@ -64,6 +71,9 @@
                     tabInsert: false
                   });
                   $(\'pre\').each(function(i, e) {hljs.highlightBlock(e)});
+                  $(\'#receiver\').tagsInput({
+                    defaultText: \'add user\'
+                  });
                  });
                  var formsave1=new autosaveform({
                    formid: \'tango_form\',
@@ -74,6 +84,13 @@
       }
       
       /*
+       * Set forum theme.
+       */
+      public function setTheme($theme) {
+        $this->theme = $theme;
+      }
+
+      /*
        * Add template parameter.
        */
       public function addParam($param, $value) {
@@ -83,6 +100,19 @@
               }
           } else {
               $this->params['%' . $param . '%'] = $value;
+          }
+      }
+
+      /*
+       * Adding entity parameters.
+       */
+      public function addEntParam($param, $value) {
+        if( is_array($param) or is_array($value) ) {
+              foreach( array_combine($param, $value) as $p => $v  ) {
+                  $this->ent_params['%' . $p . '%'] = $v;
+              }
+          } else {
+              $this->ent_params['%' . $param . '%'] = $value;
           }
       }
       
@@ -101,15 +131,15 @@
           
           switch($parent) {
               case "theme_entity_file":
-                $tpl = file_get_contents(TEMPLATE . 'public/themes/' . $TANGO->data['site_theme'] . '/entities.php');
+                $tpl = file_get_contents(TEMPLATE . 'public/themes/' . $this->theme . '/entities.php');
               break;
                   
               case "buttons":
-                $tpl = file_get_contents(TEMPLATE . 'public/themes/' . $TANGO->data['site_theme'] . '/buttons.php');
+                $tpl = file_get_contents(TEMPLATE . 'public/themes/' . $this->theme . '/buttons.php');
               break;
               
               default:
-                $tpl = file_get_contents(TEMPLATE . 'public/themes/' . $TANGO->data['site_theme'] . '/entities.php');
+                $tpl = file_get_contents(TEMPLATE . 'public/themes/' . $this->theme . '/entities.php');
               break;
           }
           
@@ -141,6 +171,14 @@
               $values[] = $value;
           }
           $result = str_replace($params, $values, $result);
+
+          $ent_params = array();
+          $ent_values = array();
+          foreach( $this->ent_params as $parent => $child ) {
+            $ent_params[] = $parent;
+            $ent_values[] = $child;
+          }
+          $result = str_replace($ent_params, $ent_values, $result);
           
           return $result;
       }
@@ -150,6 +188,7 @@
        * Thanks to https://github.com/loic-sharma/laravel-template
        */
       private function bladeSyntax($string) {
+
           $syntax_blade = array(
               '/{{ (.*) }}/',
               '/{{-v (.*) = (.*) }}/',
@@ -174,7 +213,7 @@
           $string = str_replace('@endforelse', '<?php endif; ?>', $string);
           //@endunless
           $string = str_replace('@endunless', '<?php endif; ?>', $string);
-          
+
           return $string;
       }
       
@@ -183,7 +222,7 @@
        */
       public function getTpl($template, $ret = false) {
           global $TANGO;
-          $dir = TEMPLATE . 'public/themes/' . $TANGO->data['site_theme'] . '/' . $template . '.php';
+          $dir = TEMPLATE . 'public/themes/' . $this->theme . '/' . $template . '.php';
           if( file_exists($dir) ) {
               $return = '';
               ob_start();
@@ -213,6 +252,17 @@
        * Replacing all parameters with the values and outputs them.
        */
       public function output() {
+          global $MYSQL;
+
+          if( function_exists('memory_get_usage') ) {
+            $this->addParam('memory_usage', bytesToSize(memory_get_usage()));
+          } else {
+            $this->addParam('memory_usage', '');
+          }
+
+          $elapsed = microtime(true) - $this->elapsed_time;
+          $this->addParam('elapsed_time', round($elapsed, 4));
+
           $params = array();
           $values = array();
           foreach( $this->params as $param => $value ) {

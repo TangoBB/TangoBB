@@ -26,15 +26,15 @@
                 $time       = time();
                 
                 if( !$username or !$password or !$a_password or !$email ) {
-                    throw new Exception ('All fields requried!');
+                    throw new Exception ($LANG['global_form_process']['all_fields_required']);
                 } elseif( $password !== $a_password ) {
-                    throw new Exception ('Password is different!');
+                    throw new Exception ($LANG['bb']['members']['password_different']);
                 } elseif( usernameExists($username) ) {
-                    throw new Exception ('Username is already taken!');
+                    throw new Exception ($LANG['bb']['members']['username_taken']);
                 } elseif( !preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $email) ) {
-                    throw new Exception ('Email is not valid.');
+                    throw new Exception ($LANG['global_form_process']['invalid_email']);
                 } elseif( emailTaken($email) ) {
-                    throw new Exception ('Email is used, please use a new one.');
+                    throw new Exception ($LANG['global_form_process']['email_used']);
                 } else {
                     
                     if( $TANGO->data['register_email_activate'] == "1" ) {
@@ -65,7 +65,7 @@
                             $notice .= $TANGO->tpl->entity(
                                 'success_notice',
                                 'content',
-                                'Successfully registered! An email has been sent to be verified.'
+                                $LANG['bb']['members']['register_successful_email']
                             );
                         } else {
                             $MYSQL->where('username', $username);
@@ -75,12 +75,12 @@
                             $notice .= $TANGO->tpl->entity(
                                 'success_notice',
                                 'content',
-                                'Successfully registered! Now logging you in...'
+                                $LANG['bb']['members']['register_successful']
                             );
                         }
                         
                     } else {
-                        throw new Exception ('Error registering you, please try again later.');
+                        throw new Exception ($LANG['bb']['members']['error_register']);
                     }
                     
                 }
@@ -112,13 +112,13 @@
         $content = '<form action="" method="POST">
                       ' . $notice . '
                       ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
-                      ' . $FORM->build('text', 'Username', 'username') . '
-                      ' . $FORM->build('password', 'Password', 'password') . '
-                      ' . $FORM->build('password', 'Confirm Password', 'a_password') . '
-                      ' . $FORM->build('text', 'Email', 'email') . '
+                      ' . $FORM->build('text', $LANG['bb']['members']['form_username'], 'username') . '
+                      ' . $FORM->build('password', $LANG['bb']['members']['form_password'], 'password') . '
+                      ' . $FORM->build('password', $LANG['bb']['members']['form_confirm_password'], 'a_password') . '
+                      ' . $FORM->build('text', $LANG['bb']['members']['form_email'], 'email') . '
                       <br /><br />
-                      ' . $FORM->build('submit', 'Register', 'register', array('value' => 'Register')) . '<br />
-                      By clicking "Register", you agree to abide by the forum rules located <a href="' . SITE_URL . '/members.php/cmd/rules">here</a>.
+                      ' . $FORM->build('submit', $LANG['bb']['members']['form_register'], 'register', array('value' => $LANG['bb']['members']['form_register'])) . '<br />
+                      ' . $LANG['bb']['members']['register_message'] . '
                     </form>';
 
 ?>

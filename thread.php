@@ -20,13 +20,72 @@
       $query = $MYSQL->get('{prefix}forum_posts');
       if( !empty($query) ) {
           
-          $user       = $TANGO->user($query['0']['post_user']);
-          $node       = node($query['0']['origin_node']);
-          
+          $user        = $TANGO->user($query['0']['post_user']);
+          $node        = node($query['0']['origin_node']);
+
+          $breadcrumbs = $TANGO->tpl->entity(
+            'breadcrumbs_before',
+            array(
+              'link',
+              'name'
+            ),
+            array(
+              SITE_URL . '/forum.php',
+              $LANG['bb']['forum']
+            )
+          );
+          if( $node['node_type'] == 2 ) {
+
+            $parent_node = node($node['parent_node']);
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/node.php/v/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
+                $parent_node['node_name']
+              )
+            );
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'],
+                $node['node_name']
+              )
+            );
+
+          } elseif( $node['node_type'] == 1 ) {
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'],
+                $node['node_name']
+              )
+            );
+          }
+          $breadcrumbs .= $TANGO->tpl->entity(
+            'breadcrumbs_current',
+            'name',
+            $query['0']['post_title']
+          );
+
           $breadcrumb = $TANGO->tpl->entity(
               'breadcrumbs',
               'bread',
-              '<li><a href="' . SITE_URL . '">Forum</a></li><li><a href="' . SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'] . '">' . $node['node_name'] . '</a></li><li class="active">' . $query['0']['post_title'] . '</a>'
+              //'<li><a href="' . SITE_URL . '">Forum</a></li><li><a href="' . SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'] . '">' . $node['node_name'] . '</a></li><li class="active">' . $query['0']['post_title'] . '</a>'
+              $breadcrumbs
           );
           
           $reply_button  = '';
@@ -113,7 +172,7 @@
                   $quote_thread,
                   $edit_thread,
                   $report_thread,
-                  SITE_URL . '/public/img/avatars/' . $user['user_avatar'],
+                  $user['user_avatar'],
                   SITE_URL . '/members.php/cmd/user/id/' . $user['id'],
                   $user['username_style'],
                   date('M jS, Y', $user['date_joined']),
@@ -235,7 +294,7 @@
                       $quote_p,
                       $edit_p,
                       $report_p,
-                      SITE_URL . '/public/img/avatars/' . $ur['user_avatar'],
+                      $ur['user_avatar'],
                       SITE_URL . '/members.php/cmd/user/id/' . $ur['id'],
                       $ur['username_style'],
                       date('M jS, Y', $ur['date_joined']),

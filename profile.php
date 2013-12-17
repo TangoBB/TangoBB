@@ -63,6 +63,20 @@
             )
         );
       break;
+
+      case "theme":
+        require_once('applications/commands/profile/theme.php');
+        $TANGO->tpl->addParam(
+            array(
+                'page_title',
+                'content'
+            ),
+            array(
+                $page_title,
+                $content
+            )
+        );
+      break;
       
       default:
         header('Location: ' . SITE_URL . '/404.php');

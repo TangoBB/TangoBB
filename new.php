@@ -15,6 +15,76 @@
       
       if( !empty($query) ) {
           
+          if( $query['0']['node_locked'] == 1 ) {
+            if( !$TANGO->perm->check('access_moderation') ) {
+              header('Location: ' . SITE_URL . '/404.php');
+            }
+          }
+
+          $breadcrumbs = $TANGO->tpl->entity(
+            'breadcrumbs_before',
+            array(
+              'link',
+              'name'
+              ),
+            array(
+              SITE_URL . '/forum.php',
+              $LANG['bb']['forum']
+              )
+            );
+          if( $query['0']['node_type'] == 2 ) {
+            $parent_node = node($query['0']['parent_node']);
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/node.php/v/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
+                $parent_node['node_name']
+                )
+            );
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'name'
+              ),
+              array(
+                $query['0']['node_name']
+                )
+              );
+
+          } elseif( $query['0']['node_type'] == 1 ) {
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/node.php/v/' . $query['0']['name_friendly'] . '.' . $query['0']['id'],
+                $query['0']['node_name']
+                )
+            );
+
+          }
+
+          $breadcrumbs .= $TANGO->tpl->entity(
+            'breadcrumbs_current',
+            'name',
+            $LANG['bb']['new_thread_breadcrumb']
+          );
+
+          $breadcrumbs = $TANGO->tpl->entity(
+            'breadcrumbs',
+            'bread',
+            $breadcrumbs
+          );
+
           $notice  = '';
           $content = '';
           
@@ -30,9 +100,9 @@
                   $c_query      = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = {$TANGO->sess->data['id']} ORDER BY post_time DESC LIMIT 1");
                   
                   if( !$thread_title or !$thread_cont ) {
-                      throw new Exception ('All fields are required!');
+                      throw new Exception ($LANG['global_form_process']['all_fields_required']);
                   } elseif( $c_query['0']['post_content'] == $thread_cont ) {
-                      throw new Exception ('Please write a different message from your last post.');
+                      throw new Exception ($LANG['global_form_process']['different_message_previous']);
                   } else {
                       
                       $friendly_url = title_friendly($thread_title);
@@ -61,13 +131,13 @@
                           $notice .= $TANGO->tpl->entity(
                               'success_notice',
                               'content',
-                              'Successfully created thread! Redirecting you...'
+                              $LANG['global_form_process']['thread_create_success']
                           );
                           //die(SITE_URL . '/thread.php/v/' . $friendly_url . '.' . $tid['0']['id']);
                           header('Location: ' . SITE_URL . '/thread.php/v/' . $friendly_url . '.' . $tid['0']['id']);
                           
                       } else {
-                          throw new Exception ('Error creating thread. Try again later.');
+                          throw new Exception ($LANG['global_form_process']['error_creating_thread']);
                       }
                       
                   }
@@ -87,6 +157,7 @@
           $content .= $TANGO->tpl->entity(
               'create_thread',
               array(
+                  'breadcrumbs',
                   'form_id',
                   'csrf_input',
                   'create_thread_form_action',
@@ -96,6 +167,7 @@
                   'submit_name'
               ),
               array(
+                  $breadcrumbs,
                   'tango_form',
                   CSRF_INPUT,
                   SITE_URL . '/new.php/node/' . $node,
@@ -112,7 +184,7 @@
                   'content'
               ),
               array(
-                  'New thread in: ' . $query['0']['node_name'],
+                  $LANG['bb']['new_thread_in'] . ' ' . $query['0']['node_name'],
                   $notice . $content
               )
           );

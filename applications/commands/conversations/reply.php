@@ -30,7 +30,7 @@
       		$time = time();
 
       		if( !$cont ) {
-      			throw new Exception ('All fields are required!');
+      			throw new Exception ($LANG['global_form_process']['all_fields_required']);
       		} else {
 
       			$data = array(
@@ -45,13 +45,8 @@
 
       			if( $MYSQL->insert('{prefix}messages', $data) ) {
       				header('Location: ' . SITE_URL . '/conversations.php/cmd/view/v/' . $query['0']['id']);
-      				$notice .= $TANGO->tpl->entity(
-      					'success_notice',
-      					'content',
-      					'Message has been send! Redirecting you...'
-      				);
       			} else {
-      				throw new Exception ('Error sending message.');
+      				throw new Exception ($LANG['bb']['conversations']['error_sending_alt']);
       			}
 
       		}
@@ -73,7 +68,7 @@
                       ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                       ' . $FORM->build('textarea', '', 'content', array('id' => 'editor', 'style' => 'width:100%;height:300px;max-width:100%;min-width:100%;')) . '
                       <br />
-                      ' . $FORM->build('submit', '', 'reply', array('value' => 'Reply')) . '
+                      ' . $FORM->build('submit', '', 'reply', array('value' => $LANG['bb']['conversations']['form_reply'])) . '
                     </form>';
 
     } else {

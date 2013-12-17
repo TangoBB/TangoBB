@@ -20,16 +20,18 @@
           
           NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
           $email = $_POST['email'];
+          $tz    = $_POST['timezone'];
           
-          if( !$email ) {
-              throw new Exception ('All fields are required!');
+          if( !$email or !$tz ) {
+              throw new Exception ($LANG['global_form_process']['all_fields_required']);
           } else {
               if( $email !== $TANGO->sess->data['user_email'] ) {
                   
                   if( !emailTaken($email) ) {
-                      
-                      $data = array(
-                          'user_email' => $email
+
+                      $data  = array(
+                          'user_email' => $email,
+                          'set_timezone' => $tz
                       );
                       $MYSQL->where('id', $TANGO->sess->data['id']);
                       
@@ -37,22 +39,33 @@
                           $notice .= $TANGO->tpl->entity(
                               'success_notice',
                               'content',
-                              'Saved!'
+                              $LANG['global_form_process']['save_success']
                           );
                       } else {
-                          throw new Exception ('Error saving. Try again later.');
+                          throw new Exception ($LANG['global_form_process']['error_saving']);
                       }
                       
                   } else {
-                      throw new Exception ('Email is used!');
+                      throw new Exception ($LANG['global_form_process']['email_used']);
                   }
                   
               } else {
-                  $notice .= $TANGO->tpl->entity(
+
+                  $data  = array(
+                    'set_timezone' => $tz
+                  );
+                  $MYSQL->where('id', $TANGO->sess->data['id']);
+
+                  if( $MYSQL->update('{prefix}users', $data) ) {
+                    $notice .= $TANGO->tpl->entity(
                       'success_notice',
                       'content',
-                      'Saved!'
-                  );
+                      $LANG['global_form_process']['save_success']
+                      );
+                  } else {
+                    throw new Exception ($LANG['global_form_process']['error_saving']);
+                  }
+                  
               }
           }
           
@@ -75,9 +88,22 @@
                  <br /><br />
                  <input type="submit" name="edit" value="Save Changes" />
                </form>';*/
+
+  $timezones = '<select id="timezone" name="timezone">';
+  foreach( timezones() as $timezone => $code ) {
+    if( $TANGO->sess->data['set_timezone'] == $code ) {
+      $timezones .= '<option value="' . $code . '" selected="selected">' . $timezone . '</option>';
+    } else {
+      $timezones .= '<option value="' . $code . '">' . $timezone . '</option>';
+    }
+  }
+  $timezones .= '</select>';
+
   $content .= '<form id="tango_form" action="" method="POST">
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                  ' . $FORM->build('text', 'Email', 'email', array('value' => $TANGO->sess->data['user_email'])) . '
+                 <label for="timezone">Timezone</label>
+                 ' . $timezones . '
                  <br /><br />
                  ' . $FORM->build('submit', '', 'edit', array('value' => 'Save Changes')) . '
                </form>';

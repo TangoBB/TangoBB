@@ -28,7 +28,7 @@
                   $reason = $_POST['reason'];
                   
                   if( !$reason ) {
-                      throw new Exception ('All fields are required!');
+                      throw new Exception ($LANG['global_form_process']['all_fields_required']);
                   } else {
                       
                       $time = time();
@@ -43,10 +43,10 @@
                           $notice .= $TANGO->tpl->entity(
                               'success_notice',
                               'content',
-                              'Report has been successfully submitted!'
+                              $LANG['global_form_process']['report_create_success']
                           );
                       } else {
-                          throw new Exception ('Error submitting report. Try again later.');
+                          throw new Exception ($LANG['global_form_process']['error_submitting_report']);
                       }
                       
                   }
@@ -72,9 +72,9 @@
                        </form>';*/
           $content .= '<form action="" id="tango_form" method="POST">
                          ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
-                         ' . $FORM->build('textarea', 'Reason', 'reason', array('style' => 'height:150px;width:100%;min-width:100%;max-width:100%;')) . '
+                         ' . $FORM->build('textarea', $LANG['bb']['form']['report_reason'], 'reason', array('style' => 'height:150px;width:100%;min-width:100%;max-width:100%;')) . '
                          <br /><br />
-                         ' . $FORM->build('submit', '', 'report', array('value' => 'Report')) . '
+                         ' . $FORM->build('submit', '', 'report', array('value' => $LANG['bb']['form']['report'])) . '
                        </form>';
           
           $TANGO->tpl->addParam(
@@ -83,7 +83,7 @@
                   'content'
               ),
               array(
-                  'Report',
+                  $LANG['bb']['new_report'],
                   $notice . $content
               )
           );

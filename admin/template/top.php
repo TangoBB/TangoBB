@@ -7,6 +7,7 @@
     <link href="<?php echo SITE_URL; ?>/public/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="<?php echo SITE_URL; ?>/public/css/flat-ui.css" rel="stylesheet" media="screen">
     <link href="<?php echo SITE_URL; ?>/public/css/admin.css" rel="stylesheet" media="screen">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
   </head>
   <body>
       
@@ -20,7 +21,7 @@
                   <ul class="nav nav-pills nav-stacked">
                       <li class="active"><a href="javascript:return false;">Welcome,  <?php echo $TANGO->sess->data['username']; ?></a></li>
                       <li><a href="<?php echo SITE_URL; ?>/admin"><i class="glyphicon glyphicon-dashboard"></i> Dashboard</a></li>
-                      <li><a href="<?php echo SITE_URL; ?>/admin/terminal.php">Terminal</a></li>
+                      <li><a href="<?php echo SITE_URL; ?>/admin/terminal.php"><i class="fa fa-terminal"></i> Terminal</a></li>
                       <?php echo $ADMIN->navigation(); ?>
                   </ul>
                   <div align="center" class="options" id="tooltip">

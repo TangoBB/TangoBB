@@ -61,12 +61,14 @@
 	 */
 	protected $_bindParams = array('');		// Create the empty 0 index
 	protected $_prefix;
+	public $queries_count;
 
 	public function __construct($host, $username, $password, $db, $prefix) {
 		$this->_mysqli = new mysqli($host, $username, $password, $db) 
 			or die('There was a problem connecting to the database');
 		self::$_instance = $this;
 		$this->_prefix = $prefix;
+		$this->queries_count = 0;
 		//$this->_query = str_replace('{prefix}', $this->_prefix, $this->_query);
 	}
 
@@ -126,6 +128,7 @@
 		$this->reset();
 
 		$results = $this->_dynamicBindResults($stmt);
+		$this->queries_count = $this->queries_count + 1;
 		return $results;
 	}
 
@@ -144,6 +147,7 @@
 		$this->reset();
 
 		$results = $this->_dynamicBindResults($stmt);
+		$this->queries_count = $this->queries_count + 1;
 		return $results;
 	}
 
@@ -163,6 +167,7 @@
 		$this->reset();
 
 		$results = $this->_dynamicBindResults($stmt);
+		$this->queries_count = $this->queries_count + 1;
 		return $results;
 	}
 
@@ -181,6 +186,7 @@
 		$this->reset();
 
 		($stmt->affected_rows) ? $result = $stmt->insert_id : $result = false;
+		$this->queries_count = $this->queries_count + 1;
 		return $result;
 	}
 
@@ -201,6 +207,7 @@
 		$this->reset();
 
 		($stmt->affected_rows) ? $result = true : $result = false;
+		$this->queries_count = $this->queries_count + 1;
 		return $result;
 	}
 
@@ -220,6 +227,7 @@
 		$this->reset();
 
 		($stmt->affected_rows) ? $result = true : $result = false;
+		$this->queries_count = $this->queries_count + 1;
 		return $result;
 	}
 

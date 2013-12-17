@@ -21,34 +21,56 @@
   		$cont  = $_POST['content'];
   		$title = $_POST['title'];
   		$time  = time();
+      $uid   = explode(',', $user);
 
   		if( !$user or !$cont or !$title ) {
-  			throw new Exception ('All fields are required!');
-  		} elseif( !usernameExists($user) ) {
-  			throw new Exception ('User does not exist!');
+  			throw new Exception ($LANG['global_form_process']['all_fields_required']);
   		} else {
 
-  			$MYSQL->where('username', $user);
-  			$query = $MYSQL->get('{prefix}users');
+        foreach( $uid as $u ) {
 
-  			$data = array(
-  				'message_title' => $title,
-  				'message_content' => $cont,
-  				'message_time' => $time,
-  				'message_sender' => $TANGO->sess->data['id'],
-  				'message_receiver' => $query['0']['id'],
-  				'message_type' => 1
-  			);
+          if( !usernameExists($u) ) {
+            throw new Exception (
+              str_replace(
+                '%username%',
+                $u,
+                $LANG['bb']['conversations']['user_not_exist']
+              )
+            );
+          }
 
-  			if( $MYSQL->insert('{prefix}messages', $data) ) {
-  				$notice .= $TANGO->tpl->entity(
-  					'success_notice',
-  					'content',
-  					'Your message has been sent!'
-  				);
-  			} else {
-  				throw new Exception ('Error sending message.');
-  			}
+          $MYSQL->where('username', $u);
+          $query = $MYSQL->get('{prefix}users');
+          $data = array(
+            'message_title' => $title,
+            'message_content' => $cont,
+            'message_time' => $time,
+            'message_sender' => $TANGO->sess->data['id'],
+            'message_receiver' => $query['0']['id'],
+            'message_type' => 1
+          );
+
+          if( $MYSQL->insert('{prefix}messages', $data) ) {
+            $notice .= $TANGO->tpl->entity(
+              'success_notice',
+              'content',
+              str_replace(
+                '%username%',
+                $query['0']['username'],
+                $LANG['bb']['conversations']['message_sent']
+              )
+            );
+          } else {
+            throw new Exception (
+              str_replace(
+                '%username%',
+                $query['0']['username'],
+                $LANG['bb']['conversations']['error_sending']
+              )
+            );
+          }
+
+        }
 
   		}
 
@@ -67,14 +89,13 @@
   $pm_user   = (isset($_POST['receiver']))? $_POST['receiver'] : '';
   $pm_title  = (isset($_POST['title']))? $_POST['title'] : '';
 
-  $content .= $notice . '<script type="text/javascript" src="' . SITE_URL . '/accounts_js.php"></script>
-               <form action="" method="POST">
+  $content .= $notice . '<form action="" method="POST">
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
-                 ' . $FORM->build('text', 'To', 'receiver', array('class' => 'typeahead-users', 'value' => $pm_user)) . '
-                 ' . $FORM->build('text', 'Title', 'title', array('value' => $pm_title)) . '
+                 ' . $FORM->build('text', $LANG['bb']['conversations']['form_to'], 'receiver', array('value' => $pm_user)) . '
+                 ' . $FORM->build('text', $LANG['bb']['conversations']['form_title'], 'title', array('value' => $pm_title)) . '
                  ' . $FORM->build('textarea', '', 'content', array('id' => 'editor', 'style' => 'width:100%;height:300px;max-width:100%;min-width:100%;', 'value' => $pm_cont)) . '
                  <br />
-                 ' . $FORM->build('submit', '', 'create', array('value' => 'Send')) . '
+                 ' . $FORM->build('submit', '', 'create', array('value' => $LANG['bb']['conversations']['form_send'])) . '
                </form>';
 
 ?>

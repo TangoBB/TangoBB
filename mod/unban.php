@@ -26,13 +26,17 @@
                   $content .= $TANGO->tpl->entity(
                       'success_notice',
                       'content',
-                      'User has been unbanned. <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $query['0']['id'] . '">Back to user profile</a>.'
+                      str_replace(
+                        '%url%',
+                        SITE_URL . '/members.php/cmd/user/id/' . $query['0']['id'],
+                        $LANG['mod']['ban']['unban_success']
+                      )
                   );
               } else {
                   $content .= $TANGO->tpl->entity(
                       'danger_notice',
                       'content',
-                      'Error unbanning user.'
+                      $LANG['mod']['ban']['unban_error']
                   );
               }
               
@@ -40,7 +44,7 @@
               $content .= $TANGO->tpl->entity(
                   'danger_notice',
                   'content',
-                  'User is already unbanned!'
+                  $LANG['mod']['ban']['already_unbanned']
               );
           }
           
@@ -58,7 +62,7 @@
           'content'
       ),
       array(
-          'Unban User',
+          $LANG['mod']['ban']['unban'],
           $content
       )
   );

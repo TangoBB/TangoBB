@@ -2,6 +2,6 @@
 
   if( !defined('BASEPATH') ){ die(); }
 
-  die('TangoBB not yet installed');
+  die('TangoBB not yet installed.');
 
 ?>

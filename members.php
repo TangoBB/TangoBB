@@ -15,7 +15,7 @@
                 'content'
             ),
             array(
-                'Register',
+                $LANG['bb']['members']['register'],
                 $content
             )
         );
@@ -29,7 +29,7 @@
                 'content'
             ),
             array(
-                'Sign In',
+                $LANG['bb']['members']['log_in'],
                 $content
             )
         );
@@ -103,7 +103,7 @@
                 'content'
             ),
             array(
-                'Members',
+                $LANG['bb']['members']['home'],
                 $content
             )
         );

@@ -20,6 +20,15 @@
               throw new Exception ('Please enter a command.');
           } else {
               
+              if( $handle = opendir('../applications/terminal') ) {
+                while( false !== ($entry = readdir($handle)) ) {
+                  if ($entry !== "." && $entry !== ".." && $entry !== 'index.html') {
+                    require_once('../applications/terminal/' . $entry);
+                  }
+                }
+                closedir($handle);
+              }
+
               list($command) = sscanf($cmd, '/%s');
               $MYSQL->where('command_name', $command);
               $query = $MYSQL->get('{prefix}terminal');
@@ -122,7 +131,7 @@
 
  echo $ADMIN->box(
       'Command',
-      'You can run commands that are built-in to TangoBB. This development of this feature is still in it\'s infancy. It may or may not work.
+      'You can run commands that are available in TangoBB.
        <br />
        <h4>Commands</h4>
        Change User\'s Usergroup: <code>cugroup &lt;username&gt; &lt;usergroup&gt;</code>

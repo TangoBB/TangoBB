@@ -6,7 +6,7 @@
   if( !defined('BASEPATH') ){ die(); }
   if( !$TANGO->sess->isLogged ) { header('Location: ' . SITE_URL . '/404.php'); }//Check if user is logged in.
 
-  $page_title = 'Password';
+  $page_title = $LANG['bb']['profile']['password'];
   $content    = '';
   $notice     = '';
 
@@ -23,9 +23,9 @@
           $con_password = $_POST['current_password'];
           
           if( !$new_password or !$con_password ) {
-              throw new Exception ('All fields are required!');
+              throw new Exception ($LANG['global_form_process']['all_fields_required']);
           }elseif( !userExists($TANGO->sess->data['user_email'], $con_password) ) {
-              throw new Exception ('Current password is invalid!');
+              throw new Exception ($LANG['global_form_process']['invalid_password']);
           } else {
               
               $data = array(
@@ -37,10 +37,10 @@
                   $notice .= $TANGO->tpl->entity(
                       'success_notice',
                       'content',
-                      'Saved!'
+                      $LANG['global_form_process']['save_success']
                   );
               } else {
-                  throw new Exception ('Error updating password. Try again later.');
+                  throw new Exception ($LANG['bb']['profile']['error_updating_password']);
               }
               
           }
@@ -69,10 +69,10 @@
                // </form>';*/
   $content .= '<form id="tango_form" action="" method="POST">
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
-                 ' . $FORM->build('password', 'Current Password', 'current_password') . '
-                 ' . $FORM->build('password', 'New Password', 'new_password') . '
+                 ' . $FORM->build('password', $LANG['bb']['profile']['current_password'], 'current_password') . '
+                 ' . $FORM->build('password', $LANG['bb']['profile']['new_password'], 'new_password') . '
                  <br /><br />
-                 ' . $FORM->build('submit', '', 'edit', array('value' => 'Save Changes')) . '
+                 ' . $FORM->build('submit', '', 'edit', array('value' => $LANG['bb']['profile']['form_save'])) . '
                </form>';
 
   $content  = $notice . $content;

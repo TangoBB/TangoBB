@@ -40,7 +40,7 @@
                 $data  = array(
                     'site_rules' => $rules,
                     'site_name' => $name,
-                    'site_theme' => 'origin',
+                    'site_theme' => 'Blue',
                     'site_language' => 'english',
                     'site_email' => $email
                 );

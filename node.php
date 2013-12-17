@@ -18,12 +18,75 @@
       $MYSQL->where('name_friendly', $node_name);
       $query = $MYSQL->get('{prefix}forum_node');
       if( !empty($query) ) {
-          
+
+          if( $query['0']['node_type'] == 1 ) {
+            $sub_forums = $TANGO->bb->subForums($query['0']['id']);
+          } else {
+            $sub_forums = '';
+          }
+
+          $breadcrumbs = $TANGO->tpl->entity(
+            'breadcrumbs_before',
+            array(
+              'link',
+              'name'
+            ),
+            array(
+              SITE_URL . '/forum.php',
+              $LANG['bb']['forum']
+            )
+          );
+
+          if( $query['0']['node_type'] == 2 ) {
+            $parent_node = node($query['0']['parent_node']);
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/node.php/v/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
+                $parent_node['node_name']
+              )
+            );
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_current',
+              array(
+                'name'
+              ),
+              array(
+                $query['0']['node_name']
+              )
+            );
+
+          } elseif( $query['0']['node_type'] == 1 ) {
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_current',
+              array(
+                'name'
+              ),
+              array(
+                $query['0']['node_name']
+              )
+            );
+
+          }
+
+          $breadcrumbs = $TANGO->tpl->entity(
+            'breadcrumbs',
+            'bread',
+            $breadcrumbs
+          );
+
           $page = ($PGET->g('page'))? clean($PGET->g('page')) : '1';
           
           $results = '';
           $t       = '';
-          foreach(getThreads($node_id, $page) as $thread) {
+          foreach(getThreads($node_id, $page, $PGET->g('sort')) as $thread) {
               $t .= $TANGO->node->threads($thread['id']);
           }
           
@@ -52,13 +115,25 @@
               'forum_listings_node_threads',
               array(
                   'breadcrumbs',
+                  'sub_forums',
                   'post_thread_button',
-                  'threads'
+                  'threads',
+                  //Sorting
+                  'sort_latest_created',
+                  'sort_name_desc',
+                  'sort_name_asc',
+                  'sort_last_updated'
               ),
               array(
-                  '',
+                  $breadcrumbs,
+                  $sub_forums,
                   $new_thread,
-                  $t
+                  $t,
+                  //Sorting
+                  SITE_URL . '/node.php/v/' . $query['0']['name_friendly'] . '.' . $query['0']['id'] . '/sort/latest_created',
+                  SITE_URL . '/node.php/v/' . $query['0']['name_friendly'] . '.' . $query['0']['id'] . '/sort/name_desc',
+                  SITE_URL . '/node.php/v/' . $query['0']['name_friendly'] . '.' . $query['0']['id'] . '/sort/name_asc',
+                  SITE_URL . '/node.php/v/' . $query['0']['name_friendly'] . '.' . $query['0']['id'] . '/sort/last_updated'
               )
           );
           

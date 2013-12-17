@@ -26,13 +26,17 @@
                   $content .= $TANGO->tpl->entity(
                       'success_notice',
                       'content',
-                      'User has been banned. <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $query['0']['id'] . '">Back to user profile</a>.'
+                      str_replace(
+                        '%url%',
+                        SITE_URL . '/members.php/cmd/user/id/' . $query['0']['id'],
+                        $LANG['mod']['ban']['ban_success']
+                      )
                   );
               } else {
                   $content .= $TANGO->tpl->entity(
                       'danger_notice',
                       'content',
-                      'Error banning user.'
+                      $LANG['mod']['ban']['ban_error']
                   );
               }
               
@@ -40,7 +44,7 @@
               $content .= $TANGO->tpl->entity(
                   'danger_notice',
                   'content',
-                  'User is already banned!'
+                  $LANG['mod']['ban']['already_banned']
               );
           }
           
@@ -58,7 +62,7 @@
           'content'
       ),
       array(
-          'Ban User',
+          $LANG['mod']['ban']['ban'],
           $content
       )
   );

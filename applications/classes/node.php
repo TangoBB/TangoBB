@@ -36,7 +36,7 @@
                   array(
                       '<a href="' . SITE_URL . '/thread.php/v/' . $post['title_friendly'] . '.' . $post['id'] . '">' . $post['post_title'] . '</a>' . $closed . $stickied,
                       '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a>',
-                       SITE_URL . '/public/img/avatars/' . $user['user_avatar'],
+                       $user['user_avatar'],
                       '<span data-toggle="tooltip" data-placement="bottom" title="' . date('F j, Y', $post['post_time']) . '">' . date('l h:i A', $post['post_time']) . '</span>',
                       $this->latestReply($post['id'], SITE_URL . '/thread.php/v/' . $post['title_friendly'] . '.' . $post['id'])
                   )
@@ -74,7 +74,7 @@
                       'post_time'
                   ),
                   array(
-                      SITE_URL . '/public/img/avatars/' . $user['user_avatar'],
+                      $user['user_avatar'],
                       '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a>',
                       '<small><a href="' . $url . '#post-' . $query['0']['id'] . '"><span data-toggle="tooltip" data-placement="bottom" title="' . date('F j, Y', $query['0']['post_time']) . '">' . date('l h:i A', $query['0']['post_time']) . '</span></a></small>',
                   )

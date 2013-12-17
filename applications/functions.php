@@ -4,6 +4,30 @@
    * Standard Functions of TangoBB.
    */
   if( !defined('BASEPATH') ){ die(); }
+
+  /*
+   * Conversion
+   */
+  function bytesToSize($bytes, $precision = 2) {  
+    $kilobyte = 1024;
+    $megabyte = $kilobyte * 1024;
+    $gigabyte = $megabyte * 1024;
+    $terabyte = $gigabyte * 1024;
+
+    if (($bytes >= 0) && ($bytes < $kilobyte)) {
+      return $bytes . ' B';
+    } elseif (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
+      return round($bytes / $kilobyte, $precision) . ' KB';
+    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
+        return round($bytes / $megabyte, $precision) . ' MB';
+    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
+      return round($bytes / $gigabyte, $precision) . ' GB';
+    } elseif ($bytes >= $terabyte) {
+      return round($bytes / $terabyte, $precision) . ' TB';
+    } else {
+      return $bytes . ' B';
+    }
+}
   
   /*
    * Forum statistics.
@@ -36,12 +60,14 @@
    */
   function users_online() {
     global $MYSQL, $TANGO;
-    $time  = strtotime('24 hours ago');
-    $query = $MYSQL->query("SELECT * FROM {prefix}sessions WHERE session_time <= '{$time}' ORDER BY session_time DESC");
+    $time  = strtotime("+1 day");
+    $query = $MYSQL->query("SELECT * FROM {prefix}sessions ORDER BY session_time DESC");
     $users = array();
     foreach( $query as $u ) {
-      if( !in_array($u['logged_user'], $users) ) {
-        $users[] = $u['logged_user'];
+      if( $u['session_time'] <= $time ) {
+        if( !in_array($u['logged_user'], $users) ) {
+          $users[] = $u['logged_user'];
+        }
       }
     }
     //die(var_dump($users));
@@ -59,6 +85,33 @@
     }
   }
 
+  /*
+   * List themes for theme changer.
+   */
+  function listThemes() {
+    if( BASEPATH == "Staff" ) {
+      $directory = scandir('../public/themes');
+    } else {
+      $directory = scandir('public/themes');
+    }
+    unset($directory['0']); unset($directory['1']); //unset($directory['2']);//Remove ".", ".." and "index.html"
+    $return = array();
+    foreach( $directory as $t ) {
+      if( is_dir('public/themes/' . $t) ) {
+
+        $return[] = array(
+          'change_link' => SITE_URL . '/profile.php/cmd/theme/set/' . $t,
+          'theme_name' => $t
+        );
+
+      }
+    }
+    $return[] = array(
+      'change_link' => SITE_URL . '/profile.php/cmd/theme/set/default',
+      'theme_name' => 'Default'
+    );
+    return $return;
+  }
   /*
    * Cleans string.
    * Does not escape with MySQL because the MySQL Library already does that.

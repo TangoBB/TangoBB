@@ -8,9 +8,10 @@
 
   $page = $PGET->g('page');
   $page = (!$page)? '1' : $PGET->g('page');
+  $sort = $PGET->g('sort');
 
   $content = '';
-  foreach(getMembers($page) as $user) {
+  foreach(getMembers($page, $sort) as $user) {
       $p_count   = $TANGO->user($user['id']);
       $content  .= $TANGO->tpl->entity(
           'members_page',
@@ -22,7 +23,7 @@
               'postcount'
           ),
           array(
-              SITE_URL . '/public/img/avatars/' . $user['user_avatar'],
+              $p_count['user_avatar'],
               $p_count['username_style'],
               SITE_URL . '/members.php/cmd/user/id/' . $user['id'],
               date('M jS, Y', $user['date_joined']),
@@ -30,6 +31,26 @@
           )
       );
   }
+
+  $content = $TANGO->tpl->entity(
+    'members_page_head',
+    array(
+      'members',
+      //Sorting
+      'sort_date_joined_asc',
+      'sort_date_joined_desc',
+      'sort_name_asc',
+      'sort_name_desc'
+    ),
+    array(
+      $content,
+      //Sorting
+      SITE_URL . '/members.php/sort/date_joined_asc',
+      SITE_URL . '/members.php/sort/date_joined_desc',
+      SITE_URL . '/members.php/sort/username_asc',
+      SITE_URL . '/members.php/sort/username_desc'
+    )
+  );
 
   $total_pages = ceil(fetchTotalMembers() / 20);
 

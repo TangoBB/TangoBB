@@ -8,7 +8,7 @@
 
   if( $TANGO->sess->isLogged ){ header('Location: ' . SITE_URL); } //If user is logged in.
 
-  $page_title = 'Activate Account';
+  $page_title = $LANG['bb']['members']['activate_account'];
 
   if( $PGET->g('code') ) {
       
@@ -29,13 +29,13 @@
                   $content = $TANGO->tpl->entity(
                       'success_notice',
                       'content',
-                      'Your account has been activated! <a href="' . SITE_URL . '/members.php/cmd/signin">Sign in</a> now.'
+                      $LANG['bb']['members']['account_activated']
                   );
               } else {
                   $content = $TANGO->tpl->entity(
                       'danger_notice',
                       'content',
-                      'Error activating account. Try again later.'
+                      $LANG['bb']['members']['error_activating']
                   );
               }
               

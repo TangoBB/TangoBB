@@ -25,8 +25,8 @@
           $receiver = $TANGO->user($msg['message_receiver']);
           $content .= '<div style="border-bottom:1px solid #ccc;padding-bottom:10px;overflow:auto;">
                          <h4><a href="' . SITE_URL . '/conversations.php/cmd/view/v/' . $msg['id'] . '">' . $msg['message_title'] . '</a></h4>
-                         By <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $sender['id'] . '">' . $sender['username_style'] . '</a> on ' . date('F j, Y', $msg['message_time']) . '<br />
-                         For <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $receiver['id'] . '">' . $receiver['username_style'] . '</a>
+                         ' . $LANG['bb']['conversations']['by'] . ' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $sender['id'] . '">' . $sender['username_style'] . '</a> on ' . date('F j, Y', $msg['message_time']) . '<br />
+                         ' . $LANG['bb']['conversations']['for'] . ' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $receiver['id'] . '">' . $receiver['username_style'] . '</a>
                        </div>';
           
       }
@@ -34,7 +34,7 @@
       $content .= $TANGO->tpl->entity(
           'danger_notice',
           'content',
-          'No conversations yet.'
+          $LANG['bb']['conversations']['no_conversations']
       );
   }
 

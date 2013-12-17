@@ -12,7 +12,13 @@
       $query  = $MYSQL->get('{prefix}forum_category');
       $return = '';
       foreach( $query as $s ) {
+          $MYSQL->where('node_type', 1);
+          $MYSQL->where('in_category', $s['id']);
+          $query = $MYSQL->get('{prefix}forum_node');
           $return .= '<option value="' . $s['id'] . '">' . $s['category_title'] . '</option>';
+          foreach( $query as $n ) {
+            $return .= '<option value="&' . $n['id'] . '">&nbsp;&nbsp;&nbsp;&nbsp;-' . $n['node_name'] . '</option>';
+          }
       }
       return $return;
   }
@@ -34,12 +40,26 @@
               throw new Exception ('All fields are required!');
           } else {
               
-              $data = array(
+              if( substr_count($_POST['node_parent'], '&amp;') > 0 ) {
+                $explode = explode('&amp;', $_POST['node_parent']);
+                $parent  = node($explode['1']);
+                $data = array(
                   'node_name' => $title,
                   'node_desc' => $desc,
                   'name_friendly' => title_friendly($title),
-                  'in_category' => $_POST['node_parent']
-              );
+                  'in_category' => $parent['in_category'],
+                  'node_type' => 2,
+                  'parent_node' => $parent['id']
+                );
+              } else {
+                $data = array(
+                  'node_name' => $title,
+                  'node_desc' => $desc,
+                  'name_friendly' => title_friendly($title),
+                  'in_category' => $_POST['node_parent'],
+                  'node_type' => 1
+                );
+              }
               
               if( $MYSQL->insert('{prefix}forum_node', $data) ) {
                   header('Location: ' . SITE_URL . '/admin/manage_node.php/notice/create_success');

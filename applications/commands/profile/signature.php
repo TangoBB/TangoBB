@@ -6,7 +6,7 @@
   if( !defined('BASEPATH') ){ die(); }
   if( !$TANGO->sess->isLogged ) { header('Location: ' . SITE_URL . '/404.php'); }//Check if user is logged in.
 
-  $page_title = 'Signature';
+  $page_title = $LANG['bb']['profile']['signature'];
   $content    = '';
   $notice     = '';
 
@@ -22,7 +22,7 @@
           $sig = $_POST['sig'];
           
           if( !$sig ) {
-              throw new Exception ('All fields are required!');
+              throw new Exception ($LANG['global_form_process']['all_fields_required']);
           } else {
               
               $data = array(
@@ -34,10 +34,10 @@
                   $notice .= $TANGO->tpl->entity(
                       'success_notice',
                       'content',
-                      'Saved!'
+                      $LANG['global_form_process']['save_success']
                   );
               } else {
-                  throw new Exception ('Error updating signature. Try again later.');
+                  throw new Exception ($LANG['bb']['profile']['error_updating_signature']);
               }
               
           }
@@ -65,7 +65,7 @@
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                  ' . $FORM->build('textarea', '', 'sig', array('value' => $TANGO->sess->data['user_signature'], 'id' => 'editor', 'style' => 'width:100%;height:300px;max-width:100%;min-width:100%;')) . '
                  <br /><br />
-                 ' . $FORM->build('submit', '', 'edit', array('value' => 'Save Changes')) . '
+                 ' . $FORM->build('submit', '', 'edit', array('value' => $LANG['bb']['profile']['form_save'])) . '
                </form>';
 
   $content  = $notice . $content;
