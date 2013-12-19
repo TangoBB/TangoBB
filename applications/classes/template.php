@@ -170,7 +170,9 @@
               $params[] = '%' . $param . '%';
               $values[] = $value;
           }
-          $result = str_replace($params, $values, $result);
+          $params[] = '%site_url%';
+          $values[] = SITE_URL;
+          $result   = str_replace($params, $values, $result);
 
           $ent_params = array();
           $ent_values = array();

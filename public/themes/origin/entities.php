@@ -362,4 +362,43 @@
     </div>
 </div>
 <!--- tpl:content_box:end -->
+<!--- tpl:register_form:start -->
+<form action="" method="POST">
+    %notice%
+    %csrf_field%
+    <label for="username">Username</label>
+    <input type="text" name="%username_field_name%" id="username" />
+    <label for="password">Password</label>
+    <input type="password" name="%password_field_name%" id="password" />
+    <label for="a_password">Confirm Password</label>
+    <input type="password" name="%password_a_field_name%" id="a_password" />
+    <label for="email">Email</label>
+    <input type="text" name="%email_field_name%" id="email" />
+    <br /><br />
+    <input type="submit" name="%submit_name%" value="Register" />
+    %register_notice%
+</form>
+<!--- tpl:register_form:end -->
+<!--- tpl:login_form:start -->
+<form action="" method="POST">
+    <label for="email">Email</label>
+    <input type="text" name="%email_field_name%" id="email" />
+    <label for="password">Password</label>
+    <input type="password" name="%password_field_name%" id="password" />
+    <br />
+    <input type="submit" name="%submit_field_name%" value="Sign In" />
+    <input type="checkbox" name="%remember_field_name%" /> Remember Me
+    <br />
+    <a href="%site_url%/members.php/cmd/forgetpassword">Forgot Password</a>
+</form>
+<!--- tpl:login_form:end -->
+<!--- tpl:forget_password_form:start -->
+<form action="" method="POST" id="tango_form">
+    %csrf_field%
+    <label for="email">Email</label>
+    <input type="text" name="%email_field_name%" id="email" />
+    <br /><br />
+    <input type="submit" name="%submit_field_name%" value="Reset Password" />
+</form>
+<!--- tpl:forget_password_form:end -->
 <!--- parent:theme_entity_file:end -->

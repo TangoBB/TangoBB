@@ -34,6 +34,11 @@
  	margin: 6px 0 0 0;
  }
 
+/* HTML Entities */
+img {
+  max-width: 100%;
+}
+
  /* Form */
  input[type="text"], input[type="password"], input[type="email"], .form-control {
   display: block;

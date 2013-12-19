@@ -153,10 +153,11 @@
                         <br />
                         <input type="submit" name="edit" value="Edit Post" />
                       </form>';*/
+          //$FORM->build('textarea', '', 'content', array('id' => 'editor', 'style' => 'width:100%;height:300px;max-width:100%;min-width:100%;', 'value' => $query['0']['post_content']))
           $content = $breadcrumb . 
                      '<form id="tango_form" action="" method="POST">
                         ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
-                        ' . $FORM->build('textarea', '', 'content', array('id' => 'editor', 'style' => 'width:100%;height:300px;max-width:100%;min-width:100%;', 'value' => $query['0']['post_content'])) . '
+                        <textarea id="editor" name="content" style="width:100%;height:300px;max-width:100%;min-width:100%;">' . $query['0']['post_content'] . '</textarea>
                         <br />
                         ' . $FORM->build('submit', '', 'edit', array('value' => $LANG['bb']['form']['edit_post'])) . '
                       </form>';

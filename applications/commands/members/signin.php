@@ -77,14 +77,29 @@
                       <input type="checkbox" name="remember"> Remember me
                     </label>
                   </form>';*/
-  $form    = '<form action="" method="POST">
+  /*$form    = '<form action="" method="POST">
                 ' . $FORM->build('text', 'Email', 'email') . '
                 ' . $FORM->build('password', 'Password', 'password') . '
                 <br /><br />
                 ' . $FORM->build('submit', '', 'signin', array('value' => 'Sign In')) . '
                 ' . $FORM->build('checkbox', 'Remember me', 'remember') . '
                 <a href="' . SITE_URL . '/members.php/cmd/forgetpassword">Forgot Password</a>
-              </form>';
+              </form>';*/
+  $form    = $TANGO->tpl->entity(
+    'login_form',
+    array(
+      'email_field_name',
+      'password_field_name',
+      'submit_field_name',
+      'remember_field_name'
+    ),
+    array(
+      'email',
+      'password',
+      'signin',
+      'remember'
+    )
+  );
   $content = $content . $form;
 
 ?>

@@ -74,13 +74,26 @@
                  <br />
                  <input type="submit" name="forget" value="Reset Password" />
                </form>';*/
-  $content .= '<form action="" method="POST" id="tango_form">
+  /*$content .= '<form action="" method="POST" id="tango_form">
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                  ' . $FORM->build('text', $LANG['bb']['members']['form_email'], 'email') . '
                  <br /><br />
                  ' . $FORM->build('submit', '', 'forget', array('value' => $LANG['bb']['members']['form_reset_password'])) . '
-               </form>';
+               </form>';*/
+  $content .= $TANGO->tpl->entity(
+    'forget_password_form',
+    array(
+      'csrf_field',
+      'email_field_name',
+      'submit_field_name'
+    ),
+    array(
+      $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)),
+      'email',
+      'forget'
+    )
+  );
 
-  $content = $notice . $content;
+  $content  = $notice . $content;
 
 ?>

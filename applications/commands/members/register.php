@@ -109,7 +109,7 @@
                       <input type="text" name="email" id="email" /><br /><br />
                       <input type="submit" name="register" value="Register" />
                     </form>';*/
-        $content = '<form action="" method="POST">
+        /*$content = '<form action="" method="POST">
                       ' . $notice . '
                       ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                       ' . $FORM->build('text', $LANG['bb']['members']['form_username'], 'username') . '
@@ -119,6 +119,29 @@
                       <br /><br />
                       ' . $FORM->build('submit', $LANG['bb']['members']['form_register'], 'register', array('value' => $LANG['bb']['members']['form_register'])) . '<br />
                       ' . $LANG['bb']['members']['register_message'] . '
-                    </form>';
+                    </form>';*/
+        $content = $TANGO->tpl->entity(
+          'register_form',
+          array(
+            'notice',
+            'csrf_field',
+            'username_field_name',
+            'password_field_name',
+            'password_a_field_name',
+            'email_field_name',
+            'submit_name',
+            'register_notice'
+          ),
+          array(
+            $notice,
+            $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)),
+            'username',
+            'password',
+            'a_password',
+            'email',
+            'register',
+            $LANG['bb']['members']['register_message']
+          )
+        );
 
 ?>
