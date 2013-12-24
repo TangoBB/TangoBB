@@ -203,7 +203,7 @@
               '<?php echo $1; ?>',
               '<?php $1 = $2; ?>',
               '$1<?php $2$3: ?>',
-              '$1<?php $2; ?>$',
+              '$1<?php $2; ?>',
               '$1<?php $2: ?>$3',
               '$1<?php if( ! ($2)): ?>'
           );
@@ -238,7 +238,7 @@
               $return = ob_get_clean();
               ob_end_clean();
               
-              $return = str_replace('$', '', $return);
+              //$return = str_replace('$', '', $return);
               
               if( !$ret ) {
                   $this->output .= $return;

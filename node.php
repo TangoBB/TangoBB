@@ -139,10 +139,12 @@
           
           $total_pages = ceil(fetchTotalThread($node_id) / THREAD_RESULTS_PER_PAGE);
           
-          $pag = '';
+          $sort = $PGET->g('sort');
+          $pag  = '';
           if( $total_pages > 1 ) {
               $i   = '';
               for( $i = 1; $i <= $total_pages; ++$i ) {
+                  $link = ($sort)? SITE_URL . '/node.php/v/' . $PGET->g('v') . '/sort/' . $sort . '/page/' . $i : SITE_URL . '/node.php/v/' . $PGET->g('v') . '/page/' . $i;
                   if( $i == $page ) {
                       $pag .= $TANGO->tpl->entity(
                           'pagination_link_current',

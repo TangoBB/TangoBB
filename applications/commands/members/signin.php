@@ -46,7 +46,7 @@
               
               $remember = (isset($_POST['remember']))? true : false;
               $TANGO->sess->assign($email, $remember);
-              header('refresh:5;url=' . SITE_URL);
+              header('refresh:3;url=' . SITE_URL);
               
               $content .= $TANGO->tpl->entity(
                   'success_notice',

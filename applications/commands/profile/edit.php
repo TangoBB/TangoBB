@@ -24,6 +24,8 @@
           
           if( !$email or !$tz ) {
               throw new Exception ($LANG['global_form_process']['all_fields_required']);
+          } elseif( !validEmail($email) ) {
+              throw new Exception ($LANG['global_form_process']['invalid_email']);
           } else {
               if( $email !== $TANGO->sess->data['user_email'] ) {
                   

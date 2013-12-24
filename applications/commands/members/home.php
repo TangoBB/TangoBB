@@ -56,8 +56,9 @@
 
   $pag = '';
   if( $total_pages > 1 ) {
-      $i   = '';
+      $i    = '';
       for( $i = 1; $i <= $total_pages; ++$i ) {
+          $link = ($sort)? SITE_URL . '/members.php/sort/' . $sort . '/page/' . $i : SITE_URL . '/members.php/page/' . $i;
           if( $i == $page ) {
               $pag .= $TANGO->tpl->entity(
                   'pagination_link_current',
@@ -72,7 +73,7 @@
                       'page'
                   ),
                   array(
-                      SITE_URL . '/members.php/page/' . $i,
+                      $link,
                       $i
                   )
               );

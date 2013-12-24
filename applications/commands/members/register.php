@@ -22,7 +22,7 @@
                 $password   = $_POST['password'];
                 $a_password = $_POST['a_password'];
                 $email      = $_POST['email'];
-                
+                //preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $email)
                 $time       = time();
                 
                 if( !$username or !$password or !$a_password or !$email ) {
@@ -31,7 +31,7 @@
                     throw new Exception ($LANG['bb']['members']['password_different']);
                 } elseif( usernameExists($username) ) {
                     throw new Exception ($LANG['bb']['members']['username_taken']);
-                } elseif( !preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $email) ) {
+                } elseif( !validEmail($email) ) {
                     throw new Exception ($LANG['global_form_process']['invalid_email']);
                 } elseif( emailTaken($email) ) {
                     throw new Exception ($LANG['global_form_process']['email_used']);

@@ -58,13 +58,14 @@
    * Users that are online over the past 24 hours.
    * time >= session_time
    */
-  function users_online() {
+  /*function users_online() {
     global $MYSQL, $TANGO;
-    $time  = strtotime("+1 day");
+    $time  = strtotime("-1 day");
+    $time  = time();
     $query = $MYSQL->query("SELECT * FROM {prefix}sessions ORDER BY session_time DESC");
     $users = array();
     foreach( $query as $u ) {
-      if( $u['session_time'] <= $time ) {
+      if( $u['session_time'] < $time ) {
         if( !in_array($u['logged_user'], $users) ) {
           $users[] = $u['logged_user'];
         }
@@ -83,6 +84,34 @@
     } else {
       return 'None';
     }
+  }*/
+  function users_online() {
+    global $MYSQL, $TANGO;
+    $time  = time();
+    $query = $MYSQL->query("SELECT * FROM {prefix}sessions ORDER BY session_time DESC");
+    $users = array();
+    foreach( $query as $u ) {
+      $session_time  = strtotime("+1 day", $u['session_time']);
+      if( $time >= $session_time ) {
+      } else {
+        if( !in_array($u['logged_user'], $users) ) {
+          $users[] = $u['logged_user'];
+        }
+      }
+    }
+    //die(var_dump($users));
+
+    $total = array();
+    foreach( $users as $u ) {
+      $us = $TANGO->user($u);
+      $total[] = '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $us['id'] . '">' . $us['username_style'] . '</a>';
+    }
+    //die(var_dump($total));
+    if( !empty($total) ) {
+      return implode(', ', $total);
+    } else {
+      return 'None';
+    } 
   }
 
   /*
@@ -195,6 +224,13 @@
       } else {
           return false;
       }
+  }
+  function validEmail($email) {
+    if( preg_match('/^[a-z0-9_\.-]+@([a-z0-9]+([\-]+[a-z0-9]+)*\.)+[a-z]{2,7}$/i', $email) ) {
+      return true;
+    } else {
+      return false;
+    }
   }
   function userBanned($email) {
       global $MYSQL;
