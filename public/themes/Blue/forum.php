@@ -99,7 +99,6 @@
 
         <div class="col-md-9">
           <h1>%site_name%</h1>
-          %shoutbox%
           %forum_listings%
         </div>
 

@@ -181,6 +181,90 @@
           //$string = str_replace('&amp;', '&', $string);
           //return html_entity_decode($string);
           //die($string);
+
+          $search = array( 
+            '/\[b\](.*?)\[\/b\]/is', 
+            '/\[i\](.*?)\[\/i\]/is', 
+            '/\[u\](.*?)\[\/u\]/is',
+            '/\[s\](.*?)\[\/s\]/is',
+            '/\[img\](.*?)\[\/img\]/is', 
+            '/\[url\](.*?)\[\/url\]/is', 
+            '/\[url\=(.*?)\](.*?)\[\/url\]/is',
+            '/\[ul\](.*?)\[\/ul\]/is',
+            '/\[ol\](.*?)\[\/ol\]/is',
+            '/\[li\](.*?)\[\/li\]/is',
+            '/\[list\](.*?)\[\/list\]/is',
+            '/\[list=1\](.*?)\[\/list\]/is',
+            '/\[left\](.*?)\[\/left\]/is',
+            '/\[center\](.*?)\[\/center\]/is',
+            '/\[right\](.*?)\[\/right\]/is',
+            '/\[size\=(.*?)\](.*?)\[\/size\]/is',
+            '/\[color\=(.*?)\](.*?)\[\/color\]/is',
+            '/\[code\](.*?)\[\/code\]/is',
+            '/\[font\=(.*?)\](.*?)\[\/font\]/is',
+            '/\[quote\](.*?)\[\/quote\]/is'
+          ); 
+          $replace = array(
+            '<strong>$1</strong>',
+            '<i>$1</i>',
+            '<u>$1</u>',
+            '<span style="text-decoration:line-through;">$1</span>',
+            '<img src="$1" />',
+            '<a href="$1" target="_blank">$1</a>',
+            '<a href="$1" target="_blank">$2</a>',
+            '<ul>$1</ul>',
+            '<ol>$1</ol>',
+            '<li>$1</li>',
+            '<ul>$1</ul>',
+            '<ol></ol>',
+            '<p align="left">$1</p>',
+            '<p align="center">$1</p>',
+            '<p align="right">$1</p>',
+            '<font size="$1">$2</font>',
+            '<span style="color:$1;">$2</span>',
+            '<pre>$1</pre>',
+            '<span style="font-style:$1;">$2</span>',
+            '<blockquote>$1</blockquote>'
+          );
+
+          foreach( $this->custom_codes as $s => $r ) {
+            $search[]  = $s;
+            $replace[] = $r;
+          }
+
+          $string = preg_replace($search, $replace, $string);
+
+          $search  = array(
+            '</li><br />',
+            '</ul><br />',
+            '</ol><br />',
+            //HTML Elements
+            '&amp;',
+            //ASCII Codes
+            //'\r\n',
+            //Additional BBCodes
+            '[*]',
+            '[/*]',
+            //'[quote]',
+            //'[/quote]'
+          );
+          $replace = array(
+            '</li>',
+            '</ul>',
+            '</ol>',
+            //HTML Elements,
+            '&',
+            //ASCII Codes,
+            //'<br />',
+            //Additional BBCodes
+            '<li>',
+            '</li>',
+            //'<blockquote>',
+            //'</blockquote>'
+          );
+
+          $string = str_replace($search, $replace, $string);
+
           return $string;
       }
       

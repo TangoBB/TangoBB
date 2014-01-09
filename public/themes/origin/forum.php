@@ -142,7 +142,6 @@
               
               <div class="col-md-9 pull-right">
                 
-                  %shoutbox%
                   %forum_listings%
                   
               </div>
