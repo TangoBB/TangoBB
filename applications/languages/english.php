@@ -82,7 +82,9 @@
         'new_password' => 'New Password',
         'error_updaing_password' => 'Error updating password.',
         'signature' => 'Signature',
-        'error_updating_signature' => 'Error updating signature. Try again later.'
+        'error_updating_signature' => 'Error updating signature. Try again later.',
+        'personal_details' => 'Personal Details',
+        'confirm_password' => 'Confirm Password'
       )
   	),
   	//Global Form Variables

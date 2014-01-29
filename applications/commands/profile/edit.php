@@ -6,7 +6,7 @@
   if( !defined('BASEPATH') ){ die(); }
   if( !$TANGO->sess->isLogged ) { header('Location: ' . SITE_URL . '/404.php'); }//Check if user is logged in.
 
-  $page_title = 'Personal Details';
+  $page_title = $LANG['bb']['profile']['personal_details'];
   $content    = '';
   $notice     = '';
 
@@ -21,11 +21,14 @@
           NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
           $email = $_POST['email'];
           $tz    = $_POST['timezone'];
+          $pass  = $_POST['confirm_password'];
           
           if( !$email or !$tz ) {
               throw new Exception ($LANG['global_form_process']['all_fields_required']);
           } elseif( !validEmail($email) ) {
               throw new Exception ($LANG['global_form_process']['invalid_email']);
+          } elseif( !userExists($TANGO->sess->data['user_email'], $pass) ) {
+              throw new Exception ($LANG['global_form_process']['invalid_password']);
           } else {
               if( $email !== $TANGO->sess->data['user_email'] ) {
                   
@@ -103,11 +106,12 @@
 
   $content .= '<form id="tango_form" action="" method="POST">
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
-                 ' . $FORM->build('text', 'Email', 'email', array('value' => $TANGO->sess->data['user_email'])) . '
+                 ' . $FORM->build('text', $LANG['bb']['members']['form_email'], 'email', array('value' => $TANGO->sess->data['user_email'])) . '
                  <label for="timezone">Timezone</label>
                  ' . $timezones . '
+                 ' . $FORM->build('password', $LANG['bb']['profile']['confirm_password'], 'confirm_password') . '
                  <br /><br />
-                 ' . $FORM->build('submit', '', 'edit', array('value' => 'Save Changes')) . '
+                 ' . $FORM->build('submit', '', 'edit', array('value' => $LANG['bb']['profile']['form_save'])) . '
                </form>';
 
   $content  = $notice . $content;

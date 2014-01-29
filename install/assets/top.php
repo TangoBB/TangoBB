@@ -24,7 +24,7 @@
         <ul class="nav nav-pills pull-right">
           <li class="active"><a href="#">Install</a></li>
           <li><a href="https://github.com/TangoBB" target-"_blank">Github</a></li>
-          <li><a href="http://tangobb.net/" target="_blank">By Codetana</a></li>
+          <li><a href="http://codetama.me/" target="_blank">Codetana</a></li>
         </ul>
         <h3 class="text-muted">TangoBB</h3>
       </div>

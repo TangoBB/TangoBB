@@ -119,6 +119,7 @@
           );
 
           $var = str_replace($search, $replace, nl2br($var));
+          //$var = str_replace($search, $replace, $var);
           //die($var);
           $var = $this->parseQuote($var);
           $var = str_replace(
@@ -172,7 +173,7 @@
               //$quote =  html_entity_decode(html_entity_decode($quote));
               
               if( !empty($query) ) {
-                $string = str_replace('<blockquote>' . $id . '</blockquote>', $quote, $string);
+                $string = str_replace('<blockquote>' . $id . '</blockquote>', nl2br($quote), $string);
               } else {
                 $string = $string;  
               }
