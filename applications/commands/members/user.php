@@ -112,7 +112,7 @@
           );
           
       } else {
-          header('Location: ' . SITE_URL . '/404.php');
+          redirect(SITE_URL . '/404.php');
       }
       
   } else {
@@ -182,7 +182,7 @@
           );
           
       } else {
-          header('Location: ' . SITE_URL . '/404.php');
+          redirect(SITE_URL . '/404.php');
       }
       
   }

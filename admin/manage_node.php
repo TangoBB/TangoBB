@@ -3,7 +3,7 @@
   define('BASEPATH', 'Staff');
   require_once('../applications/wrapper.php');
 
-  if( !$TANGO->perm->check('access_administration') ) { header('Location: ' . SITE_URL); }//Checks if user has permission to create a thread.
+  if( !$TANGO->perm->check('access_administration') ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
   require_once('template/top.php');
   $notice = '';
 

@@ -2,7 +2,7 @@
 
   define('BASEPATH', 'Forum');
   require_once('applications/wrapper.php');
-  if( !$TANGO->sess->isLogged ) { header('Location: ' . SITE_URL . '/404.php'); }//Check if user is logged in.
+  if( !$TANGO->sess->isLogged ) { redirect(SITE_URL . '/404.php'); }//Check if user is logged in.
 
   $TANGO->tpl->getTpl('members');
 
@@ -79,7 +79,7 @@
       break;
       
       default:
-        header('Location: ' . SITE_URL . '/404.php');
+        redirect(SITE_URL . '/404.php');
       break;
       
   }

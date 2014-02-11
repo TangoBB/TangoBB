@@ -8,7 +8,7 @@
   $content    = '';
   $page_title = 'Conversations';
 
-  if( !$TANGO->sess->isLogged ){ header('Location: ' . SITE_URL); } //If user is not logged in.
+  if( !$TANGO->sess->isLogged ){ redirect(SITE_URL); } //If user is not logged in.
   $query = $MYSQL->query("SELECT * FROM
                           {prefix}messages
                           WHERE

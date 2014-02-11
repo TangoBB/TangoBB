@@ -3,7 +3,7 @@
   define('BASEPATH', 'Forum');
   require_once('applications/wrapper.php');
 
-  if( !$TANGO->perm->check('reply_thread') ) { header('Location:' . SITE_URL); }//Checks if user has permission to create a thread.
+  if( !$TANGO->perm->check('reply_thread') ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
 
   $TANGO->tpl->getTpl('page');
   $notice  = '';
@@ -149,9 +149,9 @@
                           );
                           $MYSQL->where('id', $thread);
                           if( $MYSQL->update('{prefix}forum_posts', $t_data) ) {
-                              header('Location: ' . SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id']);
+                              redirect(SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id']);
                           } else {
-                              header('Location: ' . SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id']);
+                              redirect(SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id']);
                           }
                       } else {
                           throw new Exception ($LANG['global_form_process']['error_replying_thread']);
@@ -227,11 +227,11 @@
           );
           
       } else {
-          header('Location: ' . SITE_URL . '/404.php');
+          redirect(SITE_URL . '/404.php');
       }
       
   } else {
-      header('Location: ' . SITE_URL . '/404.php');
+      redirect(SITE_URL . '/404.php');
   }
 
   echo $TANGO->tpl->output();

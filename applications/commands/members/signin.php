@@ -6,7 +6,7 @@
    */
   if( !defined('BASEPATH') ){ die(); }
 
-  if( $TANGO->sess->isLogged ){ header('Location: ' . SITE_URL); } //If user is logged in.
+  if( $TANGO->sess->isLogged ){ redirect(SITE_URL); } //If user is logged in.
   $content = '';
 
   if( isset($_POST['signin']) ) {

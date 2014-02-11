@@ -3,7 +3,7 @@
   define('BASEPATH', 'Staff');
   require_once('../applications/wrapper.php');
 
-  if( !$TANGO->perm->check('access_administration') ) { header('Location: ' . SITE_URL); }//Checks if user has permission to create a thread.
+  if( !$TANGO->perm->check('access_administration') ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
   require_once('template/top.php');
   $notice = '';
 
@@ -53,7 +53,7 @@
               );
               
               if( $MYSQL->insert('{prefix}usergroups', $data) ) {
-                  header('Location: ' . SITE_URL . '/admin/usergroups.php/notice/create_success');
+                  redirect(SITE_URL . '/admin/usergroups.php/notice/create_success');
               } else {
                   throw new Exception ('Error creating usergroup.');
               }

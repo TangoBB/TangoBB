@@ -6,14 +6,14 @@
    */
   if( !defined('BASEPATH') ){ die(); }
 
-  if( !$TANGO->sess->isLogged ){ header('Location: ' . SITE_URL); } //If user is not logged in.
-  
+  if( !$TANGO->sess->isLogged ){ redirect(SITE_URL); } //If user is not logged in.
+
   if( $FB_USER ) {
       $FACEBOOK->destroySession();
       $TANGO->sess->remove();
   } else {
       $TANGO->sess->remove();
   }
-  header('Location: ' . SITE_URL)
+  redirect(SITE_URL);
 
 ?>

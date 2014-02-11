@@ -3,7 +3,7 @@
   define('BASEPATH', 'Staff');
   require_once('../applications/wrapper.php');
 
-  if( !$TANGO->perm->check('access_administration') ) { header('Location: ' . SITE_URL); }//Checks if user has permission to create a thread.
+  if( !$TANGO->perm->check('access_administration') ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
   require_once('template/top.php');
   $notice = '';
 
@@ -75,7 +75,7 @@
                       $MYSQL->where('id', $id);
                       
                       if( $MYSQL->update('{prefix}forum_node', $data) ) {
-                          header('Location: ' . SITE_URL . '/admin/manage_node.php/notice/edit_success');
+                          redirect(SITE_URL . '/admin/manage_node.php/notice/edit_success');
                       } else {
                           throw new Exception ('Error updating node.');
                       }
@@ -122,11 +122,11 @@
           );
           
       } else {
-          header('Location: ' . SITE_URL . '/admin');
+          redirect(SITE_URL . '/admin');
       }
       
   } else {
-      header('Location: ' . SITE_URL . '/admin');
+      redirect(SITE_URL . '/admin');
   }
 
   require_once('template/bot.php');

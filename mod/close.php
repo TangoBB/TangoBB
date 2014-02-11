@@ -3,7 +3,7 @@
   define('BASEPATH', 'Staff');
   require_once('../applications/wrapper.php');
 
-  if( !$TANGO->perm->check('access_moderation') ) { header('Location: ' . SITE_URL); }//Checks if user has permission to create a thread.
+  if( !$TANGO->perm->check('access_moderation') ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
   $TANGO->tpl->getTpl('page');
 
   $content    = '';
@@ -48,11 +48,11 @@
           }
           
       } else {
-          header('Location: ' .  SITE_URL);
+          redirect(SITE_URL);
       }
       
   } else {
-      header('Location: ' . SITE_URL);
+      redirect(SITE_URL);
   }
 
   $TANGO->tpl->addParam(

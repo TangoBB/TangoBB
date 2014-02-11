@@ -380,11 +380,11 @@
           );
           
       } else {
-          header('Location: ' . SITE_URL . '/404.php');
+          redirect(SITE_URL . '/404.php');
       }
       
   } else {
-      header('Location: ' . SITE_URL);
+      redirect(SITE_URL);
   }
 
   echo $TANGO->tpl->output();

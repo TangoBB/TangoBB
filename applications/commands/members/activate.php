@@ -6,7 +6,7 @@
    */
   if( !defined('BASEPATH') ){ die(); }
 
-  if( $TANGO->sess->isLogged ){ header('Location: ' . SITE_URL); } //If user is logged in.
+  if( $TANGO->sess->isLogged ){ redirect(SITE_URL); } //If user is logged in.
 
   $page_title = $LANG['bb']['members']['activate_account'];
 
@@ -40,15 +40,15 @@
               }
               
           } else {
-              header("Location: " . SITE_URL);
+              redirect(SITE_URL);
           }
           
       } else {
-          header('Location: ' . SITE_URL);
+          redirect(SITE_URL);
       }
       
   } else {
-      header('Location: ' . SITE_URL);
+      redirect(SITE_URL);
   }
 
 ?>
