@@ -4,7 +4,7 @@
    * Profile edit module for TangoBB.
    */
   if( !defined('BASEPATH') ){ die(); }
-  if( !$TANGO->sess->isLogged ) { header('Location: ' . SITE_URL . '/404.php'); }//Check if user is logged in.
+  if( !$TANGO->sess->isLogged ) { redirect(SITE_URL . '/404.php'); }//Check if user is logged in.
 
   $page_title = $LANG['bb']['profile']['avatar'];
   $content    = '';

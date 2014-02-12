@@ -23,9 +23,9 @@
           );
           if( !in_array($TANGO->sess->data['id'], $auth) ) {
             /*if( $query['0']['message_receiver'] !== $TANGO->sess->data['id'] ) {
-              header('Location: ' . SITE_URL . '/404.php');
+              redirect(SITE_URL . '/404.php');
             }*/
-            header('Location: ' . SITE_URL . '/404.php');
+            redirect(SITE_URL . '/404.php');
           }
 
           $page_title = $query['0']['message_title'];
@@ -208,11 +208,11 @@
           }
           
       } else {
-          header('Location: ' . SITE_URL . '/404.php');
+          redirect(SITE_URL . '/404.php');
       }
       
   } else {
-      header('Location: ' . SITE_URL);
+      redirect(SITE_URL);
   }
 
 ?>

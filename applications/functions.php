@@ -165,6 +165,11 @@
       return $string;
   }
 
+  function redirect($url) {
+      header('Location: ' . $url);
+      exit;
+  }
+
   function randomString($length = 16) {
       $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
       $randomString = '';
