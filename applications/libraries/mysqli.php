@@ -2,9 +2,9 @@
 
   /*
    * MySQLi Class.
-   * 
+   *
    * Codetana
-   * 
+   *
    * @category  Database Access
    * @package   MysqliDb
    * @author    Jeffery Way <jeffrey@jeffrey-way.com>
@@ -13,7 +13,7 @@
    * @license   http://opensource.org/licenses/gpl-3.0.html GNU Public License
    * @version   1.1
    */
-   
+
   if( !defined('BASEPATH') ){ die(); }
 
   class MysqliDB {
@@ -35,7 +35,7 @@
 	 *
 	 * @var object
 	 */
-	protected $_query;
+	protected $_query = '';
 	/**
 	 * An array that holds where conditions 'fieldname' => 'value'
 	 *
@@ -47,13 +47,13 @@
 	 *
 	 * @var array
 	 */
-	protected $_whereTypeList;
+	protected $_whereTypeList = '';
 	/**
 	 * Dynamic type list for table data values
 	 *
 	 * @var array
 	 */
-	protected $_paramTypeList;
+	protected $_paramTypeList = '';
 	/**
 	 * Dynamic array that holds a combination of where condition/table data value types and parameter referances
 	 *
@@ -64,7 +64,7 @@
 	public $queries_count;
 
 	public function __construct($host, $username, $password, $db, $prefix) {
-		$this->_mysqli = new mysqli($host, $username, $password, $db) 
+		$this->_mysqli = new mysqli($host, $username, $password, $db)
 			or die('There was a problem connecting to the database');
 		self::$_instance = $this;
 		$this->_prefix = $prefix;
@@ -73,7 +73,7 @@
 	}
 
 	/**
-	 * A method of returning the static instance to allow access to the 
+	 * A method of returning the static instance to allow access to the
 	 * instantiated object from within another class.
 	 * Inheriting this class would require reloading connection info.
 	 *
@@ -95,9 +95,9 @@
 	{
 		$this->_where = array();
 		$this->_bindParams = array('');		// Create the empty 0 index
-		unset($this->_query);
-		unset($this->_whereTypeList);
-		unset($this->_paramTypeList);
+		$this->_query = '';
+		$this->_whereTypeList = '';
+		$this->_paramTypeList = '';
 	}
 
 	/**
@@ -107,7 +107,7 @@
 	 * @param array $bindData All variables to bind to the SQL statment.
 	 * @return array Contains the returned rows from the query.
 	 */
-	public function rawQuery($query, $bindParams = NULL) 
+	public function rawQuery($query, $bindParams = NULL)
 	{
 		$query = str_replace('{prefix}', $this->_prefix, $query);
 		$this->_query = filter_var($query, FILTER_SANITIZE_STRING);
@@ -133,12 +133,12 @@
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $query Contains a user-provided select query.
 	 * @param int $numRows The number of rows total to return.
 	 * @return array Contains the returned rows from the query.
 	 */
-	public function query($query, $numRows = NULL) 
+	public function query($query, $numRows = NULL)
 	{
 		$query = str_replace('{prefix}', $this->_prefix, $query);
 		$this->_query = filter_var($query, FILTER_SANITIZE_STRING);
@@ -158,7 +158,7 @@
 	 * @param integer $numRows The number of rows total to return.
 	 * @return array Contains the returned rows from the select query.
 	 */
-	public function get($tableName, $numRows = NULL) 
+	public function get($tableName, $numRows = NULL)
 	{
 		$tableName = str_replace('{prefix}', $this->_prefix, $tableName);
 		$this->_query = "SELECT * FROM $tableName";
@@ -177,7 +177,7 @@
 	 * @param array $insertData Data containing information for inserting into the DB.
 	 * @return boolean Boolean indicating whether the insert query was completed succesfully.
 	 */
-	public function insert($tableName, $insertData) 
+	public function insert($tableName, $insertData)
 	{
 		$tableName    = str_replace('{prefix}', $this->_prefix, $tableName);
 		$this->_query = "INSERT into $tableName";
@@ -197,7 +197,7 @@
 	 * @param array $tableData Array of data to update the desired row.
 	 * @return boolean
 	 */
-	public function update($tableName, $tableData) 
+	public function update($tableName, $tableData)
 	{
 		$tableName    = str_replace('{prefix}', $this->_prefix, $tableName);
 		$this->_query = "UPDATE $tableName SET ";
@@ -239,7 +239,7 @@
 	 * @param string $whereProp The name of the database field.
 	 * @param mixed $whereValue The value of the database field.
 	 */
-	public function where($whereProp, $whereValue) 
+	public function where($whereProp, $whereValue)
 	{
 		$this->_where[$whereProp] = $whereValue;
 		return $this;
@@ -276,7 +276,7 @@
 	 * @param mixed $item Input to determine the type.
 	 * @return string The joined parameter types.
 	 */
-	protected function _determineType($item) 
+	protected function _determineType($item)
 	{
 		switch (gettype($item)) {
 			case 'NULL':
@@ -307,9 +307,9 @@
 	 * @param array $tableData Should contain an array of data for updating the database.
 	 * @return object Returns the $stmt object.
 	 */
-	protected function _buildQuery($numRows = NULL, $tableData = NULL) 
+	protected function _buildQuery($numRows = NULL, $tableData = NULL)
 	{
-		(gettype($tableData) === 'array') ? $hasTableData = true : $hasTableData = false;	
+		(gettype($tableData) === 'array') ? $hasTableData = true : $hasTableData = false;
 		(!empty($this->_where )) ? $hasConditional = true : $hasConditional = false;
 
 		// Did the user call the "where" method?
@@ -335,7 +335,7 @@
 			}
 
 			//Prepair the where portion of the query
-			$this->_query .= ' WHERE ';	
+			$this->_query .= ' WHERE ';
 			$i = 1;
 			foreach ($this->_where as $column => $value) {
 				// Determines what data type the where column is, for binding purposes.
@@ -398,7 +398,7 @@
 				foreach ($this->_where as $prop => $val) {
 					array_push($this->_bindParams, $this->_where[$prop]);
 				}
-			}	
+			}
 		}
 		// Bind parameters to statment
 		if ($hasTableData || $hasConditional){
@@ -415,7 +415,7 @@
 	 * @param object $stmt Equal to the prepared statement object.
 	 * @return array The results of the SQL fetch.
 	 */
-	protected function _dynamicBindResults($stmt) 
+	protected function _dynamicBindResults($stmt)
 	{
 		$parameters = array();
 		$results = array();
@@ -447,7 +447,7 @@
 	* Method attempts to prepare the SQL query
 	* and throws an error if there was a problem.
 	*/
-	protected function _prepareQuery() 
+	protected function _prepareQuery()
 	{
 		if (!$stmt = $this->_mysqli->prepare($this->_query)) {
 			trigger_error("Problem preparing query ($this->_query) ".$this->_mysqli->error, E_USER_ERROR);
@@ -455,7 +455,7 @@
 		return $stmt;
 	}
 
-	public function __destruct() 
+	public function __destruct()
 	{
 		$this->_mysqli->close();
 	}
