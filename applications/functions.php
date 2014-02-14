@@ -8,7 +8,7 @@
   /*
    * Conversion
    */
-  function bytesToSize($bytes, $precision = 2) {  
+  function bytesToSize($bytes, $precision = 2) {
     $kilobyte = 1024;
     $megabyte = $kilobyte * 1024;
     $gigabyte = $megabyte * 1024;
@@ -28,7 +28,7 @@
       return $bytes . ' B';
     }
 }
-  
+
   /*
    * Forum statistics.
    */
@@ -111,7 +111,7 @@
       return implode(', ', $total);
     } else {
       return 'None';
-    } 
+    }
   }
 
   /*
@@ -187,12 +187,7 @@
    * Password Encryption
    */
   function encrypt($password) {
-      $salty    = randomString(16);
-      $salt     = hash('sha256', $salty);
-      $password = hash('sha256', $password);
-      $password = hash('sha256', $password . $salt);
-      return '$SHA$' . $salty . '$' . $password;
-      //return $password;
+      return password_hash($password, PASSWORD_BCRYPT, array('cost' => USER_PASSWORD_HASH_COST));
   }
 
   /*
@@ -201,7 +196,7 @@
   function modReportInteger() {
       global $MYSQL;
       $query = $MYSQL->get('{prefix}reports');
-      
+
       return count($query);
   }
 
@@ -212,7 +207,7 @@
       global $MYSQL;
       $MYSQL->where('username', $username);
       $query = $MYSQL->get('{prefix}users');
-      
+
       if( !empty($query) ) {
           return true;
       } else {
@@ -223,7 +218,7 @@
       global $MYSQL;
       $MYSQL->where('user_email', $email);
       $query = $MYSQL->get('{prefix}users');
-      
+
       if( !empty($query) ) {
           return true;
       } else {
@@ -243,7 +238,7 @@
       $a                    = $MYSQL->get('{prefix}users');
       $return['unban_time'] = $a['0']['unban_time'];
       $return['ban_reason'] = $a['0']['ban_reason'];
-      
+
       if( $a['0']['is_banned'] == "1" ) {
           return $return;
       } else {
@@ -254,38 +249,60 @@
       global $MYSQL;
       $MYSQL->where('user_email', $email);
       $a = $MYSQL->get('{prefix}users');
-      
+
       if( $a['0']['user_disabled'] == "0" ) {
           return true;
       } else {
           return false;
       }
   }
-  function userExists($email, $password) {
+  function userExists($email, $password, $rehash_if_necessary = true) {
       global $MYSQL;
-      
+
+      $login_successful = false;
+
       $MYSQL->where('user_email', $email);
       $a = $MYSQL->get('{prefix}users');
       if( $a ) {
-          $sha_info = explode('$', $a[0]['user_password']);
-      } elseif( !$a or $a['0']['facebook_id'] !== "0" ) {
-          return false;
-      } else {
-          return false;
-      }
-      if( $sha_info[1] === "SHA"  ) {
-          $password = hash('sha256', $password);
-          $salty    = hash('sha256', $sha_info[2]);
-          $password = hash('sha256', $password . $salty);
-          $password = '$SHA$' . $sha_info['2'] . '$' . $password;
-          if( strcasecmp(trim($password), $a['0']['user_password']) == 0  ) {
-              return true;
+          $user_data = $a[0];
+          $hash = $user_data['user_password'];
+
+          /*
+           * There are two types of hashes: insecure legacy hashes based on SHA-256
+           * and the new bcrypt hashes.
+           *
+           * The legacy hashes need to be replaced with bcrypt hashes after the
+           * password has been verified. The bcrypt hashes need to be refreshed
+           * in case the cost factor has changed.
+           */
+          $obsolete_hash = false;
+
+          if ( substr($hash, 0, 4) === '$SHA' ) {
+              list(, , $salt) = explode('$', $hash);
+
+              $hash_to_test =
+                  '$SHA$' . $salt . '$' . hash('sha256', hash('sha256', $password) . hash('sha256', $salt));
+
+              $login_successful = strcasecmp($hash_to_test, $hash) === 0;
+
+              $obsolete_hash = $rehash_if_necessary;
           } else {
-              return false;
+              $login_successful = password_verify($password, $hash);
+
+              $obsolete_hash = $rehash_if_necessary
+                  && password_needs_rehash($hash, PASSWORD_BCRYPT, array('cost' => USER_PASSWORD_HASH_COST))
+              ;
           }
-      } else {
-          return false;
+
+          if ( $login_successful && $obsolete_hash ) {
+              $MYSQL
+                  ->where('id', $user_data['id'])
+                  ->update('{prefix}users', array('user_password' => encrypt($password)))
+              ;
+          }
       }
+
+      return $login_successful;
   }
   function usergroupExists($name) {
       global $MYSQL;
@@ -305,7 +322,7 @@
       global $MYSQL;
       $MYSQL->where('id', $id);
       $query = $MYSQL->get('{prefix}forum_posts');
-      
+
       if( is_callable($callback) ) {
           call_user_func($callback, $query['0']);
       } else {
@@ -316,7 +333,7 @@
       global $MYSQL;
       $MYSQL->where('id', $id);
       $query = $MYSQL->get('{prefix}forum_node');
-      
+
       if( is_callable($callback) ) {
           call_user_func($callback, $query['0']);
       } else {
@@ -327,9 +344,9 @@
   /*
    * Delete a folder with contents in it.
    */
-  function rrmdir($dir) { 
-      foreach(glob($dir . '/*') as $file) { 
-          if(is_dir($file)) rrmdir($file); else unlink($file); 
+  function rrmdir($dir) {
+      foreach(glob($dir . '/*') as $file) {
+          if(is_dir($file)) rrmdir($file); else unlink($file);
       }
       if( rmdir($dir) ) {
           return true;

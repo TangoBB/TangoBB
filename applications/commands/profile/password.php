@@ -11,28 +11,28 @@
   $notice     = '';
 
   if( isset($_POST['edit']) ) {
-      
+
       try {
-          
+
           foreach( $_POST as $parent => $child ) {
               $_POST[$parent] = clean($child);
           }
-          
+
           NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
           $new_password = $_POST['new_password'];
           $con_password = $_POST['current_password'];
-          
+
           if( !$new_password or !$con_password ) {
               throw new Exception ($LANG['global_form_process']['all_fields_required']);
-          }elseif( !userExists($TANGO->sess->data['user_email'], $con_password) ) {
+          }elseif( !userExists($TANGO->sess->data['user_email'], $con_password, false) ) {
               throw new Exception ($LANG['global_form_process']['invalid_password']);
           } else {
-              
+
               $data = array(
                   'user_password' => encrypt($new_password)
               );
               $MYSQL->where('id', $TANGO->sess->data['id']);
-              
+
               if( $MYSQL->update('{prefix}users', $data) ) {
                   $notice .= $TANGO->tpl->entity(
                       'success_notice',
@@ -42,9 +42,9 @@
               } else {
                   throw new Exception ($LANG['bb']['profile']['error_updating_password']);
               }
-              
+
           }
-          
+
       } catch( Exception $e ) {
           $notice .= $TANGO->tpl->entity(
               'danger_notice',
@@ -52,7 +52,7 @@
               $e->getMessage()
           );
       }
-      
+
   }
 
   define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
