@@ -3,7 +3,7 @@
   define('BASEPATH', 'Forum');
   require_once('applications/wrapper.php');
 
-  if( !$TANGO->sess->isLogged ) { header('Location:' . SITE_URL); }//Checks if user has permission to create a thread.
+  if( !$TANGO->sess->isLogged ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
   $TANGO->tpl->getTpl('page');
 
   if( $PGET->g('post') ) {
@@ -89,14 +89,14 @@
           );
           
       } else {
-          header('Location: ' . SITE_URL);
+          redirect(SITE_URL);
       }
       
   } elseif( $PGET->g('user') ) {
       /* Feature coming soon. */
-      header('Location: ' . SITE_URL);
+      redirect(SITE_URL);
   } else {
-      header('Location: ' . SITE_URL);
+      redirect(SITE_URL);
   }
 
   echo $TANGO->tpl->output();

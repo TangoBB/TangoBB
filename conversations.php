@@ -4,7 +4,7 @@
   require_once('applications/wrapper.php');
 
   if( !$TANGO->sess->isLogged ) {
-    header('Location: ' . SITE_URL);
+    redirect(SITE_URL);
   }
 
   $TANGO->tpl->getTpl('page');

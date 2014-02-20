@@ -44,7 +44,7 @@
       			);
 
       			if( $MYSQL->insert('{prefix}messages', $data) ) {
-      				header('Location: ' . SITE_URL . '/conversations.php/cmd/view/v/' . $query['0']['id']);
+      				redirect(SITE_URL . '/conversations.php/cmd/view/v/' . $query['0']['id']);
       			} else {
       				throw new Exception ($LANG['bb']['conversations']['error_sending_alt']);
       			}
@@ -72,11 +72,11 @@
                     </form>';
 
     } else {
-    	header('Location: ' . SITE_URL . '/404.php');
+    	redirect(SITE_URL . '/404.php');
     }
 
   } else {
-  	header('Location: ' . SITE_URL . '/404.php');
+  	redirect(SITE_URL . '/404.php');
   }
 
 ?>

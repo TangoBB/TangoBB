@@ -1,9 +1,11 @@
 <?php
-  
-  if( !defined('Install') ) {
-      session_start();
-  }
+
+  session_start();
+
   ob_start();
+
+  header('Content-Type: text/html;charset=utf8');
+
   if( !defined('BASEPATH') ){ die(); }
 
   if( BASEPATH == "Staff" ) {
@@ -47,9 +49,12 @@
   require_once(PATH_A . LIB . 'permget.php');
   $PGET = new Library_PermGET();
 
+  // password_compat library for legacy PHP versions before PHP 5.5
+  require_once(PATH_A . LIB . 'password.php');
+
   require_once(PATH_A . 'functions.php');
   require_once(PATH_A . 'pagination.php');
-  
+
   //Using the language package.
   if( !defined('Install') ) {
     $MYSQL->where('id', 1);
@@ -99,7 +104,7 @@
   //Permissions Library
   require_once(PATH_A . LIB . 'permissions.php');
   $TANGO->perm = new Library_Permissions();
-  
+
   require_once(PATH_A . LIB . 'parse.php');
   $TANGO->lib_parse  = new Library_Parse();
 
@@ -125,7 +130,7 @@
       require_once(PATH_A . CLA . 'admin.php');
       $ADMIN = new Tango_Admin();
   }
-      
+
   $FB_USER = false;
   if( $TANGO->data['facebook_authenticate'] == "1" ) {
       require_once('facebook.php');
@@ -136,7 +141,7 @@
           ));
       }
   }
-      
+
   }
 
   if( !defined('Install') ) {

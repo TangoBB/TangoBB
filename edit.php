@@ -3,7 +3,7 @@
   define('BASEPATH', 'Forum');
   require_once('applications/wrapper.php');
 
-  if( !$TANGO->perm->check('reply_thread') ) { header('Location:' . SITE_URL); }//Checks if user has permission to create a thread.
+  if( !$TANGO->perm->check('reply_thread') ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
   $TANGO->tpl->getTpl('page');
 
   if( $PGET->g('post') ) {
@@ -16,7 +16,7 @@
           
           if( $TANGO->perm->check('access_moderation') ) {
           } elseif(  $query['0']['post_user'] !== $TANGO->sess->data['id'] ) {
-              header('Location: ' . SITE_URL);
+              redirect(SITE_URL);
           }
           
           $node        = node($query['0']['origin_node']);
@@ -128,7 +128,7 @@
                       $MYSQL->where('id', $post_id);
                       
                       if( $MYSQL->update('{prefix}forum_posts', $data) ) {
-                          header('Location: ' . SITE_URL . '/thread.php/v/' . $origin_thread);
+                          redirect(SITE_URL . '/thread.php/v/' . $origin_thread);
                       } else {
                           throw new Exception ($LANG['global_form_process']['error_updating_post']);
                       }
@@ -174,11 +174,11 @@
           );
           
       } else {
-          header('Location: ' . SITE_URL);
+          redirect(SITE_URL);
       }
       
   } else {
-      header('Location: ' . SITE_URL);
+      redirect(SITE_URL);
   }
 
   echo $TANGO->tpl->output();

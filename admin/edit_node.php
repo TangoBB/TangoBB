@@ -3,7 +3,7 @@
   define('BASEPATH', 'Staff');
   require_once('../applications/wrapper.php');
 
-  if( !$TANGO->perm->check('access_administration') ) { header('Location: ' . SITE_URL); }//Checks if user has permission to create a thread.
+  if( !$TANGO->perm->check('access_administration') ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
   require_once('template/top.php');
   $notice = '';
 
@@ -15,11 +15,13 @@
           $MYSQL->where('node_type', 1);
           $MYSQL->where('in_category', $s['id']);
           $query = $MYSQL->get('{prefix}forum_node');
-          $check   = ($s['id'] == $check)? ' selected' : '';
+          //$check   = ($s['id'] == $check)? ' selected' : '';
           $return .= '<option value="' . $s['id'] . '"' . $check . '>' . $s['category_title'] . '</option>';
           foreach( $query as $n ) {
-            $check_2 = ('&' . $n['id'] == $check)? ' checked' : '';
+            if( $s['id'] !== $check ) {
+              $check_2 = ('&' . $n['id'] == $check)? ' checked' : '';
             $return .= '<option value="&' . $n['id'] . '"' . $check . '>&nbsp;&nbsp;&nbsp;&nbsp;-' . $n['node_name'] . '</option>';
+            }
           }
       }
       return $return;
@@ -75,7 +77,7 @@
                       $MYSQL->where('id', $id);
                       
                       if( $MYSQL->update('{prefix}forum_node', $data) ) {
-                          header('Location: ' . SITE_URL . '/admin/manage_node.php/notice/edit_success');
+                          redirect(SITE_URL . '/admin/manage_node.php/notice/edit_success');
                       } else {
                           throw new Exception ('Error updating node.');
                       }
@@ -122,11 +124,11 @@
           );
           
       } else {
-          header('Location: ' . SITE_URL . '/admin');
+          redirect(SITE_URL . '/admin');
       }
       
   } else {
-      header('Location: ' . SITE_URL . '/admin');
+      redirect(SITE_URL . '/admin');
   }
 
   require_once('template/bot.php');

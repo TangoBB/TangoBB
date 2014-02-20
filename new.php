@@ -3,7 +3,7 @@
   define('BASEPATH', 'Forum');
   require_once('applications/wrapper.php');
 
-  if( !$TANGO->perm->check('create_thread') ) { header('Location:' . SITE_URL); }//Checks if user has permission to create a thread.
+  if( !$TANGO->perm->check('create_thread') ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
 
   $TANGO->tpl->getTpl('page');
 
@@ -17,7 +17,7 @@
           
           if( $query['0']['node_locked'] == 1 ) {
             if( !$TANGO->perm->check('access_moderation') ) {
-              header('Location: ' . SITE_URL . '/404.php');
+              redirect(SITE_URL . '/404.php');
             }
           }
 
@@ -127,14 +127,14 @@
                           $MYSQL->where('post_time', $time);
                           $tid = $MYSQL->get('{prefix}forum_posts');
                           
-                          //header('Location: ' . SITE_URL . '/thread.php/v/' . $friendly_url . '.' $tid['0']['id']);
+                          //redirect(SITE_URL . '/thread.php/v/' . $friendly_url . '.' $tid['0']['id']);
                           $notice .= $TANGO->tpl->entity(
                               'success_notice',
                               'content',
                               $LANG['global_form_process']['thread_create_success']
                           );
                           //die(SITE_URL . '/thread.php/v/' . $friendly_url . '.' . $tid['0']['id']);
-                          header('Location: ' . SITE_URL . '/thread.php/v/' . $friendly_url . '.' . $tid['0']['id']);
+                          redirect(SITE_URL . '/thread.php/v/' . $friendly_url . '.' . $tid['0']['id']);
                           
                       } else {
                           throw new Exception ($LANG['global_form_process']['error_creating_thread']);
@@ -190,11 +190,11 @@
           );
           
       } else {
-          header('Location: ' . SITE_URL);
+          redirect(SITE_URL);
       }
       
   } else {
-      header('Location: ' . SITE_URL);
+      redirect(SITE_URL);
   }
 
   echo $TANGO->tpl->output();
