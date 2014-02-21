@@ -15,13 +15,11 @@
           $MYSQL->where('node_type', 1);
           $MYSQL->where('in_category', $s['id']);
           $query = $MYSQL->get('{prefix}forum_node');
-          //$check   = ($s['id'] == $check)? ' selected' : '';
+          $check   = ($s['id'] == $check)? ' selected' : '';
           $return .= '<option value="' . $s['id'] . '"' . $check . '>' . $s['category_title'] . '</option>';
           foreach( $query as $n ) {
-            if( $s['id'] !== $check ) {
-              $check_2 = ('&' . $n['id'] == $check)? ' checked' : '';
+            $check_2 = ('&' . $n['id'] == $check)? ' checked' : '';
             $return .= '<option value="&' . $n['id'] . '"' . $check . '>&nbsp;&nbsp;&nbsp;&nbsp;-' . $n['node_name'] . '</option>';
-            }
           }
       }
       return $return;

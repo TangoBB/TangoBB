@@ -1,11 +1,9 @@
 <?php
 
-  session_start();
-
+  if( !defined('Install') ) {
+      session_start();
+  }
   ob_start();
-
-  header('Content-Type: text/html;charset=utf8');
-
   if( !defined('BASEPATH') ){ die(); }
 
   if( BASEPATH == "Staff" ) {
