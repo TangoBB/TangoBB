@@ -3,29 +3,13 @@
   define('Install', '');
   define('BASEPATH', 'Staff');
   require_once('../applications/wrapper.php');
+  require_once('../applications/functions.php');
 
   if( !isset($_SESSION['tangobb_install_step2']) ) {
       die('Installation access denied.');
   }
 
   require_once('assets/top.php');
-
-  function randomString($length) {
-      $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      $randomString = '';
-      for ($i = 0; $i < $length; $i++) {
-          $randomString .= $characters[rand(0, strlen($characters) - 1)];
-      }
-      return $randomString;
-  }
-  function encrypt($password) {
-      $salty    = randomString(16);
-      $salt     = hash('sha256', $salty);
-      $password = hash('sha256', $password);
-      $password = hash('sha256', $password . $salt);
-      return '$SHA$' . $salty . '$' . $password;
-      //return $password;
-  }
 
   if( isset($_POST['continue']) ) {
       try {
