@@ -170,7 +170,41 @@
       exit;
   }
 
+  /*
+   * Generate hex-encoded pseudo-random bytes.
+   *
+   * The function first tries to read from a secure randomness source. If neither the
+   * OpenSSL extension nor the Mcrypt extension nor direct access to /dev/urandom is
+   * available, it falls back to mt_rand().
+   */
+  function randomHexBytes($length) {
+      $raw_bytes = '';
+
+      if (function_exists('openssl_random_pseudo_bytes')) {
+          $raw_bytes = openssl_random_pseudo_bytes($length);
+      } elseif (function_exists('mcrypt_create_iv')) {
+          $raw_bytes = mcrypt_create_iv($length, MCRYPT_DEV_URANDOM);
+      } else {
+          $urandom = @fopen('/dev/urandom', 'rb');
+
+          if (is_resource($urandom)) {
+              $raw_bytes = fread($urandom, $length);
+              fclose($urandom);
+          }
+      }
+
+      if (!is_string($raw_bytes) || strlen($raw_bytes) < $length) {
+          for ($byte_index = 0; $byte_index < $length; $byte_index++) {
+              $raw_bytes .= chr(mt_rand(0, 255));
+          }
+      }
+
+      return bin2hex($raw_bytes);
+  }
+
   function randomString($length = 16) {
+      trigger_error('The function randomString() is deprecated. Use randomHexBytes() instead.', E_USER_WARNING);
+
       $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
       $randomString = '';
       for ($i = 0; $i < $length; $i++) {

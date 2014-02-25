@@ -29,7 +29,7 @@
               throw new Exception ($LANG['global_form_process']['email_not_exist']);
           } else {
               
-              $new_password = randomString(9);
+              $new_password = randomHexBytes(16);
               $enc_password = encrypt($new_password);
               $data         = array(
                   'user_password' => $enc_password

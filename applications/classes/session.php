@@ -129,7 +129,7 @@
           $MYSQL->where('user_email', $email);
           $query      = $MYSQL->get('{prefix}users');
           
-          $session_id = randomString();
+          $session_id = randomHexBytes(16);
           $time       = time();
           
           if( $facebook ) {
