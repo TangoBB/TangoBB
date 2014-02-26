@@ -6,12 +6,12 @@
   if( !defined('BASEPATH') ){ die(); }
 
   class Tango_Forum {
-      
+
       public $parser;
-      
+
       public function listings() {
           global $MYSQL, $TANGO;
-          
+
           $return = '';
           $query = $MYSQL->query("SELECT * FROM
                                   {prefix}forum_category
@@ -35,23 +35,24 @@
           }
           return $return;
       }
-      
+
       /*
        * Forums
        */
       private function forums($category) {
           global $MYSQL, $TANGO;
-          
+
           $return = '';
-          $query  = $MYSQL->query("SELECT * FROM
+		  $data = array($category);
+          $query  = $MYSQL->rawQuery("SELECT * FROM
                                    {prefix}forum_node
                                    WHERE
-                                   in_category = $category
+                                   in_category = ?
                                    AND
                                    node_type = 1
                                    ORDER BY
                                    node_place
-                                   ASC");
+                                   ASC", $data);
           foreach( $query as $node ) {
               $MYSQL->where('node_type', 2);
               $MYSQL->where('parent_node', $node['id']);
@@ -87,17 +88,18 @@
        */
       public function subForums($parent_forum) {
         global $MYSQL, $TANGO;
-          
+
           $return = '';
+		  $data = array($parent_forum);
           $query  = $MYSQL->query("SELECT * FROM
                                    {prefix}forum_node
                                    WHERE
-                                   parent_node = $parent_forum
+                                   parent_node = ?
                                    AND
                                    node_type = 2
                                    ORDER BY
                                    node_place
-                                   ASC");
+                                   ASC", $data);
           foreach( $query as $node ) {
               $return .= $TANGO->tpl->entity(
                   'forum_listings_node_sub_forums_posts',
@@ -121,69 +123,73 @@
           );
           return $return;
       }
-      
+
       /*
        * Latest Threads
        */
       private function latestPost($forum) {
           global $MYSQL, $TANGO;
-          
+
           $MYSQL->where('node_type', 2);
           $MYSQL->where('parent_node', $forum);
           $query = $MYSQL->get('{prefix}forum_node');
-          $where = array();
+          $where = 'NULL';
+		  $data = array();
           foreach( $query as $wh ) {
-            $where[] = $wh['id'];
+		    $where .= ',?';
+            $data[] = $wh['id'];
           }
 
           $return = '';
-          if( !empty($where) ) {
-            if( count($where) > 1 ) {
-              $query  = $MYSQL->query("SELECT * FROM
+          if( !empty($data) ) {
+            if( count($data) > 1 ) {
+              $query  = $MYSQL->rawQuery("SELECT * FROM
                                    {prefix}forum_posts
                                    WHERE
                                    origin_node
                                    IN
-                                   (" . implode(',', $where) . ")
+                                   (" . $where . ")
                                    ORDER BY
                                    post_time
                                    DESC
-                                   LIMIT 1");
+                                   LIMIT 1", $data);
             } else {
-              $query = $MYSQL->query("SELECT * FROM
+			  $data = array($forum, $data[0]);
+              $query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
-                                  origin_node = $forum
+                                  origin_node = ?
                                   OR
-                                  origin_node = {$where['0']}
+                                  origin_node = ?
                                   ORDER BY
                                   post_time
                                   DESC
-                                  LIMIT 1");
+                                  LIMIT 1", $data);
             }
           } else {
-            $query = $MYSQL->query("SELECT * FROM
+		    $data = array($forum);
+            $query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
-                                  origin_node = $forum
+                                  origin_node = ?
                                   ORDER BY
                                   post_time
                                   DESC
-                                  LIMIT 1");
+                                  LIMIT 1", $data);
           }
 
           if( !empty($query) ) {
-              
+
               foreach( $query as $post ) {
                   $user    = $TANGO->user($post['post_user']);
-                  
+
                   if( $post['post_type'] == "1" ) {
                       $latest = (strlen($post['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/v/' . $post['title_friendly'] . '.' . $post['id'] . '" title="' . $post['post_title'] . '">' . substr($post['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/v/' . $post['title_friendly'] . '.' . $post['id'] . '">' . $post['post_title'] . '</a>';
                   } elseif( $post['post_type'] == "2" ) {
                       $p      = thread($post['origin_thread']);
                       $latest = (strlen($p['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/v/' . $p['title_friendly'] . '.' . $p['id'] . '#post-' . $post['id'] . '" title="' . $p['post_title'] . '">' . substr($p['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/v/' . $p['title_friendly'] . '.' . $p['id'] . '#post-' . $post['id'] . '">' . $p['post_title'] . '</a>';
                   }
-                  
+
                   $return .= $TANGO->tpl->entity(
                       'forum_listings_node_latest',
                       array(
@@ -200,7 +206,7 @@
                       )
                   );
               }
-              
+
           } else {
               $return .= 'None';
           }
@@ -208,28 +214,29 @@
       }
       private function latestSubForumPost($forum) {
           global $MYSQL, $TANGO;
-          
+
           $return = '';
-          $query = $MYSQL->query("SELECT * FROM
+		  $data = array($forum);
+          $query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
-                                  origin_node = $forum
+                                  origin_node = ?
                                   ORDER BY
                                   post_time
                                   DESC
-                                  LIMIT 1");
+                                  LIMIT 1", $data);
           if( !empty($query) ) {
-              
+
               foreach( $query as $post ) {
                   $user    = $TANGO->user($post['post_user']);
-                  
+
                   if( $post['post_type'] == "1" ) {
                       $latest = (strlen($post['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/v/' . $post['title_friendly'] . '.' . $post['id'] . '" title="' . $post['post_title'] . '">' . substr($post['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/v/' . $post['title_friendly'] . '.' . $post['id'] . '">' . $post['post_title'] . '</a>';
                   } elseif( $post['post_type'] == "2" ) {
                       $p      = thread($post['origin_thread']);
                       $latest = (strlen($p['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/v/' . $p['title_friendly'] . '.' . $p['id'] . '#post-' . $post['id'] . '" title="' . $p['post_title'] . '">' . substr($p['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/v/' . $p['title_friendly'] . '.' . $p['id'] . '#post-' . $post['id'] . '">' . $p['post_title'] . '</a>';
                   }
-                  
+
                   $return .= $TANGO->tpl->entity(
                       'forum_listings_node_sub_forums_latest',
                       array(
@@ -246,13 +253,13 @@
                       )
                   );
               }
-              
+
           } else {
               $return .= 'None';
           }
           return $return;
       }
-      
+
   }
 
 ?>

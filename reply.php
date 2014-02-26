@@ -123,7 +123,8 @@
                   $cont    = $_POST['content'];
                   $cont    = ( !empty($q_query) )? '[quote]' . $PGET->g('quote') . '[/quote]' . $cont : $cont;
                   
-                  $c_query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = {$TANGO->sess->data['id']} ORDER BY post_time DESC LIMIT 1");
+				  $data = array($TANGO->sess->data['id']);
+                  $c_query = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 1", $data);
                   
                   if( !$cont ) {
                       throw new Exception ($LANG['global_form_process']['all_fields_required']);

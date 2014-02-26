@@ -55,15 +55,16 @@
           $MYSQL->where('post_type', '2');
           $query = $MYSQL->get('{prefix}forum_posts');*/
           $id    = (int) $id;
-          $query = $MYSQL->query("SELECT * FROM
+		  $data = array($id);
+          $query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
-                                  origin_thread = $id
+                                  origin_thread = ?
                                   AND
                                   post_type = 2
                                   ORDER BY
                                   post_time
-                                  DESC");
+                                  DESC", $data);
           if( !empty($query) ) {
               
               $user   = $TANGO->user($query['0']['post_user']);

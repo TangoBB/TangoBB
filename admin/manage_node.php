@@ -127,14 +127,15 @@
 
   function list_manage_node($category) {
       global $MYSQL, $token;
-      $query = $MYSQL->query("SELECT * FROM
+	  $data = array($category);
+      $query = $MYSQL->rawQuery("SELECT * FROM
                               {prefix}forum_node
                               WHERE
-                              in_category = $category
+                              in_category = ?
                               AND
                               node_type = 1
                               ORDER BY
-                              node_place");
+                              node_place", $data);
       $return = '';
       foreach( $query as $n ) {
 
