@@ -145,6 +145,8 @@
               @if ($TANGO->data['facebook_authenticate'] == "1")
               <a href="%facebook_login_url%" class="btn btn-info btn-sm"><i class="fa fa-facebook"></i> Sign In with Facebook</a>
               @endif
+              <br />
+              <a href="%site_url%/members.php/cmd/forgotpassword">Forgot Password</a>
             </form>
           </div>
         </div>

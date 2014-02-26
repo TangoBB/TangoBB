@@ -17,6 +17,9 @@
     /* Font */
     color: #fff;
 }
+#slide_signin a {
+    color: #fff;
+}
 #slide_signin > .container {
     width: 40%;
 }

@@ -56,6 +56,8 @@
                           <label>
                               <input type="checkbox" name="remember"> Remember me
                           </label>
+                          <br />
+                          <a href="%site_url%/members.php/cmd/forgotpassword">Forgot Password</a>
                       </div>
                   </div>
               </form>
