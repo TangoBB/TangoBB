@@ -64,8 +64,10 @@
 	public $queries_count;
 
 	public function __construct($host, $username, $password, $db, $prefix) {
-		$this->_mysqli = new mysqli($host, $username, $password, $db)
-			or die('There was a problem connecting to the database');
+        // throw exceptions in case of errors
+        $mysqli_driver = new mysqli_driver();
+        $mysqli_driver->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
+		$this->_mysqli = new mysqli($host, $username, $password, $db);
 		$this->_mysqli->set_charset('utf8');
 		self::$_instance = $this;
 		$this->_prefix = $prefix;

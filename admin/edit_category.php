@@ -8,43 +8,44 @@
   $notice = '';
 
   if( $PGET->g('id') ) {
-      
+
       $id    = clean($PGET->g('id'));
       $MYSQL->where('id', $id);
       $query = $MYSQL->get('{prefix}forum_category');
-      
+
       if( !empty($query) ) {
-          
+
           if( isset($_POST['update']) ) {
               try {
-                  
+
                   foreach( $_POST as $parent => $child ) {
                       $_POST[$parent] = clean($child);
                   }
-                  
+
                   NoCSRF::check( 'csrf_token', $_POST );
-                  
+
                   $title = $_POST['cat_title'];
                   $desc  = (!$_POST['cat_desc'])? '' : $_POST['cat_desc'];
-                  
+
                   if( !$title ) {
                       throw new Exception ('All fields are required!');
                   } else {
-                      
+
                       $data = array(
                           'category_title' => $title,
                           'category_desc' => $desc
                       );
                       $MYSQL->where('id', $id);
-                      
-                      if( $MYSQL->update('{prefix}forum_category', $data) ) {
+
+                      try {
+                          $MYSQL->update('{prefix}forum_category', $data);
                           redirect(SITE_URL . '/admin/manage_category.php/notice/edit_success');
-                      } else {
+                      } catch (mysqli_sql_exception $e) {
                           throw new Exception ('Error updating category.');
                       }
-                      
+
                   }
-                  
+
               } catch (Exception $e) {
                   $notice .= $ADMIN->alert(
                       $e->getMessage(),
@@ -52,9 +53,9 @@
                   );
               }
           }
-          
+
           $token = NoCSRF::generate('csrf_token');
-          
+
           echo $ADMIN->box(
               'Edit Category (' . $query['0']['category_title'] . ') <p class="pull-right"><a href="' . SITE_URL . '/admin/manage_category.php" class="btn btn-default btn-xs">Back</a></p>',
               $notice .
@@ -70,11 +71,11 @@
               '',
               '12'
           );
-          
+
       } else {
           redirect(SITE_URL . '/admin');
       }
-      
+
   } else {
       redirect(SITE_URL . '/admin');
   }

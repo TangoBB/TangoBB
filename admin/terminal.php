@@ -9,17 +9,17 @@
 
   if( isset($_POST['run']) ) {
       try {
-          
+
           foreach( $_POST as $parent => $child ) {
               $_POST[$parent] = clean($child);
           }
-          
+
           $cmd = '/' . $_POST['command'];
-          
+
           if( !$cmd ) {
               throw new Exception ('Please enter a command.');
           } else {
-              
+
               if( $handle = opendir('../applications/terminal') ) {
                 while( false !== ($entry = readdir($handle)) ) {
                   if ($entry !== "." && $entry !== ".." && $entry !== 'index.html') {
@@ -41,9 +41,9 @@
               } else {
                 throw new Exception ('Command does not exist.');
               }
-              
+
               /*switch($command) {
-                  
+
                   case "cugroup":
                     //die($cmd);
                     list($del, $username, $ug) = sscanf($cmd, '/%s %s %s');
@@ -54,17 +54,18 @@
                             'user_group' => $g['id']
                         );
                         $MYSQL->where('username', $username);
-                        if( $MYSQL->update('{prefix}users', $data) ) {
+                        try {
+                            $MYSQL->update('{prefix}users', $data);
                             $notice .= $ADMIN->alert(
                                 'User\'s usergroup has been changed!',
                                 'success'
                             );
-                        } else {
+                        } catch (mysqli_sql_exception $e) {
                             throw new Exception ('Error changing user\'s usergroup.');
                         }
                     }
                   break;
-                  
+
                   case "ban":
                     list($del, $username) = sscanf($cmd, '/%s %s');
                     $data = array(
@@ -72,16 +73,17 @@
                         'user_group' => BAN_ID
                     );
                     $MYSQL->where('username', $username);
-                    if( $MYSQL->update('{prefix}users', $data) ) {
+                    try {
+                        $MYSQL->update('{prefix}users', $data);
                         $notice .= $ADMIN->alert(
                             'User has been banned!',
                             'success'
                         );
-                    } else {
+                    } catch (mysqli_sql_exception $e) {
                         throw new Exception ('Error banning user.');
                     }
                   break;
-                  
+
                   case "unban":
                     list($del, $username) = sscanf($cmd, '/%s %s');
                     $data = array(
@@ -89,24 +91,25 @@
                         'user_group' => 1
                     );
                     $MYSQL->where('username', $username);
-                    if( $MYSQL->update('{prefix}users', $data) ) {
+                    try {
+                        $MYSQL->update('{prefix}users', $data);
                         $notice .= $ADMIN->alert(
                             'User has been unbanned!',
                             'success'
                         );
-                    } else {
+                    } catch (mysqli_sql_exception $e) {
                         throw new Exception ('Error unbanning user.');
                     }
                   break;
-                  
+
                   default:
                     throw new Exception ('Command does not exist!');
                   break;
-                  
+
               }*/
-              
+
           }
-          
+
       } catch (Exception $e) {
           $notice .= $ADMIN->alert(
               $e->getMessage(),

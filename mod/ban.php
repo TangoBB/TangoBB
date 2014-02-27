@@ -9,20 +9,21 @@
   $content    = '';
 
   if( $PGET->g('id') ) {
-      
+
       $MYSQL->where('id', $PGET->g('id'));
       $query = $MYSQL->get('{prefix}users');
-      
+
       if( !empty($query) ) {
-          
+
           if( $query['0']['is_banned'] == "0" ) {
-              
+
               $data = array(
                   'is_banned' => '1',
                   'user_group' => BAN_ID
               );
               $MYSQL->where('id', $PGET->g('id'));
-              if( $MYSQL->update('{prefix}users', $data) ) {
+              try {
+                  $MYSQL->update('{prefix}users', $data);
                   $content .= $TANGO->tpl->entity(
                       'success_notice',
                       'content',
@@ -32,14 +33,14 @@
                         $LANG['mod']['ban']['ban_success']
                       )
                   );
-              } else {
+              } catch (mysqli_sql_exception $e) {
                   $content .= $TANGO->tpl->entity(
                       'danger_notice',
                       'content',
                       $LANG['mod']['ban']['ban_error']
                   );
               }
-              
+
           } else {
               $content .= $TANGO->tpl->entity(
                   'danger_notice',
@@ -47,11 +48,11 @@
                   $LANG['mod']['ban']['already_banned']
               );
           }
-          
+
       } else {
           redirect(SITE_URL);
       }
-      
+
   } else {
       redirect(SITE_URL);
   }

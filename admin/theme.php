@@ -13,24 +13,25 @@
   if( $PGET->g('set_default') ) {
       $default = clean($PGET->g('set_default'));
       if( in_array($default, $directory) ) {
-          
+
           $data = array(
               'site_theme' => $default
           );
           $MYSQL->where('id', 1);
-          
-          if( $MYSQL->update('{prefix}generic', $data) ) {
+
+          try {
+              $MYSQL->update('{prefix}generic', $data);
               $notice .= $ADMIN->alert(
                   'Theme <strong>' . $default . '</strong> has been set as default!',
                   'success'
               );
-          } else {
+          } catch (mysqli_sql_exception $e) {
               $notice .= $ADMIN->alert(
                   'Error setting theme as default.',
                   'danger'
               );
           }
-          
+
       } else {
           $notice .= $ADMIN->alert(
               'Theme does not exist.',
@@ -42,7 +43,7 @@
   if( $PGET->g('delete_theme') ) {
       $theme = clean($PGET->g('delete_theme'));
       if( in_array($theme, $directory) ) {
-          
+
           if( rrmdir('../public/themes/' . $theme) ) {
               $notice .= $ADMIN->alert(
                   'Theme <strong>' . $theme . '</strong> has been deleted!',
@@ -54,7 +55,7 @@
                   'danger'
               );
           }
-          
+
       } else {
           $notice .= $ADMIN->alert(
               'Theme does not exist.',

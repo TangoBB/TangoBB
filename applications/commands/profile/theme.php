@@ -26,13 +26,14 @@
       );
       $MYSQL->where('id', $TANGO->sess->data['id']);
 
-      if( $MYSQL->update('{prefix}users', $data) ) {
+      try {
+        $MYSQL->update('{prefix}users', $data);
         $content = $TANGO->tpl->entity(
           'success_notice',
           'content',
           'Theme has been set!'
           );
-      } else {
+      } catch (mysqli_sql_exception $e) {
         $content = $TANGO->tpl->entity(
           'danger_notice',
           'content',

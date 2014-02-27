@@ -57,7 +57,8 @@ try {
             );
 
             $MYSQL->where('id', $user_id);
-            if ( $MYSQL->update('{prefix}users', $data) ) {
+            try {
+                $MYSQL->update('{prefix}users', $data);
                 // deactivate token
                 $data = array(
                     'active' => 0,
@@ -77,7 +78,7 @@ try {
 
                 $TANGO->sess->assign($query[0]['user_email']);
                 header('refresh:3;url=' . SITE_URL);
-            } else {
+            } catch (mysqli_sql_exception $e) {
                 throw new Exception ($LANG['bb']['members']['error_password_reset']);
             }
         }

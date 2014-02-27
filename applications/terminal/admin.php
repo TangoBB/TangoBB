@@ -14,12 +14,13 @@
   			'user_group' => $g['id']
   		);
   		$MYSQL->where('username', $username);
-  		if( $MYSQL->update('{prefix}users', $data) ) {
+  		try {
+            $MYSQL->update('{prefix}users', $data);
   			return $ADMIN->alert(
   				'User\'s usergroup has been changed!',
   				'success'
   			);
-  		} else {
+  		} catch (mysqli_sql_exception $e) {
   			throw new Exception ('Error changing user\'s usergroup.');
   		}
   	}
@@ -32,12 +33,13 @@
   		'user_group' => BAN_ID
   	);
   	$MYSQL->where('username', $username);
-  	if( $MYSQL->update('{prefix}users', $data) ) {
+  	try {
+        $MYSQL->update('{prefix}users', $data);
   		return $ADMIN->alert(
   			'User has been banned!',
   			'success'
   		);
-  	} else {
+  	} catch (mysqli_sql_exception $e) {
   		throw new Exception ('Error banning user.');
   	}
   }
@@ -49,12 +51,13 @@
   		'user_group' => 1
   	);
   	$MYSQL->where('username', $username);
-  	if( $MYSQL->update('{prefix}users', $data) ) {
+  	try {
+        $MYSQL->update('{prefix}users', $data);
   		return $ADMIN->alert(
   			'User has been unbanned!',
   			'success'
   		);
-  	} else {
+  	} catch (mysqli_sql_exception $e) {
   		throw new Exception ('Error unbanning user.');
   	}
   }

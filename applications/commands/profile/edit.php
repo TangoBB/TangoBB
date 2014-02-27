@@ -11,18 +11,18 @@
   $notice     = '';
 
   if( isset($_POST['edit']) ) {
-      
+
       try {
-          
+
           foreach( $_POST as $parent => $child ) {
               $_POST[$parent] = clean($child);
           }
-          
+
           NoCSRF::check( 'csrf_token', $_POST );
           $email = $_POST['email'];
           $tz    = $_POST['timezone'];
           $pass  = $_POST['confirm_password'];
-          
+
           if( !$email or !$tz ) {
               throw new Exception ($LANG['global_form_process']['all_fields_required']);
           } elseif( !validEmail($email) ) {
@@ -31,7 +31,7 @@
               throw new Exception ($LANG['global_form_process']['invalid_password']);
           } else {
               if( $email !== $TANGO->sess->data['user_email'] ) {
-                  
+
                   if( !emailTaken($email) ) {
 
                       $data  = array(
@@ -39,21 +39,22 @@
                           'set_timezone' => $tz
                       );
                       $MYSQL->where('id', $TANGO->sess->data['id']);
-                      
-                      if( $MYSQL->update('{prefix}users', $data) ) {
+
+                      try {
+                          $MYSQL->update('{prefix}users', $data);
                           $notice .= $TANGO->tpl->entity(
                               'success_notice',
                               'content',
                               $LANG['global_form_process']['save_success']
                           );
-                      } else {
+                      } catch (mysqli_sql_exception $e) {
                           throw new Exception ($LANG['global_form_process']['error_saving']);
                       }
-                      
+
                   } else {
                       throw new Exception ($LANG['global_form_process']['email_used']);
                   }
-                  
+
               } else {
 
                   $data  = array(
@@ -61,19 +62,20 @@
                   );
                   $MYSQL->where('id', $TANGO->sess->data['id']);
 
-                  if( $MYSQL->update('{prefix}users', $data) ) {
+                  try {
+                    $MYSQL->update('{prefix}users', $data);
                     $notice .= $TANGO->tpl->entity(
                       'success_notice',
                       'content',
                       $LANG['global_form_process']['save_success']
                       );
-                  } else {
+                  } catch (mysqli_sql_exception $e) {
                     throw new Exception ($LANG['global_form_process']['error_saving']);
                   }
-                  
+
               }
           }
-          
+
       } catch( Exception $e ) {
           $notice .= $TANGO->tpl->entity(
               'danger_notice',
@@ -81,7 +83,7 @@
               $e->getMessage()
           );
       }
-      
+
   }
 
   define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));

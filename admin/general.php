@@ -25,13 +25,13 @@
 
   if( isset($_POST['update']) ) {
       try {
-          
+
           foreach( $_POST as $parent => $child ) {
               $_POST[$parent] = clean($child);
           }
-          
+
           NoCSRF::check( 'csrf_token', $_POST );
-          
+
           $site_name   = $_POST['site_name'];
           $board_email = $_POST['board_email'];
           $site_lang   = $_POST['default_language'];
@@ -39,11 +39,11 @@
           $fb_app_id   = $_POST['fb_app_id'];
           $fb_app_sec  = $_POST['fb_app_secret'];
           $enable_fb   = (isset($_POST['enable_facebook']))? '1' : '0';
-          
+
           if( !$site_name or !$board_email or !$site_lang ) {
               throw new Exception ('All fields are required!');
           } else {
-              
+
               $data = array(
                   'site_name' => $site_name,
                   'site_email' => $board_email,
@@ -53,18 +53,19 @@
                   'facebook_authenticate' => $enable_fb
               );
               $MYSQL->where('id', 1);
-              
-              if( $MYSQL->update('{prefix}generic', $data) ) {
+
+              try {
+                  $MYSQL->update('{prefix}generic', $data);
                   $notice .= $ADMIN->alert(
                       'Informations saved!',
                       'success'
                   );
-              } else {
+              } catch (mysqli_sql_exception $e) {
                   throw new Exception ('Error saving information. Try again later.');
               }
-              
+
           }
-          
+
       } catch (Exception $e) {
           $notice .= $ADMIN->alert(
               $e->getMessage(),
@@ -74,7 +75,7 @@
   }
 
   $token = NoCSRF::generate('csrf_token');
-     
+
   echo '<form action="" method="POST">';
 
   echo $ADMIN->box(

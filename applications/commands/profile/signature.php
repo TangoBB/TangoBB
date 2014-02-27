@@ -11,37 +11,38 @@
   $notice     = '';
 
   if( isset($_POST['edit']) ) {
-      
+
       try {
-          
+
           foreach( $_POST as $parent => $child ) {
               $_POST[$parent] = clean($child);
           }
-          
+
           NoCSRF::check( 'csrf_token', $_POST );
           $sig = $_POST['sig'];
-          
+
           if( !$sig ) {
               throw new Exception ($LANG['global_form_process']['all_fields_required']);
           } else {
-              
+
               $data = array(
                   'user_signature' => $sig
               );
               $MYSQL->where('id', $TANGO->sess->data['id']);
-              
-              if( $MYSQL->update('{prefix}users', $data) ) {
+
+              try {
+                  $MYSQL->update('{prefix}users', $data);
                   $notice .= $TANGO->tpl->entity(
                       'success_notice',
                       'content',
                       $LANG['global_form_process']['save_success']
                   );
-              } else {
+              } catch (mysqli_sql_exception $e) {
                   throw new Exception ($LANG['bb']['profile']['error_updating_signature']);
               }
-              
+
           }
-          
+
       } catch( Exception $e ) {
           $notice .= $TANGO->tpl->entity(
               'danger_notice',
@@ -49,12 +50,12 @@
               $e->getMessage()
           );
       }
-      
+
   }
 
   define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
   //define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
-  
+
   /*$content .= '<form id="tango_form" action="" method="POST">
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                  <textarea id="editor" name="sig" style="width:100%;height:300px;max-width:100%;min-width:100%;">' . $TANGO->sess->data['user_signature'] . '</textarea>

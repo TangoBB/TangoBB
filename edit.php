@@ -7,18 +7,18 @@
   $TANGO->tpl->getTpl('page');
 
   if( $PGET->g('post') ) {
-      
+
       $post_id = clean($PGET->g('post'));
       $MYSQL->where('id', $post_id);
       $query = $MYSQL->get('{prefix}forum_posts');
-      
+
       if( !empty($query) ) {
-          
+
           if( $TANGO->perm->check('access_moderation') ) {
           } elseif(  $query['0']['post_user'] !== $TANGO->sess->data['id'] ) {
               redirect(SITE_URL);
           }
-          
+
           $node        = node($query['0']['origin_node']);
 
           $breadcrumbs = $TANGO->tpl->entity(
@@ -108,33 +108,34 @@
               $page_title     = $thread['post_title'];
               $origin_thread .= $thread['title_friendly'] . '.' . $thread['id'];
           }
-          
+
           if( isset($_POST['edit']) ) {
               try {
-                  
+
                   NoCSRF::check( 'csrf_token', $_POST );
-                  
+
                   //$con = $MYSQL->escape($_POST['content']);
                   //die($con);
                   $con = $_POST['content'];
-                  
+
                   if( !$con ) {
                       throw new Exception ($LANG['global_form_process']['all_fields_required']);
                   } else {
-                      
+
                       $data = array(
                           'post_content' => $con
                       );
                       $MYSQL->where('id', $post_id);
-                      
-                      if( $MYSQL->update('{prefix}forum_posts', $data) ) {
+
+                      try {
+                          $MYSQL->update('{prefix}forum_posts', $data);
                           redirect(SITE_URL . '/thread.php/v/' . $origin_thread);
-                      } else {
+                      } catch (mysqli_sql_exception $e) {
                           throw new Exception ($LANG['global_form_process']['error_updating_post']);
                       }
-                      
+
                   }
-                  
+
               } catch( Exception $e ) {
                   $notice .= $TANGO->tpl->entity(
                       'danger_notice',
@@ -143,10 +144,10 @@
                   );
               }
           }
-          
+
           define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
           //define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
-          
+
           /*$content = '<form id="tango_form" action="" method="POST">
                         ' . CSRF_INPUT . '
                         <textarea id="editor" name="content" style="width:100%;height:300px;max-width:100%;min-width:100%;">' . $query['0']['post_content'] . '</textarea>
@@ -154,14 +155,14 @@
                         <input type="submit" name="edit" value="Edit Post" />
                       </form>';*/
           //$FORM->build('textarea', '', 'content', array('id' => 'editor', 'style' => 'width:100%;height:300px;max-width:100%;min-width:100%;', 'value' => $query['0']['post_content']))
-          $content = $breadcrumb . 
+          $content = $breadcrumb .
                      '<form id="tango_form" action="" method="POST">
                         ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                         <textarea id="editor" name="content" style="width:100%;height:300px;max-width:100%;min-width:100%;">' . $query['0']['post_content'] . '</textarea>
                         <br />
                         ' . $FORM->build('submit', '', 'edit', array('value' => $LANG['bb']['form']['edit_post'])) . '
                       </form>';
-          
+
           $TANGO->tpl->addParam(
               array(
                   'page_title',
@@ -172,11 +173,11 @@
                   $notice . $content
               )
           );
-          
+
       } else {
           redirect(SITE_URL);
       }
-      
+
   } else {
       redirect(SITE_URL);
   }
