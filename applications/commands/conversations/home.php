@@ -9,15 +9,16 @@
   $page_title = 'Conversations';
 
   if( !$TANGO->sess->isLogged ){ redirect(SITE_URL); } //If user is not logged in.
-  $query = $MYSQL->query("SELECT * FROM
+  $data = array($TANGO->sess->data['id'], $TANGO->sess->data['id']);
+  $query = $MYSQL->rawQuery("SELECT * FROM
                           {prefix}messages
                           WHERE
-                          (message_sender = {$TANGO->sess->data['id']} OR message_receiver = {$TANGO->sess->data['id']})
+                          (message_sender = ? OR message_receiver = ?)
                           AND
                           message_type = 1
                           ORDER BY
                           message_time
-                          DESC");
+                          DESC", $data);
   if( !empty($query) ) {
       foreach( $query as $msg ) {
           

@@ -108,11 +108,11 @@
       public function clear() {
           global $MYSQL;
           $time = strtotime(TANGO_SESSION_TIMEOUT . ' seconds ago');
-          //$MYSQL->query("DELETE FROM {prefix}sessions WHERE session_time < '{$time}'");
           $query = $MYSQL->query("SELECT * FROM {prefix}sessions");
           foreach( $query as $s ) {
               if( $s['session_time'] < $time ) {
-                  $MYSQL->query("DELETE FROM {prefix}sessions WHERE id = '{$s['id']}'");
+			      $data = array($s['id']);
+                  $MYSQL->rawQuery("DELETE FROM {prefix}sessions WHERE id = ?", $data);
               }
           }
       }

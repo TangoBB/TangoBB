@@ -97,7 +97,8 @@
                   $thread_cont  = $_POST['content'];
                   //die($thread_title);
                   
-                  $c_query      = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = {$TANGO->sess->data['id']} ORDER BY post_time DESC LIMIT 1");
+				  $data = array($TANGO->sess->data['id']);
+                  $c_query      = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 1", $data);
                   
                   if( !$thread_title or !$thread_cont ) {
                       throw new Exception ($LANG['global_form_process']['all_fields_required']);

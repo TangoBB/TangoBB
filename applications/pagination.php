@@ -12,54 +12,55 @@
       $start    = (int)($page - 1) * $per_page;
       $per_page = (int)$per_page;
       
+	  $data = array($id);	  
       switch( $sort ) {
-        case "latest_created":
-          $query = $MYSQL->query("SELECT * FROM
+        case "latest_created":		  
+          $query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
                                   post_type = 1
                                   AND
-                                  origin_node = $id
+                                  origin_node = ?
                                   ORDER BY
                                   post_time
                                   DESC LIMIT
-                                  {$start}, {$per_page}");
+                                  {$start}, {$per_page}", $data);
         break;
 
         case "name_desc":
-          $query = $MYSQL->query("SELECT * FROM
+          $query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
                                   post_type = 1
                                   AND
-                                  origin_node = $id
+                                  origin_node = ?
                                   ORDER BY
                                   post_title
                                   DESC LIMIT
-                                  {$start}, {$per_page}");
+                                  {$start}, {$per_page}", $data);
         break;
 
         case "name_asc":
-          $query = $MYSQL->query("SELECT * FROM
+          $query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
                                   post_type = 1
                                   AND
-                                  origin_node = $id
+                                  origin_node = ?
                                   ORDER BY
                                   post_title
                                   ASC LIMIT
-                                  {$start}, {$per_page}");
+                                  {$start}, {$per_page}", $data);
         break;
 
         default:
         case "last_updated":
-          $query = $MYSQL->query("SELECT * FROM
+          $query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
                                   post_type = 1
                                   AND
-                                  origin_node = $id
+                                  origin_node = ?
                                   ORDER BY
                                   post_sticky
                                   DESC,
@@ -67,7 +68,7 @@
                                   DESC,
                                   post_time
                                   DESC LIMIT
-                                  {$start}, {$per_page}");
+                                  {$start}, {$per_page}", $data);
         break;
         break;
       }
@@ -91,16 +92,17 @@
       $start    = (int)($page - 1) * $per_page;
       $per_page = (int)$per_page;
       
-      $query = $MYSQL->query("SELECT * FROM
+	  $data = array($id);
+      $query = $MYSQL->rawQuery("SELECT * FROM
                              {prefix}forum_posts
                              WHERE
                              post_type = 2
                              AND
-                             origin_thread = $id
+                             origin_thread = ?
                              ORDER BY
                              post_time
                              ASC LIMIT
-                             {$start}, {$per_page}");
+                             {$start}, {$per_page}", $data);
       return $query;
   }
   function fetchTotalPost($id) {

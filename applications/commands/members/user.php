@@ -21,7 +21,8 @@
           $user            = $TANGO->user($id);
           
           $recent_activity = '';
-          $query           = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = {$query['0']['id']} ORDER BY post_time DESC LIMIT 15");
+		  $data = array($query['0']['id']);
+          $query           = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 15", $data);
           foreach( $query as $ac ) {
               if( $ac['post_type'] == "1" ) {
                   //$recent_activity .= 'Posted a new thread <a href="' . SITE_URL . '/thread.php/v/' . $ac['title_friendly'] . '.' . $ac['id'] . '">' . $ac['post_title'] . '</a> <small>(' . date('F j, Y', $ac['post_time']) . ')</small><hr size="1" />';
@@ -123,7 +124,8 @@
           $user            = $TANGO->usergroup($TANGO->sess->data['user_group']);
           
           $recent_activity = '';
-          $query           = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = {$TANGO->sess->data['id']} ORDER BY post_time DESC LIMIT 15");
+		  $data = array($TANGO->sess->data['id']);
+          $query           = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 15", $data);
           foreach( $query as $ac ) {
               if( $ac['post_type'] == "1" ) {
                   //$recent_activity .= 'Posted a new thread <a href="' . SITE_URL . '/thread.php/v/' . $ac['title_friendly'] . '.' . $ac['id'] . '">' . $ac['post_title'] . '</a> <small>(' . date('F j, Y', $ac['post_time']) . ')</small><hr size="1" />';
