@@ -21,7 +21,7 @@
 
           $email = $_POST['email'];
 
-          NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
+          NoCSRF::check( 'csrf_token', $_POST );
 
           if( !$email ) {
               throw new Exception ($LANG['global_form_process']['all_fields_required']);

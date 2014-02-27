@@ -25,7 +25,7 @@
       			$_POST[$parent] = clean($child);
       		}
 
-      		NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
+      		NoCSRF::check( 'csrf_token', $_POST );
       		$cont = clean($_POST['content']);
       		$time = time();
 

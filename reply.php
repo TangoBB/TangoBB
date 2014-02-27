@@ -117,7 +117,7 @@
                           throw new Exception ('Invalid CSRF token!');
                       }
                   } else {
-                      NoCSRF::check('csrf_token', $_POST, true, 60*10, true);
+                      NoCSRF::check('csrf_token', $_POST);
                   }
                   
                   $cont    = $_POST['content'];

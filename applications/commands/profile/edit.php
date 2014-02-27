@@ -18,7 +18,7 @@
               $_POST[$parent] = clean($child);
           }
           
-          NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
+          NoCSRF::check( 'csrf_token', $_POST );
           $email = $_POST['email'];
           $tz    = $_POST['timezone'];
           $pass  = $_POST['confirm_password'];

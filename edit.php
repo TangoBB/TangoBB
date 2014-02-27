@@ -112,7 +112,7 @@
           if( isset($_POST['edit']) ) {
               try {
                   
-                  NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
+                  NoCSRF::check( 'csrf_token', $_POST );
                   
                   //$con = $MYSQL->escape($_POST['content']);
                   //die($con);
