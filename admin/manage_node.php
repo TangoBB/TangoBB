@@ -39,12 +39,13 @@
           'node_locked' => $lock
       );
       $MYSQL->where('id', $id);
-      if( $MYSQL->update('{prefix}forum_node', $data) ) {
+      try {
+          $MYSQL->update('{prefix}forum_node', $data);
           $notice .= $ADMIN->alert(
               'Lock has successfully been toggled on node <strong>' . $query['0']['node_name'] . '</strong>.',
               'success'
           );
-      } else {
+      } catch (mysqli_sql_exception $e) {
           $notice .= $ADMIN->alert(
               'Error toggling lock on node <strong>' . $query['0']['node_name'] . '</strong>.',
               'danger'
@@ -59,22 +60,23 @@
       $d_node = clean($PGET->g('delete_node'));
       $MYSQL->where('id', $d_node);
       $query  = $MYSQL->get('{prefix}forum_node');
-      
+
       if( !empty($query) ) {
-          
+
           $MYSQL->where('id', $d_node);
-          if( $MYSQL->delete('{prefix}forum_node') ) {
+          try {
+              $MYSQL->delete('{prefix}forum_node');
               $notice .= $ADMIN->alert(
                   'Node <strong>' . $query['0']['node_name'] . '</strong> has been deleted!',
                   'success'
               );
-          } else {
+          } catch (mysqli_sql_exception $e) {
               $notice .= $ADMIN->alert(
                   'Error deleting node.',
                   'danger'
               );
           }
-          
+
       } else {
           $notice .= $ADMIN->alert(
               'Node does not exist!',
@@ -88,16 +90,16 @@
    */
   if( isset($_POST['change_place']) ) {
       try {
-          
+
           foreach( $_POST as $parent => $value ) {
               $_POST[$parent] = clean($value);
           }
-          
+
           NoCSRF::check( 'csrf_token', $_POST );
-          
+
           $place  = $_POST['node_place'];
           $p_node = $_POST['node_id'];
-          
+
           if( !$place or !$p_node ) {
               throw new Exception ('All fields are required!');
           } else {
@@ -105,16 +107,17 @@
                   'node_place' => $place
               );
               $MYSQL->where('id', $p_node);
-              if( $MYSQL->update('{prefix}forum_node', $data) ) {
+              try {
+                  $MYSQL->update('{prefix}forum_node', $data);
                   $notice .= $ADMIN->alert(
                       'Node place has been updated!',
                       'success'
                   );
-              } else {
+              } catch (mysqli_sql_exception $e) {
                   throw new Exception ('Error updating node place.');
               }
           }
-          
+
       } catch( Exception $e ) {
           $notice .= $ADMIN->alert(
               $e->getMessage(),

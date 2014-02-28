@@ -29,21 +29,21 @@
   }
 
   if( $PGET->g('id') ) {
-      
+
       $id    = clean($PGET->g('id'));
       $MYSQL->where('id', $id);
       $query = $MYSQL->get('{prefix}usergroups');
-      
+
       if( !empty($query) ) {
-          
+
           if( isset($_POST['update']) ) {
               try {
-                  
+
                   NoCSRF::check( 'csrf_token', $_POST );
-                  
+
                   $name   = clean($_POST['g_name']);
                   $style  = $_POST['g_style'];
-                  
+
                   if( list_permissions() == $_POST['permissions'] ) {
                       $permissions = '*';
                   } elseif( empty($_POST['permissions']) ) {
@@ -51,28 +51,29 @@
                   } else {
                       $permissions = implode(',', $_POST['permissions']);
                   }
-                  
+
                   $permissions = clean($permissions);
-                  
+
                   if( !$name or !$style ) {
                       throw new Exception ('All fields are required!');
                   } else {
-                      
+
                       $data = array(
                           'group_name' => $name,
                           'group_style' => $style,
                           'group_permissions' => $permissions
                       );
                       $MYSQL->where('id', $id);
-                      
-                      if( $MYSQL->update('{prefix}usergroups', $data) ) {
+
+                      try {
+                          $MYSQL->update('{prefix}usergroups', $data);
                           redirect(SITE_URL . '/admin/usergroups.php/notice/edit_success');
-                      } else {
+                      } catch (mysqli_sql_exception $e) {
                           throw new Exception ('Error updating usergroup.');
                       }
-                      
+
                   }
-                  
+
               } catch (Exception $e) {
                   $notice .= $ADMIN->alert(
                       $e->getMessage(),
@@ -80,9 +81,9 @@
                   );
               }
           }
-          
+
           $token = NoCSRF::generate('csrf_token');
-          
+
           echo $ADMIN->box(
               'Edit Usergroup (' . $query['0']['group_name'] . ') <p class="pull-right"><a href="' . SITE_URL . '/admin/usergroups.php" class="btn btn-default btn-xs">Back</a></p>',
               $notice .
@@ -100,11 +101,11 @@
               '',
               '12'
           );
-          
+
       } else {
           redirect(SITE_URL . '/admin');
       }
-      
+
   } else {
       redirect(SITE_URL . '/admin');
   }

@@ -28,26 +28,26 @@
   }
 
   if( $PGET->g('id') ) {
-      
+
       $id    = clean($PGET->g('id'));
       $MYSQL->where('id', $id);
       $query = $MYSQL->get('{prefix}forum_node');
-      
+
       if( !empty($query) ) {
-          
+
           if( isset($_POST['update']) ) {
               try {
-                  
+
                   foreach( $_POST as $parent => $child ) {
                       $_POST[$parent] = clean($child);
                   }
-                  
+
                   NoCSRF::check( 'csrf_token', $_POST );
-                  
+
                   $title          = $_POST['node_title'];
                   $desc           = (!$_POST['node_desc'])? '' : $_POST['node_desc'];
                   $locked         = (isset($_POST['lock_node']))? '1' : '0';
-                  
+
                   if( !$title ) {
                       throw new Exception ('All fields are required!');
                   } else {
@@ -73,17 +73,18 @@
                         'node_type' => 1
                       );
                     }
-                      
+
                       $MYSQL->where('id', $id);
-                      
-                      if( $MYSQL->update('{prefix}forum_node', $data) ) {
+
+                      try {
+                          $MYSQL->update('{prefix}forum_node', $data);
                           redirect(SITE_URL . '/admin/manage_node.php/notice/edit_success');
-                      } else {
+                      } catch (mysqli_sql_exception $e) {
                           throw new Exception ('Error updating node.');
                       }
-                      
+
                   }
-                  
+
               } catch (Exception $e) {
                   $notice .= $ADMIN->alert(
                       $e->getMessage(),
@@ -122,11 +123,11 @@
               '',
               '12'
           );
-          
+
       } else {
           redirect(SITE_URL . '/admin');
       }
-      
+
   } else {
       redirect(SITE_URL . '/admin');
   }

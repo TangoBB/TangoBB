@@ -49,7 +49,8 @@
               );
 
               $successful = false;
-              if ( $MYSQL->insert('{prefix}password_reset_requests', $data) ) {
+              try {
+                  $MYSQL->insert('{prefix}password_reset_requests', $data);
                   $to      = $email;
                   $subject = 'Password Reset';
                   $message = 'You have recently requested a password reset on ' . $TANGO->data['site_name'] . '. To set a new password, please use the following URL: ' . SITE_URL . '/members.php/cmd/resetpassword/token/' . urlencode($reset_token);
@@ -57,6 +58,8 @@
                              'Reply-To: ' . $TANGO->data['site_email'];
 
                   $successful = mail($to, $subject, $message, $headers);
+              } catch (mysqli_sql_exception $e) {
+                  $successful = false;
               }
 
               if ( $successful ) {

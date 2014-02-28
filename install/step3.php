@@ -45,9 +45,10 @@
                     'site_email' => $email
                 );
 
-                if( $MYSQL->insert('{prefix}generic', $data) ) {
+                try {
+                    $MYSQL->insert('{prefix}generic', $data);
                     echo '<div class="alert alert-success">Success! <a href="step4.php">Continue</a>.</div>';
-                } else {
+                } catch (mysqli_sql_exception $e) {
                     throw new Exception ('Error adding data into database.');
                 }
 

@@ -33,13 +33,14 @@
               );
               $MYSQL->where('id', $TANGO->sess->data['id']);
 
-              if( $MYSQL->update('{prefix}users', $data) ) {
+              try {
+                  $MYSQL->update('{prefix}users', $data);
                   $notice .= $TANGO->tpl->entity(
                       'success_notice',
                       'content',
                       $LANG['global_form_process']['save_success']
                   );
-              } else {
+              } catch (mysqli_sql_exception $e) {
                   throw new Exception ($LANG['bb']['profile']['error_updating_password']);
               }
 

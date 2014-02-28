@@ -32,16 +32,16 @@
    */
   if( isset($_POST['change_place']) ) {
       try {
-          
+
           foreach( $_POST as $parent => $value ) {
               $_POST[$parent] = clean($value);
           }
-          
+
           NoCSRF::check( 'csrf_token', $_POST );
-          
+
           $place = $_POST['cat_place'];
           $p_cat = $_POST['cat_id'];
-          
+
           if( !$place or !$p_cat ) {
               throw new Exception ('All fields are required!');
           } else {
@@ -49,16 +49,17 @@
                   'category_place' => $place
               );
               $MYSQL->where('id', $p_cat);
-              if( $MYSQL->update('{prefix}forum_category', $data) ) {
+              try {
+                  $MYSQL->update('{prefix}forum_category', $data);
                   $notice .= $ADMIN->alert(
                       'Category place has been updated!',
                       'success'
                   );
-              } else {
+              } catch (mysqli_sql_exception $e) {
                   throw new Exception ('Error updating category place.');
               }
           }
-          
+
       } catch( Exception $e ) {
           $notice .= $ADMIN->alert(
               $e->getMessage(),
@@ -74,22 +75,23 @@
       $d_cat = clean($PGET->g('delete_category'));
       $MYSQL->where('id', $d_cat);
       $query = $MYSQL->get('{prefix}forum_category');
-      
+
       if( !empty($query) ) {
-          
+
           $MYSQL->where('id', $d_cat);
-          if( $MYSQL->delete('{prefix}forum_category') ) {
+          try {
+              $MYSQL->delete('{prefix}forum_category');
               $notice .= $ADMIN->alert(
                   'Category <strong>' . $query['0']['category_title'] . '</strong> has been deleted!',
                   'success'
               );
-          } else {
+          } catch (mysqli_sql_exception $e) {
               $notice .= $ADMIN->alert(
                   'Error deleting category.',
                   'danger'
               );
           }
-          
+
       } else {
           $notice .= $ADMIN->alert(
               'Category does not exist!',

@@ -16,14 +16,14 @@
   }
 
   if( $PGET->g('thread') ) {
-      
+
       $thread = clean($PGET->g('thread'));
       $MYSQL->where('post_type', '1');
       $MYSQL->where('id', $thread);
       $query = $MYSQL->get('{prefix}forum_posts');
-      
+
       if( !empty($query) ) {
-          
+
           $node        = node($query['0']['origin_node']);
           $breadcrumbs = $TANGO->tpl->entity(
             'breadcrumbs_before',
@@ -106,12 +106,12 @@
               $MYSQL->where('id', $PGET->g('quote'));
               $q_query = $MYSQL->get('{prefix}forum_posts');
           }
-          
+
           if( isset($_POST['reply']) ) {
               try {
-                  
+
                   //echo $_POST['csrf_token'] . '<br />' . $_SESSION['csrf_csrf_token'];
-                  
+
                   if( !empty($q_query) ) {
                       if( $_POST['csrf_token'] !== $_SESSION['tango_alt_csrf'] ) {
                           throw new Exception ('Invalid CSRF token!');
@@ -119,22 +119,22 @@
                   } else {
                       NoCSRF::check('csrf_token', $_POST);
                   }
-                  
+
                   $cont    = $_POST['content'];
                   $cont    = ( !empty($q_query) )? '[quote]' . $PGET->g('quote') . '[/quote]' . $cont : $cont;
-                  
+
 				  $data = array($TANGO->sess->data['id']);
                   $c_query = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 1", $data);
-                  
+
                   if( !$cont ) {
                       throw new Exception ($LANG['global_form_process']['all_fields_required']);
                   } elseif( $c_query['0']['post_content'] == $cont ) {
                       throw new Exception ($LANG['global_form_process']['different_message_previous']);
                   } else {
-                      
+
                       $origin = thread($thread);
                       $time   = time();
-                      
+
                       $data = array(
                           'post_content' => $cont,
                           'post_time' => $time,
@@ -143,23 +143,25 @@
                           'origin_thread' => $thread,
                           'post_type' => '2'
                       );
-                      
-                      if( $MYSQL->insert('{prefix}forum_posts', $data) ) {
+
+                      try {
+                          $MYSQL->insert('{prefix}forum_posts', $data);
                           $t_data = array(
                               'last_updated'=> $time
                           );
                           $MYSQL->where('id', $thread);
-                          if( $MYSQL->update('{prefix}forum_posts', $t_data) ) {
+                          try {
+                              $MYSQL->update('{prefix}forum_posts', $t_data);
                               redirect(SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id']);
-                          } else {
+                          } catch (mysqli_sql_exception $e) {
                               redirect(SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id']);
                           }
-                      } else {
+                      } catch (mysqli_sql_exception $e) {
                           throw new Exception ($LANG['global_form_process']['error_replying_thread']);
                       }
-                      
+
                   }
-                  
+
               } catch ( Exception $e ) {
                   $notice .= $TANGO->tpl->entity(
                       'danger_notice',
@@ -168,13 +170,13 @@
                   );
               }
           }
-          
+
           if( !empty($q_query) ) {
               define('CSRF_TOKEN', alt_csrf());
           } else {
               define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
           }
-          
+
           $quote_user = ( !empty($q_query) )? $TANGO->user($q_query['0']['post_user']) : '';
           $quote_post = ( !empty($q_query) )? $TANGO->tpl->entity(
               'quote_post',
@@ -187,7 +189,7 @@
                   $quote_user['username']
               )
           ) : '';
-             
+
           $content = $TANGO->tpl->entity(
               'reply_thread_page',
               array(
@@ -213,9 +215,9 @@
                   SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id']
               )
           );
-          
-          
-          
+
+
+
           $TANGO->tpl->addParam(
               array(
                   'page_title',
@@ -226,11 +228,11 @@
                   $notice . $content
               )
           );
-          
+
       } else {
           redirect(SITE_URL . '/404.php');
       }
-      
+
   } else {
       redirect(SITE_URL . '/404.php');
   }

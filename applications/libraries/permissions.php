@@ -6,7 +6,7 @@
   if( !defined('BASEPATH') ){ die(); }
 
   class Library_Permissions {
-      
+
       /*
        * Checks if the user has a certain permission.
        * SUCCESS - return true;
@@ -39,16 +39,17 @@
           $data = array(
             'permission_name' => $name
           );
-          if( $MYSQL->insert('{prefix}permissions', $data) ) {
+          try {
+              $MYSQL->insert('{prefix}permissions', $data);
             return true;
-          } else {
+          } catch (mysqli_sql_exception $e) {
             return false;
           }
         } else {
           return false;
         }
       }
-      
+
   }
 
 ?>

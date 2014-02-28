@@ -8,13 +8,13 @@
   $TANGO->tpl->getTpl('page');
 
   if( $PGET->g('node') ) {
-      
+
       $node  = clean($PGET->g('node'));
       $MYSQL->where('id', $node);
       $query = $MYSQL->get('{prefix}forum_node');
-      
+
       if( !empty($query) ) {
-          
+
           if( $query['0']['node_locked'] == 1 ) {
             if( !$TANGO->perm->check('access_moderation') ) {
               redirect(SITE_URL . '/404.php');
@@ -87,30 +87,30 @@
 
           $notice  = '';
           $content = '';
-          
+
           if( isset($_POST['create']) ) {
               try {
-                  
+
                   NoCSRF::check( 'csrf_token', $_POST );
                   $thread_title = clean($_POST['title']);
                   //die($_POST['content']);
                   $thread_cont  = $_POST['content'];
                   //die($thread_title);
-                  
+
 				  $data = array($TANGO->sess->data['id']);
                   $c_query      = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 1", $data);
-                  
+
                   if( !$thread_title or !$thread_cont ) {
                       throw new Exception ($LANG['global_form_process']['all_fields_required']);
                   } elseif( $c_query['0']['post_content'] == $thread_cont ) {
                       throw new Exception ($LANG['global_form_process']['different_message_previous']);
                   } else {
-                      
+
                       $friendly_url = title_friendly($thread_title);
                       $tags         = explode('_', $friendly_url);
                       $tags         = implode(',', $tags);
                       $time         = time();
-                      
+
                       $data = array(
                           'post_title' => $thread_title,
                           'title_friendly' => $friendly_url,
@@ -122,12 +122,13 @@
                           'post_type' => '1',
                           'last_updated' => $time
                       );
-                      
-                      if( $MYSQL->insert('{prefix}forum_posts', $data) ) {
-                          
+
+                      try {
+                          $MYSQL->insert('{prefix}forum_posts', $data);
+
                           $MYSQL->where('post_time', $time);
                           $tid = $MYSQL->get('{prefix}forum_posts');
-                          
+
                           //redirect(SITE_URL . '/thread.php/v/' . $friendly_url . '.' $tid['0']['id']);
                           $notice .= $TANGO->tpl->entity(
                               'success_notice',
@@ -136,13 +137,13 @@
                           );
                           //die(SITE_URL . '/thread.php/v/' . $friendly_url . '.' . $tid['0']['id']);
                           redirect(SITE_URL . '/thread.php/v/' . $friendly_url . '.' . $tid['0']['id']);
-                          
-                      } else {
+
+                      } catch (mysqli_sql_exception $e) {
                           throw new Exception ($LANG['global_form_process']['error_creating_thread']);
                       }
-                      
+
                   }
-                  
+
               } catch( Exception $e ) {
                   $notice .= $TANGO->tpl->entity(
                       'danger_notice',
@@ -151,10 +152,10 @@
                   );
               }
           }
-          
+
           define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
           define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
-          
+
           $content .= $TANGO->tpl->entity(
               'create_thread',
               array(
@@ -178,7 +179,7 @@
                   'create'
               )
           );
-          
+
           $TANGO->tpl->addParam(
               array(
                   'page_title',
@@ -189,11 +190,11 @@
                   $notice . $content
               )
           );
-          
+
       } else {
           redirect(SITE_URL);
       }
-      
+
   } else {
       redirect(SITE_URL);
   }

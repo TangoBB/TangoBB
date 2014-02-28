@@ -6,9 +6,9 @@
   if( !defined('BASEPATH') ){ die(); }
 
   class Tango_User {
-      
+
       private $user_links = array();
-      
+
       public function __construct() {
       }
 
@@ -29,9 +29,10 @@
           );
           $MYSQL->where('id', $user);
 
-          if( $MYSQL->update('{prefix}users', $data) ) {
+          try {
+            $MYSQL->update('{prefix}users', $data);
             return true;
-          } else {
+          } catch (mysqli_sql_exception $e) {
             return false;
           }
 
@@ -53,9 +54,10 @@
             'username' => $username
           );
           $MYSQL->where('id', $user);
-          if( $MYSQL->update('{prefix}users', $data) ) {
+          try {
+            $MYSQL->update('{prefix}users', $data);
             return true;
-          } else {
+          } catch (mysqli_sql_exception $e) {
             return false;
           }
 
@@ -63,7 +65,7 @@
           return false;
         }
       }
-      
+
       /*
        * Return user links as an array.
        * For template use.
@@ -71,7 +73,7 @@
       function userLinks() {
           return $this->user_links;
       }
-      
+
       /*
        * Add link to the user links.
        */
@@ -80,7 +82,7 @@
               $this->user_links[$name] = $href;
           }
       }
-      
+
       /*
        * User messages.
        */
@@ -111,8 +113,8 @@
           }
           return $return;
       }
-      
-      
+
+
   }
 
 ?>

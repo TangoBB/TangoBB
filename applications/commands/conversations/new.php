@@ -50,7 +50,8 @@
             'message_type' => 1
           );
 
-          if( $MYSQL->insert('{prefix}messages', $data) ) {
+          try {
+              $MYSQL->insert('{prefix}messages', $data);
             $notice .= $TANGO->tpl->entity(
               'success_notice',
               'content',
@@ -60,7 +61,7 @@
                 $LANG['bb']['conversations']['message_sent']
               )
             );
-          } else {
+          } catch (mysqli_sql_exception $e) {
             throw new Exception (
               str_replace(
                 '%username%',

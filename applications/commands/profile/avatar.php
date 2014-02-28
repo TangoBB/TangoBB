@@ -11,9 +11,9 @@
   $notice     = '';
 
   if( isset($_POST['edit']) ) {
-      
+
       try {
-          
+
           $mime  = array(
               'image/png',
               'image/jpeg',
@@ -22,7 +22,7 @@
           );
 
           $gravatar = ( isset($_POST['gravatar']) )? '1' : '0';
-          
+
          if( $gravatar == "1" ) {
 
              $data = array(
@@ -30,13 +30,14 @@
              );
              $MYSQL->where('id', $TANGO->sess->data['id']);
 
-             if( $MYSQL->update('{prefix}users', $data) ) {
+             try {
+                 $MYSQL->update('{prefix}users', $data);
                  $notice .= $TANGO->tpl->entity(
                     'success_notice',
                     'content',
                     $LANG['bb']['profile']['successful_adding_gravatar']
                  );
-             } else {
+             } catch (mysqli_sql_exception $e) {
                  throw new Exception ($LANG['bb']['profile']['error_adding_gravatar']);
              }
 
@@ -45,34 +46,35 @@
          } elseif( !in_array($_FILES['avatar']['type'], $mime) ) {
              throw new Exception ($LANG['global_form_process']['invalid_file_format']);
          } else {
-             
+
              $image   = $_FILES['avatar'];
              $bin_dir = 'public/img/bin/' . $TANGO->sess->data['id'] . '.png';
              //touch($bin_dir);
              copy($image['tmp_name'], $bin_dir);
              list($width, $height, $type, $attr) = getimagesize($bin_dir);
-             
+
              if( $width > 500 && $height > 500 ) {
                  throw new Exception ($LANG['global_form_process']['img_dimension_limit']);
              } else {
-                 
+
                  unlink($bin_dir);
                  $avatar_dir = 'public/img/avatars/' . $TANGO->sess->data['id'] . '.png';
                  if( copy($image['tmp_name'], $avatar_dir) ) {
-                     
+
                      $data = array(
                          'user_avatar' => $TANGO->sess->data['id'] . '.png',
                          'avatar_type' => '0'
                      );
                      $MYSQL->where('id', $TANGO->sess->data['id']);
-                     
-                     if( $MYSQL->update('{prefix}users', $data) ) {
+
+                     try {
+                         $MYSQL->update('{prefix}users', $data);
                          $notice .= $TANGO->tpl->entity(
                              'success_notice',
                              'content',
                              $LANG['bb']['profile']['successful_upload_avatar']
                          );
-                     } else {
+                     } catch (mysqli_sql_exception $e) {
                          $notice .= $TANGO->tpl->entity(
                              'success_notice',
                              'content',
@@ -82,11 +84,11 @@
                  } else {
                      throw new Exception ($LANG['bb']['profile']['error_upload_avatar']);
                  }
-                 
+
              }
-             
+
          }
-          
+
       } catch( Exception $e ) {
           $notice .= $TANGO->tpl->entity(
               'danger_notice',
@@ -94,7 +96,7 @@
               $e->getMessage()
           );
       }
-      
+
   }
 
   $gravatar_checked = ( $TANGO->sess->data['avatar_type'] == "1" )? ' checked' : '';
