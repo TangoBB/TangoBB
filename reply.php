@@ -144,7 +144,8 @@
                           'post_type' => '2'
                       );
 
-                      if( $MYSQL->insert('{prefix}forum_posts', $data) ) {
+                      try {
+                          $MYSQL->insert('{prefix}forum_posts', $data);
                           $t_data = array(
                               'last_updated'=> $time
                           );
@@ -155,7 +156,7 @@
                           } catch (mysqli_sql_exception $e) {
                               redirect(SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id']);
                           }
-                      } else {
+                      } catch (mysqli_sql_exception $e) {
                           throw new Exception ($LANG['global_form_process']['error_replying_thread']);
                       }
 

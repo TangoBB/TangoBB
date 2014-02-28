@@ -34,22 +34,23 @@
       $d_u   = clean($PGET->g('delete_usergroup'));
       $MYSQL->where('id', $d_u);
       $query = $MYSQL->get('{prefix}usergroups');
-      
+
       if( !empty($query) ) {
-          
+
           $MYSQL->where('id', $d_u);
-          if( $MYSQL->delete('{prefix}usergroups') ) {
+          try {
+              $MYSQL->delete('{prefix}usergroups');
               $notice .= $ADMIN->alert(
                   'Usergroup <strong>' . $query['0']['group_name'] . '</strong> has been deleted!',
                   'success'
               );
-          } else {
+          } catch (mysqli_sql_exception $e) {
               $notice .= $ADMIN->alert(
                   'Error deleting usergroup.',
                   'danger'
               );
           }
-          
+
       } else {
           $notice .= $ADMIN->alert(
               'Usergroup does not exist!',

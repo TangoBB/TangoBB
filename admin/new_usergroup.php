@@ -28,11 +28,11 @@
 
   if( isset($_POST['new']) ) {
       try {
-          
+
           NoCSRF::check( 'csrf_token', $_POST );
           $name  = clean($_POST['g_name']);
           $style = $_POST['g_style'];
-          
+
           if( list_permissions() == $_POST['permissions'] ) {
               $permissions = '*';
           } elseif( empty($_POST['permissions']) ) {
@@ -40,9 +40,9 @@
           } else {
               $permissions = implode(',', $_POST['permissions']);
           }
-          
+
           $permissions = clean($permissions);
-          
+
           if( !$name or !$style ) {
               throw new Exception ('All fields are required!');
           } else {
@@ -51,14 +51,15 @@
                   'group_style' => $style,
                   'group_permissions' => $permissions
               );
-              
-              if( $MYSQL->insert('{prefix}usergroups', $data) ) {
+
+              try {
+                  $MYSQL->insert('{prefix}usergroups', $data);
                   redirect(SITE_URL . '/admin/usergroups.php/notice/create_success');
-              } else {
+              } catch (mysqli_sql_exception $e) {
                   throw new Exception ('Error creating usergroup.');
               }
           }
-          
+
       } catch ( Exception $e ) {
           $notice .= $ADMIN->alert(
               $e->getMessage(),
@@ -68,7 +69,7 @@
   }
 
   $token = NoCSRF::generate('csrf_token');
-   
+
   echo $ADMIN->box(
        'New Usergroup <p class="pull-right"><a href="' . SITE_URL . '/admin/usergroups.php" class="btn btn-default btn-xs">Back</a></p>',
        $notice .

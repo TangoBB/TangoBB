@@ -9,14 +9,14 @@
   if( $TANGO->sess->isLogged ){ redirect(SITE_URL); } //If user is logged in.
 
   $notice = '';
-      
+
         if( isset($_POST['register']) ) {
             try {
-                
+
                 foreach( $_POST as $parent => $child ) {
                     $_POST[$parent] = clean($child);
                 }
-                
+
                 NoCSRF::check('csrf_token', $_POST);//CSRF Checking.
                 $username   = $_POST['username'];
                 $password   = $_POST['password'];
@@ -24,7 +24,7 @@
                 $email      = $_POST['email'];
                 //preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $email)
                 $time       = time();
-                
+
                 if( !$username or !$password or !$a_password or !$email ) {
                     throw new Exception ($LANG['global_form_process']['all_fields_required']);
                 } elseif( $password !== $a_password ) {
@@ -36,7 +36,7 @@
                 } elseif( emailTaken($email) ) {
                     throw new Exception ($LANG['global_form_process']['email_used']);
                 } else {
-                    
+
                     if( $TANGO->data['register_email_activate'] == "1" ) {
                         $data = array(
                             'username' => $username,
@@ -54,12 +54,13 @@
                             'user_disabled' => 0
                         );
                     }
-                    
-                    if( $MYSQL->insert('{prefix}users', $data) ) {
-                        
+
+                    try {
+                        $MYSQL->insert('{prefix}users', $data);
+
                         $email = 'You have registered on ' . $TANGO->data['site_name'] . '<br />
                                   Click <a href="' . SITE_URL . '/members.php/activate/code/' . $time . '">here</a> to activate your account.';
-                        
+
                         if( $TANGO->data['register_email_activate'] == "1" ) {
                             $MAIL->send('Account Activation', $email, 'Account Activation', $email);
                             $notice .= $TANGO->tpl->entity(
@@ -78,13 +79,13 @@
                                 $LANG['bb']['members']['register_successful']
                             );
                         }
-                        
-                    } else {
+
+                    } catch (mysqli_sql_exception $e) {
                         throw new Exception ($LANG['bb']['members']['error_register']);
                     }
-                    
+
                 }
-                
+
             } catch (Exception $e) {
                 $notice .= $TANGO->tpl->entity(
                     'danger_notice',
@@ -93,7 +94,7 @@
                 );
             }
         }
-        
+
         define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
         //define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
         /*$content = '<form action="" method="POST">

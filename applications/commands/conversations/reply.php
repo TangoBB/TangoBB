@@ -43,9 +43,10 @@
       				'message_type' => 2
       			);
 
-      			if( $MYSQL->insert('{prefix}messages', $data) ) {
+      			try {
+                    $MYSQL->insert('{prefix}messages', $data);
       				redirect(SITE_URL . '/conversations.php/cmd/view/v/' . $query['0']['id']);
-      			} else {
+      			} catch (mysqli_sql_exception $e) {
       				throw new Exception ($LANG['bb']['conversations']['error_sending_alt']);
       			}
 

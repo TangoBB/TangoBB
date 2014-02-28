@@ -35,9 +35,10 @@
                   'user_group' => ADMIN_ID
               );
 
-              if( $MYSQL->insert('{prefix}users', $data) ) {
+              try {
+                  $MYSQL->insert('{prefix}users', $data);
                   echo '<div class="alert alert-success">TangoBB has been successfully installed! Please delete the installation folder.</div>';
-              } else {
+              } catch (mysqli_sql_exception $e) {
                   throw new Exception ('Error inserting user into database!');
               }
 

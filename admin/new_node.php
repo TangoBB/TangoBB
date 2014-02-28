@@ -25,21 +25,21 @@
 
   if( isset($_POST['create']) ) {
       try {
-          
+
           foreach( $_POST as $parent => $child ) {
               $_POST[$parent] = clean($child);
           }
-          
+
           NoCSRF::check( 'csrf_token', $_POST );
-          
+
           $title  = $_POST['node_title'];
           $desc   = (!$_POST['node_desc'])? '' : $_POST['node_desc'];
           $locked = (isset($_POST['lock_node']))? '1' : '0';
-          
+
           if( !$title ) {
               throw new Exception ('All fields are required!');
           } else {
-              
+
               if( substr_count($_POST['node_parent'], '&amp;') > 0 ) {
                 $explode = explode('&amp;', $_POST['node_parent']);
                 $parent  = node($explode['1']);
@@ -60,15 +60,16 @@
                   'node_type' => 1
                 );
               }
-              
-              if( $MYSQL->insert('{prefix}forum_node', $data) ) {
+
+              try {
+                  $MYSQL->insert('{prefix}forum_node', $data);
                   redirect(SITE_URL . '/admin/manage_node.php/notice/create_success');
-              } else {
+              } catch (mysqli_sql_exception $e) {
                   throw new Exception ('Error creating forum category.');
               }
-              
+
           }
-          
+
       } catch ( Exception $e ) {
           $notice .= $ADMIN->alert(
               $e->getMessage(),
@@ -100,7 +101,7 @@
        </form>',
               '',
               '12'
-          );  
+          );
 
   require_once('template/bot.php');
 ?>

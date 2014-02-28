@@ -3,11 +3,11 @@
   /*
    * Terminal Library
    */
- 
+
   if( !defined('BASEPATH') ){ die(); }
 
   class Library_Terminal {
-      
+
       /*
        * Check is command exists.
        */
@@ -35,13 +35,14 @@
           'command_syntax' => $syntax,
           'run_function' => $function
         );
-        if( $MYSQL->insert('{prefix}terminal', $data) ) {
+        try {
+            $MYSQL->insert('{prefix}terminal', $data);
           return true;
-        } else {
+        } catch (mysqli_sql_exception $e) {
           return false;
         }
       }
-      
+
   }
 
 ?>

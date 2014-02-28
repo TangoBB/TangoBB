@@ -79,12 +79,13 @@
       if( !empty($query) ) {
 
           $MYSQL->where('id', $d_cat);
-          if( $MYSQL->delete('{prefix}forum_category') ) {
+          try {
+              $MYSQL->delete('{prefix}forum_category');
               $notice .= $ADMIN->alert(
                   'Category <strong>' . $query['0']['category_title'] . '</strong> has been deleted!',
                   'success'
               );
-          } else {
+          } catch (mysqli_sql_exception $e) {
               $notice .= $ADMIN->alert(
                   'Error deleting category.',
                   'danger'

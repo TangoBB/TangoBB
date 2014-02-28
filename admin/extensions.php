@@ -35,7 +35,9 @@
             'extension_folder' => $ext
           );
 
-          if( !$MYSQL->insert('{prefix}extensions', $data) ) {
+          try {
+              $MYSQL->insert('{prefix}extensions', $data);
+          } catch (mysqli_sql_exception $e) {
             $notice .= $ADMIN->alert(
               'Error installing extension.',
               'danger'
@@ -91,7 +93,9 @@
         $setup = new Extension_Setup();
 
         $MYSQL->where('extension_folder', $ext);
-        if( !$MYSQL->delete('{prefix}extensions') ) {
+        try {
+            $MYSQL->delete('{prefix}extensions');
+        } catch (mysqli_sql_exception $e) {
           $notice .= $ADMIN->alert(
             'Error installing extension.',
             'danger'

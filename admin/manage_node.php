@@ -64,12 +64,13 @@
       if( !empty($query) ) {
 
           $MYSQL->where('id', $d_node);
-          if( $MYSQL->delete('{prefix}forum_node') ) {
+          try {
+              $MYSQL->delete('{prefix}forum_node');
               $notice .= $ADMIN->alert(
                   'Node <strong>' . $query['0']['node_name'] . '</strong> has been deleted!',
                   'success'
               );
-          } else {
+          } catch (mysqli_sql_exception $e) {
               $notice .= $ADMIN->alert(
                   'Error deleting node.',
                   'danger'

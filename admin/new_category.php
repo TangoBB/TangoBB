@@ -9,33 +9,34 @@
 
   if( isset($_POST['create']) ) {
       try {
-          
+
           foreach( $_POST as $parent => $child ) {
               $_POST[$parent] = clean($child);
           }
-          
+
           NoCSRF::check( 'csrf_token', $_POST );
-          
+
           $title = $_POST['cat_title'];
           $desc  = (!$_POST['cat_desc'])? '' : $_POST['cat_desc'];
-          
+
           if( !$title ) {
               throw new Exception ('All fields are required!');
           } else {
-              
+
               $data = array(
                   'category_title' => $title,
                   'category_desc' => $desc
               );
-              
-              if( $MYSQL->insert('{prefix}forum_category', $data) ) {
+
+              try {
+                  $MYSQL->insert('{prefix}forum_category', $data);
                   redirect(SITE_URL . '/admin/manage_category.php/notice/create_success');
-              } else {
+              } catch (mysqli_sql_exception $e) {
                   throw new Exception ('Error creating forum category.');
               }
-              
+
           }
-          
+
       } catch ( Exception $e ) {
           $notice .= $ADMIN->alert(
               $e->getMessage(),
@@ -60,7 +61,7 @@
        </form>',
               '',
               '12'
-          );  
+          );
 
   require_once('template/bot.php');
 ?>
