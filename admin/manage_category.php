@@ -37,7 +37,7 @@
               $_POST[$parent] = clean($value);
           }
           
-          NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
+          NoCSRF::check( 'csrf_token', $_POST );
           
           $place = $_POST['cat_place'];
           $p_cat = $_POST['cat_id'];

@@ -39,7 +39,7 @@
           if( isset($_POST['update']) ) {
               try {
                   
-                  NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
+                  NoCSRF::check( 'csrf_token', $_POST );
                   
                   $name   = clean($_POST['g_name']);
                   $style  = $_POST['g_style'];

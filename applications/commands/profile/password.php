@@ -18,7 +18,7 @@
               $_POST[$parent] = clean($child);
           }
 
-          NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
+          NoCSRF::check( 'csrf_token', $_POST );
           $new_password = $_POST['new_password'];
           $con_password = $_POST['current_password'];
 

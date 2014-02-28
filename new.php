@@ -91,7 +91,7 @@
           if( isset($_POST['create']) ) {
               try {
                   
-                  NoCSRF::check( 'csrf_token', $_POST, true, 60*10, true );
+                  NoCSRF::check( 'csrf_token', $_POST );
                   $thread_title = clean($_POST['title']);
                   //die($_POST['content']);
                   $thread_cont  = $_POST['content'];
