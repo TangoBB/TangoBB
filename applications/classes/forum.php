@@ -43,7 +43,7 @@
           global $MYSQL, $TANGO;
 
           $return = '';
-		  $data = array($category);
+      $data = array($category);
           $query  = $MYSQL->rawQuery("SELECT * FROM
                                    {prefix}forum_node
                                    WHERE
@@ -90,8 +90,8 @@
         global $MYSQL, $TANGO;
 
           $return = '';
-		  $data = array($parent_forum);
-          $query  = $MYSQL->query("SELECT * FROM
+      $data = array($parent_forum);
+          $query  = $MYSQL->rawQuery("SELECT * FROM
                                    {prefix}forum_node
                                    WHERE
                                    parent_node = ?
@@ -134,9 +134,9 @@
           $MYSQL->where('parent_node', $forum);
           $query = $MYSQL->get('{prefix}forum_node');
           $where = 'NULL';
-		  $data = array();
+      $data = array();
           foreach( $query as $wh ) {
-		    $where .= ',?';
+        $where .= ',?';
             $data[] = $wh['id'];
           }
 
@@ -154,7 +154,7 @@
                                    DESC
                                    LIMIT 1", $data);
             } else {
-			  $data = array($forum, $data[0]);
+        $data = array($forum, $data[0]);
               $query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
@@ -167,7 +167,7 @@
                                   LIMIT 1", $data);
             }
           } else {
-		    $data = array($forum);
+        $data = array($forum);
             $query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
@@ -216,7 +216,7 @@
           global $MYSQL, $TANGO;
 
           $return = '';
-		  $data = array($forum);
+      $data = array($forum);
           $query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
