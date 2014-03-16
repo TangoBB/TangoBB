@@ -127,7 +127,11 @@
           global $MYSQL;
 
           $MYSQL->where('user_email', $email);
-          $query      = $MYSQL->get('{prefix}users');
+          $a         = $MYSQL->get('{prefix}users');
+          $MYSQL->where('username', $email);
+          $b         = $MYSQL->get('{prefix}users');
+
+          $query     = ( $a )? $a : $b;
 
           $session_id = randomHexBytes(16);
           $time       = time();

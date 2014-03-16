@@ -270,6 +270,11 @@
       global $MYSQL;
       $MYSQL->where('user_email', $email);
       $a                    = $MYSQL->get('{prefix}users');
+      $MYSQL->where('username', $email);
+      $b                    = $MYSQL->get('{prefix}users');
+
+      $a                    = ( $a )? $a : $b;
+
       $return['unban_time'] = $a['0']['unban_time'];
       $return['ban_reason'] = $a['0']['ban_reason'];
 
@@ -284,6 +289,11 @@
       $MYSQL->where('user_email', $email);
       $a = $MYSQL->get('{prefix}users');
 
+      $MYSQL->where('username', $email);
+      $b = $MYSQL->get('{prefix}users');
+
+      $a = ( $a )? $a : $b;
+
       if( $a['0']['user_disabled'] == "0" ) {
           return true;
       } else {
@@ -297,8 +307,11 @@
 
       $MYSQL->where('user_email', $email);
       $a = $MYSQL->get('{prefix}users');
-      if( $a ) {
-          $user_data = $a[0];
+
+      $MYSQL->where('username', $email);
+      $b = $MYSQL->get('{prefix}users');
+      if( $a or $b ) {
+          $user_data = ( $a )? $a[0] : $b[0];
           $hash = $user_data['user_password'];
 
           /*
