@@ -109,8 +109,8 @@
   $TANGO->lib_parse  = new Library_Parse();
 
   //Mail Library
-  require_once(PATH_A . LIB . 'mail.php');
-  $MAIL = new Library_Mail();
+  require_once(PATH_A . CLA . 'mail.php');
+  $MAIL = new SimpleMail();
 
   require_once(PATH_A . LIB . 'nocsrf.php');
 

@@ -55,7 +55,7 @@
           $MYSQL->where('post_type', '2');
           $query = $MYSQL->get('{prefix}forum_posts');*/
           $id    = (int) $id;
-		  $data = array($id);
+		      $data = array($id);
           $query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
@@ -66,6 +66,12 @@
                                   post_time
                                   DESC", $data);
           if( !empty($query) ) {
+
+              $MYSQL->where('origin_thread', $query['0']['origin_thread']);
+              $q      = $MYSQL->get('{prefix}forum_posts');
+
+              $q      = (count($q) / POST_RESULTS_PER_PAGE);
+              $page   = ( $q > 1 )? '/page/' . ceil($q) . '/' : '';
               
               $user   = $TANGO->user($query['0']['post_user']);
               $return = $TANGO->tpl->entity(
@@ -78,7 +84,7 @@
                   array(
                       $user['user_avatar'],
                       '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a>',
-                      '<small><a href="' . $url . '#post-' . $query['0']['id'] . '"><span data-toggle="tooltip" data-placement="bottom" title="' . date('F j, Y', $query['0']['post_time']) . '">' . date('l h:i A', $query['0']['post_time']) . '</span></a></small>',
+                      '<small><a href="' . $url . $page . '#post-' . $query['0']['id'] . '"><span data-toggle="tooltip" data-placement="bottom" title="' . date('F j, Y', $query['0']['post_time']) . '">' . date('l h:i A', $query['0']['post_time']) . '</span></a></small>',
                   )
               );
               

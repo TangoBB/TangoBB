@@ -2,6 +2,7 @@
 
   /*
    * Account Activation Mailing Library of TangoBB
+   * This library is officially obsolete since TangoBB 1.3
    */
   if( !defined('BASEPATH') ){ die(); }
 

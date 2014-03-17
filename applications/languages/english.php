@@ -115,6 +115,17 @@
       'error_saving' => 'Error saving. Try again later.',
       'invalid_password' => 'Current password is invalid!'
     ),
+    //Email Variables.
+    'email' => array(
+      'forgot_password' => array(
+        'subject' => 'Password Reset',
+        'content' => '<p>You have recently requested a password reset on %site_name%.</p><p>To set a new password, please use the following URL: %token_url%</p>'
+      ),
+      'register' => array(
+        'subject' => 'Account Activation',
+        'content' => '<p>You have registered on %site_name%</p><p>Click <a href="%activate_url%">here</a> to activate your account.</p>'
+      )
+    ),
   	//Moderator Panel
   	'mod' => array(
       'ban' => array(

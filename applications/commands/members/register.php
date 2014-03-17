@@ -58,21 +58,46 @@
                     try {
                         $MYSQL->insert('{prefix}users', $data);
 
-                        $email = 'You have registered on ' . $TANGO->data['site_name'] . '<br />
-                                  Click <a href="' . SITE_URL . '/members.php/activate/code/' . $time . '">here</a> to activate your account.';
+                        /*$email = 'You have registered on ' . $TANGO->data['site_name'] . '<br />
+                                  Click <a href="' . SITE_URL . '/members.php/activate/code/' . $time . '">here</a> to activate your account.';*/
 
                         if( $TANGO->data['register_email_activate'] == "1" ) {
-                            $MAIL->send('Account Activation', $email, 'Account Activation', $email);
-                            $notice .= $TANGO->tpl->entity(
+                            //$MAIL->send('Account Activation', $email, 'Account Activation', $email);
+
+                            $send = $MAIL->setTo($email, $username)
+                                     ->setSubject($LANG['email']['forgot_password']['subject'])
+                                     ->addGenericHeader('X-Mailer', 'PHP/' . phpversion())
+                                     ->addGenericHeader('Content-Type', 'text/html; charset="utf-8"')
+                                     ->setMessage(
+                                      str_replace(
+                                        array(
+                                          '%site_name%',
+                                          '%activate_url%'
+                                        ),
+                                        array(
+                                          $TANGO->data['site_name'],
+                                          SITE_URL . '/members.php/activate/code/' . $time
+                                        ),
+                                        $LANG['email']['register']['content']
+                                      )
+                                     )
+                                     ->setWrap(100)
+                                     ->send();
+
+                            if( $send ) {
+                              $notice .= $TANGO->tpl->entity(
                                 'success_notice',
                                 'content',
                                 $LANG['bb']['members']['register_successful_email']
-                            );
+                              );
+                            } else {
+                              throw new Exception ($LANG['bb']['members']['error_register']);
+                            }
                         } else {
                             $MYSQL->where('username', $username);
                             $l_q     = $MYSQL->get('{prefix}users');
                             $TANGO->sess->assign($l_q['0']['user_email'], true);
-                            header('refresh:5;url=' . SITE_URL);
+                            header('refresh:3;url=' . SITE_URL . '/forum.php');
                             $notice .= $TANGO->tpl->entity(
                                 'success_notice',
                                 'content',

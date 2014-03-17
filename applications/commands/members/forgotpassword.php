@@ -51,13 +51,35 @@
               $successful = false;
               try {
                   $MYSQL->insert('{prefix}password_reset_requests', $data);
-                  $to      = $email;
+                  /*$to      = $email;
                   $subject = 'Password Reset';
                   $message = 'You have recently requested a password reset on ' . $TANGO->data['site_name'] . '. To set a new password, please use the following URL: ' . SITE_URL . '/members.php/cmd/resetpassword/token/' . urlencode($reset_token);
                   $headers = 'From: ' . $TANGO->data['site_email'] . "\r\n" .
                              'Reply-To: ' . $TANGO->data['site_email'];
+                  /*
+                   * Setting up the email.
+                   */
+                  $successful = $MAIL->setTo($email, $query['0']['username'])
+                                     ->setSubject($LANG['email']['forgot_password']['subject'])
+                                     ->addGenericHeader('X-Mailer', 'PHP/' . phpversion())
+                                     ->addGenericHeader('Content-Type', 'text/html; charset="utf-8"')
+                                     ->setMessage(
+                                      str_replace(
+                                        array(
+                                          '%site_name%',
+                                          '%token_url%'
+                                        ),
+                                        array(
+                                          $TANGO->data['site_name'],
+                                          SITE_URL . '/members.php/cmd/resetpassword/token/' . urlencode($reset_token)
+                                        ),
+                                        $LANG['email']['forgot_password']['content']
+                                      )
+                                     )
+                                     ->setWrap(100)
+                                     ->send();
 
-                  $successful = mail($to, $subject, $message, $headers);
+                  //$successful = mail($to, $subject, $message, $headers);
               } catch (mysqli_sql_exception $e) {
                   $successful = false;
               }

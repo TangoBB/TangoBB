@@ -134,9 +134,9 @@
           $MYSQL->where('parent_node', $forum);
           $query = $MYSQL->get('{prefix}forum_node');
           $where = 'NULL';
-      $data = array();
+          $data = array();
           foreach( $query as $wh ) {
-        $where .= ',?';
+            $where .= ',?';
             $data[] = $wh['id'];
           }
 
@@ -186,8 +186,14 @@
                   if( $post['post_type'] == "1" ) {
                       $latest = (strlen($post['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/v/' . $post['title_friendly'] . '.' . $post['id'] . '" title="' . $post['post_title'] . '">' . substr($post['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/v/' . $post['title_friendly'] . '.' . $post['id'] . '">' . $post['post_title'] . '</a>';
                   } elseif( $post['post_type'] == "2" ) {
+                      $MYSQL->where('origin_thread', $post['origin_thread']);
+                      $q      = $MYSQL->get('{prefix}forum_posts');
+
+                      $q      = (count($q) / POST_RESULTS_PER_PAGE);
+                      $page   = ( $q > 1 )? '/page/' . ceil($q) . '/' : '';
+
                       $p      = thread($post['origin_thread']);
-                      $latest = (strlen($p['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/v/' . $p['title_friendly'] . '.' . $p['id'] . '#post-' . $post['id'] . '" title="' . $p['post_title'] . '">' . substr($p['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/v/' . $p['title_friendly'] . '.' . $p['id'] . '#post-' . $post['id'] . '">' . $p['post_title'] . '</a>';
+                      $latest = (strlen($p['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/v/' . $p['title_friendly'] . '.' . $p['id'] . $page . '#post-' . $post['id'] . '" title="' . $p['post_title'] . '">' . substr($p['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/v/' . $p['title_friendly'] . '.' . $p['id'] . $page . '#post-' . $post['id'] . '">' . $p['post_title'] . '</a>';
                   }
 
                   $return .= $TANGO->tpl->entity(
@@ -233,8 +239,14 @@
                   if( $post['post_type'] == "1" ) {
                       $latest = (strlen($post['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/v/' . $post['title_friendly'] . '.' . $post['id'] . '" title="' . $post['post_title'] . '">' . substr($post['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/v/' . $post['title_friendly'] . '.' . $post['id'] . '">' . $post['post_title'] . '</a>';
                   } elseif( $post['post_type'] == "2" ) {
+                      $MYSQL->where('origin_thread', $post['origin_thread']);
+                      $q      = $MYSQL->get('{prefix}forum_posts');
+
+                      $q      = (count($q) / POST_RESULTS_PER_PAGE);
+                      $page   = ( $q > 1 )? '/page/' . ceil($q) . '/' : '';
+
                       $p      = thread($post['origin_thread']);
-                      $latest = (strlen($p['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/v/' . $p['title_friendly'] . '.' . $p['id'] . '#post-' . $post['id'] . '" title="' . $p['post_title'] . '">' . substr($p['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/v/' . $p['title_friendly'] . '.' . $p['id'] . '#post-' . $post['id'] . '">' . $p['post_title'] . '</a>';
+                      $latest = (strlen($p['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/v/' . $p['title_friendly'] . '.' . $p['id'] . $page . '#post-' . $post['id'] . '" title="' . $p['post_title'] . '">' . substr($p['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/v/' . $p['title_friendly'] . '.' . $p['id'] . $page . '#post-' . $post['id'] . '">' . $p['post_title'] . '</a>';
                   }
 
                   $return .= $TANGO->tpl->entity(
