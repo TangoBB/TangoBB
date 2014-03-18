@@ -73,17 +73,33 @@
               )
             );
           }
-          $breadcrumbs .= $TANGO->tpl->entity(
-            'breadcrumbs_before',
-            array(
-              'link',
-              'name'
-            ),
-            array(
-              SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
-              $query['0']['post_title']
-            )
-          );
+
+          if( $query['0']['post_type'] == 1 ) {
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
+                $query['0']['post_title']
+              )
+            );
+          } elseif( $query['0']['post_type'] == 2 ) {
+            $t = thread($query['0']['origin_thread']);
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
+                $t['post_title']
+              )
+            );
+          }
 
           $breadcrumbs .= $TANGO->tpl->entity(
             'breadcrumbs_current',

@@ -123,7 +123,7 @@
                   $cont    = $_POST['content'];
                   $cont    = ( !empty($q_query) )? '[quote]' . $PGET->g('quote') . '[/quote]' . $cont : $cont;
 
-				  $data = array($TANGO->sess->data['id']);
+                  $data = array($TANGO->sess->data['id']);
                   $c_query = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 1", $data);
 
                   if( !$cont ) {
@@ -132,32 +132,98 @@
                       throw new Exception ($LANG['global_form_process']['different_message_previous']);
                   } else {
 
-                      $origin = thread($thread);
-                      $time   = time();
+                      $origin  = thread($thread);
+                      $time    = time();
 
-                      $data = array(
+                      //Double Posting
+                      $o_data  = array($thread);
+                      $o_query = $MYSQL->rawQuery(
+                        "SELECT * FROM
+                         {prefix}forum_posts
+                         WHERE
+                         origin_thread = ?
+                         ORDER BY
+                         post_time
+                         DESC LIMIT 1",
+                        $o_data
+                      );
+                      $p_query = $MYSQL->rawQuery(
+                        "SELECT * FROM
+                         {prefix}forum_posts
+                         WHERE
+                         origin_thread = ?
+                         ORDER BY
+                         post_time
+                         DESC",
+                        $o_data
+                      );
+
+                      if( empty($o_query) or $o_query['0']['post_user'] == $TANGO->sess->data['id'] ) {
+                        
+                        $t_cont = $o_query['0']['post_content'] . '
+----------
+' . $cont;
+
+                        $data = array(
+                          'post_content' => $t_cont
+                        );
+
+                        $MYSQL->where('id', $o_query['0']['id']);
+
+                        try {
+                          $MYSQL->update('{prefix}forum_posts', $data);
+                          $t_data = array(
+                            'last_updated'=> $time
+                          );
+                          $MYSQL->where('id', $thread);
+                          try {
+                            $MYSQL->update('{prefix}forum_posts', $t_data);
+                            redirect(SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id']);
+                          } catch (mysqli_sql_exception $e) {
+                            redirect(SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id']);
+                          }
+                        } catch (mysqli_sql_exception $e) {
+                          throw new Exception ($LANG['global_form_process']['error_replying_thread']);
+                        }
+
+                      } else {
+
+
+                        $data = array(
                           'post_content' => $cont,
                           'post_time' => $time,
                           'post_user' => $TANGO->sess->data['id'],
                           'origin_node' => $origin['origin_node'],
                           'origin_thread' => $thread,
                           'post_type' => '2'
-                      );
+                        );
 
-                      try {
+                        try {
                           $MYSQL->insert('{prefix}forum_posts', $data);
                           $t_data = array(
-                              'last_updated'=> $time
+                            'last_updated'=> $time
                           );
                           $MYSQL->where('id', $thread);
                           try {
-                              $MYSQL->update('{prefix}forum_posts', $t_data);
-                              redirect(SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id']);
+
+                            $page = '';
+                            if( (count($p_query)/POST_RESULTS_PER_PAGE) > 1 ) {
+                              $page .= '/page/' . ceil(count($p_query)/POST_RESULTS_PER_PAGE);
+                            }
+
+                            $MYSQL->update('{prefix}forum_posts', $t_data);
+                            redirect(SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id'] . $page);
                           } catch (mysqli_sql_exception $e) {
-                              redirect(SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id']);
+                            $page = '';
+                            if( (count($o_query)/POST_RESULTS_PER_PAGE) > 1 ) {
+                              $page .= '/page/' . ceil(count($o_query)/POST_RESULTS_PER_PAGE);
+                            }
+                            redirect(SITE_URL . '/thread.php/v/' . $origin['title_friendly'] . '.' . $origin['id'] . $page);
                           }
-                      } catch (mysqli_sql_exception $e) {
+                        } catch (mysqli_sql_exception $e) {
                           throw new Exception ($LANG['global_form_process']['error_replying_thread']);
+                        }
+
                       }
 
                   }

@@ -148,44 +148,97 @@
               );
           }
           
-          $starter    = $TANGO->tpl->entity(
+          if( $PGET->g('page') == 1 ) {
+            $starter    = $TANGO->tpl->entity(
               'thread_starter',
               array(
-                  'breadcrumbs',
-                  'reply_button',
-                  'quote_post',
-                  'edit_post',
-                  'report_post',
-                  'user_avatar',
-                  'profile_url',
-                  'username',
-                  'date_joined',
-                  'postcount',
-                  'thread_content',
-                  'user_signature',
-                  'post_time',
-                  'mod_tools'
+                'breadcrumbs',
+                'reply_button',
+                'quote_post',
+                'edit_post',
+                'report_post',
+                'user_avatar',
+                'profile_url',
+                'username',
+                'date_joined',
+                'postcount',
+                'thread_content',
+                'user_signature',
+                'post_time',
+                'mod_tools'
               ),
               array(
-                  $breadcrumb,
-                  $reply_button,
-                  $quote_thread,
-                  $edit_thread,
-                  $report_thread,
-                  $user['user_avatar'],
-                  SITE_URL . '/members.php/cmd/user/id/' . $user['id'],
-                  $user['username_style'],
-                  date('M jS, Y', $user['date_joined']),
-                  $user['post_count'],
-                  //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])),
-                  //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])->get_html()),
-                  $TANGO->lib_parse->parse($query['0']['post_content']),
-                  //html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($user['user_signature'])))),
-                  $TANGO->lib_parse->parse($user['user_signature']),
-                  date('F j, Y', $query['0']['post_time']),
-                  $thread_mod_tools
+                $breadcrumb,
+                $reply_button,
+                $quote_thread,
+                $edit_thread,
+                $report_thread,
+                $user['user_avatar'],
+                SITE_URL . '/members.php/cmd/user/id/' . $user['id'],
+                $user['username_style'],
+                date('M jS, Y', $user['date_joined']),
+                $user['post_count'],
+                //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])),
+                //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])->get_html()),
+                $TANGO->lib_parse->parse($query['0']['post_content']),
+                //html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($user['user_signature'])))),
+                $TANGO->lib_parse->parse($user['user_signature']),
+                date('F j, Y', $query['0']['post_time']),
+                $thread_mod_tools
               )
-          );
+            );
+          } elseif( !$PGET->g('page') ) {
+            $starter    = $TANGO->tpl->entity(
+              'thread_starter',
+              array(
+                'breadcrumbs',
+                'reply_button',
+                'quote_post',
+                'edit_post',
+                'report_post',
+                'user_avatar',
+                'profile_url',
+                'username',
+                'date_joined',
+                'postcount',
+                'thread_content',
+                'user_signature',
+                'post_time',
+                'mod_tools'
+              ),
+              array(
+                $breadcrumb,
+                $reply_button,
+                $quote_thread,
+                $edit_thread,
+                $report_thread,
+                $user['user_avatar'],
+                SITE_URL . '/members.php/cmd/user/id/' . $user['id'],
+                $user['username_style'],
+                date('M jS, Y', $user['date_joined']),
+                $user['post_count'],
+                //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])),
+                //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])->get_html()),
+                $TANGO->lib_parse->parse($query['0']['post_content']),
+                //html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($user['user_signature'])))),
+                $TANGO->lib_parse->parse($user['user_signature']),
+                date('F j, Y', $query['0']['post_time']),
+                $thread_mod_tools
+              )
+            );
+          } else {
+            $starter    = $TANGO->tpl->entity(
+              'thread_top',
+              array(
+                'breadcrumbs',
+                'reply_button'
+              ),
+              array(
+                $breadcrumb,
+                $reply_button
+              )
+            );
+          }
           
           $content = $starter . '';
           

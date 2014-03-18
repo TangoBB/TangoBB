@@ -110,6 +110,14 @@
     </div>
 </div>
 <!--- tpl:thread_starter:end -->
+<!--- tpl:thread_top:start -->
+%breadcrumbs%
+<div style="overflow:auto;">
+    <p class="pull-right">
+        %reply_button%
+    </p>
+</div>
+<!--- tpl:thread_top:end -->
 <!--- tpl:thread_reply:start -->
 <div id="%post_id%">
 <div class="panel panel-content" style="background-color:#fbfdff;border-bottom:1px solid #e1e1e1;">
