@@ -86,6 +86,10 @@
   require_once(PATH_A . CLA . 'core.php');
   $TANGO = new Tango_Core();
 
+  //Captcha
+  require_once(PATH_A . LIB . 'captcha.php');
+  $TANGO->captcha = new TangoBB_Captcha();
+
   require_once(PATH_A . CLA . 'template.php');
   $TANGO->tpl = new Tango_Template();
 

@@ -24,7 +24,7 @@
               
               $searched_threads = '';
               $searched_users   = '';
-              $key              = explode(' ', $search_query);
+              $key              = explode(' ', strtolower($search_query));
               
               //$MYSQL->where('post_type', '1');
               //$query   = $MYSQL->get('{prefix}forum_posts');
@@ -41,7 +41,7 @@
                   $tags = explode(',', $re['post_tags']);
                   $user = $TANGO->user($re['post_user']);
                   foreach( $tags as $tag ) {
-                      if( in_array($tag, $key) ) {
+                      if( in_array(strtolower($tag), $key) ) {
                           $threads[] .= '<a href="' . SITE_URL . '/thread.php/v/' . $re['title_friendly'] . '.' . $re['id'] . '">' . $re['post_title'] . '</a> <small>By <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a> (' . date('F j, Y', $re['post_time']) . ')</small><hr size="1" />';;
                       }
                   }
@@ -63,9 +63,9 @@
               $users = array();
               
               foreach( $query as $re ) {
-                  if( in_array($re['username'], $key) ) {
+                  if( in_array(strtolower($re['username']), $key) ) {
                           $users[] .= '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $re['id'] . '">' . $re['username'] . '</a><hr size="1" />';;
-                      }
+                  }
               }
               
               if( !empty($users) ) {

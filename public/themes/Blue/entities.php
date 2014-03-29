@@ -380,6 +380,8 @@
     <input type="password" name="%password_a_field_name%" id="a_password" />
     <label for="email">Email</label>
     <input type="text" name="%email_field_name%" id="email" />
+    <label for="tangobb_captcha">Are you a bot?</label><br />
+    %captcha%
     <br /><br />
     <input type="submit" name="%submit_name%" value="Register" />
     %register_notice%

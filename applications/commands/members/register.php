@@ -37,6 +37,9 @@
                     throw new Exception ($LANG['global_form_process']['email_used']);
                 } else {
 
+                    //Verifying the captcha.
+                    $TANGO->captcha->verify();
+
                     if( $TANGO->data['register_email_activate'] == "1" ) {
                         $data = array(
                             'username' => $username,
@@ -155,6 +158,7 @@
             'password_field_name',
             'password_a_field_name',
             'email_field_name',
+            'captcha',
             'submit_name',
             'register_notice'
           ),
@@ -165,6 +169,7 @@
             'password',
             'a_password',
             'email',
+            $TANGO->captcha->display(),
             'register',
             $LANG['bb']['members']['register_message']
           )

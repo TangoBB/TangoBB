@@ -94,6 +94,13 @@
         'confirm_password' => 'Confirm Password'
       )
   	),
+    //Error Pages
+    'error_pages' => array(
+      '404' => array(
+        'header' => '404',
+        'message' => 'Sorry, the resource you are looking for could not be found.'
+      )
+    ),
   	//Global Form Variables
   	'global_form_process' => array(
   		'all_fields_required' => 'All fields are required!',
@@ -113,7 +120,8 @@
       'img_dimension_limit' => 'Image dimension too big!',
       'save_success' => 'Saved!',
       'error_saving' => 'Error saving. Try again later.',
-      'invalid_password' => 'Current password is invalid!'
+      'invalid_password' => 'Current password is invalid!',
+      'captcha_incorrect' => 'Incorrect captcha!'
     ),
     //Email Variables.
     'email' => array(

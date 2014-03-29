@@ -8,7 +8,7 @@
   class Tango_Core {
       
       public $data;
-      public $tpl, $sess, $user, $perm, $bb, $node, $lib_parse;
+      public $tpl, $sess, $user, $perm, $bb, $node, $lib_parse, $captcha;
       
       public function __construct() {
           global $MYSQL;

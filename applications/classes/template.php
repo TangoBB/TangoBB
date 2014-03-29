@@ -25,6 +25,9 @@
           $this->addParam('bb_stat_users', stat_users());
           $this->addParam('bb_software_version', TANGOBB_VERSION);
           $this->addParam('users_online', users_online());
+
+          //Globally adding parameters for captcha.
+          //$this->addParam('tangobb_captcha', $TANGO->captcha->display());
           
           /*$this->addParam(
               'editor_settings',
