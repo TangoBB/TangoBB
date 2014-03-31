@@ -45,20 +45,27 @@
             'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
             SITE_URL . '/%s'
           );
-          //$value =  preg_replace('/(\w+).php\//', '', $page);
-          $value = preg_replace('/(.*).php\//', '', $page);
-          if( $with_id ) {
-            preg_match_all('/(.*)\.([0-9]+)/', $value, $values);
-            //die(var_dump($values));
-            $values = array(
-              //'value' => str_replace('.', '', $values['1']['0']),
-              'value' => $values['1']['0'],
-              'id' => $values['2']['0']
-            );
-            return $values;
+          preg_match_all('/(.*).php/', $page, $verify);
+          //die(var_dump($verify['0']['0']));
+          $isset = str_replace($verify['0']['0'], '', $page);
+          if( !empty($isset) ) {
+            $value = preg_replace('/(.*).php\//', '', $page);
+            if( $with_id ) {
+              preg_match_all('/(.*)\.([0-9]+)/', $value, $values);
+              //die(var_dump($values));
+              $values = array(
+                //'value' => str_replace('.', '', $values['1']['0']),
+                'value' => $values['1']['0'],
+                'id' => $values['2']['0']
+              );
+              return $values;
+            } else {
+              return $value;
+            }
           } else {
-            return $value;
+            return false;
           }
+          //$value =  preg_replace('/(\w+).php\//', '', $page);
         }
         
         /*
