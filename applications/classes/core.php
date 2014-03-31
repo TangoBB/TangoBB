@@ -24,10 +24,16 @@
        */
       public function user($id, $callback = null) {
           global $MYSQL;
+
           $MYSQL->where('id', $id);
-          $query = $MYSQL->get('{prefix}users');
-          
-          $MYSQL->where('post_user', $id);
+          $query   = $MYSQL->get('{prefix}users');
+
+          $MYSQL->where('username', $id);
+          $u_query = $MYSQL->get('{prefix}users');
+
+          $query = (!$query)? $u_query : $query;
+
+          $MYSQL->where('post_user', $query['0']['id']);
           $query['0']['post_count']     = count($MYSQL->get('{prefix}forum_posts'));
           $query['0']['username_style'] = $this->usergroup($query['0']['user_group'], 'username_style', $query['0']['username']);
 
@@ -36,12 +42,13 @@
           } else {
             $query['0']['user_avatar'] = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($query['0']['user_email']))) . "?d=" . urlencode('http://www.somewhere.com/homestar.jpg') . "&s=200";
           }
-                              
+
           if( is_callable($callback) ) {
-              call_user_func($callback, $query['0']);
+            call_user_func($callback, $query['0']);
           } else {
-              return $query['0'];
+            return $query['0'];
           }
+          
       }
       
       /*

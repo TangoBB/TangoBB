@@ -174,6 +174,11 @@
         'reported_time' => 'Reported Time:'
       )
     ),
+    'notification' => array(
+      'mention' => '%username% have mentioned you in a post!',
+      'reply' => '%username% has replied to a thread %thread_title%',
+      'quoted' => '%username% quoted your post in %thread_title%'
+    ),
   	//Administrator Panel (Coming Soon)
   	'admin' => array()
   );

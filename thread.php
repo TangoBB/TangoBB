@@ -398,6 +398,7 @@
                   'reply_thread',
                   array(
                       'form_thread',
+                      'form_id',
                       'csrf_input',
                       'textarea_name',
                       'reply_form_action',
@@ -405,6 +406,7 @@
                       'submit_name'
                   ),
                   array(
+                      'tango_form',
                       'tango_form',
                       CSRF_INPUT,
                       'content',

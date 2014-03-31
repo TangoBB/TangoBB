@@ -15,7 +15,7 @@
    * TangoBB Local Details
    */
   define('SITE_URL', '%site_url%');//Without the ending "/"
-  define('TANGOBB_VERSION', '1.3.0-A2');
+  define('TANGOBB_VERSION', '1.3.0-A3');
   define('TANGO_SESSION_TIMEOUT', 31536000);//In seconds.
   define('USER_PASSWORD_HASH_COST', 10);
 

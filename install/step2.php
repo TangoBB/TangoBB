@@ -62,8 +62,12 @@
 ");
                 $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "forum_posts` (`id` int(11) NOT NULL AUTO_INCREMENT,`post_title` varchar(255) NOT NULL DEFAULT '',`title_friendly` varchar(255) NOT NULL,`post_content` text NOT NULL,`post_tags` varchar(255) NOT NULL,`post_time` int(11) NOT NULL,`post_user` int(11) NOT NULL,`origin_thread` int(11) NOT NULL DEFAULT '0',`origin_node` int(11) NOT NULL DEFAULT '0',`post_type` int(11) NOT NULL,`post_sticky` int(11) NOT NULL DEFAULT '0',`post_locked` int(11) NOT NULL DEFAULT '0',`last_updated` int(11) NOT NULL DEFAULT '0',PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ");
-                $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "generic` (`id` int(11) NOT NULL AUTO_INCREMENT,`site_rules` text NOT NULL,`site_name` varchar(255) NOT NULL,`site_theme` varchar(255) NOT NULL,`site_language` varchar(255) NOT NULL,`site_email` varchar(255) NOT NULL,`register_email_activate` int(11) NOT NULL DEFAULT '0',`facebook_authenticate` int(11) NOT NULL DEFAULT '0',`facebook_app_id` VARCHAR( 255 ) NOT NULL DEFAULT  '0',`facebook_app_secret` varchar(255) NOT NULL DEFAULT '0',PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                //$MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "generic` (`id` int(11) NOT NULL AUTO_INCREMENT,`site_rules` text NOT NULL,`site_name` varchar(255) NOT NULL,`site_theme` varchar(255) NOT NULL,`site_language` varchar(255) NOT NULL,`site_email` varchar(255) NOT NULL,`register_email_activate` int(11) NOT NULL DEFAULT '0',`facebook_authenticate` int(11) NOT NULL DEFAULT '0',`facebook_app_id` VARCHAR( 255 ) NOT NULL DEFAULT  '0',`facebook_app_secret` varchar(255) NOT NULL DEFAULT '0',PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+//");
+                //1.3.0-A3
+                $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "generic` (`id` int(11) NOT NULL AUTO_INCREMENT, `site_rules` text NOT NULL, `site_name` varchar(255) NOT NULL, `site_theme` varchar(255) NOT NULL, `site_language` varchar(255) NOT NULL, `site_email` varchar(255) NOT NULL, `register_email_activate` int(11) NOT NULL DEFAULT '0', `facebook_authenticate` int(11) NOT NULL DEFAULT '0', `facebook_app_id` varchar(255) NOT NULL DEFAULT '0', `facebook_app_secret` varchar(255) NOT NULL DEFAULT '0', `captcha_type` int(11) NOT NULL DEFAULT '1', `recaptcha_public_key` varchar(255) NOT NULL DEFAULT '0', `recpatcha_private_key` varchar(255) NOT NULL DEFAULT '0', PRIMARY KEY (`id`)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 ");
+
                 $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "messages` (`id` int(11) NOT NULL AUTO_INCREMENT,`message_title` varchar(255) NOT NULL,`message_content` text NOT NULL,`message_time` int(11) NOT NULL,`origin_message` int(11) NOT NULL DEFAULT '0',`message_sender` int(11) NOT NULL,`message_receiver` int(11) NOT NULL,`message_type` int(11) NOT NULL DEFAULT '1',`receiver_viewed` int(11) NOT NULL DEFAULT '0',PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ");
                 $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "permissions` (`id` int(11) NOT NULL AUTO_INCREMENT,`permission_name` varchar(255) NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -90,6 +94,8 @@
 ");
                 $MYSQL->query("INSERT INTO `" . $mysql_prefix . "usergroups` (`id`, `group_name`, `group_style`, `group_permissions`) VALUES (1, 'User', '<span>%username%</span>', '1,2,3'),(2, 'Banned', '<span>%username% (Banned)</span>', '0'),(3, 'Moderator', '<span style=\"color:#3a5892;\"><strong>%username%</strong></span>', '1,2,3,4'),(4, 'Administrator', '<span style=\"color:#762727;\"><strong>%username%</strong></span>', '*');
 ");
+                //1.3.0-A3
+                //$MYSQL->query("ALTER TABLE `" . $mysql_prefix . "generic` ADD  `captcha_type` INT NOT NULL DEFAULT  '1' AFTER  `facebook_app_secret`, ADD  `recaptcha_public_key` VARCHAR( 255 ) NOT NULL DEFAULT  '0' AFTER  `captcha_type`, ADD  `recpatcha_private_key` VARCHAR( 255 ) NOT NULL DEFAULT  '0' AFTER  `recaptcha_public_key`;");
 
                 echo '<div class="alert alert-success">Success! <a href="step3.php">Continue</a>.</div>';
 

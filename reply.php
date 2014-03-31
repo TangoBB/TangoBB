@@ -14,6 +14,7 @@
       $_SESSION['tango_alt_csrf'] = $return;
       return $return;
   }
+  die(var_dump($PGET->s(true)));
 
   if( $PGET->g('thread') ) {
 

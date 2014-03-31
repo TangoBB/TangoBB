@@ -22,6 +22,7 @@
        * htmlentities() not working when there is any HTML codes in the [code][/code] tags. Devised a temporary fix.
        */
       public function parse($string) {
+        global $TANGO;
           //$string = htmlentities($string);
           //Temporary fix where replace "<" and ">" with "&lt;" and "&gt;".
           //Which negates all HTML tags.
@@ -135,6 +136,32 @@
             ),
             $var
           );
+
+          //Mentions
+          $var = preg_replace('/@(\w+)/', '<a href="' . SITE_URL . '/members.php/cmd/user/id/$1">@$1</a>', $var);
+          //preg_match_all('/@(.*)/', $var, $mentions);
+          //preg_match_all('/(@\w+)/', $var, $mentions);
+          //die(var_dump($mentions['0']));
+          /*$mentions = @$mentions['0']['0'];
+          $mention  = array();
+          if( !empty($mentions) ) {
+            $users = explode(' ', $mentions);
+            foreach( $users as $user ) {
+              $user_c = preg_replace('/[^a-zA-Z0-9]/', '', $user);
+              if( usernameExists($user_c) ) {
+                $user = $TANGO->user($user_c);
+                $mention[] = '@<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a>';
+              } else {
+                $mention[] = $user;
+              }
+            }
+          }
+          
+
+          $m_replace = explode(' ', $mentions);
+
+          $var = str_replace($m_replace, $mention, $var);*/
+
           return $var; 
       }
 

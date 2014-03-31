@@ -86,6 +86,17 @@
                 <li><a href="%site_url%/conversations.php/cmd/new">New Message</a></li>
               </ul>
             </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-bell"></i>
+                @if (count($TANGO->user->userMessages()) > 0)
+                <span class="label label-success">{{ count($TANGO->user->userMessages()) }}</span>
+                @endif
+              </a>
+              <ul class="dropdown-menu">
+                <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">No new notifications yet.</a></li>
+              </ul>
+            </li>
             @else
             <li><a href="#" data-toggle="modal" data-target="#login_modal">Sign In</a></li>
             @endif
