@@ -28,7 +28,6 @@
       $query = $MYSQL->get('{prefix}forum_posts');
 
       if( !empty($query) ) {
-
           $node        = node($query['0']['origin_node']);
           $breadcrumbs = $TANGO->tpl->entity(
             'breadcrumbs_before',
@@ -114,7 +113,6 @@
 
           if( isset($_POST['reply']) ) {
               try {
-
                   //echo $_POST['csrf_token'] . '<br />' . $_SESSION['csrf_csrf_token'];
 
                   if( !empty($q_query) ) {
@@ -176,7 +174,9 @@
                       $o_query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_thread = {$thread['id']} ORDER BY post_time DESC LIMIT 1");
                       $p_query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_thread = {$thread['id']} ORDER BY post_time DESC");
                       //die(var_dump($thread));
-                      if( empty($o_query) or $o_query['0']['post_user'] == $TANGO->sess->data['id'] ) {
+                      //die(var_dump($o_query));
+                      if( $o_query && $o_query['0']['post_user'] == $TANGO->sess->data['id'] ) {
+                        //die('First');
                         $t_cont = $o_query['0']['post_content'] . '
 ----------
 ' . $cont;
