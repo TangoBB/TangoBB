@@ -4,15 +4,19 @@
   require_once('applications/wrapper.php');
 
   $TANGO->tpl->getTpl('page');
+  //$PGET->g('v')
 
-  if( $PGET->g('v') ) {
+  if( $PGET->s(true) ) {
       
-      $get = clean($PGET->g('v'));
-      $get = explode('.', $get);
+      //$get = clean($PGET->g('v'));
+      //$get = explode('.', $get);
+      $get = $PGET->s(true);
       
       //Node
-      $node_id   = $get['1'];
-      $node_name = $get['0'];
+      //$node_id   = $get['1'];
+      //$node_name = $get['0'];
+      $node_id   = $get['id'];
+      $node_name = $get['value'];
       
       $MYSQL->where('id', $node_id);
       $MYSQL->where('name_friendly', $node_name);
@@ -47,7 +51,7 @@
                 'name'
               ),
               array(
-                SITE_URL . '/node.php/v/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
+                SITE_URL . '/node.php/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
                 $parent_node['node_name']
               )
             );
@@ -130,10 +134,10 @@
                   $new_thread,
                   $t,
                   //Sorting
-                  SITE_URL . '/node.php/v/' . $query['0']['name_friendly'] . '.' . $query['0']['id'] . '/sort/latest_created',
-                  SITE_URL . '/node.php/v/' . $query['0']['name_friendly'] . '.' . $query['0']['id'] . '/sort/name_desc',
-                  SITE_URL . '/node.php/v/' . $query['0']['name_friendly'] . '.' . $query['0']['id'] . '/sort/name_asc',
-                  SITE_URL . '/node.php/v/' . $query['0']['name_friendly'] . '.' . $query['0']['id'] . '/sort/last_updated'
+                  SITE_URL . '/node.php/' . $query['0']['name_friendly'] . '.' . $query['0']['id'] . '/sort/latest_created',
+                  SITE_URL . '/node.php/' . $query['0']['name_friendly'] . '.' . $query['0']['id'] . '/sort/name_desc',
+                  SITE_URL . '/node.php/' . $query['0']['name_friendly'] . '.' . $query['0']['id'] . '/sort/name_asc',
+                  SITE_URL . '/node.php/' . $query['0']['name_friendly'] . '.' . $query['0']['id'] . '/sort/last_updated'
               )
           );
           
@@ -144,7 +148,7 @@
           if( $total_pages > 1 ) {
               $i   = '';
               for( $i = 1; $i <= $total_pages; ++$i ) {
-                  $link = ($sort)? SITE_URL . '/node.php/v/' . $PGET->g('v') . '/sort/' . $sort . '/page/' . $i : SITE_URL . '/node.php/v/' . $PGET->g('v') . '/page/' . $i;
+                  $link = ($sort)? SITE_URL . '/node.php/' . $node_name . '.' . $node_id . '/sort/' . $sort . '/page/' . $i : SITE_URL . '/node.php/v/' . $PGET->g('v') . '/page/' . $i;
                   if( $i == $page ) {
                       $pag .= $TANGO->tpl->entity(
                           'pagination_link_current',
@@ -159,7 +163,7 @@
                               'page'
                           ),
                           array(
-                              SITE_URL . '/node.php/v/' . $PGET->g('v') . '/page/' . $i,
+                              SITE_URL . '/node.php/' . $node_name . '.' . $node_id . '/page/' . $i,
                               $i
                           )
                       );

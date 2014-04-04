@@ -38,7 +38,8 @@
 
         /*
          * The PermGET function for single value and no parameter.
-         * example.php/value
+         * - $with_id false: example.php/value
+         * - $with_id true: example.php/value.id
          */
         public function s($with_id = false) {
           list($page) = sscanf(
@@ -55,14 +56,15 @@
               //die(var_dump($values));
               $values = array(
                 //'value' => str_replace('.', '', $values['1']['0']),
-                'value' => $values['1']['0'],
-                'id' => $values['2']['0']
+                'value' => clean($values['1']['0']),
+                'id' => clean($values['2']['0'])
               );
               return $values;
             } else {
               return $value;
             }
           } else {
+            $this->error[] = 'No object defined.';
             return false;
           }
           //$value =  preg_replace('/(\w+).php\//', '', $page);

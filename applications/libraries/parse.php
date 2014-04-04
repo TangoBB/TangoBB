@@ -138,7 +138,7 @@
           );
 
           //Mentions
-          $var = preg_replace('/@(\w+)/', '<a href="' . SITE_URL . '/members.php/cmd/user/id/$1">@$1</a>', $var);
+          $var = preg_replace('/@(\w+)/', '@<a href="' . SITE_URL . '/members.php/cmd/user/id/$1">$1</a>', $var);
           //preg_match_all('/@(.*)/', $var, $mentions);
           //preg_match_all('/(@\w+)/', $var, $mentions);
           //die(var_dump($mentions['0']));

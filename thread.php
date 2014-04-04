@@ -5,14 +5,18 @@
 
   $TANGO->tpl->getTpl('page');
 
-  if( $PGET->g('v') ) {
+  //$PGET->g('v');
+  if( $PGET->s(true) ) {
       
-      $get = clean($PGET->g('v'));
-      $get = explode('.', $get);
+      //$get = clean($PGET->g('v'));
+      //$get = explode('.', $get);
+      $get = $PGET->s(true);
       
       //Node
-      $node_id   = $get['1'];
-      $node_name = $get['0'];
+      //$node_id   = $get['1'];
+      //$node_name = $get['0'];
+      $node_id   = $get['id'];
+      $node_name = $get['value'];
       
       $MYSQL->where('id', $node_id);
       $MYSQL->where('title_friendly', $node_name);
@@ -45,7 +49,7 @@
                 'name'
               ),
               array(
-                SITE_URL . '/node.php/v/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
+                SITE_URL . '/node.php/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
                 $parent_node['node_name']
               )
             );
@@ -57,7 +61,7 @@
                 'name'
               ),
               array(
-                SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'],
+                SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'],
                 $node['node_name']
               )
             );
@@ -70,7 +74,7 @@
                 'name'
               ),
               array(
-                SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'],
+                SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'],
                 $node['node_name']
               )
             );
@@ -96,7 +100,7 @@
               $reply_button  .= $TANGO->tpl->entity(
                       'reply_thread',
                       'link',
-                      SITE_URL . '/reply.php/thread/' . $node_id,
+                      SITE_URL . '/reply.php/' . $node_name . '.' . $node_id,
                       'buttons'
                   );
               $report_thread .= $TANGO->tpl->entity(
@@ -108,7 +112,7 @@
               $quote_thread  .= $TANGO->tpl->entity(
                   'quote_post',
                   'url',
-                  SITE_URL . '/reply.php/thread/' . $node_id . '/quote/' . $node_id,
+                  SITE_URL . '/reply.php/' . $node_name . '.' . $node_id . '/quote/' . $node_id,
                   'buttons'
               );
               if( $query['0']['post_user'] == $TANGO->sess->data['id'] ) {
@@ -252,7 +256,7 @@
                   $quote_p .= $TANGO->tpl->entity(
                       'quote_post',
                       'url',
-                      SITE_URL . '/reply.php/thread/' . $node_id . '/quote/' . $post['id'],
+                      SITE_URL . '/reply.php/' . $node_name . '.' . $node_id . '/quote/' . $post['id'],
                       'buttons'
                   );
                   $report_p .= $TANGO->tpl->entity(
@@ -382,7 +386,7 @@
                               'page'
                           ),
                           array(
-                              SITE_URL . '/thread.php/v/' . $PGET->g('v') . '/page/' . $i,
+                              SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/page/' . $i,
                               $i
                           )
                       );
@@ -410,7 +414,8 @@
                       'tango_form',
                       CSRF_INPUT,
                       'content',
-                      SITE_URL . '/reply.php/thread/' . $node_id,
+                      //SITE_URL . '/reply.php/thread/' . $node_id,
+                      SITE_URL . '/reply.php/' . $node_name . '.' . $node_id,
                       'editor',
                       'reply'
                   )

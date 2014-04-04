@@ -13,6 +13,11 @@
       $id    = clean($PGET->g('id'));
       $MYSQL->where('id', $id);
       $query = $MYSQL->get('{prefix}users');
+
+      $MYSQL->where('username', $id);
+      $u_query = $MYSQL->get('{prefix}users');
+
+      $query = (empty($query))? $u_query : $query;
       
       if( !empty($query) ) {
           
