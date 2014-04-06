@@ -120,8 +120,31 @@
                           'post_user' => $TANGO->sess->data['id'],
                           'origin_node' => $node,
                           'post_type' => '1',
-                          'last_updated' => $time
+                          'last_updated' => $time,
+                          'watchers' => $TANGO->sess->data['id']
                       );
+
+                      /*
+                       * Mentions
+                       */
+                      preg_match_all('/@(\w+)/', $cont, $mentions);
+                      $mentions = array_filter(array_unique($mentions['1']));
+                      if( !empty($mentions['1']) ) {
+                        foreach( $mentions['1'] as $mention ) {
+                          if( $TANGO->sess->data['username'] !== $mention ) {
+                            $user = $TANGO->user($mention);
+                            $TANGO->user->notifyUser(
+                              'mention',
+                              $user['id'],
+                              true,
+                              array(
+                                'username' => $TANGO->sess->data['username'],
+                                'link' => SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id']
+                                )
+                              );
+                          }
+                        }
+                      }
 
                       try {
                           $MYSQL->insert('{prefix}forum_posts', $data);
@@ -136,7 +159,7 @@
                               $LANG['global_form_process']['thread_create_success']
                           );
                           //die(SITE_URL . '/thread.php/v/' . $friendly_url . '.' . $tid['0']['id']);
-                          redirect(SITE_URL . '/thread.php/v/' . $friendly_url . '.' . $tid['0']['id']);
+                          redirect(SITE_URL . '/thread.php/' . $friendly_url . '.' . $tid['0']['id']);
 
                       } catch (mysqli_sql_exception $e) {
                           throw new Exception ($LANG['global_form_process']['error_creating_thread']);

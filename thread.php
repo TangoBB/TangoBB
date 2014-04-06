@@ -151,8 +151,131 @@
                   'buttons'
               );
           }
+
+          /*
+           * Watch Thread
+           */
+          $watchers = explode(',', $query['0']['watchers']);
+          //Watch process.
+          $thread_notice = '';
+          if( $PGET->g('watch') ) {
+            switch( $PGET->g('watch') ) {
+              case "1":
+                if( !in_array($TANGO->sess->data['id'], $watchers) ) {
+                  $watcher   = $watchers;
+                  $watcher[] = $TANGO->sess->data['id'];
+                  $watcher   = implode(',', $watcher);
+                  $update    = array(
+                    'watchers' => $watcher
+                  );
+                  $MYSQL->where('id', $node_id);
+                  if( $MYSQL->update('{prefix}forum_posts', $update) ) {
+                    $thread_notice = $TANGO->tpl->entity(
+                      'success_notice',
+                      array(
+                        'content'
+                      ),
+                      array(
+                        $LANG['bb']['watch_thread']
+                        )
+                      );
+                  } else {
+                    $thread_notice = $TANGO->tpl->entity(
+                      'danger_notice',
+                      array(
+                        'content'
+                      ),
+                      array(
+                        $LANG['bb']['error_watching']
+                        )
+                      );
+                  }
+                } else {
+                  $thread_notice = $TANGO->tpl->entity(
+                    'danger_notice',
+                    array(
+                      'content'
+                    ),
+                    array(
+                      $LANG['bb']['already_watched_thread']
+                    )
+                  );
+                }
+              break;
+              case "2":
+                if( in_array($TANGO->sess->data['id'], $watchers) ) {
+                  $watcher   = array_diff($watchers, array($TANGO->sess->data['id']));
+                  $watcher   = implode(',', $watcher);
+                  $update    = array(
+                    'watchers' => $watcher
+                  );
+                  $MYSQL->where('id', $node_id);
+                  if( $MYSQL->update('{prefix}forum_posts', $update) ) {
+                    $thread_notice = $TANGO->tpl->entity(
+                      'success_notice',
+                      array(
+                        'content'
+                      ),
+                      array(
+                        $LANG['bb']['unwatch_thread']
+                        )
+                      );
+                  } else {
+                    $thread_notice = $TANGO->tpl->entity(
+                      'danger_notice',
+                      array(
+                        'content'
+                      ),
+                      array(
+                        $LANG['bb']['error_unwatching']
+                        )
+                      );
+                  }
+                } else {
+                  $thread_notice = $TANGO->tpl->entity(
+                    'danger_notice',
+                    array(
+                      'content'
+                    ),
+                    array(
+                      $LANG['bb']['already_unwatched_thread']
+                    )
+                  );
+                }
+              break;
+            }
+          }
+
+          //Watch link.
+          if( $TANGO->sess->isLogged ) {
+            if( in_array($TANGO->sess->data['id'], $watchers) ) {
+              $watch_link = $TANGO->tpl->entity(
+                'unwatch_thread',
+                array(
+                  'url'
+                ),
+                array(
+                  SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/watch/2'
+                ),
+                'buttons'
+                );
+            } else {
+              $watch_link = $TANGO->tpl->entity(
+                'watch_thread',
+                array(
+                  'url'
+                ),
+                array(
+                  SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/watch/1'
+                ),
+                'buttons'
+                );
+            }
+          } else {
+            $watch_link = '';
+          }
           
-          if( $PGET->g('page') == 1 ) {
+          if( !$PGET->g('page') or $PGET->g('page') == 1 ) {
             $starter    = $TANGO->tpl->entity(
               'thread_starter',
               array(
@@ -169,7 +292,9 @@
                 'thread_content',
                 'user_signature',
                 'post_time',
-                'mod_tools'
+                'mod_tools',
+                'watch_link',
+                'thread_notice'
               ),
               array(
                 $breadcrumb,
@@ -188,46 +313,9 @@
                 //html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($user['user_signature'])))),
                 $TANGO->lib_parse->parse($user['user_signature']),
                 date('F j, Y', $query['0']['post_time']),
-                $thread_mod_tools
-              )
-            );
-          } elseif( !$PGET->g('page') ) {
-            $starter    = $TANGO->tpl->entity(
-              'thread_starter',
-              array(
-                'breadcrumbs',
-                'reply_button',
-                'quote_post',
-                'edit_post',
-                'report_post',
-                'user_avatar',
-                'profile_url',
-                'username',
-                'date_joined',
-                'postcount',
-                'thread_content',
-                'user_signature',
-                'post_time',
-                'mod_tools'
-              ),
-              array(
-                $breadcrumb,
-                $reply_button,
-                $quote_thread,
-                $edit_thread,
-                $report_thread,
-                $user['user_avatar'],
-                SITE_URL . '/members.php/cmd/user/id/' . $user['id'],
-                $user['username_style'],
-                date('M jS, Y', $user['date_joined']),
-                $user['post_count'],
-                //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])),
-                //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])->get_html()),
-                $TANGO->lib_parse->parse($query['0']['post_content']),
-                //html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($user['user_signature'])))),
-                $TANGO->lib_parse->parse($user['user_signature']),
-                date('F j, Y', $query['0']['post_time']),
-                $thread_mod_tools
+                $thread_mod_tools,
+                $watch_link,
+                $thread_notice
               )
             );
           } else {

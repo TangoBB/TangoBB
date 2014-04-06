@@ -8,6 +8,12 @@
 <!--- tpl:reply_thread:start -->
 <a href="#reply" class="btn btn-primary">Reply</a>
 <!--- tpl:reply_thread:end -->
+<!--- tpl:watch_thread:start -->
+<small><a href="%url%">Watch Thread</a></small>
+<!--- tpl:watch_thread:end -->
+<!--- tpl:unwatch_thread:start -->
+<small><a href="%url%">Unwatch Thread</a></small>
+<!--- tpl:unwatch_thread:end -->
 <!--- tpl:quote_post:start -->
 <a href="%url%" class="btn btn-primary">Quote</a>
 <!--- tpl:quote_post:end -->

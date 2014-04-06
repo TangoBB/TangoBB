@@ -43,7 +43,7 @@
                 'name'
               ),
               array(
-                SITE_URL . '/node.php/v/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
+                SITE_URL . '/node.php/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
                 $parent_node['node_name']
               )
             );
@@ -55,7 +55,7 @@
                 'name'
               ),
               array(
-                SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'],
+                SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'],
                 $node['node_name']
               )
             );
@@ -68,7 +68,7 @@
                 'name'
               ),
               array(
-                SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'],
+                SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'],
                 $node['node_name']
               )
             );
@@ -82,7 +82,7 @@
                 'name'
               ),
               array(
-                SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
+                SITE_URL . '/thread.php/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
                 $query['0']['post_title']
               )
             );
@@ -95,7 +95,7 @@
                 'name'
               ),
               array(
-                SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
+                SITE_URL . '/thread.php/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
                 $t['post_title']
               )
             );
@@ -145,7 +145,7 @@
 
                       try {
                           $MYSQL->update('{prefix}forum_posts', $data);
-                          redirect(SITE_URL . '/thread.php/v/' . $origin_thread);
+                          redirect(SITE_URL . '/thread.php/' . $origin_thread);
                       } catch (mysqli_sql_exception $e) {
                           throw new Exception ($LANG['global_form_process']['error_updating_post']);
                       }

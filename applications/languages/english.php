@@ -18,6 +18,12 @@
   		'new_thread_breadcrumb' => 'New Thread',
   		'edit_post_breadcrumb' => 'Edit Post',
   		'new_reply_breadcrumb' => 'New Reply',
+      'already_watched_thread' => 'You are already watching this thread.',
+      'already_unwatched_thread' => 'You are already not watching this thread.',
+      'watch_thread' => 'You are now watching this thread.',
+      'unwatch_thread' => 'You are now not watching this thread.',
+      'error_watching' => 'Error watching thread.',
+      'error_unwatching' => 'Error unwatching thread.',
   		'form' => array(
   			'edit_post' => 'Edit Post',
   			'report' => 'Report',
@@ -132,6 +138,9 @@
       'register' => array(
         'subject' => 'Account Activation',
         'content' => '<p>You have registered on %site_name%</p><p>Click <a href="%activate_url%">here</a> to activate your account.</p>'
+      ),
+      'notify' => array(
+        'more_info' => '<br />Click <a href="%url%">here</a> to find out more.'
       )
     ),
   	//Moderator Panel
@@ -176,11 +185,12 @@
     ),
     'notification' => array(
       'mention' => '%username% have mentioned you in a post!',
-      'reply' => '%username% has replied to a thread %thread_title%',
+      'reply' => '%username% has replied to the thread %thread_title%',
       'quoted' => '%username% quoted your post in %thread_title%'
     ),
-  	//Administrator Panel (Coming Soon)
-  	'admin' => array()
+    'flat' => array(
+      'merge_post' => '----------'
+    )
   );
 
 ?>

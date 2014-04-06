@@ -178,7 +178,7 @@
                       if( $o_query && $o_query['0']['post_user'] == $TANGO->sess->data['id'] ) {
                         //die('First');
                         $t_cont = $o_query['0']['post_content'] . '
-----------
+' . $LANG['flat']['merge_post'] . '
 ' . $cont;
 
                         $data = array(
@@ -186,6 +186,51 @@
                         );
 
                         $MYSQL->where('id', $o_query['0']['id']);
+
+                        /*
+                         * Notify the watchers of the thread.
+                          */
+                        $watchers = array_filter(explode(',', $query['0']['watchers']));
+                        //die(var_dump($watchers));
+                        if( !empty($watchers) ) {
+                          foreach( $watchers as $watcher ) {
+                            if( $TANGO->sess->data['id'] !== $query['0']['post_user'] ) {
+                              $user = $TANGO->user($watcher);
+                              $TANGO->user->notifyUser(
+                                'reply',
+                                $user['id'],
+                                true,
+                                array(
+                                  'username' => $TANGO->sess->data['username'],
+                                  'thread_title' => $query['0']['post_title'],
+                                  'link' => SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id']
+                                )
+                              );
+                            }
+                          }
+                        }
+
+                        /*
+                         * Mentions
+                         */
+                        preg_match_all('/@(\w+)/', $cont, $mentions);
+                        $mentions = array_filter(array_unique($mentions['1']));
+                        if( !empty($mentions['1']) ) {
+                          foreach( $mentions['1'] as $mention ) {
+                            if( $TANGO->sess->data['username'] !== $mention ) {
+                              $user = $TANGO->user($mention);
+                              $TANGO->user->notifyUser(
+                                'mention',
+                                $user['id'],
+                                true,
+                                array(
+                                  'username' => $TANGO->sess->data['username'],
+                                  'link' => SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id']
+                                )
+                              );
+                            }
+                          }
+                        }
 
                         try {
                           $MYSQL->update('{prefix}forum_posts', $data);

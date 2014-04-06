@@ -34,11 +34,11 @@
                       'latest_post'
                   ),
                   array(
-                      '<a href="' . SITE_URL . '/thread.php/v/' . $post['title_friendly'] . '.' . $post['id'] . '">' . $post['post_title'] . '</a>' . $closed . $stickied,
+                      '<a href="' . SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id'] . '">' . $post['post_title'] . '</a>' . $closed . $stickied,
                       '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a>',
                        $user['user_avatar'],
                       '<span data-toggle="tooltip" data-placement="bottom" title="' . date('F j, Y', $post['post_time']) . '">' . date('l h:i A', $post['post_time']) . '</span>',
-                      $this->latestReply($post['id'], SITE_URL . '/thread.php/v/' . $post['title_friendly'] . '.' . $post['id'])
+                      $this->latestReply($post['id'], SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id'])
                   )
               );
           }

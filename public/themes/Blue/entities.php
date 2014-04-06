@@ -62,7 +62,11 @@
 <!--- tpl:members_page:end -->
 <!--- tpl:thread_starter:start -->
 %breadcrumbs%
+%thread_notice%
 <div style="overflow:auto;">
+    <p class="pull-left" style="padding-top:15px;padding-bottom:0;margin:0;">
+        %watch_link%
+    </p>
     <p class="pull-right">
         %reply_button%
     </p>

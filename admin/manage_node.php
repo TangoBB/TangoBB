@@ -148,7 +148,7 @@
           $s_q_a   = array();
           foreach( $s_q as $s_f ) {
             $locked  = ($s_f['node_locked'] == 1)? ' class="text-danger" title="Node Locked"' : '';
-            $s_q_a[] = '<a href="' . SITE_URL . '/node.php/v/' . $s_f['name_friendly'] . '.' . $s_f['id'] . '" target="_blank"' . $locked . '>
+            $s_q_a[] = '<a href="' . SITE_URL . '/node.php/' . $s_f['name_friendly'] . '.' . $s_f['id'] . '" target="_blank"' . $locked . '>
                           ' . $s_f['node_name'] . '
                           (<a href="' . SITE_URL . '/admin/edit_node.php/id/' . $s_f['id'] . '" title="Edit (' . $s_f['node_name'] . ')"><i class="glyphicon glyphicon-edit"></i></a>)
                           (<a href="' . SITE_URL . '/admin/manage_node.php/delete_node/' . $s_f['id'] . '" title="Delete (' . $s_f['node_name'] . ')"><i class="glyphicon glyphicon-trash"></i></a>)
@@ -159,7 +159,7 @@
           $locked  = ($n['node_locked'] == "1")? ' style="border-left:2px solid #e84040;" title="Node is locked."' : '';
           $return .= '<tr' . $locked . '>
                         <td>
-                          <strong><a href="' . SITE_URL . '/node.php/v/' . $n['name_friendly'] . '.' . $n['id'] . '" target="_blank">' . $n['node_name'] . '</a></strong><br />
+                          <strong><a href="' . SITE_URL . '/node.php/' . $n['name_friendly'] . '.' . $n['id'] . '" target="_blank">' . $n['node_name'] . '</a></strong><br />
                           <small>' . $n['node_desc'] . '</small><br />
                           <small>Sub-Forums: ' . implode(',', $s_q_a) . '</small>
                         </td>
