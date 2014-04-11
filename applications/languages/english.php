@@ -153,7 +153,7 @@
         'unban' => 'Unban User',
         'unban_success' => 'User has been unbanned. <a href="%url%">Back to user profile</a>.',
         'unban_error' => 'Error unbanning user.',
-        'already_unbanned' => 'User is already unbanned.'
+        'already_unbanned' => 'User is already unbanned.',
       ),
       'close' => array(
         'close' => 'Close Thread',
@@ -181,6 +181,12 @@
         'user' => 'User:',
         'reason' => 'Reason:',
         'reported_time' => 'Reported Time:'
+      ),
+      'delete' => array(
+        'delete' => 'Delete Post',
+        'thread_deleted' => 'Thread has been deleted.',
+        'error_deleting' => 'Error deleting post.',
+        'post_deleted' => 'Post has been deleted.'
       )
     ),
     'notification' => array(

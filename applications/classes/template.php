@@ -11,6 +11,8 @@
       private $params = array();
       private $ent_params = array();
       private $elapsed_time;
+      private $pagination = array();
+      private $breadcrumb = array();
       
       function __construct() {
           global $TANGO;
@@ -251,6 +253,92 @@
           } else {
               die('Template file doesn\'t exist!');
           }
+      }
+
+      /*
+       * Pagination
+       */
+      public function addPagination($value, $link, $current = false) {
+        if( $current ) {
+          $page = $this->entity(
+            'pagination_link_current',
+            'page',
+            $value
+          );
+        } else {
+          $page = $this->entity(
+            'pagination_links',
+            array(
+              'url',
+              'page'
+            ),
+            array(
+              $link,
+              $value
+            )
+          );
+        }
+        $this->pagination[] = $page;
+      }
+      public function pagination() {
+        if( !empty($this->pagination) ) {
+          $pagination = '';
+          foreach( $this->pagination as $page ) {
+            $pagination .= $page;
+          }
+
+          $return = $this->entity(
+            'pagination',
+            'pages',
+            $pagination
+          );
+          return $return;
+        } else {
+          return false;
+        }
+      }
+
+      /*
+       * Breadcrumbs
+       */
+      public function addBreadcrumb($value, $link, $current = false) {
+        if( $current ) {
+          $page = $this->entity(
+            'breadcrumbs_current',
+            'name',
+            $value
+          );
+        } else {
+          $page = $this->entity(
+            'breadcrumbs_before',
+            array(
+              'link',
+              'name'
+            ),
+            array(
+              $link,
+              $value
+            )
+          );
+        }
+        $this->breadcrumb[] = $page;
+      }
+      public function breadcrumbs() {
+        if( !empty($this->breadcrumb) ) {
+          $breadcrumbs = '';
+          foreach( $this->breadcrumb as $crumb ) {
+            $breadcrumbs .= $crumb;
+          }
+
+          $return = $this->entity(
+            'breadcrumbs',
+            'bread',
+            $breadcrumbs
+          );
+          return $return;
+        } else {
+          return false;
+        }
       }
       
       /*

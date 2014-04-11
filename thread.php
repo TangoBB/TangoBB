@@ -27,7 +27,7 @@
           $user        = $TANGO->user($query['0']['post_user']);
           $node        = node($query['0']['origin_node']);
 
-          $breadcrumbs = $TANGO->tpl->entity(
+          /*$breadcrumbs = $TANGO->tpl->entity(
             'breadcrumbs_before',
             array(
               'link',
@@ -37,12 +37,16 @@
               SITE_URL . '/forum.php',
               $LANG['bb']['forum']
             )
+          );*/
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['forum'],
+            SITE_URL . '/forum.php'
           );
           if( $node['node_type'] == 2 ) {
 
             $parent_node = node($node['parent_node']);
 
-            $breadcrumbs .= $TANGO->tpl->entity(
+            /*$breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_before',
               array(
                 'link',
@@ -52,9 +56,13 @@
                 SITE_URL . '/node.php/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
                 $parent_node['node_name']
               )
+            );*/
+            $TANGO->tpl->addBreadcrumb(
+              $parent_node['node_name'],
+              SITE_URL . '/node.php/' . $parent_node['name_friendly'] . '.' . $parent_node['id']
             );
 
-            $breadcrumbs .= $TANGO->tpl->entity(
+            /*$breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_before',
               array(
                 'link',
@@ -64,10 +72,14 @@
                 SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'],
                 $node['node_name']
               )
+            );*/
+            $TANGO->tpl->addBreadcrumb(
+              $node['node_name'],
+              SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id']
             );
 
           } elseif( $node['node_type'] == 1 ) {
-            $breadcrumbs .= $TANGO->tpl->entity(
+            /*$breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_before',
               array(
                 'link',
@@ -77,9 +89,13 @@
                 SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'],
                 $node['node_name']
               )
+            );*/
+            $TANGO->tpl->addBreadcrumb(
+              $node['node_name'],
+              SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id']
             );
           }
-          $breadcrumbs .= $TANGO->tpl->entity(
+          /*$breadcrumbs .= $TANGO->tpl->entity(
             'breadcrumbs_current',
             'name',
             $query['0']['post_title']
@@ -90,7 +106,13 @@
               'bread',
               //'<li><a href="' . SITE_URL . '">Forum</a></li><li><a href="' . SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'] . '">' . $node['node_name'] . '</a></li><li class="active">' . $query['0']['post_title'] . '</a>'
               $breadcrumbs
+          );*/
+          $TANGO->tpl->addBreadcrumb(
+            $query['0']['post_title'],
+            '#',
+            true
           );
+          $breadcrumb = $TANGO->tpl->breadcrumbs();
           
           $reply_button  = '';
           $quote_thread  = '';
@@ -139,14 +161,16 @@
                       'stick_thread_url',
                       'close_thread',
                       'close_thread_url',
-                      'edit_post_url'
+                      'edit_post_url',
+                      'delete_post_url'
                   ),
                   array(
                       $stick_thread,
                       $stick_thread_url,
                       $close_thread,
                       $close_thread_url,
-                      SITE_URL . '/edit.php/post/' . $query['0']['id']
+                      SITE_URL . '/edit.php/post/' . $query['0']['id'],
+                      SITE_URL . '/mod/delete.php/post/' . $query['0']['id']
                   ),
                   'buttons'
               );
@@ -408,10 +432,12 @@
                   $post_mod_tools = $TANGO->tpl->entity(
                       'mod_tools_posts',
                       array(
-                          'edit_post_url'
+                          'edit_post_url',
+                          'delete_post_url'
                       ),
                       array(
-                          SITE_URL . '/edit.php/post/' . $post['id']
+                          SITE_URL . '/edit.php/post/' . $post['id'],
+                          SITE_URL . '/mod/delete.php/post/' . $post['id']
                       ),
                       'buttons'
                   );
@@ -456,18 +482,23 @@
           }
           
           $total_pages = ceil(fetchTotalPost($node_id) / POST_RESULTS_PER_PAGE);
-          $pag         = '';
+          //$pag         = '';
           if( $total_pages > 1 ) {
               $i   = '';
               for( $i = 1; $i <= $total_pages; ++$i ) {
                   if( $i == $page ) {
-                      $pag .= $TANGO->tpl->entity(
+                      /*$pag .= $TANGO->tpl->entity(
                           'pagination_link_current',
                           'page',
                           $i
+                      );*/
+                      $TANGO->tpl->addPagination(
+                        $i,
+                        '#',
+                        true
                       );
                   } else {
-                      $pag .= $TANGO->tpl->entity(
+                      /*$pag .= $TANGO->tpl->entity(
                           'pagination_links',
                           array(
                               'url',
@@ -477,6 +508,10 @@
                               SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/page/' . $i,
                               $i
                           )
+                      );*/
+                      $TANGO->tpl->addPagination(
+                        $i,
+                        SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/page/' . $i
                       );
                   }
               }
@@ -510,11 +545,12 @@
               );
           }
           
-          $content .= $TANGO->tpl->entity(
+          /*$content .= $TANGO->tpl->entity(
               'pagination',
               'pages',
               $pag
-          );
+          );*/
+          $content .= $TANGO->tpl->pagination();
           
           $TANGO->tpl->addParam(
               array(

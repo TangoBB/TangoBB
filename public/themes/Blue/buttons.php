@@ -24,10 +24,10 @@
 <a href="%url%" class="btn btn-primary">Report</a>
 <!--- tpl:report_post:end -->
 <!--- tpl:mod_tools:start -->
-<a href="%stick_thread_url%">%stick_thread%</a> | <a href="%close_thread_url%">%close_thread%</a> | <a href="%edit_post_url%">Edit Post</a>
+<a href="%stick_thread_url%">%stick_thread%</a> | <a href="%close_thread_url%">%close_thread%</a> | <a href="%edit_post_url%">Edit Post</a> | <a href="%delete_post_url%">Delete Thread</a>
 <!--- tpl:mod_tools:end -->
 <!--- tpl:mod_tools_posts:start -->
-<a href="%edit_post_url%">Edit Post</a>
+<a href="%edit_post_url%">Edit Post</a> | <a href="%delete_post_url%">Delete Post</a>
 <!--- tpl:mod_tools_posts:end -->
 <!--- tpl:mod_tools_profile:start -->
 <a href="%ban_user_url%" class="btn btn-primary">%ban_user%</a>
