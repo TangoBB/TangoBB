@@ -8,7 +8,8 @@
 
   if( $TANGO->sess->isLogged ){ redirect(SITE_URL); } //If user is logged in.
 
-  $notice = '';
+  $notice  = '';
+  $content = '';
 
         if( isset($_POST['register']) ) {
             try {
@@ -149,7 +150,23 @@
                       ' . $FORM->build('submit', $LANG['bb']['members']['form_register'], 'register', array('value' => $LANG['bb']['members']['form_register'])) . '<br />
                       ' . $LANG['bb']['members']['register_message'] . '
                     </form>';*/
-        $content = $TANGO->tpl->entity(
+        //Breadcrumb
+        $TANGO->tpl->addBreadcrumb(
+          $LANG['bb']['forum'],
+          SITE_URL . '/forum.php'
+        );
+        $TANGO->tpl->addBreadcrumb(
+          $LANG['bb']['members']['home'],
+          SITE_URL . '/members.php'
+        );
+        $TANGO->tpl->addBreadcrumb(
+          $LANG['bb']['members']['register'],
+          '#',
+          true
+        );
+        $content .= $TANGO->tpl->breadcrumbs();
+
+        $content .= $TANGO->tpl->entity(
           'register_form',
           array(
             'notice',

@@ -87,14 +87,16 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="overflow:auto;">
                 <i class="fa fa-bell"></i>
                 @if (count($TANGO->user->notifications()) > 0)
-                <span class="label label-success">{{ count($TANGO->user->notifications()) }}</span>
+                <span class="badge">
+                  {{ count($TANGO->user->notifications()) }}
+                </span>
                 @endif
               </a>
               <ul class="dropdown-menu">
-                @if (empty($TANGO->user->notifications()))
+                @if (count($TANGO->user->notifications()) < 1)
                 <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">No new notifications yet.</a></li>
                 @else
                  @foreach ($TANGO->user->notifications() as $note)
@@ -214,7 +216,7 @@
           </div>
           <div class="modal-body">
             <form action="%site_url%/members.php/cmd/signin" method="POST">
-              <input type="text" name="email" class="form-control" id="inputEmail3" placeholder="Email">
+              <input type="text" name="email" class="form-control" id="inputEmail3" placeholder="Username or Email">
               <br />
               <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">
               <label>

@@ -18,6 +18,22 @@
 
       if( !empty($query) ) {
 
+          //Breadcrumbs
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['forum'],
+            SITE_URL . '/forum.php'
+          );
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['members']['home'],
+            SITE_URL . '/members.php'
+          );
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['members']['activate_account'],
+            '#',
+            true
+          );
+          $content = $TANGO->tpl->breadcrumbs();
+
           if( $query['0']['user_disabled'] == 1 ) {
 
               $data = array(
@@ -27,13 +43,13 @@
 
               try {
                   $MYSQL->update('{prefix}users', $data);
-                  $content = $TANGO->tpl->entity(
+                  $content .= $TANGO->tpl->entity(
                       'success_notice',
                       'content',
                       $LANG['bb']['members']['account_activated']
                   );
               } catch (mysqli_sql_exception $e) {
-                  $content = $TANGO->tpl->entity(
+                  $content .= $TANGO->tpl->entity(
                       'danger_notice',
                       'content',
                       $LANG['bb']['members']['error_activating']

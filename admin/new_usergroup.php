@@ -42,6 +42,7 @@
           }
 
           $permissions = clean($permissions);
+          $is_staff    = (isset($_POST['is_staff']))? '1' : '0';
 
           if( !$name or !$style ) {
               throw new Exception ('All fields are required!');
@@ -49,7 +50,8 @@
               $data = array(
                   'group_name' => $name,
                   'group_style' => $style,
-                  'group_permissions' => $permissions
+                  'group_permissions' => $permissions,
+                  'is_staff' => $is_staff
               );
 
               try {
@@ -81,6 +83,8 @@
           <textarea name="g_style" id="g_style" class="form-control"><span>%username%</span></textarea>
           <label for="permissions">Permissions</label><br />
           ' . list_permissions_as_checkbox() . '
+          <br />
+          <input type="checkbox" name="is_staff" value="1" /> This Usergroup is staff.
           <br />
           <input type="submit" name="new" value="Create Usergroup" class="btn btn-default" />
         </form>',

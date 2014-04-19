@@ -19,19 +19,22 @@
                                   category_place
                                   ASC");
           foreach( $query as $list ) {
-              $return .= $TANGO->tpl->entity(
+              $allowed = explode(',', $list['allowed_usergroups']);
+              if( in_array($TANGO->sess->data['user_group'], $allowed) ) {
+                $return .= $TANGO->tpl->entity(
                   'forum_listings_category',
                   array(
-                      'category_name',
-                      'category_desc',
-                      'category_forums'
+                    'category_name',
+                    'category_desc',
+                    'category_forums'
                   ),
                   array(
-                      $list['category_title'],
-                      $list['category_desc'],
-                      $this->forums($list['id'])
+                    $list['category_title'],
+                    $list['category_desc'],
+                    $this->forums($list['id'])
                   )
-              );
+                );
+              }
           }
           return $return;
       }
@@ -54,31 +57,37 @@
                                    node_place
                                    ASC", $data);
           foreach( $query as $node ) {
-              $MYSQL->where('node_type', 2);
-              $MYSQL->where('parent_node', $node['id']);
-              $sub     = $MYSQL->get('{prefix}forum_node');
-              $subs    = array();
-              foreach( $sub as $suf ) {
-                $subs[] = '<a href="' . SITE_URL . '/node.php/' . $suf['name_friendly'] . '.' . $suf['id'] . '">' . $suf['node_name'] . '</a>';
-              }
+              $allowed = explode(',', $node['allowed_usergroups']);
+              if( in_array($TANGO->sess->data['user_group'], $allowed) ) {
+                $MYSQL->where('node_type', 2);
+                $MYSQL->where('parent_node', $node['id']);
+                $sub     = $MYSQL->get('{prefix}forum_node');
+                $subs    = array();
+                foreach( $sub as $suf ) {
+                  $allowed = explode(',', $suf['allowed_usergroups']);
+                  if( in_array($TANGO->sess->data['user_group'], $allowed) ) {
+                    $subs[] = '<a href="' . SITE_URL . '/node.php/' . $suf['name_friendly'] . '.' . $suf['id'] . '">' . $suf['node_name'] . '</a>';
+                  }
+                }
 
-              $subs = (!empty($subs))? implode(', ', array_slice($subs, 0, 3)) : 'None';
+                $subs = (!empty($subs))? implode(', ', array_slice($subs, 0, 3)) : 'None';
 
-              $return .= $TANGO->tpl->entity(
-                  'forum_listings_node',
-                  array(
+                $return .= $TANGO->tpl->entity(
+                    'forum_listings_node',
+                    array(
                       'node_name',
                       'node_desc',
                       'latest_post',
                       'sub_forums'
-                  ),
-                  array(
+                    ),
+                    array(
                       '<a href="' . SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'] . '">' . $node['node_name'] . '</a>',
                       $node['node_desc'],
                       $this->latestPost($node['id']),
                       $subs
-                  )
-              );
+                    )
+                );
+              }
           }
           return $return;
       }
@@ -89,9 +98,9 @@
       public function subForums($parent_forum) {
         global $MYSQL, $TANGO;
 
-          $return = '';
-      $data = array($parent_forum);
-          $query  = $MYSQL->rawQuery("SELECT * FROM
+        $return = '';
+        $data = array($parent_forum);
+        $query  = $MYSQL->rawQuery("SELECT * FROM
                                    {prefix}forum_node
                                    WHERE
                                    parent_node = ?
@@ -100,28 +109,31 @@
                                    ORDER BY
                                    node_place
                                    ASC", $data);
-          foreach( $query as $node ) {
-              $return .= $TANGO->tpl->entity(
-                  'forum_listings_node_sub_forums_posts',
-                  array(
-                      'node_name',
-                      'node_desc',
-                      'latest_post'
-                  ),
-                  array(
-                      '<a href="' . SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'] . '">' . $node['node_name'] . '</a>',
-                      $node['node_desc'],
-                      $this->latestSubForumPost($node['id'])
-                  )
-              );
+        foreach( $query as $node ) {
+          $allowed = explode(',', $node['allowed_usergroups']);
+          if( in_array($TANGO->sess->data['user_group'], $allowed) ) {
+            $return .= $TANGO->tpl->entity(
+              'forum_listings_node_sub_forums_posts',
+                array(
+                  'node_name',
+                  'node_desc',
+                  'latest_post'
+                ),
+                array(
+                  '<a href="' . SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'] . '">' . $node['node_name'] . '</a>',
+                  $node['node_desc'],
+                  $this->latestSubForumPost($node['id'])
+                )
+            );
           }
+        }
 
-          $return = $TANGO->tpl->entity(
-            'forum_listings_node_sub_forums',
-            'nodes',
-            $return
-          );
-          return $return;
+        $return = $TANGO->tpl->entity(
+          'forum_listings_node_sub_forums',
+          'nodes',
+          $return
+        );
+        return $return;
       }
 
       /*

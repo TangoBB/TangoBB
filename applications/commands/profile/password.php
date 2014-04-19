@@ -78,4 +78,22 @@
 
   $content  = $notice . $content;
 
+  //Breadcrumbs
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['forum'],
+    SITE_URL . '/forum.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['members']['home'],
+    SITE_URL . '/conversations.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['profile']['password'],
+    '#',
+    true
+  );
+  $bc      = $TANGO->tpl->breadcrumbs();
+
+  $content = $bc . $content;
+
 ?>

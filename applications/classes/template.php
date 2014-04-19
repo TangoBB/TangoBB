@@ -18,6 +18,7 @@
           global $TANGO;
 
           $this->elapsed_time = microtime(true);
+          //$this->theme        = $TANGO->data['site_theme'];
 
           $this->addParam('site_url', SITE_URL);
           $this->addParam('site_name', $TANGO->data['site_name']);
@@ -65,7 +66,6 @@
                <script src="' . SITE_URL . '/public/js/jquery.min.js"></script>
                <script>var SITE_URL = \'' . SITE_URL . '\';</script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/autosaveform.js"></script>
-               <script type="text/javascript" src="' . SITE_URL . '/public/js/typeahead.min.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/wysibb/jquery.wysibb.min.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/highlighter/highlight.pack.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/jquery.tagsinput.min.js"></script>
@@ -77,7 +77,9 @@
                   });
                   $(\'pre\').each(function(i, e) {hljs.highlightBlock(e)});
                   $(\'#receiver\').tagsInput({
-                    defaultText: \'add user\'
+                    defaultText: \'add user\',
+                    \'width\':\'100%\',
+                    \'height\':\'auto\'
                   });
                  });
                  var formsave1=new autosaveform({
@@ -186,6 +188,15 @@
             $ent_values[] = $child;
           }
           $result = str_replace($ent_params, $ent_values, $result);
+
+          ob_start();
+          $result = $this->bladeSyntax($result);
+          //die(var_dump($return));
+          eval(' ?>' . $result . '<?php ');
+          $result = ob_get_clean();
+          if( ob_get_clean() ) {
+            ob_end_clean();
+          }
           
           return $result;
       }
@@ -239,6 +250,7 @@
               
               ob_start();
               $return = $this->bladeSyntax($return);
+              //die(var_dump($return));
               eval(' ?>' . $return . '<?php ');
               $return = ob_get_clean();
               ob_end_clean();
@@ -251,7 +263,7 @@
                   return $return;
               }
           } else {
-              die('Template file doesn\'t exist!');
+              die('Template file doesn\'t exist! (' . $template . ')');
           }
       }
 

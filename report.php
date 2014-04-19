@@ -78,6 +78,18 @@
                          ' . $FORM->build('submit', '', 'report', array('value' => $LANG['bb']['form']['report'])) . '
                        </form>';
 
+          //Breadcrumbs
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['forum'],
+            SITE_URL . '/forum.php'
+          );
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['new_report'],
+            '#',
+            true
+          );
+          $bc = $TANGO->tpl->breadcrumbs();
+
           $TANGO->tpl->addParam(
               array(
                   'page_title',
@@ -85,7 +97,7 @@
               ),
               array(
                   $LANG['bb']['new_report'],
-                  $notice . $content
+                  $bc . $notice . $content
               )
           );
 

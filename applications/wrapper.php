@@ -50,7 +50,9 @@
   $PGET = new Library_PermGET();
 
   // password_compat library for legacy PHP versions before PHP 5.5
-  require_once(PATH_A . LIB . 'password.php');
+  if( !function_exists('password_hash') ) {
+    require_once(PATH_A . LIB . 'password.php');
+  }
 
   require_once(PATH_A . 'functions.php');
   require_once(PATH_A . 'pagination.php');
@@ -92,6 +94,7 @@
 
   require_once(PATH_A . CLA . 'template.php');
   $TANGO->tpl = new Tango_Template();
+  $TANGO->tpl->setTheme($TANGO->data['site_theme']);
 
   require_once(PATH_A . CLA . 'user.php');
   $TANGO->user = new Tango_User();
@@ -113,8 +116,10 @@
   $TANGO->lib_parse  = new Library_Parse();
 
   //Mail Library
-  require_once(PATH_A . CLA . 'mail.php');
-  $MAIL = new SimpleMail();
+  //require_once(PATH_A . CLA . 'mail.php');
+  //$MAIL = new SimpleMail();
+  require_once(PATH_A . LIB . 'mail.php');
+  $MAIL = new Library_Mail();
 
   require_once(PATH_A . LIB . 'nocsrf.php');
 
@@ -151,6 +156,12 @@
   if( !defined('Install') ) {
     //Including installed extensions.
     include_extensions();
+    //Check if authenticated via Facebook
+    if( $TANGO->data['facebook_authenticate'] == "1" ) {
+      if( isset($_GET['code']) && isset($_GET['state']) ) {
+        redirect(SITE_URL . '/forum.php');
+      }
+    }
   }
 
 ?>

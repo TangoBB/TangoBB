@@ -25,6 +25,8 @@
 <!--- tpl:report_post:end -->
 <!--- tpl:mod_tools:start -->
 <a href="%stick_thread_url%">%stick_thread%</a> | <a href="%close_thread_url%">%close_thread%</a> | <a href="%edit_post_url%">Edit Post</a> | <a href="%delete_post_url%">Delete Thread</a>
+<br />
+%move_thread_form%
 <!--- tpl:mod_tools:end -->
 <!--- tpl:mod_tools_posts:start -->
 <a href="%edit_post_url%">Edit Post</a> | <a href="%delete_post_url%">Delete Post</a>

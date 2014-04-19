@@ -23,6 +23,11 @@
       $query = $MYSQL->get('{prefix}forum_node');
       if( !empty($query) ) {
 
+          $allowed = explode(',', $query['0']['allowed_usergroups']);
+          if( !in_array($TANGO->sess->data['user_group'], $allowed) ) {
+            redirect(SITE_URL . '/404.php');
+          }
+
           if( $query['0']['node_type'] == 1 ) {
             $sub_forums = $TANGO->bb->subForums($query['0']['id']);
           } else {

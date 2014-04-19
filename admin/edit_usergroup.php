@@ -83,6 +83,7 @@
           }
 
           $token = NoCSRF::generate('csrf_token');
+          $staff_check = ($query['0']['is_staff'] == "1")? ' CHECKED' : '';
 
           echo $ADMIN->box(
               'Edit Usergroup (' . $query['0']['group_name'] . ') <p class="pull-right"><a href="' . SITE_URL . '/admin/usergroups.php" class="btn btn-default btn-xs">Back</a></p>',
@@ -95,6 +96,8 @@
                  <textarea name="g_style" id="g_style" class="form-control">' . $query['0']['group_style'] . '</textarea>
                  <label for="permissions">Permissions</label><br />
                  ' . list_permissions_as_checkbox($query['0']['group_permissions']) . '
+                 <br />
+                 <input type="checkbox" name="is_staff" value="1"' . $staff_check . ' /> This Usergroup is staff.
                  <br />
                  <input type="submit" name="update" value="Save Changes" class="btn btn-default" />
                </form>',

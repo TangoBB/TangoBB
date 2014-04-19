@@ -10,7 +10,6 @@
   function list_category() {
       global $MYSQL;
       $query  = $MYSQL->get('{prefix}forum_category');
-      $return = '';
       foreach( $query as $s ) {
           $MYSQL->where('node_type', 1);
           $MYSQL->where('in_category', $s['id']);
@@ -23,18 +22,30 @@
       return $return;
   }
 
+  function allowed_usergroups() {
+    global $TANGO, $MYSQL;
+    $query  = $MYSQL->get('{prefix}usergroups');
+    $return = '<input type="checkbox" name="allowed_ug[]" value="0" CHECKED /> Guest<br />';
+    foreach( $query as $u ) {
+      $return .= '<input type="checkbox" name="allowed_ug[]" value="' . $u['id'] . '" /> ' . $u['group_name'] . '<br />';
+    }
+    return $return;
+  }
+
   if( isset($_POST['create']) ) {
       try {
 
-          foreach( $_POST as $parent => $child ) {
+          /*foreach( $_POST as $parent => $child ) {
               $_POST[$parent] = clean($child);
-          }
+          }*/
 
           NoCSRF::check( 'csrf_token', $_POST );
 
-          $title  = $_POST['node_title'];
-          $desc   = (!$_POST['node_desc'])? '' : $_POST['node_desc'];
+          $title  = clean($_POST['node_title']);
+          $desc   = (!$_POST['node_desc'])? '' : clean($_POST['node_desc']);
           $locked = (isset($_POST['lock_node']))? '1' : '0';
+
+          $all_u  = (isset($_POST['allowed_ug']))? implode(',', $_POST['allowed_ug']) : '0';
 
           if( !$title ) {
               throw new Exception ('All fields are required!');
@@ -49,7 +60,8 @@
                   'name_friendly' => title_friendly($title),
                   'in_category' => $parent['in_category'],
                   'node_type' => 2,
-                  'parent_node' => $parent['id']
+                  'parent_node' => $parent['id'],
+                  'allowed_usergroups' => $all_u
                 );
               } else {
                 $data = array(
@@ -57,7 +69,8 @@
                   'node_desc' => $desc,
                   'name_friendly' => title_friendly($title),
                   'in_category' => $_POST['node_parent'],
-                  'node_type' => 1
+                  'node_type' => 1,
+                  'allowed_usergroups' => $all_u
                 );
               }
 
@@ -65,7 +78,7 @@
                   $MYSQL->insert('{prefix}forum_node', $data);
                   redirect(SITE_URL . '/admin/manage_node.php/notice/create_success');
               } catch (mysqli_sql_exception $e) {
-                  throw new Exception ('Error creating forum category.');
+                  throw new Exception ('Error creating forum node.');
               }
 
           }
@@ -97,6 +110,9 @@
          <label for="additional_option">Additional Options</label><br />
          <input type="checkbox" name="lock_node" value="1" /> Lock Node
          <br />
+         <label for="allowed_usergroups">Allowed Usergroups</label>
+         <br />
+         ' . allowed_usergroups() . '
          <input type="submit" name="create" value="Create Node" class="btn btn-default" />
        </form>',
               '',

@@ -10,6 +10,22 @@
 
   if( $PGET->g('set') ) {
 
+    //Breadcrumbs
+    $TANGO->tpl->addBreadcrumb(
+      $LANG['bb']['forum'],
+      SITE_URL . '/forum.php'
+    );
+    $TANGO->tpl->addBreadcrumb(
+      $LANG['bb']['members']['home'],
+      SITE_URL . '/conversations.php'
+    );
+    $TANGO->tpl->addBreadcrumb(
+      $LANG['bb']['profile']['change_theme'],
+      '#',
+      true
+    );
+    $content = $TANGO->tpl->breadcrumbs();
+
     $themes  = listThemes();
     $t_names = array();
 
@@ -28,24 +44,25 @@
 
       try {
         $MYSQL->update('{prefix}users', $data);
-        $content = $TANGO->tpl->entity(
+        $content .= $TANGO->tpl->entity(
           'success_notice',
           'content',
-          'Theme has been set!'
+          $LANG['bb']['profile']['theme_set']
           );
+        header('refresh:3;url=' . SITE_URL . '/forum.php');
       } catch (mysqli_sql_exception $e) {
-        $content = $TANGO->tpl->entity(
+        $content .= $TANGO->tpl->entity(
           'danger_notice',
           'content',
-          'Error setting theme.'
+          $LANG['bb']['profile']['theme_error']
           );
       }
 
     } else {
-      $content = $TANGO->tpl->entity(
+      $content .= $TANGO->tpl->entity(
         'danger_notice',
         'content',
-        'Theme does not exist!'
+        $LANG['bb']['profile']['theme_not_exist']
       );
     }
 

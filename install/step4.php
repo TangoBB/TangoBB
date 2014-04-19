@@ -3,6 +3,9 @@
   define('Install', '');
   define('BASEPATH', 'Staff');
   require_once('../applications/wrapper.php');
+  if( phpversion() <= '5.5' ) {
+    require_once('../applications/libraries/password.php');
+  }
   require_once('../applications/functions.php');
 
   if( !isset($_SESSION['tangobb_install_step2']) ) {
@@ -28,6 +31,7 @@
           } else {
 
               $data = array(
+                  'id' => 1,
                   'username' => $username,
                   'user_password' => $password,
                   'user_email' => $email,

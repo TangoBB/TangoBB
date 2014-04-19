@@ -116,7 +116,11 @@
 <!--- tpl:thread_starter:end -->
 <!--- tpl:thread_top:start -->
 %breadcrumbs%
+%thread_notice%
 <div style="overflow:auto;">
+    <p class="pull-left" style="padding-top:15px;padding-bottom:0;margin:0;">
+        %watch_link%
+    </p>
     <p class="pull-right">
         %reply_button%
     </p>
@@ -339,9 +343,11 @@
 </ul>
 <div class="tab-content">
     <div class="tab-pane active" id="search_threads">
+        <br />
         %searched_threads%
     </div>
     <div class="tab-pane" id="search_users">
+        <br />
         %searched_users%
     </div>
 </div>
@@ -393,7 +399,7 @@
 <!--- tpl:register_form:end -->
 <!--- tpl:login_form:start -->
 <form action="" method="POST">
-    <label for="email">Email</label>
+    <label for="email">Username or Email</label>
     <input type="text" name="%email_field_name%" id="email" />
     <label for="password">Password</label>
     <input type="password" name="%password_field_name%" id="password" />

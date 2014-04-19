@@ -106,6 +106,22 @@
   }
   $timezones .= '</select>';
 
+  //Breadcrumbs
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['forum'],
+    SITE_URL . '/forum.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['members']['home'],
+    SITE_URL . '/conversations.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['profile']['personal_details'],
+    '#',
+    true
+  );
+  $bc       = $TANGO->tpl->breadcrumbs();
+
   $content .= '<form id="tango_form" action="" method="POST">
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                  ' . $FORM->build('text', $LANG['bb']['members']['form_email'], 'email', array('value' => $TANGO->sess->data['user_email'])) . '
@@ -116,6 +132,6 @@
                  ' . $FORM->build('submit', '', 'edit', array('value' => $LANG['bb']['profile']['form_save'])) . '
                </form>';
 
-  $content  = $notice . $content;
+  $content  = $bc . $notice . $content;
 
 ?>

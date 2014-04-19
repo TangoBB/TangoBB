@@ -31,6 +31,6 @@
    * Forum Configuration.
    */
   define('THREAD_RESULTS_PER_PAGE', 12);
-  define('POST_RESULTS_PER_PAGE', 5);
+  define('POST_RESULTS_PER_PAGE', 9);
 
 ?>

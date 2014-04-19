@@ -413,4 +413,20 @@
     }
   }
 
+  /*
+   * Forum Listings
+   */
+  function list_forums() {
+      global $MYSQL;
+      $return = array();
+      $query  = $MYSQL->get('{prefix}forum_node');
+      foreach( $query as $node ) {
+        $return[] = array(
+          'id' => $node['id'],
+          'name' => $node['node_name']
+        );
+      }
+      return $return;
+  }
+
 ?>

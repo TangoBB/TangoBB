@@ -99,6 +99,22 @@
 
   }
 
+  //Breadcrumbs
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['forum'],
+    SITE_URL . '/forum.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['members']['home'],
+    SITE_URL . '/conversations.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['profile']['avatar'],
+    '#',
+    true
+  );
+  $bc = $TANGO->tpl->breadcrumbs();
+
   $gravatar_checked = ( $TANGO->sess->data['avatar_type'] == "1" )? ' checked' : '';
   $content .= '<form id="tango_form" action="" method="POST" enctype="multipart/form-data">
                  <label for="avatar">' . $LANG['bb']['profile']['change_avatar'] . '</label>
@@ -109,6 +125,6 @@
                  <input type="submit" name="edit" value="' . $LANG['bb']['profile']['form_save'] . '" />
                </form>';
 
-  $content  = $notice . $content;
+  $content  = $bc . $notice . $content;
 
 ?>

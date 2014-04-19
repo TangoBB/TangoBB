@@ -26,6 +26,20 @@
       }
       return $return;
   }
+  function allowed_usergroups($groups) {
+    global $TANGO, $MYSQL;
+    $groups = explode(',', $groups);
+    $query  = $MYSQL->get('{prefix}usergroups');
+    $return = '<input type="checkbox" name="allowed_ug[]" value="0" CHECKED /> Guest<br />';
+    foreach( $query as $u ) {
+      if( in_array($u['id'], $groups) ) {
+        $return .= '<input type="checkbox" name="allowed_ug[]" value="' . $u['id'] . '" CHECKED /> ' . $u['group_name'] . '<br />';
+      } else {
+        $return .= '<input type="checkbox" name="allowed_ug[]" value="' . $u['id'] . '" /> ' . $u['group_name'] . '<br />';
+      }
+    }
+    return $return;
+  }
 
   if( $PGET->g('id') ) {
 
@@ -38,15 +52,17 @@
           if( isset($_POST['update']) ) {
               try {
 
-                  foreach( $_POST as $parent => $child ) {
+                  /*foreach( $_POST as $parent => $child ) {
                       $_POST[$parent] = clean($child);
-                  }
+                  }*/
 
                   NoCSRF::check( 'csrf_token', $_POST );
 
-                  $title          = $_POST['node_title'];
-                  $desc           = (!$_POST['node_desc'])? '' : $_POST['node_desc'];
-                  $locked         = (isset($_POST['lock_node']))? '1' : '0';
+                  $title  = clean($_POST['node_title']);
+                  $desc   = (!$_POST['node_desc'])? '' : clean($_POST['node_desc']);
+                  $locked = (isset($_POST['lock_node']))? '1' : '0';
+
+                  $all_u  = (isset($_POST['allowed_ug']))? implode(',', $_POST['allowed_ug']) : '0';
 
                   if( !$title ) {
                       throw new Exception ('All fields are required!');
@@ -61,7 +77,8 @@
                         'name_friendly' => title_friendly($title),
                         'in_category' => $parent['in_category'],
                         'node_type' => 2,
-                        'parent_node' => $parent['id']
+                        'parent_node' => $parent['id'],
+                        'allowed_usergroups' => $all_u
                       );
                     } else {
                       $data = array(
@@ -70,7 +87,8 @@
                         'node_desc' => $desc,
                         'node_locked' => $locked,
                         'in_category' => $_POST['node_parent'],
-                        'node_type' => 1
+                        'node_type' => 1,
+                        'allowed_usergroups' => $all_u
                       );
                     }
 
@@ -117,6 +135,9 @@
                  <br />
                  <label for="additional_option">Additional Options</label><br />
                  <input type="checkbox" name="lock_node" value="1"' . $lock_checked . ' /> Lock Node
+                 <br />
+                 <label for="allowed_usergroups">Allowed Usergroups</label><br />
+                 ' . allowed_usergroups($query['0']['allowed_usergroups']) . '
                  <br />
                  <input type="submit" name="update" value="Save Changes" class="btn btn-default" />
                </form>',

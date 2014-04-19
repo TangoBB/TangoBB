@@ -30,6 +30,9 @@
   			'report_reason' => 'Reason'
   		),
   		'conversations' => array(
+        'page_conversations' => 'Conversations',
+        'page_new' => 'Start Conversation',
+        'page_reply' => 'Reply Conversation:',
   			'by' => 'By:',
   			'for' => 'For:',
   			'form_to'=> 'To <small>Seperated with a ","</small>',
@@ -97,7 +100,11 @@
         'signature' => 'Signature',
         'error_updating_signature' => 'Error updating signature. Try again later.',
         'personal_details' => 'Personal Details',
-        'confirm_password' => 'Confirm Password'
+        'confirm_password' => 'Confirm Password',
+        'change_theme' => 'Change Theme',
+        'theme_set' => 'Theme has been set.',
+        'theme_error' => 'Error setting theme.',
+        'theme_not_exist' => 'Theme does not exist.'
       )
   	),
     //Error Pages
@@ -187,12 +194,22 @@
         'thread_deleted' => 'Thread has been deleted.',
         'error_deleting' => 'Error deleting post.',
         'post_deleted' => 'Post has been deleted.'
+      ),
+      'move' => array(
+        'move' => 'Move Thread',
+        'thread_moved' => 'Thread has been moved. <a href="%url%">Back to thread</a>.',
+        'error_moving' => 'Error moving thread.'
+      ),
+      'del_report' => array(
+        'delete' => 'Delete Report',
+        'report_deleted' => 'Report has been deleted. <a href="%url%">Back</a>.',
+        'error_deleting' => 'Error deleting report. <a href="%url%">Back</a>.'
       )
     ),
     'notification' => array(
       'mention' => '%username% have mentioned you in a post!',
-      'reply' => '%username% has replied to the thread %thread_title%',
-      'quoted' => '%username% quoted your post in %thread_title%'
+      'reply' => '%username% has replied to the thread <strong>%thread_title%</strong>',
+      'quoted' => '%username% quoted your post in <strong>%thread_title%</strong>'
     ),
     'flat' => array(
       'merge_post' => '----------'

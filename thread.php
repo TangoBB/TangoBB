@@ -154,6 +154,17 @@
               $close_thread      = ($query['0']['post_locked'] == "0")? 'Close Thread' : 'Open Thread';
               $close_thread_url  = ($query['0']['post_locked'] == "0")? SITE_URL . '/mod/close.php/thread/' . $query['0']['id'] : SITE_URL . '/mod/open.php/thread/' . $query['0']['id'];
               
+              $move_thread       = '<form action="' . SITE_URL . '/mod/move.php/thread/' . $query['0']['id'] . '"  method="POST"><select name="move_to" onchange="this.form.submit()">';
+              $move_thread      .= '<option value="' . $query['0']['origin_node'] . '">--' . $LANG['mod']['move']['move'] . '--</option>';
+              foreach( list_forums() as $list_f ) {
+                if( $list_f['id'] == $query['0']['id'] ) {
+                  $move_thread    .= '<option value="' . $list_f['id'] . '" checked>' . $list_f['name'] . '</option>';
+                } else {
+                  $move_thread    .= '<option value="' . $list_f['id'] . '">' . $list_f['name'] . '</option>';
+                }
+              }
+              $move_thread      .= '</select></form>';
+
               $thread_mod_tools .= $TANGO->tpl->entity(
                   'mod_tools',
                   array(
@@ -162,7 +173,8 @@
                       'close_thread',
                       'close_thread_url',
                       'edit_post_url',
-                      'delete_post_url'
+                      'delete_post_url',
+                      'move_thread_form'
                   ),
                   array(
                       $stick_thread,
@@ -170,7 +182,8 @@
                       $close_thread,
                       $close_thread_url,
                       SITE_URL . '/edit.php/post/' . $query['0']['id'],
-                      SITE_URL . '/mod/delete.php/post/' . $query['0']['id']
+                      SITE_URL . '/mod/delete.php/post/' . $query['0']['id'],
+                      $move_thread
                   ),
                   'buttons'
               );
@@ -272,6 +285,7 @@
 
           //Watch link.
           if( $TANGO->sess->isLogged ) {
+            $page = ($PGET->g('page'))? '/page/' . $PGET->g('page') : '';
             if( in_array($TANGO->sess->data['id'], $watchers) ) {
               $watch_link = $TANGO->tpl->entity(
                 'unwatch_thread',
@@ -279,7 +293,7 @@
                   'url'
                 ),
                 array(
-                  SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/watch/2'
+                  SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . $page . '/watch/2'
                 ),
                 'buttons'
                 );
@@ -290,7 +304,7 @@
                   'url'
                 ),
                 array(
-                  SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/watch/1'
+                  SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . $page . '/watch/1'
                 ),
                 'buttons'
                 );
@@ -318,7 +332,8 @@
                 'post_time',
                 'mod_tools',
                 'watch_link',
-                'thread_notice'
+                'thread_notice',
+                'id'
               ),
               array(
                 $breadcrumb,
@@ -339,7 +354,8 @@
                 date('F j, Y', $query['0']['post_time']),
                 $thread_mod_tools,
                 $watch_link,
-                $thread_notice
+                $thread_notice,
+                $query['0']['id']
               )
             );
           } else {
@@ -347,11 +363,15 @@
               'thread_top',
               array(
                 'breadcrumbs',
-                'reply_button'
+                'reply_button',
+                'watch_link',
+                'thread_notice'
               ),
               array(
                 $breadcrumb,
-                $reply_button
+                $reply_button,
+                $watch_link,
+                $thread_notice
               )
             );
           }
@@ -458,7 +478,8 @@
                       'reply_content',
                       'user_signature',
                       'post_time',
-                      'mod_tools'
+                      'mod_tools',
+                      'id'
                   ),
                   array(
                       'post-' . $post['id'],
@@ -476,7 +497,8 @@
                       //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($ur['user_signature'])->get_html()),
                       $TANGO->lib_parse->parse($ur['user_signature']),
                       date('F j, Y', $post['post_time']),
-                      $post_mod_tools
+                      $post_mod_tools,
+                      $post['id']
                   )
               );
           }

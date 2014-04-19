@@ -6,7 +6,7 @@
           
           <hr size="1" />
           <div style="text-align:center;">
-            Team TangoBB 2013<br />
+            Team TangoBB 2014<br />
             <a href="https://github.com/TangoBB/TangoBB">GitHub</a> | <a href="https://github.com/TangoBB/TangoBB/wiki">Documentation</a> | <a href="http://tangobb.net/">Website</a>
           </div>
           

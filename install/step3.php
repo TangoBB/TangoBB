@@ -31,13 +31,13 @@
 				throw new Exception('All fields are required!');
 			}else{
 
-                $rules = '<ul>
-                <li>No spamming.</li>
-                <li>No racist comments.</li>
-                <li>Do not start a political discussion unless permitted.</li>
-                <li>No illegal stuff are to be posted on anywhere in the forum.</li>
-                </ul>';
+                $rules = '
+-No spamming.
+- No racist comments.
+- Do not start a political discussion unless permitted.
+- No illegal stuff are to be posted on anywhere in the forum.';
                 $data  = array(
+                    'id' => 1,
                     'site_rules' => $rules,
                     'site_name' => $name,
                     'site_theme' => 'Blue',

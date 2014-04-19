@@ -9,6 +9,22 @@
   if( $TANGO->sess->isLogged ){ redirect(SITE_URL); } //If user is logged in.
   $content = '';
 
+  //Breadcrumb
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['forum'],
+    SITE_URL . '/forum.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['members']['home'],
+    SITE_URL . '/members.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['members']['log_in'],
+    '#',
+    true
+  );
+  $content .= $TANGO->tpl->breadcrumbs();
+
   if( isset($_POST['signin']) ) {
       
       $notice  = '';
@@ -46,7 +62,7 @@
               
               $remember = (isset($_POST['remember']))? true : false;
               $TANGO->sess->assign($email, $remember);
-              header('refresh:3;url=' . SITE_URL);
+              header('refresh:3;url=' . SITE_URL . '/forum.php');
               
               $content .= $TANGO->tpl->entity(
                   'success_notice',
@@ -100,6 +116,7 @@
       'remember'
     )
   );
+
   $content = $content . $form;
 
 ?>

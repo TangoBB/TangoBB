@@ -32,7 +32,22 @@
           
           $user       = $TANGO->user($query['0']['message_sender']);
           
-          $breadcrumb = '';
+          //Breadcrumbs
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['forum'],
+            SITE_URL . '/forum.php'
+          );
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['conversations']['page_conversations'],
+            SITE_URL . '/conversations.php'
+          );
+          $TANGO->tpl->addBreadcrumb(
+            $page_title,
+            '#',
+            true
+          );
+
+          $breadcrumb = $TANGO->tpl->breadcrumbs();
           
           $reply_button  = '';
           $edit_thread   = '';
@@ -70,7 +85,9 @@
                   'thread_content',
                   'user_signature',
                   'post_time',
-                  'mod_tools'
+                  'mod_tools',
+                  'thread_notice',
+                  'watch_link'
               ),
               array(
                   $breadcrumb,
@@ -86,7 +103,9 @@
                   $TANGO->lib_parse->parse($query['0']['message_content']),
                   $TANGO->lib_parse->parse($user['user_signature']),
                   date('F j, Y', $query['0']['message_time']),
-                  $thread_mod_tools
+                  $thread_mod_tools,
+                  '',
+                  ''
               )
           );
 

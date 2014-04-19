@@ -6,7 +6,7 @@
    */
   if( !defined('BASEPATH') ){ die(); }
   $content    = '';
-  $page_title = 'Conversations';
+  $page_title = $LANG['bb']['conversations']['page_conversations'];
 
   if( !$TANGO->sess->isLogged ){ redirect(SITE_URL); } //If user is not logged in.
   $data = array($TANGO->sess->data['id'], $TANGO->sess->data['id']);
@@ -19,6 +19,19 @@
                           ORDER BY
                           message_time
                           DESC", $data);
+  //Breadcrumbs
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['forum'],
+    SITE_URL . '/forum.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['conversations']['page_conversations'],
+    SITE_URL . '/conversations.php',
+    true
+  );
+
+  $content .= $TANGO->tpl->breadcrumbs();
+
   if( !empty($query) ) {
       foreach( $query as $msg ) {
           

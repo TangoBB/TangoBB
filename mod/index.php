@@ -31,7 +31,8 @@
                                <p>
                                  ' . $LANG['mod']['reports']['thread'] . ' <a href="' . SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id'] . '">' . $query['0']['post_title'] . '</a><br />
                                  ' . $LANG['mod']['reports']['reason'] . ' ' . $report['report_reason'] . '<br />
-                                 ' . $LANG['mod']['reports']['reported_time'] . ' ' . date('F j, Y', $report['reported_time']) . '
+                                 ' . $LANG['mod']['reports']['reported_time'] . ' ' . date('F j, Y', $report['reported_time']) . '<br />
+                                 [<a href="' . SITE_URL . '/mod/delete_report.php/id/' . $report['id'] . '">' . $LANG['mod']['del_report']['delete'] . '</a>]
                                </p>
                              </div>';
               } elseif( $query['0']['post_type'] !== "2" ) {
@@ -40,7 +41,8 @@
                                <p>
                                  ' . $LANG['mod']['reports']['thread'] . ' <a href="' . SITE_URL . '/thread.php/v/' . $t['title_friendly'] . '.' . $t['id'] . '#post-' . $report['reported_post'] . '">' . $t['post_title'] . '</a><br />
                                  Reason: ' . $report['report_reason'] . '<br />
-                                 Reported Time: ' . date('F j, Y', $report['reported_time']) . '
+                                 Reported Time: ' . date('F j, Y', $report['reported_time']) . '<br />
+                                 [<a href="' . SITE_URL . '/mod/delete_report.php/id/' . $report['id'] . '">' . $LANG['mod']['del_report']['delete'] . '</a>]
                                </p>
                              </div>';
               }
@@ -53,7 +55,8 @@
                                <p>
                                  ' . $LANG['mod']['reports']['user'] . ' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a><br />
                                  ' . $LANG['mod']['reports']['reason'] . ' ' . $report['report_reason'] . '<br />
-                                 ' . $LANG['mod']['reports']['reported_time'] . ' ' . date('F j, Y', $report['reported_time']) . '
+                                 ' . $LANG['mod']['reports']['reported_time'] . ' ' . date('F j, Y', $report['reported_time']) . '<br />
+                                 [<a href="' . SITE_URL . '/mod/delete_report.php/id/' . $report['id'] . '">' . $LANG['mod']['del_report']['delete'] . '</a>]
                                </p>
                              </div>';;
               

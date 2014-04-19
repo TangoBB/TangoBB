@@ -29,6 +29,13 @@
 
       if( !empty($query) ) {
           $node        = node($query['0']['origin_node']);
+
+          $allowed     = explode(',', $node['allowed_usergroups']);
+
+          if( !in_array($TANGO->sess->data['user_group'], $allowed) ) {
+            redirect(SITE_URL . '/404.php');
+          }
+
           $breadcrumbs = $TANGO->tpl->entity(
             'breadcrumbs_before',
             array(
@@ -144,8 +151,48 @@
                   } elseif( $c_query['0']['post_content'] == $cont ) {
                       throw new Exception ($LANG['global_form_process']['different_message_previous']);
                   } else {
+                    $origin  = thread($thread['id']);
 //die(var_dump($thread));
-                      $origin  = thread($thread['id']);
+                    /*
+                         * Notify the watchers of the thread.
+                          */
+                        $watchers = array_filter(explode(',', $query['0']['watchers']));
+                        //die(var_dump($watchers));
+                        if( !empty($watchers) ) {
+                          foreach( $watchers as $watcher ) {
+                            $user = $TANGO->user($watcher);
+                            $TANGO->user->notifyUser(
+                              'reply',
+                              $user['id'],
+                              true,
+                              array(
+                                'username' => $TANGO->sess->data['username'],
+                                'thread_title' => $query['0']['post_title'],
+                                'link' => SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id']
+                              )
+                            );
+                          }
+                        }
+
+                        /*
+                         * Mentions
+                         */
+                        preg_match_all('/@(\w+)/', $cont, $mentions);
+                        $mentions = array_filter(array_unique($mentions['1']));
+                        if( !empty($mentions['1']) ) {
+                          foreach( $mentions['1'] as $mention ) {
+                            $user = $TANGO->user($mention);
+                            $TANGO->user->notifyUser(
+                              'mention',
+                              $user['id'],
+                              true,
+                              array(
+                                'username' => $TANGO->sess->data['username'],
+                                'link' => SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id']
+                              )
+                            );
+                          }
+                        }
                       //die(var_dump($query));
                       $time    = time();
 
@@ -181,63 +228,17 @@
 ' . $LANG['flat']['merge_post'] . '
 ' . $cont;
 
-                        $data = array(
+                        $MYSQL->where('id', $o_query['0']['id']);
+                        $n_cont = array(
                           'post_content' => $t_cont
                         );
 
-                        $MYSQL->where('id', $o_query['0']['id']);
-
-                        /*
-                         * Notify the watchers of the thread.
-                          */
-                        $watchers = array_filter(explode(',', $query['0']['watchers']));
-                        //die(var_dump($watchers));
-                        if( !empty($watchers) ) {
-                          foreach( $watchers as $watcher ) {
-                            if( $TANGO->sess->data['id'] !== $query['0']['post_user'] ) {
-                              $user = $TANGO->user($watcher);
-                              $TANGO->user->notifyUser(
-                                'reply',
-                                $user['id'],
-                                true,
-                                array(
-                                  'username' => $TANGO->sess->data['username'],
-                                  'thread_title' => $query['0']['post_title'],
-                                  'link' => SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id']
-                                )
-                              );
-                            }
-                          }
-                        }
-
-                        /*
-                         * Mentions
-                         */
-                        preg_match_all('/@(\w+)/', $cont, $mentions);
-                        $mentions = array_filter(array_unique($mentions['1']));
-                        if( !empty($mentions['1']) ) {
-                          foreach( $mentions['1'] as $mention ) {
-                            if( $TANGO->sess->data['username'] !== $mention ) {
-                              $user = $TANGO->user($mention);
-                              $TANGO->user->notifyUser(
-                                'mention',
-                                $user['id'],
-                                true,
-                                array(
-                                  'username' => $TANGO->sess->data['username'],
-                                  'link' => SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id']
-                                )
-                              );
-                            }
-                          }
-                        }
-
                         try {
-                          $MYSQL->update('{prefix}forum_posts', $data);
+                          $MYSQL->update('{prefix}forum_posts', $n_cont);
                           $t_data = array(
                             'last_updated'=> $time
                           );
-                          $MYSQL->where('id', $thread);
+                          $MYSQL->where('id', $thread['id']);
                           try {
                             $MYSQL->update('{prefix}forum_posts', $t_data);
                             redirect(SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id']);
@@ -251,7 +252,7 @@
                       } else {
 //die('second');
 
-                        $data = array(
+                        $n_data = array(
                           'post_content' => $cont,
                           'post_time' => $time,
                           'post_user' => $TANGO->sess->data['id'],
@@ -261,11 +262,11 @@
                         );
 
                         try {
-                          $MYSQL->insert('{prefix}forum_posts', $data);
+                          $MYSQL->insert('{prefix}forum_posts', $n_data);
                           $t_data = array(
                             'last_updated'=> $time
                           );
-                          $MYSQL->where('id', $thread);
+                          $MYSQL->where('id', $thread['id']);
                           try {
 
                             $page = '';

@@ -63,8 +63,24 @@
 
       define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
 
-      $page_title = 'Reply: ' . $query['0']['message_title'];
-      $content    = $notice . '
+      //Breadcrumbs
+      $TANGO->tpl->addBreadcrumb(
+        $LANG['bb']['forum'],
+        SITE_URL . '/forum.php'
+      );
+      $TANGO->tpl->addBreadcrumb(
+        $LANG['bb']['conversations']['page_conversations'],
+        SITE_URL . '/conversations.php'
+      );
+      $TANGO->tpl->addBreadcrumb(
+        $LANG['bb']['conversations']['page_reply'] . ' ' . $query['0']['message_title'],
+        '#',
+        true
+      );
+      $content = $TANGO->tpl->breadcrumbs();
+
+      $page_title = $LANG['bb']['conversations']['page_reply'] . ' ' . $query['0']['message_title'];
+      $content   .= $notice . '
                     <form action="" method="POST">
                       ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                       ' . $FORM->build('textarea', '', 'content', array('id' => 'editor', 'style' => 'width:100%;height:300px;max-width:100%;min-width:100%;')) . '

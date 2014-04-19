@@ -7,6 +7,21 @@
   require_once('template/top.php');
   $notice = '';
 
+  function allowed_usergroups($groups) {
+    global $TANGO, $MYSQL;
+    $groups = explode(',', $groups);
+    $query  = $MYSQL->get('{prefix}usergroups');
+    $return = '<input type="checkbox" name="allowed_ug[]" value="0" CHECKED /> Guest<br />';
+    foreach( $query as $u ) {
+      if( in_array($u['id'], $groups) ) {
+        $return .= '<input type="checkbox" name="allowed_ug[]" value="' . $u['id'] . '" CHECKED /> ' . $u['group_name'] . '<br />';
+      } else {
+        $return .= '<input type="checkbox" name="allowed_ug[]" value="' . $u['id'] . '" /> ' . $u['group_name'] . '<br />';
+      }
+    }
+    return $return;
+  }
+
   if( $PGET->g('id') ) {
 
       $id    = clean($PGET->g('id'));
@@ -18,14 +33,15 @@
           if( isset($_POST['update']) ) {
               try {
 
-                  foreach( $_POST as $parent => $child ) {
+                  /*foreach( $_POST as $parent => $child ) {
                       $_POST[$parent] = clean($child);
-                  }
+                  }*/
 
                   NoCSRF::check( 'csrf_token', $_POST );
 
-                  $title = $_POST['cat_title'];
-                  $desc  = (!$_POST['cat_desc'])? '' : $_POST['cat_desc'];
+                  $title = clean($_POST['cat_title']);
+                  $desc  = (!$_POST['cat_desc'])? '' : clean($_POST['cat_desc']);
+                  $all_u = (isset($_POST['allowed_ug']))? implode(',', $_POST['allowed_ug']) : '0';
 
                   if( !$title ) {
                       throw new Exception ('All fields are required!');
@@ -33,7 +49,8 @@
 
                       $data = array(
                           'category_title' => $title,
-                          'category_desc' => $desc
+                          'category_desc' => $desc,
+                          'allowed_usergroups' => $all_u
                       );
                       $MYSQL->where('id', $id);
 
@@ -65,6 +82,9 @@
                  <input type="text" name="cat_title" id="cat_title" value="' . $query['0']['category_title'] . '" class="form-control" />
                  <label for="cat_desc">Description</label>
                  <textarea name="cat_desc" id="cat_desc" class="form-control">' . $query['0']['category_desc'] . '</textarea>
+                 <br />
+                 <label for="allowed_usergroups">Allowed Usergroups</label><br />
+                 ' . allowed_usergroups($query['0']['allowed_usergroups']) . '
                  <br />
                  <input type="submit" name="update" value="Save Changes" class="btn btn-default" />
                </form>',

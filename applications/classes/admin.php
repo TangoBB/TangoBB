@@ -53,12 +53,13 @@
       /*
        * Adding a content box in ACP.
        */
-      public function box($header, $content, $table = "", $column = "6") {
+      public function box($header = null, $content, $table = "", $column = "6") {
           $columns = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12');
           $column  = (in_array($column, $columns))? $column : '6';
+          $header  = ($header == null)? '' : '<div class="panel-heading"><strong>' . $header . '</strong></div>';
           $return  = '<div class="col-md-' . $column . '">
                           <div class="panel panel-default">
-                              <div class="panel-heading"><strong>' . $header . '</strong></div>
+                              ' . $header . '
                               <div class="panel-body">
                                 ' . $content . '
                               </div>

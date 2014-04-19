@@ -76,6 +76,7 @@
               }
           } else {
               $this->data['permissions'] = array();
+              $this->data['user_group']  = '0';
               date_default_timezone_set('US/Central');
               $TANGO->tpl->setTheme($TANGO->data['site_theme']);
           }

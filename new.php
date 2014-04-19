@@ -15,6 +15,11 @@
 
       if( !empty($query) ) {
 
+          $allowed = explode(',', $query['0']['allowed_usergroups']);
+          if( !in_array($TANGO->sess->data['user_group'], $allowed) ) {
+            redirect(SITE_URL . '/404.php');
+          }
+
           if( $query['0']['node_locked'] == 1 ) {
             if( !$TANGO->perm->check('access_moderation') ) {
               redirect(SITE_URL . '/404.php');
@@ -42,7 +47,7 @@
                 'name'
               ),
               array(
-                SITE_URL . '/node.php/v/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
+                SITE_URL . '/node.php/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
                 $parent_node['node_name']
                 )
             );
@@ -66,7 +71,7 @@
                 'name'
               ),
               array(
-                SITE_URL . '/node.php/v/' . $query['0']['name_friendly'] . '.' . $query['0']['id'],
+                SITE_URL . '/node.php/' . $query['0']['name_friendly'] . '.' . $query['0']['id'],
                 $query['0']['node_name']
                 )
             );

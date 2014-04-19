@@ -106,6 +106,22 @@
 
   define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
 
+  //Breadcrumb
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['forum'],
+    SITE_URL . '/forum.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['members']['home'],
+    SITE_URL . '/members.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['members']['forgot_password'],
+    '#',
+    true
+  );
+  $bc = $TANGO->tpl->breadcrumbs();
+
   $content .= $TANGO->tpl->entity(
     'forget_password_form',
     array(
@@ -120,4 +136,4 @@
     )
   );
 
-  $content  = $notice . $content;
+  $content  = $bc . $notice . $content;

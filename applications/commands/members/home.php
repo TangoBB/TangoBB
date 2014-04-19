@@ -11,9 +11,23 @@
   $sort = $PGET->g('sort');
 
   $content = '';
+  $m_cont  = '';
+
+  //Breadcrumb
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['forum'],
+    SITE_URL . '/forum.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['members']['home'],
+    '#',
+    true
+  );
+  $content .= $TANGO->tpl->breadcrumbs();
+
   foreach(getMembers($page, $sort) as $user) {
       $p_count   = $TANGO->user($user['id']);
-      $content  .= $TANGO->tpl->entity(
+      $m_cont   .= $TANGO->tpl->entity(
           'members_page',
           array(
               'avatar',
@@ -32,7 +46,7 @@
       );
   }
 
-  $content = $TANGO->tpl->entity(
+  $content .= $TANGO->tpl->entity(
     'members_page_head',
     array(
       'members',
@@ -43,7 +57,7 @@
       'sort_name_desc'
     ),
     array(
-      $content,
+      $m_cont,
       //Sorting
       SITE_URL . '/members.php/sort/date_joined_asc',
       SITE_URL . '/members.php/sort/date_joined_desc',

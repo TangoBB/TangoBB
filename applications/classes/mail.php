@@ -175,7 +175,7 @@ class SimpleMail
      * Additions made to work with TangoBB
      * Added 1.3.
      */
-    $template       = file_get_contents('../commands/mail/default.php');
+    $template       = file_get_contents('applications/commands/mail/default.php');
     $template       = str_replace(
       array(
         '%site_name%',

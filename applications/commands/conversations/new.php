@@ -6,7 +6,7 @@
    */
   if( !defined('BASEPATH') ){ die(); }
 
-  $page_title = 'New Message';
+  $page_title = $LANG['bb']['conversations']['page_new'];
   $content    = '';
   $notice     = '';
 
@@ -90,9 +90,25 @@
   $pm_user   = (isset($_POST['receiver']))? $_POST['receiver'] : '';
   $pm_title  = (isset($_POST['title']))? $_POST['title'] : '';
 
+  //Breadcrumbs
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['forum'],
+    SITE_URL . '/forum.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['conversations']['page_conversations'],
+    SITE_URL . '/conversations.php'
+    );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['conversations']['page_new'],
+    '#',
+    true
+  );
+  $content .= $TANGO->tpl->breadcrumbs();
+
   $content .= $notice . '<form action="" method="POST">
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
-                 ' . $FORM->build('text', $LANG['bb']['conversations']['form_to'], 'receiver', array('value' => $pm_user)) . '
+                 ' . $FORM->build('text', $LANG['bb']['conversations']['form_to'], 'receiver', array('value' => $pm_user, 'style' => 'width:100%')) . '
                  ' . $FORM->build('text', $LANG['bb']['conversations']['form_title'], 'title', array('value' => $pm_title)) . '
                  ' . $FORM->build('textarea', '', 'content', array('id' => 'editor', 'style' => 'width:100%;height:300px;max-width:100%;min-width:100%;', 'value' => $pm_cont)) . '
                  <br />

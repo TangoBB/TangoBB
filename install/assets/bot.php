@@ -1,6 +1,6 @@
 </div>
 <div class="footer">
-        <p>&copy; Team TangoBB 2013</p>
+        <p>&copy; Team TangoBB 2014</p>
       </div>
 
     </div> <!-- /container -->

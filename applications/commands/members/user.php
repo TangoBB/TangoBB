@@ -38,7 +38,7 @@
                       '%date%'
                     ),
                     array(
-                      SITE_URL . '/thread.php/v/' . $ac['title_friendly'] . '.' . $ac['id'],
+                      SITE_URL . '/thread.php/' . $ac['title_friendly'] . '.' . $ac['id'],
                       $ac['post_title'],
                       date('F j, Y', $ac['post_time'])
                     ),
@@ -54,7 +54,7 @@
                       '%date%'
                     ),
                     array(
-                      SITE_URL . '/thread.php/v/' . $thread['title_friendly'] . '.' . $thread['id'] . '#post-' . $thread['id'],
+                      SITE_URL . '/thread.php/' . $thread['title_friendly'] . '.' . $thread['id'] . '#post-' . $thread['id'],
                       $thread['post_title'],
                       date('F j, Y', $ac['post_time'])
                     ),
@@ -94,6 +94,22 @@
                   );
              }
           }
+
+          //Breadcrumbs
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['forum'],
+            SITE_URL . '/forum.php'
+          );
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['members']['home'],
+            SITE_URL . '/members.php'
+          );
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['members']['profile_of'] . ' ' . $user['username'],
+            '#',
+            true
+          );
+          $content .= $TANGO->tpl->breadcrumbs();
           
           $content        .= $TANGO->tpl->entity(
               'user_profile_page',
@@ -141,7 +157,7 @@
                       '%date%'
                     ),
                     array(
-                      SITE_URL . '/thread.php/v/' . $ac['title_friendly'] . '.' . $ac['id'],
+                      SITE_URL . '/thread.php/' . $ac['title_friendly'] . '.' . $ac['id'],
                       $ac['post_title'],
                       date('F j, Y', $ac['post_time'])
                     ),
@@ -157,7 +173,7 @@
                       '%date%'
                     ),
                     array(
-                      SITE_URL . '/thread.php/v/' . $thread['title_friendly'] . '.' . $thread['id'] . '#post-' . $thread['id'],
+                      SITE_URL . '/thread.php/' . $thread['title_friendly'] . '.' . $thread['id'] . '#post-' . $thread['id'],
                       $thread['post_title'],
                       date('F j, Y', $ac['post_time'])
                     ),
@@ -165,6 +181,22 @@
                   );
               }
           }
+
+          //Breadcrumbs
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['forum'],
+            SITE_URL . '/forum.php'
+          );
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['members']['home'],
+            SITE_URL . '/members.php'
+          );
+          $TANGO->tpl->addBreadcrumb(
+            $LANG['bb']['members']['profile_of'] . ' ' . $TANGO->sess->data['username'],
+            '#',
+            true
+          );
+          $content .= $TANGO->tpl->breadcrumbs();
           
           $content        .= $TANGO->tpl->entity(
               'user_profile_page',

@@ -14,19 +14,27 @@
       try{
           $FB_PROFILE = $FACEBOOK->api('/me');
           $params       = array('next' => SITE_URL . '/members.php/cmd/logout');
-		  $logout       = $FACEBOOK->getLogoutUrl($params);
+		      $logout       = $FACEBOOK->getLogoutUrl($params);
           $MYSQL->where('facebook_id', $FB_PROFILE['id']);
           $query = $MYSQL->get('{prefix}users');
           if( empty($query) ) {
               $time = time();
-              $username = (isset($FB_PROFILE['username']) && !empty($FB_PROFILE['username']))? $FB_PROFILE['username'] : str_replace(' ', '_', $FB_PROFILE['name']);
-              $data = array(
+              if( emailTaken($FB_PROFILE['email']) ) {
+                $data = array(
+                  'facebook_id' => $FB_PROFILE['id']
+                );
+                $MYSQL->where('user_email', $FB_PROFILE['email']);
+                $MYSQL->update('{prefix}users', $data);
+              } else {
+                $username = (isset($FB_PROFILE['username']) && !empty($FB_PROFILE['username']))? $FB_PROFILE['username'] : str_replace(' ', '_', $FB_PROFILE['name']);
+                $data = array(
                   'username' => $username,
                   'user_email' => $FB_PROFILE['email'],
                   'date_joined' => $time,
                   'facebook_id' => $FB_PROFILE['id']
-              );
-              $MYSQL->insert('{prefix}users', $data);
+                );
+                $MYSQL->insert('{prefix}users', $data);
+              }
                   
           }
           //setcookie('tangobb_sess', $query['0']['id'], time()+31536000, '/', NULL, isset($_SERVER['HTTPS']), true);

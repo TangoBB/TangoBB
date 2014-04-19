@@ -42,7 +42,7 @@
                   $user = $TANGO->user($re['post_user']);
                   foreach( $tags as $tag ) {
                       if( in_array(strtolower($tag), $key) ) {
-                          $threads[] .= '<a href="' . SITE_URL . '/thread.php/v/' . $re['title_friendly'] . '.' . $re['id'] . '">' . $re['post_title'] . '</a> <small>By <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a> (' . date('F j, Y', $re['post_time']) . ')</small><hr size="1" />';;
+                          $threads[] .= '<a href="' . SITE_URL . '/thread.php/' . $re['title_friendly'] . '.' . $re['id'] . '">' . $re['post_title'] . '</a> <small>By <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a> (' . date('F j, Y', $re['post_time']) . ')</small><hr size="1" />';;
                       }
                   }
               }
@@ -105,6 +105,18 @@
       );
   }
 
+  //Breadcrumbs
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['forum'],
+    SITE_URL . '/forum.php'
+  );
+  $TANGO->tpl->addBreadcrumb(
+    $LANG['bb']['search'],
+    '#',
+    true
+  );
+  $bc = $TANGO->tpl->breadcrumbs();
+
   $TANGO->tpl->addParam(
       array(
           'page_title',
@@ -112,7 +124,7 @@
       ),
       array(
           $page_title,
-          $notice . $content
+          $bc . $notice . $content
       )
   );
 

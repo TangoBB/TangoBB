@@ -2,7 +2,7 @@
 
 session_start();
 
-if( version_compare(PHP_VERSION, '5.4', '>=') ) {
+if( version_compare(PHP_VERSION, '5.3', '>=') ) {
 
     $_SESSION['tangobb_install_step1'] = true;
 
@@ -18,7 +18,7 @@ if( version_compare(PHP_VERSION, '5.4', '>=') ) {
     <strong>Oh snap!</strong>
     TangoBB is incompatible with your current PHP version.
 </div>
-Recommended PHP Version: <strong>5.4</strong> or newer.<br />
+Recommended PHP Version: <strong>5.3.3</strong> or newer.<br />
 Your current PHP Version: <?php echo PHP_VERSION; ?>
 <?php
 }
