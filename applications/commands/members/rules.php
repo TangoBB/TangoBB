@@ -25,6 +25,6 @@
   );
   $content .= $TANGO->tpl->breadcrumbs();
 
-  $content   .= str_replace('%rules%', $TANGO->data['site_rules'], nl2br($LANG['bb']['members']['rules_message']));
+  $content   .= str_replace('%rules%', nl2br($TANGO->data['site_rules']), nl2br($LANG['bb']['members']['rules_message']));
 
 ?>

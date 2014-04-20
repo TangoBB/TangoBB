@@ -150,6 +150,7 @@
 
       public function notifyUser($type, $user, $email = false, $extra = array()) {
         global $MYSQL, $TANGO, $LANG, $MAIL;
+        $time = time();
         if( in_array($type, $this->notice_type) ) {
           switch($type) {
             //Mention notification.
@@ -162,7 +163,8 @@
             $insert  = array(
               'notice_content' => $notice,
               'notice_link' => $extra['link'],
-              'user' => $user
+              'user' => $user,
+              'time_received' => $time
             );
             break;
 
@@ -182,7 +184,8 @@
             $insert  = array(
               'notice_content' => $notice,
               'notice_link' => $extra['link'],
-              'user' => $user
+              'user' => $user,
+              'time_received' => $time
             );
             break;
 
@@ -202,7 +205,8 @@
             $insert  = array(
               'notice_content' => $notice,
               'notice_link' => $extra['link'],
-              'user' => $user
+              'user' => $user,
+              'time_received' => $time
             );
             break;
           }
@@ -214,7 +218,8 @@
           $insert        = array(
             'notice_content' => $notice,
             'notice_link' => $link,
-            'user' => $user
+            'user' => $user,
+            'time_received' => $time
           );
         }
         if( $MYSQL->insert('{prefix}notifications', $insert) ) {

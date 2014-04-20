@@ -21,6 +21,8 @@
   			$this->email_type = 1;
   			if( BASEPATH == "Staff" ) {
           require_once(PATH_A . CLA . 'mail.php');
+        } elseif( BASEPATH == "Extension" ) {
+          require_once(PATH_A . CLA . 'mail.php');
         } else {
           require_once('applications/' . CLA . 'mail.php');
         }
