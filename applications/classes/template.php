@@ -103,9 +103,35 @@
       public function addParam($param, $value) {
           if( is_array($param) or is_array($value) ) {
               foreach( array_combine($param, $value) as $p => $v  ) {
+                  /*$v                            = str_replace(
+                    array(
+                      '{',
+                      '}',
+                      '@'
+                    ),
+                    array(
+                      '&#123;',
+                      '&#125;',
+                      '&#64;'
+                    ),
+                    $v
+                  );*/
                   $this->params['%' . $p . '%'] = $v;
               }
           } else {
+              /*$value = str_replace(
+                    array(
+                      '{',
+                      '}',
+                      '@'
+                    ),
+                    array(
+                      '&#123;',
+                      '&#125;',
+                      '&#64;'
+                    ),
+                    $value
+              );*/
               $this->params['%' . $param . '%'] = $value;
           }
       }
@@ -170,10 +196,36 @@
           $values = array();
           if( is_array($param) or is_array($value) ) {
               foreach( array_combine($param, $value) as $p => $v  ) {
+                  $v        = str_replace(
+                    array(
+                      '{',
+                      '}',
+                      '@'
+                    ),
+                    array(
+                      '&#123;',
+                      '&#125;',
+                      '&#64;'
+                    ),
+                    $v
+                  );
                   $params[] = '%' . $p . '%';
                   $values[] = $v;
               }
           } else {
+              $value    = str_replace(
+                array(
+                  '{',
+                  '}',
+                  '@'
+                ),
+                array(
+                  '&#123;',
+                  '&#125;',
+                  '&#64;'
+                  ),
+                $value
+              );
               $params[] = '%' . $param . '%';
               $values[] = $value;
           }
