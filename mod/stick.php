@@ -28,7 +28,7 @@
                       'content',
                       str_replace(
                         '%url%',
-                        SITE_URL . '/thread.php/v/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
+                        SITE_URL . '/thread.php/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
                         $LANG['mod']['stick']['stick_success']
                       )
                   );
