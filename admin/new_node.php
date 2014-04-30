@@ -10,6 +10,7 @@
   function list_category() {
       global $MYSQL;
       $query  = $MYSQL->get('{prefix}forum_category');
+      $return = '';
       foreach( $query as $s ) {
           $MYSQL->where('node_type', 1);
           $MYSQL->where('in_category', $s['id']);
@@ -39,6 +40,8 @@
               $_POST[$parent] = clean($child);
           }*/
 
+          //die($_POST['node_parent']);
+
           NoCSRF::check( 'csrf_token', $_POST );
 
           $title  = clean($_POST['node_title']);
@@ -51,8 +54,8 @@
               throw new Exception ('All fields are required!');
           } else {
 
-              if( substr_count($_POST['node_parent'], '&amp;') > 0 ) {
-                $explode = explode('&amp;', $_POST['node_parent']);
+              if( substr_count($_POST['node_parent'], '&') > 0 ) {
+                $explode = explode('&', $_POST['node_parent']);
                 $parent  = node($explode['1']);
                 $data = array(
                   'node_name' => $title,

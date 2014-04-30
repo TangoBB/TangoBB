@@ -159,7 +159,7 @@
       /*
        * Getting information from the theme's entities file.
        */
-      public function entity($entity, $param = "", $value = "", $parent ="theme_entity_file") {
+      public function entity($entity, $param = "", $value = "", $parent ="theme_entity_file", $blade = true) {
           global $TANGO;
           
           switch($parent) {
@@ -241,13 +241,15 @@
           }
           $result = str_replace($ent_params, $ent_values, $result);
 
-          ob_start();
-          $result = $this->bladeSyntax($result);
-          //die(var_dump($return));
-          eval(' ?>' . $result . '<?php ');
-          $result = ob_get_clean();
-          if( ob_get_clean() ) {
-            ob_end_clean();
+          if( $blade ) {
+             ob_start();
+             $result = $this->bladeSyntax($result);
+             //die(var_dump($return));
+             eval(' ?>' . $result . '<?php ');
+             $result = ob_get_clean();
+             if( ob_get_clean() ) {
+               ob_end_clean();
+             }
           }
           
           return $result;

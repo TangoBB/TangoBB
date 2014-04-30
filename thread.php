@@ -333,7 +333,8 @@
                 'mod_tools',
                 'watch_link',
                 'thread_notice',
-                'id'
+                'id',
+                'user_id'
               ),
               array(
                 $breadcrumb,
@@ -355,7 +356,8 @@
                 $thread_mod_tools,
                 $watch_link,
                 $thread_notice,
-                $query['0']['id']
+                $query['0']['id'],
+                $user['id']
               )
             );
           } else {
@@ -479,7 +481,8 @@
                       'user_signature',
                       'post_time',
                       'mod_tools',
-                      'id'
+                      'id',
+                      'user_id'
                   ),
                   array(
                       'post-' . $post['id'],
@@ -498,7 +501,8 @@
                       $TANGO->lib_parse->parse($ur['user_signature']),
                       date('F j, Y', $post['post_time']),
                       $post_mod_tools,
-                      $post['id']
+                      $post['id'],
+                      $ur['id']
                   )
               );
           }

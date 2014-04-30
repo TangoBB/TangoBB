@@ -1,5 +1,5 @@
 <?php
 
-  die('TangoBB not yet installed.');
+  die('TangoBB not yet installed!');
 
 ?>

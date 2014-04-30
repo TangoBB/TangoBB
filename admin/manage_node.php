@@ -130,7 +130,7 @@
 
   function list_manage_node($category) {
       global $MYSQL, $token;
-	  $data = array($category);
+	    $data = array($category);
       $query = $MYSQL->rawQuery("SELECT * FROM
                               {prefix}forum_node
                               WHERE
@@ -139,6 +139,66 @@
                               node_type = 1
                               ORDER BY
                               node_place", $data);
+      $return = '';
+      foreach( $query as $n ) {
+
+          $MYSQL->where('parent_node', $n['id']);
+          $MYSQL->where('node_type', 2);
+          $s_q     = $MYSQL->get('{prefix}forum_node');
+          $s_q_a   = array();
+          foreach( $s_q as $s_f ) {
+            $locked  = ($s_f['node_locked'] == 1)? ' class="text-danger" title="Node Locked"' : '';
+            $s_q_a[] = '<a href="' . SITE_URL . '/node.php/' . $s_f['name_friendly'] . '.' . $s_f['id'] . '" target="_blank"' . $locked . '>
+                          ' . $s_f['node_name'] . '
+                          (<a href="' . SITE_URL . '/admin/edit_node.php/id/' . $s_f['id'] . '" title="Edit (' . $s_f['node_name'] . ')"><i class="glyphicon glyphicon-edit"></i></a>)
+                          (<a href="' . SITE_URL . '/admin/manage_node.php/delete_node/' . $s_f['id'] . '" title="Delete (' . $s_f['node_name'] . ')"><i class="glyphicon glyphicon-trash"></i></a>)
+                          (<a href="' . SITE_URL . '/admin/manage_node.php/toggle_lock/' . $s_f['id'] . '" title="Toggle Lock (' . $s_f['node_name'] . ')"><i class="glyphicon glyphicon-warning-sign"></i></a>)
+                        </a>';
+          }
+
+          $locked  = ($n['node_locked'] == "1")? ' style="border-left:2px solid #e84040;" title="Node is locked."' : '';
+          $return .= '<tr' . $locked . '>
+                        <td>
+                          <strong><a href="' . SITE_URL . '/node.php/' . $n['name_friendly'] . '.' . $n['id'] . '" target="_blank">' . $n['node_name'] . '</a></strong><br />
+                          <small>' . $n['node_desc'] . '</small><br />
+                          <small>Sub-Forums: ' . implode(',', $s_q_a) . '</small>
+                        </td>
+                        <td>
+                          <form action="" method="POST">
+                            <input type="hidden" name="csrf_token" value="' . $token . '">
+                            <input type="hidden" name="node_id" value="' . $n['id'] . '" />
+                            <input type="text" class="form-control" name="node_place" value="' . $n['node_place'] . '" />
+                            <input type="submit" name="change_place" style="display:none;" />
+                          </form>
+                        </td>
+                        <td>
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                              Options <span class="caret"></span>
+                            </button>
+                            <span class="dropdown-arrow dropdown-arrow-inverse"></span>
+                            <ul class="dropdown-menu dropdown-inverse" role="menu">
+                              <li><a href="' . SITE_URL . '/admin/edit_node.php/id/' . $n['id'] . '">Edit Node</a></li>
+                              <li><a href="' . SITE_URL . '/admin/manage_node.php/delete_node/' . $n['id'] . '">Delete Node</a></li>
+                              <li><a href="' . SITE_URL . '/admin/manage_node.php/toggle_lock/' . $n['id'] . '">Toggle Lock</a></li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>';
+      }
+      return $return;
+  }
+
+  function list_inactive_nodes() {
+    global $MYSQL, $token;
+      $query = $MYSQL->query("SELECT * FROM
+                              {prefix}forum_node
+                              WHERE
+                              in_category = 0
+                              AND
+                              node_type = 1
+                              ORDER BY
+                              node_place");
       $return = '';
       foreach( $query as $n ) {
 
@@ -217,6 +277,24 @@
       'You can manage the forum nodes here.',
       '',
       '12'
+  );
+
+  echo $ADMIN->box(
+    'Inactive Nodes',
+    'These are nodes that are not in any category or parent node.',
+    '<table class="table table-hover">
+       <thead>
+         <tr>
+           <th style="width:70%">Node</th>
+           <th style="width:10%">Order</th>
+           <th style="width:20%">Controls</th>
+         </tr>
+       </thead>
+         <tbody>
+           ' . list_inactive_nodes() . '
+         </tbody>
+     </table>',
+          '12'
   );
 
   echo $category;
