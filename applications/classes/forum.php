@@ -208,7 +208,7 @@
                       $latest = (strlen($p['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/' . $p['title_friendly'] . '.' . $p['id'] . $page . '#post-' . $post['id'] . '" title="' . $p['post_title'] . '">' . substr($p['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/' . $p['title_friendly'] . '.' . $p['id'] . $page . '#post-' . $post['id'] . '">' . $p['post_title'] . '</a>';
                   }
 
-                  /** Time Settings */
+                  /** Time Settings *
                   if((time()-$post['post_time']) > 86400 && (time()-$post['post_time']) < 604800) {
                       $post_time         = date('l h:i A', $post['post_time']);
                       $post_time_tooltip = date('F jS, Y', $post['post_time']);
@@ -228,7 +228,8 @@
                   else {
                       $post_time         = date('F jS, Y', $post['post_time']);
                       $post_time_tooltip = date('l h:i A', $post['post_time']);
-                  }
+                  }*/
+                  $post_time = simplify_time($post['post_time']);
                   /** Output */
                   $return .= $TANGO->tpl->entity(
                       'forum_listings_node_latest',
@@ -242,7 +243,7 @@
                           $user['user_avatar'],
                           $latest,
                           '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a>',
-                          '<span title="' . $post_time_tooltip . '">' . $post_time . '</span>'
+                          '<span title="' . $post_time['tooltip'] . '">' . $post_time['time'] . '</span>'
                       )
                   );
               }
@@ -283,7 +284,7 @@
                       $latest = (strlen($p['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/' . $p['title_friendly'] . '.' . $p['id'] . $page . '#post-' . $post['id'] . '" title="' . $p['post_title'] . '">' . substr($p['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/' . $p['title_friendly'] . '.' . $p['id'] . $page . '#post-' . $post['id'] . '">' . $p['post_title'] . '</a>';
                   }
 
-                  /** Time Settings */
+                  /** Time Settings *
                   if((time()-$post['post_time']) > 86400 && (time()-$post['post_time']) < 604800) {
                       $post_time         = date('l h:i A', $post['post_time']);
                       $post_time_tooltip = date('F jS, Y', $post['post_time']);
@@ -303,7 +304,8 @@
                   else {
                       $post_time         = date('F jS, Y', $post['post_time']);
                       $post_time_tooltip = date('l h:i A', $post['post_time']);
-                  }
+                  }*/
+                  $post_time = simplify_time($post['post_time']);
                   /** Output */
                   $return .= $TANGO->tpl->entity(
                       'forum_listings_node_sub_forums_latest',
@@ -317,7 +319,7 @@
                           $user['user_avatar'],
                           $latest,
                           '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a>',
-                          '<span title="' . $post_time_tooltip . '">' .  $post_time . '</span>'
+                          '<span title="' . $post_time['tooltip'] . '">' .  $post_time['time'] . '</span>'
                       )
                   );
               }

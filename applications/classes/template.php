@@ -64,29 +64,12 @@
                <link rel="stylesheet" href="' . SITE_URL . '/public/js/highlighter/styles/github.css" />
                <link rel="stylesheet" href="' . SITE_URL . '/public/css/jquery.tagsinput.css" />
                <script src="' . SITE_URL . '/public/js/jquery.min.js"></script>
-               <script>var SITE_URL = \'' . SITE_URL . '\';</script>
+               <script type="text/javscript">var SITE_URL = \'' . SITE_URL . '\';</script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/autosaveform.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/wysibb/jquery.wysibb.min.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/highlighter/highlight.pack.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/jquery.tagsinput.min.js"></script>
-               <script>
-                 $(document).ready(function() {
-                  $(\'#editor\').wysibb({
-                    buttons :  \'bold,italic,underline,strike,|,fontcolor,fontsize,fontfamily,|,justifyleft,justifycenter,justifyright,|,bullist,numlist,|,img,link,|,code,quote\',
-                    tabInsert: false
-                  });
-                  $(\'pre\').each(function(i, e) {hljs.highlightBlock(e)});
-                  $(\'#receiver\').tagsInput({
-                    defaultText: \'add user\',
-                    \'width\':\'100%\',
-                    \'height\':\'auto\'
-                  });
-                 });
-                 var formsave1=new autosaveform({
-                   formid: \'tango_form\',
-                   pause: 1000 //<--no comma following last option!
-                 });
-               </script>'
+               <script type="text/javascript" src="' . SITE_URL . '/public/js/tangobb.js"></script>'
           );
       }
       

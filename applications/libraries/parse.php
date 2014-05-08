@@ -1,329 +1,203 @@
 <?php
 
-  /*
-   * Additional Parsing Library of TangoBB
-   */
-  if( !defined('BASEPATH') ){ die(); }
+/*
+ * Additional Parsing Library of TangoBB
+ * Rewritten by Jaques1 (https://github.com/TangoBB/TangoBB/pull/6)
+ */
 
-  class Library_Parse {
+if( !defined('BASEPATH') ){ die(); }
 
-      private $custom_codes = array();
+class Library_Parse {
 
-      /*
-       * Adding a BBCode
-       */
-      public function addCode($search, $replace) {
-        $this->custom_codes[$search] = $replace;
-      }
+    private $custom_codes = array();
 
-      /*
-       * Parsing BBCode into HTML.
-       * Replaces have to be done seperately. Hopefully we'll find a solution soon enough.
-       * htmlentities() not working when there is any HTML codes in the [code][/code] tags. Devised a temporary fix.
-       */
-      public function parse($string) {
-        global $TANGO;
-          //$string = htmlentities($string);
-          //Temporary fix where replace "<" and ">" with "&lt;" and "&gt;".
-          //Which negates all HTML tags.
-          $string = str_replace(
-            array(
-              '<',
-              '>'
-            ),
-            array(
-              '&lt;',
-              '&gt;'
-            ),
-            $string
-          );
+    /*
+     * Adding a BBCode
+     */
+    public function addCode($search, $replace) {
+      $this->custom_codes[$search] = $replace;
+    }
 
-          $search = array( 
-            '/\[b\](.*?)\[\/b\]/is', 
-            '/\[i\](.*?)\[\/i\]/is', 
-            '/\[u\](.*?)\[\/u\]/is',
-            '/\[s\](.*?)\[\/s\]/is',
-            '/\[img\](.*?)\[\/img\]/is', 
-            '/\[url\](.*?)\[\/url\]/is', 
-            '/\[url\=(.*?)\](.*?)\[\/url\]/is',
-            '/\[ul\](.*?)\[\/ul\]/is',
-            '/\[ol\](.*?)\[\/ol\]/is',
-            '/\[li\](.*?)\[\/li\]/is',
-            '/\[list\](.*?)\[\/list\]/is',
-            '/\[list=1\](.*?)\[\/list\]/is',
-            '/\[left\](.*?)\[\/left\]/is',
-            '/\[center\](.*?)\[\/center\]/is',
-            '/\[right\](.*?)\[\/right\]/is',
-            '/\[size\=(.*?)\](.*?)\[\/size\]/is',
-            '/\[color\=(.*?)\](.*?)\[\/color\]/is',
-            '/\[code\](.*?)\[\/code\]/is',
-            '/\[font\=(.*?)\](.*?)\[\/font\]/is',
-            '/\[quote\](.*?)\[\/quote\]/is'
-          ); 
-          $replace = array(
-            '<strong>$1</strong>',
-            '<i>$1</i>',
-            '<u>$1</u>',
-            '<span style="text-decoration:line-through;">$1</span>',
-            '<img src="$1" />',
-            '<a href="$1" target="_blank">$1</a>',
-            '<a href="$1" target="_blank">$2</a>',
-            '<ul>$1</ul>',
-            '<ol>$1</ol>',
-            '<li>$1</li>',
-            '<ul>$1</ul>',
-            '<ol></ol>',
-            '<p align="left">$1</p>',
-            '<p align="center">$1</p>',
-            '<p align="right">$1</p>',
-            '<font size="$1">$2</font>',
-            '<span style="color:$1;">$2</span>',
-            '<pre>$1</pre>',
-            '<span style="font-style:$1;">$2</span>',
-            '<blockquote>$1</blockquote>'
-          );
+    /*
+     * Parsing BBCode into HTML.
+     */
+    public function parse($string) {
+        // closures can't access $this directly until PHP 5.4
+        $this_object = $this;
 
-          foreach( $this->custom_codes as $s => $r ) {
-            $search[]  = $s;
-            $replace[] = $r;
-          }
+        $tags = array(
+            // bold
+            '#\\[b\\](.*?)\\[/b\\]#uis' => '<b>\\1</b>',
+            // italic
+            '#\\[i\\](.*?)\\[/i\\]#uis' => '<i>\\1</i>',
+            // underlined
+            '#\\[u\\](.*?)\\[/u\\]#uis' => '<u>\\1</u>',
+            // strikethrough
+            '#\\[s\\](.*?)\\[/s\\]#uis' => '<del>\\1</del>',
+            // aligned left
+            '#\\[left\\](.*?)\\[/left\\]#uis' => '<p align="left">\\1</p>',
+            // centered
+            '#\\[center\\](.*?)\\[/center\\]#uis' => '<p align="center">\\1</p>',
+            // aligned right
+            '#\\[right\\](.*?)\\[/right\\]#uis' => '<p align="right">\\1</p>',
+            // font size
+            '#\\[size=([^\\]]*?)\\](.*?)\\[/size\\]#uis' => '<font size="\\1">\\2</font>',
+            // font color
+            '#\\[color=([^\\]]*?)\\](.*?)\\[/color\\]#uis' => '<font color="\\1">\\2</font>',
+            // font face
+            '#\\[font=([^\\]]*?)\\](.*?)\\[/font\\]#uis' => '<font face="\\1">\\2</font>',
+            // preformatted
+            '#\\[code\\](.*?)\\[/code\\]#uis' => '<pre>\\1</pre>',
+            // image
+            '#\\[img\\](.*?)\\[/img\\]#uis' => function ($matches) {
+                $output = '';
 
-          $var = preg_replace($search, $replace, $string);
+                $url = trim($matches[1]);
+                if ($this->checkSafeUrl($url)) {
+                    $output = '<img src="' . $url . '" alt="user-provided image">';
+                }
 
-          $search  = array(
-            '</li><br />',
-            '</ul><br />',
-            '</ol><br />',
-            //HTML Elements
-            '&amp;',
-            //ASCII Codes
-            //'\r\n',
-            //Additional BBCodes
-            '[*]',
-            '[/*]',
-            //'[quote]',
-            //'[/quote]'
-          );
-          $replace = array(
-            '</li>',
-            '</ul>',
-            '</ol>',
-            //HTML Elements,
-            '&',
-            //ASCII Codes,
-            //'<br />',
-            //Additional BBCodes
-            '<li>',
-            '</li>',
-            //'<blockquote>',
-            //'</blockquote>'
-          );
+                return $output;
+            },
+            // link without custom text
+            '#\\[url\\](.*?)\\[/url\\]#uis' => function ($matches) use ($this_object) {
+                $output = '';
 
-          $var = str_replace($search, $replace, nl2br($var));
-          //$var = str_replace($search, $replace, $var);
-          //die($var);
-          $var = $this->parseQuote($var);
-          $var = str_replace(
-            array(
-              //'[quote]',
-              //'[/quote]',
-              '&amp;'
-            ),
-            array(
-              //'<blockquote>',
-              //'</blockquote>',
-              '&'
-            ),
-            $var
-          );
+                $url = trim($matches[1]);
+                if ($this_object->checkSafeUrl($url)) {
+                    $output = '<a href="' . $url . '" rel="nofollow">' . $url . '</a>';
+                }
 
-          //Mentions
-          $var = preg_replace('/@(\w+)/', '@<a href="' . SITE_URL . '/members.php/cmd/user/id/$1">$1</a>', $var);
-          //preg_match_all('/@(.*)/', $var, $mentions);
-          //preg_match_all('/(@\w+)/', $var, $mentions);
-          //die(var_dump($mentions['0']));
-          /*$mentions = @$mentions['0']['0'];
-          $mention  = array();
-          if( !empty($mentions) ) {
-            $users = explode(' ', $mentions);
-            foreach( $users as $user ) {
-              $user_c = preg_replace('/[^a-zA-Z0-9]/', '', $user);
-              if( usernameExists($user_c) ) {
-                $user = $TANGO->user($user_c);
-                $mention[] = '@<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a>';
-              } else {
-                $mention[] = $user;
-              }
+                return $output;
+            },
+            // link with custom text
+            '#\\[url=([^\\]]*?)\\](.*?)\\[/url\\]#uis' => function ($matches) use ($this_object) {
+                $output = '';
+
+                $url = trim($matches[1]);
+                $text = $matches[2];
+                if ($this_object->checkSafeUrl($url)) {
+                    $output = '<a href="' . $url . '" rel="nofollow">' . $text . '</a>';
+                }
+
+                return $output;
+            },
+            // unordered list
+            '#\\[ul\\](.*?)\[/ul\\]#uis' => function ($matches) use ($this_object) {
+                return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
+            },
+            // unordered list (alternative syntax)
+            '#\\[list\\](.*?)\[/list\\]#uis' => function ($matches) use ($this_object) {
+                return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
+            },
+            // ordered list
+            '#\\[ol\\](.*?)\[/ol\\]#uis' => function ($matches) use ($this_object) {
+                return '<ol>' . trim($this_object->parseListElements($matches[1])) . '</ol>';
+            },
+            // ordered list (alternative syntax)
+            '#\\[list=1\\](.*?)\[/list\\]#uis' => function ($matches) use ($this_object) {
+                return '<ol>' . trim($this_object->parseListElements($matches[1])) . '</ol>';
+            },
+            // quote
+            '#\[quote\](.*?)\[/quote\]#uis' => function ($matches) use ($this_object) {
+                return $this_object->parseQuote($matches[1]);
+            },
+
+        );
+
+        // replace non-breaking spaces (caused by contenteditable attribute) with regular spaces
+        $result = str_replace("\xc2\xa0", ' ', $string);
+
+        $result = htmlspecialchars($result, ENT_QUOTES, 'UTF-8');
+
+        foreach ($tags as $pattern => $replacement) {
+            if (is_callable($replacement)) {
+                $result = preg_replace_callback($pattern, $replacement, $result);
+            } else {
+                $result = preg_replace($pattern, $replacement, $result);
             }
-          }
-          
+        }
 
-          $m_replace = explode(' ', $mentions);
+        $result = preg_replace(array_keys($this->custom_codes), array_values($this->custom_codes), $result);
 
-          $var = str_replace($m_replace, $mention, $var);*/
+        //Mentions
+        $result = preg_replace('/@(\w+)/', '@<a href="' . SITE_URL . '/members.php/cmd/user/id/$1">$1</a>', $result);
 
-          return $var; 
-      }
+        $result = nl2br($result);
 
-      /*
-       * Additional parsing on forum content.
-       */
-      private function parseQuote($string) {
-          global $MYSQL, $TANGO;
-          //die($string);
-          //die(var_dump($string));
-          preg_match_all('/<blockquote>(.*?)<\/blockquote>/', $string, $quotes);
-          //die(var_dump($quotes));
-          $return = '';
-          //die(var_dump($quotes));
-          foreach( $quotes['1'] as $id ) {
-              //die($id);
-              $id    = preg_replace('/\s+/', '', $id);
-              //die($id);
-              $MYSQL->where('id', $id);
-              $query = $MYSQL->get('{prefix}forum_posts');
-              $user  = (!empty($query))? $TANGO->user($query['0']['post_user']) : array(
-                'username' => ''
-              );
-              $q_c   = (!empty($query))? $query['0']['post_content'] : $string;
-              $quote = $TANGO->tpl->entity(
-                  'quote_post',
-                  array(
-                      'quoted_post_content',
-                      'quoted_post_user'
-                  ),
-                  array(
-                      $this->removeQuote($q_c),
-                      $user['username']
-                  )
-              );
-              //$quote =  html_entity_decode(html_entity_decode($quote));
-              
-              if( !empty($query) ) {
-                $string = str_replace('<blockquote>' . $id . '</blockquote>', nl2br($quote), $string);
-              } else {
-                $string = $string;  
-              }
-              
-          }
-          //$string = str_replace('&amp;', '&', $string);
-          //return html_entity_decode($string);
-          //die($string);
+        return $result;
+    }
 
-          $search = array( 
-            '/\[b\](.*?)\[\/b\]/is', 
-            '/\[i\](.*?)\[\/i\]/is', 
-            '/\[u\](.*?)\[\/u\]/is',
-            '/\[s\](.*?)\[\/s\]/is',
-            '/\[img\](.*?)\[\/img\]/is', 
-            '/\[url\](.*?)\[\/url\]/is', 
-            '/\[url\=(.*?)\](.*?)\[\/url\]/is',
-            '/\[ul\](.*?)\[\/ul\]/is',
-            '/\[ol\](.*?)\[\/ol\]/is',
-            '/\[li\](.*?)\[\/li\]/is',
-            '/\[list\](.*?)\[\/list\]/is',
-            '/\[list=1\](.*?)\[\/list\]/is',
-            '/\[left\](.*?)\[\/left\]/is',
-            '/\[center\](.*?)\[\/center\]/is',
-            '/\[right\](.*?)\[\/right\]/is',
-            '/\[size\=(.*?)\](.*?)\[\/size\]/is',
-            '/\[color\=(.*?)\](.*?)\[\/color\]/is',
-            '/\[code\](.*?)\[\/code\]/is',
-            '/\[font\=(.*?)\](.*?)\[\/font\]/is',
-            '/\[quote\](.*?)\[\/quote\]/is'
-          ); 
-          $replace = array(
-            '<strong>$1</strong>',
-            '<i>$1</i>',
-            '<u>$1</u>',
-            '<span style="text-decoration:line-through;">$1</span>',
-            '<img src="$1" />',
-            '<a href="$1" target="_blank">$1</a>',
-            '<a href="$1" target="_blank">$2</a>',
-            '<ul>$1</ul>',
-            '<ol>$1</ol>',
-            '<li>$1</li>',
-            '<ul>$1</ul>',
-            '<ol></ol>',
-            '<p align="left">$1</p>',
-            '<p align="center">$1</p>',
-            '<p align="right">$1</p>',
-            '<font size="$1">$2</font>',
-            '<span style="color:$1;">$2</span>',
-            '<pre>$1</pre>',
-            '<span style="font-style:$1;">$2</span>',
-            '<blockquote>$1</blockquote>'
-          );
+    /*
+     * Check if a URL is valid and either uses the HTTP or the HTTPS scheme
+     *
+     * It's very important to not accept other schemes like `javascript:` or
+     * `data:`, because they can be used for cross-site scripting.
+     */
+    public function checkSafeUrl($url) {
+        $valid_url = false;
 
-          foreach( $this->custom_codes as $s => $r ) {
-            $search[]  = $s;
-            $replace[] = $r;
-          }
+        if (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED))
+        {
+            $parsed_url = parse_url($url);
+            $valid_url = (boolean) preg_match('#\\Ahttps?\\z#ui', $parsed_url['scheme']);
+        }
 
-          $string = preg_replace($search, $replace, $string);
+        return $valid_url;
+    }
 
-          $search  = array(
-            '</li><br />',
-            '</ul><br />',
-            '</ol><br />',
-            //HTML Elements
-            '&amp;',
-            //ASCII Codes
-            //'\r\n',
-            //Additional BBCodes
-            '[*]',
-            '[/*]',
-            //'[quote]',
-            //'[/quote]'
-          );
-          $replace = array(
-            '</li>',
-            '</ul>',
-            '</ol>',
-            //HTML Elements,
-            '&',
-            //ASCII Codes,
-            //'<br />',
-            //Additional BBCodes
-            '<li>',
-            '</li>',
-            //'<blockquote>',
-            //'</blockquote>'
-          );
+    public function parseListElements($list_content) {
+        /*
+         * TangoBB uses both the [li] tag and the [*] tag for list elements.
+         * Allowing both variants at the same time would be confusing, though.
+         * If [li] is used, we only parse those tags. Otherwise, we only parse
+         * the [*] tags.
+         */
+        $uses_li_syntax = preg_match('#\\[/?li\\]#is', $list_content);
 
-          $string = str_replace($search, $replace, $string);
+        $render_list_element = function ($match) {
+            return '<li>' . trim($match[1]) . '</li>';
+        };
 
-          return $string;
-      }
-      
-      private function parseHTML($string) {
+        if ($uses_li_syntax) {
+            $result = preg_replace_callback('#\\[li\\](.*?)\\[/li\\]\\s*#uis', $render_list_element, $list_content);
+        } else {
+            $result = preg_replace_callback('#\\[\\*\\](.*?)(?=\\[\\*\\]|\\z)#uis', $render_list_element, $list_content);
+        }
+
+        return $result;
+    }
+
+    /*
+     * Additional parsing on forum content.
+     */
+    private function parseQuote($raw_id) {
         global $MYSQL, $TANGO;
-          //die($string);
-          //die(var_dump($string));
-          preg_match_all('/<pre>(.*?)<\/pre>/', $string, $code);
-          $return = '';
-          //die(var_dump($quotes));
-          foreach( $code['1'] as $syntax ) {
-              
-              //$id    = preg_replace('/\s+/', '', $id);
 
-              $return .= htmlentities($syntax);
-              
-          }
-          //$string = str_replace('&amp;', '&', $string);
-          //return html_entity_decode($string);
-          return $return;
-      }
+        $id = preg_replace('#\\s+#u', '', $raw_id);
+        $MYSQL->where('id', $id);
+        $query = $MYSQL->get('{prefix}forum_posts');
+        $user  = (!empty($query))? $TANGO->user($query['0']['post_user']) : array(
+          'username' => ''
+        );
+        $q_c   = (!empty($query))? $query['0']['post_content'] : $raw_id;
+        $quote = $TANGO->tpl->entity(
+            'quote_post',
+            array(
+                'quoted_post_content',
+                'quoted_post_user'
+            ),
+            array(
+                $this->parse($this->removeQuote($q_c)),
+                $user['username']
+            )
+        );
 
-      private function removeQuote($string) {
-          $quotes = preg_match_all("|\[quote\](.*)\[/quote\]|U", $string, $out, PREG_PATTERN_ORDER);
-          
-          foreach( $out['1'] as $post_id ) {
-              $string = str_replace('[quote]' . $post_id . '[/quote]', '', $string);
-          }
-          return $string;
-      }
-      
-  }
+        return $quote;
+    }
 
-?>
+    private function removeQuote($string) {
+        return preg_replace('#\\[quote\\](.*?)\\[/quote\\]#uis', '', $string);
+    }
+
+}

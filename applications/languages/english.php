@@ -213,6 +213,11 @@
     ),
     'flat' => array(
       'merge_post' => '----------'
+    ),
+    'time' => array(
+      'hours_ago' => '%time% hours ago.',
+      'minutes_ago' => '%time% minutes ago.',
+      'just_now' => 'Just now.'
     )
   );
 

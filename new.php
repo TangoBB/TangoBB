@@ -132,7 +132,7 @@
                       /*
                        * Mentions
                        */
-                      preg_match_all('/@(\w+)/', $cont, $mentions);
+                      preg_match_all('/@(\w+)/', $thread_cont, $mentions);
                       $mentions = array_filter(array_unique($mentions['1']));
                       if( !empty($mentions['1']) ) {
                         foreach( $mentions['1'] as $mention ) {

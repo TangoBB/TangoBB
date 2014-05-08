@@ -429,4 +429,49 @@
       return $return;
   }
 
+  /*
+   * Features to tell time.
+   * @return array;
+   * @array
+   *  - tooltip
+   *  - time
+   */
+  function simplify_time($timestamp) {
+    global $LANG;
+    if( (time()-$timestamp) > 86400 && (time()-$timestamp) < 604800 ) {
+      $post_time         = date('l h:i A', $timestamp);
+      $post_time_tooltip = date('F jS, Y', $timestamp);
+    } elseif( (time()-$timestamp) > 3600 && (time()-$timestamp) < 86400 ) {
+      //$post_time         = round((time()-$timestamp)/3600).' hours ago.';
+      $post_time         = str_replace(
+        '%time%',
+        round((time()-$timestamp)/3600),
+        $LANG['time']['hours_ago']
+      );
+      $post_time_tooltip = date('F jS, Y', $timestamp);
+    } elseif( (time()-$timestamp) > 60 && (time()-$timestamp) < 3600 ) {
+      //$post_time         = round((time()-$timestamp)/60).' minutes ago.';
+      $time              = round((time()-$timestamp)/60);
+      $post_time         = str_replace(
+        '%time%',
+        $time,
+        $LANG['time']['minutes_ago']
+      );
+      $post_time_tooltip = date('F jS, Y', $timestamp);
+    } elseif( (time()-$timestamp) < 60 ) {
+      //$post_time         = 'Just now.';
+      $post_time         = $LANG['time']['just_now'];
+      $post_time_tooltip = date('F jS, Y', $timestamp);
+    } else {
+      $post_time         = date('F jS, Y', $timestamp);
+      $post_time_tooltip = date('l h:i A', $timestamp);
+    }
+
+    $return = array(
+      'tooltip' => $post_time_tooltip,
+      'time' => $post_time
+    );
+    return $return;
+  }
+
 ?>

@@ -1,3 +1,6 @@
+<?php
+  if( !defined("BASEPATH") ) { die(); }
+?>
 <!--- parent:theme_entity_file:start -->
 <!--- tpl:quote_post:start -->
 <blockquote>%quoted_post_content%<small>%quoted_post_user%</small></blockquote>

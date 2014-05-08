@@ -1,3 +1,6 @@
+<?php
+  if( !defined("BASEPATH") ) { die(); }
+?>
 <!--- parent:buttons:start -->
 <!--- tpl:custom_button:start -->
 <a href="%url%" class="btn btn-primary">%name%</a>

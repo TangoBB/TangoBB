@@ -95,7 +95,7 @@
                 'name'
               ),
               array(
-                SITE_URL . '/thread.php/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
+                SITE_URL . '/thread.php/' . $t['title_friendly'] . '.' . $t['id'],
                 $t['post_title']
               )
             );

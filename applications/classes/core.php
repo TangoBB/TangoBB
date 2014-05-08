@@ -43,6 +43,19 @@
             $query['0']['user_avatar'] = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($query['0']['user_email']))) . "?d=" . urlencode('http://www.somewhere.com/homestar.jpg') . "&s=200";
           }
 
+          if( $query['0']['additional_permissions'] !== "0" ) {
+            $a_perm = explode(',', $query['0']['additional_permissions']);
+            $n_perm = array();
+            foreach( $a_perm as $cp ) {
+              $MYSQL->where('id', $cp);
+              $p_query = $MYSQL->get('{prefix}permissions');
+              if( $p_query ) {
+                $n_perm[] = $p_query['0']['permission_name'];
+              }
+            }
+            $query['0']['additional_permissions'] = $n_perm;
+          }
+
           if( is_callable($callback) ) {
             call_user_func($callback, $query['0']);
           } else {

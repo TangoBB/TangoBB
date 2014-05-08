@@ -50,6 +50,20 @@
         }
       }
 
+      /*
+       * Checks information on permissions.
+       */
+      public function perm($perm_id) {
+        global $MYSQL;
+        $MYSQL->where('id', $perm_id);
+        $query = $MYSQL->get("{prefix}permissions");
+        if( $query ) {
+          return $query['0'];
+        } else {
+          return false;
+        }
+      }
+
   }
 
 ?>

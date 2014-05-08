@@ -131,11 +131,17 @@
                       SITE_URL . '/report.php/post/' . $node_id,
                       'buttons'
                   );
-              $quote_thread  .= $TANGO->tpl->entity(
+              /*$quote_thread  .= $TANGO->tpl->entity(
                   'quote_post',
                   'url',
                   SITE_URL . '/reply.php/' . $node_name . '.' . $node_id . '/quote/' . $node_id,
                   'buttons'
+              );*/
+              $quote_thread .= $TANGO->tpl->entity(
+                'quote_post',
+                'url',
+                'javascript:quote(\'' . $query['0']['id'] . '\');',
+                'buttons'
               );
               if( $query['0']['post_user'] == $TANGO->sess->data['id'] ) {
                   $edit_thread .= $TANGO->tpl->entity(
@@ -387,11 +393,18 @@
               $edit_p   = '';
               $report_p = '';
               if( $TANGO->perm->check('reply_thread') && ($query['0']['post_locked'] == "0") ) {
-                  $quote_p .= $TANGO->tpl->entity(
+                  /*$quote_p .= $TANGO->tpl->entity(
                       'quote_post',
                       'url',
                       SITE_URL . '/reply.php/' . $node_name . '.' . $node_id . '/quote/' . $post['id'],
                       'buttons'
+                  );*/
+                  $quote_p  .= $TANGO->tpl->entity(
+                    'quote_post',
+                    'url',
+                    //'javascript:$(\'#editor\').execCommand(\'quote\',{author: \'\',seltext:\'Post ID: ' . $post['id'] . '\'});',
+                    'javascript:quote(\'' . $post['id'] . '\');',
+                    'buttons'
                   );
                   $report_p .= $TANGO->tpl->entity(
                       'report_post',

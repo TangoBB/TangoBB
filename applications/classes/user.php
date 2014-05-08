@@ -74,6 +74,82 @@
       }
 
       /*
+       * Add permission to a user.
+       */
+      public function givePermission($user, $permission) {
+        global $MYSQL, $TANGO;
+        $user   = $TANGO->user($user);
+        if( !empty($user) ) {
+          $perm   = $TANGO->perm->perm($permission);
+          if( $user['additional_permissions'] == "0" ) {
+            $update = array(
+              'additional_permissions' => $perm['permission_name']
+            );
+          } else {
+            $ap_array = array();
+            foreach( $user['additional_permissions'] as $ap ) {
+              $MYSQL->where('permission_name', $ap);
+              $ap_query = $MYSQL->get('{prefix}permissions');
+              if( $ap_query ) {
+                $ap_array[] = $ap_query['0']['id'];
+              }
+            }
+            $additional_permissions = implode(',', $ap_array);
+            $update                 = array(
+              'additional_permissions' => $additional_permissions . ',' . $perm['permission_name']
+            );
+          }
+          $MYSQL->where('id', $user['id']);
+          if( $MYSQL->update('{prefix}users', $update) ) {
+            return true;
+          } else {
+            return false;
+          }
+        } else { 
+          return false;
+        }
+      }
+
+      /*
+       * Remove additional permission from a user.
+       */
+      public function removeAddPermission($user, $permission) {
+        global $MYSQL, $TANGO;
+        $user = $TANGO->user($user);
+        if( !empty($user) ) {
+          $current_perms = array();
+          foreach( $user['additional_permissions'] as $ap ) {
+            $current_perms[$ap] = $ap;
+          }
+          unset($current_perms[$permission]);
+          if( !empty($current_perms) ) {
+            $new_perms = array();
+            foreach( $current_perms as $parent => $child ) {
+              $MYSQL->where('permission_name', $id_perms);
+              $p_query     = $MYSQL->get('{prefix}permissions');
+              $new_perms[] = $p_query['id'];
+            }
+            $new_perms = implode(',', $new_perms);
+            $update    = array(
+              'additional_permissions' => $new_perms
+            );
+          } else {
+            $update = array(
+              'additional_permissions' => '0'
+            );
+          }
+          $MYSQL->where('id', $user['id']);
+          if( $MYSQL->update('{prefix}users', $update) ) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
+
+      /*
        * Return user links as an array.
        * For template use.
        */

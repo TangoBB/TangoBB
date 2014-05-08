@@ -1,17 +1,28 @@
-(function (jQuery) {
-    jQuery.oauthpopup = function (options) {
-        options.windowName = options.windowName || 'ConnectWithOAuth';
-        options.windowOptions = options.windowOptions || 'location=0,status=0,width='+options.width+',height='+options.height+',scrollbars=1';
-        options.callback = options.callback || function () {
-            window.location.reload();
-        };
-        var that = this;
-        that._oauthWindow = window.open(options.path, options.windowName, options.windowOptions);
-        that._oauthInterval = window.setInterval(function () {
-            if (that._oauthWindow.closed) {
-                window.clearInterval(that._oauthInterval);
-                options.callback();
-            }
-        }, 1000);
-    };
-})(jQuery);
+$(document).ready(function() {
+    //Setting up the Wysibb Editor.
+    $('#editor').wysibb({
+        buttons :  'bold,italic,underline,strike,|,fontcolor,fontsize,fontfamily,|,justifyleft,justifycenter,justifyright,|,bullist,|,img,link,|,code,quote',
+        tabInsert: false
+    });
+    //The syntex highlighting in <pre> tags.
+    $('pre').each(function(i, e) {hljs.highlightBlock(e)});
+    //The tags used in conversations.
+    $('#receiver').tagsInput({
+        defaultText: 'add user',
+        'width':'100%',
+        'height':'auto'
+    });
+});
+var formsave1=new autosaveform({
+    formid: 'tango_form',
+    pause: 1000 //<--no comma following last option!
+});
+
+/*
+ * Forum functions.
+ */
+
+//Quote Post.
+function quote(id) {
+    $('#editor').execCommand('quote',{author: '',seltext:'Post ID: ' + id + ''});
+}

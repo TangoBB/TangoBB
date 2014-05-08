@@ -21,7 +21,16 @@
               //$this->data                   = $TANGO->user($user_id);
               $this->data                   = $TANGO->user($this->session['logged_user']);
               $this->data['username_style'] = $TANGO->usergroup($this->data['user_group'], 'username_style', $this->data['username']);
-              $this->data['permissions']    = $TANGO->usergroup($this->data['user_group'], 'permissions');
+              //$this->data['permissions']    = $TANGO->usergroup($this->data['user_group'], 'permissions');
+              if( $this->data['additional_permissions'] !== "0" ) {
+                $current_perms             = $TANGO->usergroup($this->data['user_group'], 'permissions');
+                foreach( $this->data['additional_permissions'] as $ap ) {
+                  $current_perms[] = $ap;
+                }
+                $this->data['permissions'] = $current_perms;
+              } else {
+                $this->data['permissions']    = $TANGO->usergroup($this->data['user_group'], 'permissions');
+              }
 
               if( $this->session['session_time'] >= strtotime('24 hours ago') ) {
                 $time = time();

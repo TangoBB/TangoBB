@@ -1,3 +1,6 @@
+<?php
+  if( !defined("BASEPATH") ) { die(); }
+?>
 <!DOCTYPE html>
 <html>
   <head>
