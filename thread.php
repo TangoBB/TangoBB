@@ -26,6 +26,7 @@
           
           $user        = $TANGO->user($query['0']['post_user']);
           $node        = node($query['0']['origin_node']);
+          $time_post   = simplify_time($query['0']['post_time']);
 
           /*$breadcrumbs = $TANGO->tpl->entity(
             'breadcrumbs_before',
@@ -358,7 +359,7 @@
                 $TANGO->lib_parse->parse($query['0']['post_content']),
                 //html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($user['user_signature'])))),
                 $TANGO->lib_parse->parse($user['user_signature']),
-                date('F j, Y', $query['0']['post_time']),
+                $time_post['time'],
                 $thread_mod_tools,
                 $watch_link,
                 $thread_notice,
@@ -392,6 +393,7 @@
               $quote_p  = '';
               $edit_p   = '';
               $report_p = '';
+              $time_reply = simplify_time($post['post_time']);
               if( $TANGO->perm->check('reply_thread') && ($query['0']['post_locked'] == "0") ) {
                   /*$quote_p .= $TANGO->tpl->entity(
                       'quote_post',
@@ -512,7 +514,7 @@
                       //html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($ur['user_signature'])))),
                       //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($ur['user_signature'])->get_html()),
                       $TANGO->lib_parse->parse($ur['user_signature']),
-                      date('F j, Y', $post['post_time']),
+                      $time_reply['time'],
                       $post_mod_tools,
                       $post['id'],
                       $ur['id']

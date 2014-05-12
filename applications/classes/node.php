@@ -23,6 +23,7 @@
               $user     = $TANGO->user($post['post_user']);
               $closed   = ( $post['post_locked'] == "1" )? $TANGO->tpl->entity('thread_closed') : '';
               $stickied =  ( $post['post_sticky'] == "1" ) ? $TANGO->tpl->entity('thread_stickied') : '';
+              $post_time = simplify_time($post['post_time']);
               
               $return .= $TANGO->tpl->entity(
                   'forum_listings_node_threads_posts',
@@ -37,7 +38,7 @@
                       '<a href="' . SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id'] . '">' . $post['post_title'] . '</a>' . $closed . $stickied,
                       '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a>',
                        $user['user_avatar'],
-                      '<span data-toggle="tooltip" data-placement="bottom" title="' . date('F j, Y', $post['post_time']) . '">' . date('l h:i A', $post['post_time']) . '</span>',
+                      '<span data-toggle="tooltip" data-placement="bottom" title="' . $post_time['tooltip'] . '">' . $post_time['time'] . '</span>',
                       $this->latestReply($post['id'], SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id'])
                   )
               );
@@ -74,6 +75,8 @@
               $page   = ( $q > 1 )? '/page/' . ceil($q) . '/' : '';
               
               $user   = $TANGO->user($query['0']['post_user']);
+              $post_time = simplify_time($query['0']['post_time']);
+              
               $return = $TANGO->tpl->entity(
                   'forum_listings_node_threads_latestreply',
                   array(
@@ -84,7 +87,7 @@
                   array(
                       $user['user_avatar'],
                       '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a>',
-                      '<small><a href="' . $url . $page . '#post-' . $query['0']['id'] . '"><span data-toggle="tooltip" data-placement="bottom" title="' . date('F j, Y', $query['0']['post_time']) . '">' . date('l h:i A', $query['0']['post_time']) . '</span></a></small>',
+                      '<small><a href="' . $url . $page . '#post-' . $query['0']['id'] . '"><span data-toggle="tooltip" data-placement="bottom" title="' . $post_time['tooltip'] . '">' . $post_time['time'] . '</span></a></small>',
                   )
               );
               
