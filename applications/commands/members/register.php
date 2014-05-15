@@ -11,7 +11,7 @@
   $notice  = '';
   $content = '';
 
-        if( isset($_POST['register']) ) {
+        if( isset($_POST['register']) && $TANGO->data['register_enable'] == 1 ) {
             try {
 
                 foreach( $_POST as $parent => $child ) {
@@ -166,30 +166,38 @@
         );
         $content .= $TANGO->tpl->breadcrumbs();
 
-        $content .= $TANGO->tpl->entity(
-          'register_form',
-          array(
-            'notice',
-            'csrf_field',
-            'username_field_name',
-            'password_field_name',
-            'password_a_field_name',
-            'email_field_name',
-            'captcha',
-            'submit_name',
-            'register_notice'
-          ),
-          array(
-            $notice,
-            $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)),
-            'username',
-            'password',
-            'a_password',
-            'email',
-            $TANGO->captcha->display(),
-            'register',
-            $LANG['bb']['members']['register_message']
-          )
-        );
+        if( $TANGO->data['register_enable'] == 1 ) {
+          $content .= $TANGO->tpl->entity(
+            'register_form',
+            array(
+              'notice',
+              'csrf_field',
+              'username_field_name',
+              'password_field_name',
+              'password_a_field_name',
+              'email_field_name',
+              'captcha',
+              'submit_name',
+              'register_notice'
+            ),
+            array(
+              $notice,
+              $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)),
+              'username',
+              'password',
+              'a_password',
+              'email',
+              $TANGO->captcha->display(),
+              'register',
+              $LANG['bb']['members']['register_message']
+            )
+          );
+        } else {
+          $content .= $TANGO->tpl->entity(
+            'danger_notice',
+            'content',
+            $LANG['bb']['members']['register_disabled']
+            );
+        }
 
 ?>

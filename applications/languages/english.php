@@ -73,6 +73,7 @@
         'register_successful' => 'Successfully registered! Now logging you in...',
         'register_successful_email' => 'Successfully registered! An email has been sent to be verified.',
         'register_message' => 'By clicking "Register", you agree to abide by the forum rules located <a href="' . SITE_URL . '/members.php/cmd/rules">here</a>.',
+        'register_disabled' => 'Registration is currently disabled.',
         'log_in' => 'Sign In',
         'invalid_login' => 'Invalid details!',
         'login_success' => 'Successfully logged in! Click <a href="' . SITE_URL . '">here</a> if the page does not redirect you.',

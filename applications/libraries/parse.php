@@ -25,6 +25,18 @@ class Library_Parse {
         // closures can't access $this directly until PHP 5.4
         $this_object = $this;
 
+        $string      = str_replace(
+            array(
+                '<',
+                '>'
+            ),
+            array(
+                '&lt;',
+                '&gt;'
+            ),
+            $string
+        );
+
         $tags = array(
             // bold
             '#\\[b\\](.*?)\\[/b\\]#uis' => '<b>\\1</b>',
@@ -108,7 +120,7 @@ class Library_Parse {
         // replace non-breaking spaces (caused by contenteditable attribute) with regular spaces
         $result = str_replace("\xc2\xa0", ' ', $string);
 
-        $result = htmlspecialchars($result, ENT_QUOTES, 'UTF-8');
+        //$result = htmlspecialchars($result, ENT_QUOTES, 'UTF-8');
 
         foreach ($tags as $pattern => $replacement) {
             if (is_callable($replacement)) {
@@ -122,6 +134,19 @@ class Library_Parse {
 
         //Mentions
         $result = preg_replace('/@(\w+)/', '@<a href="' . SITE_URL . '/members.php/cmd/user/id/$1">$1</a>', $result);
+
+        //Additional parsing that should be fixed.
+        $result = str_replace(
+            array(
+                '[/*]',
+                '%'
+            ),
+            array(
+                '',
+                '&#37;'
+            ),
+            $result
+        );
 
         $result = nl2br($result);
 

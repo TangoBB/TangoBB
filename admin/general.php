@@ -36,6 +36,7 @@
           $board_email  = $_POST['board_email'];
           $site_lang    = $_POST['default_language'];
           $site_rules   = $_POST['board_rules'];
+          $enable_reg   = (isset($_POST['register_enable']))? '1' : '0';
 
           $fb_app_id    = $_POST['fb_app_id'];
           $fb_app_sec   = $_POST['fb_app_secret'];
@@ -59,6 +60,7 @@
                   'site_email' => $board_email,
                   'site_rules' => $site_rules,
                   'site_language' => $site_lang,
+                  'register_enable' => $enable_reg,
                   'facebook_app_id' => $fb_app_id,
                   'facebook_app_secret' => $fb_app_sec,
                   'facebook_authenticate' => $enable_fb,
@@ -97,6 +99,7 @@
 
   echo '<form action="" method="POST">';
 
+  $reg_check = ($TANGO->data['register_enable'] == 1)? ' CHECKED' : '';
   echo $ADMIN->box(
       'General Settings',
       $notice .
@@ -105,6 +108,8 @@
        <input type="text" class="form-control" name="site_name" id="site_name" value="' . $TANGO->data['site_name'] . '" />
        <label for="board_email">Board Email</label>
        <input type="text" class="form-control" name="board_email" id="board_email" value="' . $TANGO->data['site_email'] . '" />
+       <input type="checkbox" name="register_enable" value="1" id="reg_enable" ' . $reg_check . ' /><label for="reg_enable">Enable Register</label>
+       <br />
        <label for="default_language">Default Languge</label><br />
        <select name="default_language" id="Default_language">
        ' . languagePackages() . '
@@ -115,6 +120,18 @@
     'HTML tags will be converted into ascii codes.
      <textarea name="board_rules" class="form-control" style="min-height:250px;">' . $TANGO->data['site_rules'] . '</textarea>'
   );
+
+  $recaptcha_check = ($TANGO->data['captcha_type'] == "2")? ' CHECKED' : '';
+  echo $ADMIN->box(
+      'Captcha Settings',
+      'The  public and private keys are <strong>required</strong> for reCaptcha.<br />
+       <label for="rcap_public">reCaptcha Public Key</label>
+       <input type="text" name="rcap_public" id="rcap_public" class="form-control" value="' . $TANGO->data['recaptcha_public_key'] . '" />
+       <label for="rcap_private">reCaptcha Private Key</label>
+       <input type="text" name="rcap_private" id="rcap_private" class="form-control" value="' . $TANGO->data['recaptcha_private_key'] . '" />
+       <input type="checkbox" name="enable_recaptcha" value="1"' . $recaptcha_check . ' /> Use reCaptcha'
+  );
+
   $smtp_check = ($TANGO->data['mail_type'] == 2)? ' CHECKED' : '';
   echo $ADMIN->box(
       'SMTP/Email Settings',
@@ -137,16 +154,6 @@
        <label for="fb_app_secret">Facebook App Secret</label>
        <input type="text" name="fb_app_secret" id="fb_app_secret" class="form-control" value="' . $TANGO->data['facebook_app_secret'] . '" />
        <input type="checkbox" name="enable_facebook" value="1"' . $fb_check . ' /> Enable Facebook Authentication'
-  );
-  $recaptcha_check = ($TANGO->data['captcha_type'] == "2")? ' CHECKED' : '';
-  echo $ADMIN->box(
-      'Captcha Settings',
-      'The  public and private keys are <strong>required</strong> for reCaptcha.<br />
-       <label for="rcap_public">reCaptcha Public Key</label>
-       <input type="text" name="rcap_public" id="rcap_public" class="form-control" value="' . $TANGO->data['recaptcha_public_key'] . '" />
-       <label for="rcap_private">reCaptcha Private Key</label>
-       <input type="text" name="rcap_private" id="rcap_private" class="form-control" value="' . $TANGO->data['recaptcha_private_key'] . '" />
-       <input type="checkbox" name="enable_recaptcha" value="1"' . $recaptcha_check . ' /> Use reCaptcha'
   );
 
   echo $ADMIN->box(

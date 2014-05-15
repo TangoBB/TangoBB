@@ -60,11 +60,7 @@
           $this->addParam(
               'editor_settings',
               '<link rel="stylesheet" href="' . SITE_URL . '/public/css/tangobb.css" />
-               <link rel="stylesheet" href="' . SITE_URL . '/public/js/wysibb/theme/default/wbbtheme.css" />
-               <link rel="stylesheet" href="' . SITE_URL . '/public/js/highlighter/styles/github.css" />
-               <link rel="stylesheet" href="' . SITE_URL . '/public/css/jquery.tagsinput.css" />
-               <script src="' . SITE_URL . '/public/js/jquery.min.js"></script>
-               <script type="text/javscript">var SITE_URL = \'' . SITE_URL . '\';</script>
+               <script type="text/javascript" src="' . SITE_URL . '/public/js/jquery.min.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/autosaveform.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/wysibb/jquery.wysibb.min.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/highlighter/highlight.pack.js"></script>

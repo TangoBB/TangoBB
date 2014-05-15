@@ -151,44 +151,21 @@
             $where .= ',?';
             $data[] = $wh['id'];
           }
+          $where .= ',?';
+          $data[] = $forum;
+
+          //die(var_dump($data));
 
           $return = '';
-          if( !empty($data) ) {
-            if( count($data) > 1 ) {
-              $query  = $MYSQL->rawQuery("SELECT * FROM
-                                   {prefix}forum_posts
-                                   WHERE
-                                   origin_node
-                                   IN
-                                   (" . $where . ")
-                                   ORDER BY
-                                   post_time
-                                   DESC
-                                   LIMIT 1", $data);
-            } else {
-        $data = array($forum, $data[0]);
-              $query = $MYSQL->rawQuery("SELECT * FROM
-                                  {prefix}forum_posts
-                                  WHERE
-                                  origin_node = ?
-                                  OR
-                                  origin_node = ?
-                                  ORDER BY
-                                  post_time
-                                  DESC
-                                  LIMIT 1", $data);
-            }
-          } else {
-        $data = array($forum);
-            $query = $MYSQL->rawQuery("SELECT * FROM
-                                  {prefix}forum_posts
-                                  WHERE
-                                  origin_node = ?
-                                  ORDER BY
-                                  post_time
-                                  DESC
-                                  LIMIT 1", $data);
-          }
+
+          $query = $MYSQL->rawQuery("SELECT * FROM
+                                     {prefix}forum_posts
+                                     WHERE
+                                     origin_node
+                                     IN (" . $where . ")
+                                     ORDER BY
+                                     post_time
+                                     DESC LIMIT 1", $data);
 
           if( !empty($query) ) {
 
