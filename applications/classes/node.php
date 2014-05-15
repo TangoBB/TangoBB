@@ -56,7 +56,7 @@
           $MYSQL->where('post_type', '2');
           $query = $MYSQL->get('{prefix}forum_posts');*/
           $id    = (int) $id;
-		      $data = array($id);
+          $data = array($id);
           $query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
