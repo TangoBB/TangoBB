@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TangoBB Administration Panel</title>
+    <title>Iko Administration Panel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="<?php echo SITE_URL; ?>/public/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -15,7 +15,7 @@
           
           <div class="row">
               
-              <h1>TangoBB</h1>
+              <h1>Iko</h1>
 
               <div class="col-md-2">
                   <ul class="nav nav-pills nav-stacked">

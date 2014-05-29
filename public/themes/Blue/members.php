@@ -190,7 +190,7 @@
       </div>
       <footer>
           <small class="pull-left">
-            Powered by <a href="http://tangobb.net/" target="_blank">TangoBB</a>
+            Powered by <a href="http://iko.im/" target="_blank">Iko</a>
           </small>
           @if ($TANGO->sess->isLogged)
           <small class="pull-right">

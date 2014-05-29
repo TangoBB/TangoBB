@@ -190,12 +190,12 @@
       </div>
       <footer>
           <small class="pull-left">
-            Powered by <a href="http://tangobb.net/" target="_blank">TangoBB</a>
+            Powered by <a href="http://iko.im/" target="_blank">Iko</a>
           </small>
           @if ($TANGO->sess->isLogged)
           <small class="pull-right">
             <span data-toggle="tooltip" title="Choose Themes" class="tooltip_toggle">
-              <a href="#" data-toggle="modal" data-target="#theme_modal">Blue</a>
+              <a href="#" data-toggle="modal" data-target="#theme_modal">Change Theme</a>
             </span>
           </small>
           @endif
