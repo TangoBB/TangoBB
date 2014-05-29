@@ -44,11 +44,16 @@
           /** Added by N8boy:
           *   TODO: - Creating a delete function
           */
+          if ($msg['receiver_viewed']==0 && $receiver['id'] == $TANGO->sess->data['id']){
+            $badge = '<span class="label label-success pull-right">New messages</span>';
+          }else{
+            $badge = '';
+          }
           $content .= '<tr>
                         <td style="width: 55px;">
                             <img class="avatar_mini" src="' . $sender['user_avatar'] . '" />
                         </td>
-                        <td>
+                        <td>'. $badge .'
                             <h4><a href="' . SITE_URL . '/conversations.php/cmd/view/v/' . $msg['id'] . '">' . $msg['message_title'] . '</a></h4>
                             ' . $LANG['bb']['conversations']['starter'] .' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $sender['id'] . '">' . $sender['username_style'] . '</a>, ' . $LANG['bb']['conversations']['reciever'] .' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $receiver['id'] . '">' . $receiver['username_style'] . '</a>
                         </td>
