@@ -35,7 +35,7 @@
             'page_new' => 'Start Conversation',
             'page_reply' => 'Reply Conversation:',
             'starter' => 'Started by',
-            'reciever' => 'sended to',
+            'reciever' => 'sent to',
             'by' => 'By:', // not needed anymore | N8boy
   			'for' => 'For:', // not needed anymore | N8boy
   			'form_to'=> 'To <small>Seperated with a ","</small>',
