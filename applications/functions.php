@@ -473,5 +473,19 @@
     );
     return $return;
   }
+  
+  /* Function which counts the replies of a conversation
+   * by N8boy
+   */
+  function amount_replies($origin_massage_id){
+    global $MYSQL;
+    if(is_numeric($origin_massage_id)){
+      $query = $MYSQL->query("SELECT * FROM
+                              {prefix}messages
+                              WHERE
+                              origin_message = " . $origin_massage_id);
+      return number_format(count($query));
+      }
+  }
 
 ?>

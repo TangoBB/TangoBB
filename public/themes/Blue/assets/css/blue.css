@@ -273,3 +273,9 @@ footer a:hover {
   margin-top: 5px;
   border-top:1px dashed #d3d3d3;
 }
+.avatar_mini{
+    width: 50px;
+    height: 50px;
+    padding-left: 2px;
+    padding-top: 4px;
+}

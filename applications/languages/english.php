@@ -30,11 +30,14 @@
   			'report_reason' => 'Reason'
   		),
   		'conversations' => array(
-        'page_conversations' => 'Conversations',
-        'page_new' => 'Start Conversation',
-        'page_reply' => 'Reply Conversation:',
-  			'by' => 'By:',
-  			'for' => 'For:',
+            'my_conversations' => 'My Conversations', // added by N8boy
+            'page_conversations' => 'Conversations',
+            'page_new' => 'Start Conversation',
+            'page_reply' => 'Reply Conversation:',
+            'starter' => 'Started by',
+            'reciever' => 'sended to',
+            'by' => 'By:', // not needed anymore | N8boy
+  			'for' => 'For:', // not needed anymore | N8boy
   			'form_to'=> 'To <small>Seperated with a ","</small>',
   			'form_send' => 'Send',
   			'form_title' => 'Title',

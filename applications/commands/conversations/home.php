@@ -31,19 +31,45 @@
   );
 
   $content .= $TANGO->tpl->breadcrumbs();
-
+  $content .= '<div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading"><strong>' . $LANG['bb']['conversations']['my_conversations'] . '</strong></div>'; // N8boy
   if( !empty($query) ) {
+    $content .= '<table class="table table-striped">'; // N8boy
       foreach( $query as $msg ) {
           
           $sender   = $TANGO->user($msg['message_sender']);
           $receiver = $TANGO->user($msg['message_receiver']);
-          $content .= '<div style="border-bottom:1px solid #ccc;padding-bottom:10px;overflow:auto;">
+          $message_time = simplify_time($msg['message_time']);
+          /** Added by N8boy:
+          *   TODO: - Creating a delete function
+          */
+          $content .= '<tr>
+                        <td style="width: 55px;">
+                            <img class="avatar_mini" src="' . $sender['user_avatar'] . '" />
+                        </td>
+                        <td>
+                            <h4><a href="' . SITE_URL . '/conversations.php/cmd/view/v/' . $msg['id'] . '">' . $msg['message_title'] . '</a></h4>
+                            ' . $LANG['bb']['conversations']['starter'] .' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $sender['id'] . '">' . $sender['username_style'] . '</a>, ' . $LANG['bb']['conversations']['reciever'] .' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $receiver['id'] . '">' . $receiver['username_style'] . '</a>
+                        </td>
+                        <td style="width: 250px;">
+                            ' . amount_replies($msg['id']) . ' Replies<br />
+                            ' . $message_time['time'] . '
+                        </td>
+                        <td style="width: 25px;">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </td>
+                       </tr>';
+         /* $content .= '<div style="border-bottom:1px solid #ccc;padding-bottom:10px;overflow:auto;">
                          <h4><a href="' . SITE_URL . '/conversations.php/cmd/view/v/' . $msg['id'] . '">' . $msg['message_title'] . '</a></h4>
                          ' . $LANG['bb']['conversations']['by'] . ' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $sender['id'] . '">' . $sender['username_style'] . '</a> on ' . date('F j, Y', $msg['message_time']) . '<br />
                          ' . $LANG['bb']['conversations']['for'] . ' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $receiver['id'] . '">' . $receiver['username_style'] . '</a>
                        </div>';
+                       */
+         
           
       }
+      $content .= '</table>'; // N8boy
   } else {
       $content .= $TANGO->tpl->entity(
           'danger_notice',
@@ -51,5 +77,6 @@
           $LANG['bb']['conversations']['no_conversations']
       );
   }
+  $content .= '</div>'; // N8boy
 
 ?>
