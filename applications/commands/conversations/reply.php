@@ -32,14 +32,19 @@
       		if( !$cont ) {
       			throw new Exception ($LANG['global_form_process']['all_fields_required']);
       		} else {
-
+                if ($TANGO->sess->data['id'] == $query['0']['message_sender']){
+                    $receiver = $query['0']['message_receiver'];
+                }
+                else{
+                    $receiver = $query['0']['message_sender'];
+                }
       			$data = array(
       				'message_title' => 'RE: ' . $query['0']['message_title'],
       				'message_content' => $cont,
       				'message_time' => $time,
       				'origin_message' => $query['0']['id'],
       				'message_sender' => $TANGO->sess->data['id'],
-      				'message_receiver' => $query['0']['message_sender'],
+      				'message_receiver' => $receiver,
       				'message_type' => 2
       			);
 

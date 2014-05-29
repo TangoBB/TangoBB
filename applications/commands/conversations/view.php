@@ -59,7 +59,7 @@
                       'buttons'
               );
           }
-          if( $query['0']['receiver_viewed'] == 0 ) {
+          if( $query['0']['receiver_viewed'] == 0 && $TANGO->sess->data['id'] == $query['0']['message_receiver']) { //Is this needed?
             $data = array(
               'receiver_viewed' => 1
             );
@@ -116,7 +116,7 @@
           $rep = $MYSQL->get('{prefix}messages');
           foreach( $rep as $post ) {
 
-              if( $post['receiver_viewed'] == 0 ) {
+              if( $post['receiver_viewed'] == 0  && $TANGO->sess->data['id'] == $post['message_receiver']) {
                 $data = array(
                   'receiver_viewed' => 1
                   );
