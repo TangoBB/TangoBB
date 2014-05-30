@@ -37,6 +37,7 @@
                 <div class="panel-heading"><strong>' . $LANG['bb']['conversations']['my_conversations'] . '</strong></div>'; // N8boy
   if( !empty($query) ) {
     $content .= '<table class="table table-striped">'; // N8boy
+    $counter = 0;
       foreach( $query as $msg ) {
           $badge      = '';
           // Getting the latest reply
@@ -58,6 +59,19 @@
           /** Added by N8boy:
           *   TODO: - Creating a delete function
           */
+          if($sender['id'] == $TANGO->sess->data['id'] && $msg['sender_deleted'] == 0) {
+            $check = true;
+            
+          }
+          elseif($receiver['id'] == $TANGO->sess->data['id'] && $msg['receiver_deleted'] == 0) {
+            $check = true;
+          }
+          else {
+            $check = false;
+          }
+          if($check == true)
+          {
+            $counter += 1;
           if(isset($last_reply['0'])) {
             if ($last_reply['0']['receiver_viewed'] == 0 && $last_reply['0']['message_receiver'] == $TANGO->sess->data['id']) {
               $badge .= '<span class="label label-success pull-right">New messages</span>';
@@ -92,7 +106,7 @@
                             ' . $message_time['time'] . '
                         </td>
                         <td style="width: 25px;">
-                            <i class="glyphicon glyphicon-trash"></i>
+                            <a href="' . SITE_URL . '/conversations.php/cmd/delete/id/' . $msg['id'] . '"><i class="glyphicon glyphicon-trash"></i></a>
                         </td>
                        </tr>';
          /* $content .= '<div style="border-bottom:1px solid #ccc;padding-bottom:10px;overflow:auto;">
@@ -102,7 +116,17 @@
                        </div>';
                        */
       }
+      }
       $content .= '</table>'; // N8boy
+      
+      if ($counter == 0) {
+        $content .= $TANGO->tpl->entity(
+          'danger_notice',
+          'content',
+          $LANG['bb']['conversations']['no_conversations']
+      );
+      }
+      
   } else {
       $content .= $TANGO->tpl->entity(
           'danger_notice',

@@ -53,6 +53,20 @@
         );
       break;
       
+      case "delete":
+        require_once('applications/commands/conversations/delete.php');
+        $TANGO->tpl->addParam(
+            array(
+                'page_title',
+                'content'
+            ),
+            array(
+                $page_title,
+                $content
+            )
+        );
+      break;
+      
       default:
         require_once('applications/commands/conversations/home.php');
         $TANGO->tpl->addParam(
