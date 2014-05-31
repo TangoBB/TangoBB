@@ -138,7 +138,7 @@
       /*
        * Getting information from the theme's entities file.
        */
-      public function entity($entity, $param = "", $value = "", $parent ="theme_entity_file", $blade = true) {
+      public function entity($entity, $param = "", $value = "", $parent = "theme_entity_file", $blade = true) {
           global $TANGO;
           
           switch($parent) {

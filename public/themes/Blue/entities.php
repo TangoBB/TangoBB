@@ -433,4 +433,16 @@
     <input type="submit" name="%submit_field_name%" value="Reset Password" />
 </form>
 <!--- tpl:reset_password_form:end -->
+<!--- tpl:conversation_read:start -->
+<span class="pull-right"><i class="glyphicon glyphicon-eye-open"></i></span>
+<!--- tpl:conversation_read:end -->
+<!--- tpl:conversation_unread:start -->
+<span class="pull-right"><i class="glyphicon glyphicon-eye-close"></i></span>
+<!--- tpl:conversation_unread:end -->
+<!--- tpl:conversation_new_message:start -->
+<span class="label label-success pull-right">New messages</span>
+<!--- tpl:conversation_new_message:end -->
+<!--- tpl:conversation_delete:start -->
+<a href="%link%"><i class="glyphicon glyphicon-trash"></i></a>
+<!--- tpl:conversation_delete:end -->
 <!--- parent:theme_entity_file:end -->

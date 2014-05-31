@@ -73,24 +73,24 @@
           {
             $counter += 1;
           if(isset($last_reply['0'])) {
-            if ($last_reply['0']['receiver_viewed'] == 0 && $last_reply['0']['message_receiver'] == $TANGO->sess->data['id']) {
-              $badge .= '<span class="label label-success pull-right">New messages</span>';
+            if ($last_reply['0']['receiver_viewed'] == 0 && $last_reply['0']['message_receiver'] == $TANGO->sess->data['id']) {  // notification for Receiver: New message
+              $badge .= $TANGO->tpl->entity('conversation_new_message');
             }
-            elseif($last_reply['0']['receiver_viewed'] == 0 && $last_reply['0']['message_sender'] == $TANGO->sess->data['id']) {
-              $badge .= '<i class="glyphicon glyphicon-eye-close"></i>';
+            elseif($last_reply['0']['receiver_viewed'] == 0 && $last_reply['0']['message_sender'] == $TANGO->sess->data['id']) { // Sender can see if the receiver has viewed the last message
+              $badge .= $TANGO->tpl->entity('conversation_unread');
             }
-            elseif($last_reply['0']['receiver_viewed'] == 1 && $last_reply['0']['message_sender'] == $TANGO->sess->data['id']) {
-              $badge .= '<i class="glyphicon glyphicon-eye-open"></i>';
+            elseif($last_reply['0']['receiver_viewed'] == 1 && $last_reply['0']['message_sender'] == $TANGO->sess->data['id']) { // Sender can see if the receiver has viewed the last message
+              $badge .= $TANGO->tpl->entity('conversation_read');
             }
           }
           elseif($msg['receiver_viewed'] == 0 && $receiver['id'] == $TANGO->sess->data['id']) {
-            $badge .= '<span class="label label-success">New messages</span>';
+            $badge .= $TANGO->tpl->entity('conversation_new_message');
           }
           elseif($msg['receiver_viewed'] == 0 && $sender['id'] == $TANGO->sess->data['id']) {
-            $badge .= '<i class="glyphicon glyphicon-eye-close"></i>';
+            $badge .= $TANGO->tpl->entity('conversation_unread');
           }
           elseif($msg['receiver_viewed'] == 1 && $sender['id'] == $TANGO->sess->data['id']) {
-            $badge .= '<i class="glyphicon glyphicon-eye-open"></i>';
+            $badge .= $TANGO->tpl->entity('conversation_read');
           }
           
           $content .= '<tr>
@@ -105,9 +105,9 @@
                             ' . amount_replies($msg['id']) . ' Replies<br />
                             ' . $message_time['time'] . '
                         </td>
-                        <td style="width: 25px;">
-                            <a href="' . SITE_URL . '/conversations.php/cmd/delete/id/' . $msg['id'] . '"><i class="glyphicon glyphicon-trash"></i></a>
-                        </td>
+                        <td style="width: 25px;">';
+         $content .= $TANGO->tpl->entity('conversation_delete', 'link', SITE_URL . '/conversations.php/cmd/delete/id/' . $msg['id']);
+         $content .=    '</td>
                        </tr>';
          /* $content .= '<div style="border-bottom:1px solid #ccc;padding-bottom:10px;overflow:auto;">
                          <h4><a href="' . SITE_URL . '/conversations.php/cmd/view/v/' . $msg['id'] . '">' . $msg['message_title'] . '</a></h4>
