@@ -449,4 +449,10 @@
 <!--- tpl:conversation_delete:start -->
 <a href="%link%"><i class="glyphicon glyphicon-trash"></i></a>
 <!--- tpl:conversation_delete:end -->
+<!--- tpl:conversation_overview:start -->
+<div class="panel panel-default">
+    <div class="panel-heading"><strong>%overview_header%</strong></div>
+    %conversations%
+</div>
+<!--- tpl:conversation_overview:end -->
 <!--- parent:theme_entity_file:end -->
