@@ -30,11 +30,14 @@
         'report_reason' => 'Reason'
       ),
       'conversations' => array(
-        'page_conversations' => 'Conversations',
-        'page_new' => 'Start Conversation',
-        'page_reply' => 'Reply Conversation:',
-        'by' => 'By:',
-        'for' => 'For:',
+            'my_conversations' => 'My Conversations', // added by N8boy
+            'page_conversations' => 'Conversations',
+            'page_new' => 'Start Conversation',
+            'page_reply' => 'Reply Conversation:',
+            'starter' => 'Started by',
+            'reciever' => 'sent to',
+            'by' => 'By:', // not needed anymore | N8boy
+        'for' => 'For:', // not needed anymore | N8boy
         'form_to'=> 'To <small>Seperated with a ","</small>',
         'form_send' => 'Send',
         'form_title' => 'Title',
@@ -93,8 +96,8 @@
         'error_adding_gravatar' => 'Error adding Gravatar. Try again later.',
         'successful_adding_gravatar' => 'Gravatar successfully saved!',
         'error_upload_avatar' => 'Error uploading avatar. Try again later.',
-        'successful_upload_avatar' => 'Avatar suceessfully saved!',
         'about_you' => 'About You',
+        'successful_upload_avatar' => 'Avatar suceessfully saved!',
         'password' => 'Password',
         'current_password' => 'Current Password',
         'new_password' => 'New Password',
