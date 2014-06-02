@@ -327,6 +327,10 @@
 </ul>
 <div class="tab-content">
     <div class="tab-pane active" id="profile_info">
+        <strong>About User:</strong><br />
+        <div class="well">
+            %about_user%
+        </div>
         <strong>Signature:</strong><br />
         <div class="well">
             %user_signature%

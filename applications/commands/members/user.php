@@ -26,7 +26,7 @@
           $user            = $TANGO->user($id);
           
           $recent_activity = '';
-		  $data = array($query['0']['id']);
+      $data = array($query['0']['id']);
           $query           = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 15", $data);
           foreach( $query as $ac ) {
               if( $ac['post_type'] == "1" ) {
@@ -119,6 +119,7 @@
                   'usergroup',
                   'registered_date',
                   'user_signature',
+                  'about_user',
                   'recent_activity',
                   'mod_tools'
               ),
@@ -128,6 +129,7 @@
                   $userg['group_name'],
                   date('F j, Y', $user['date_joined']),
                   $TANGO->lib_parse->parse($user['user_signature']),
+                  $TANGO->lib_parse->parse($user['about_user']),
                   $recent_activity,
                   $mod_tools
               )
@@ -145,7 +147,7 @@
           $user            = $TANGO->usergroup($TANGO->sess->data['user_group']);
           
           $recent_activity = '';
-		  $data = array($TANGO->sess->data['id']);
+      $data = array($TANGO->sess->data['id']);
           $query           = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 15", $data);
           foreach( $query as $ac ) {
               if( $ac['post_type'] == "1" ) {
@@ -206,6 +208,7 @@
                   'usergroup',
                   'registered_date',
                   'user_signature',
+                  'about_user',
                   'recent_activity',
                   'mod_tools'
               ),
@@ -215,6 +218,7 @@
                   $user['group_name'],
                   date('F j, Y', $TANGO->sess->data['date_joined']),
                   $TANGO->lib_parse->parse($TANGO->sess->data['user_signature']),
+                  $TANGO->lib_parse->parse($TANGO->sess->data['about_user']),
                   $recent_activity,
                   ''
               )
