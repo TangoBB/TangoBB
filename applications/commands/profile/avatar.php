@@ -117,9 +117,11 @@
 
   $gravatar_checked = ( $TANGO->sess->data['avatar_type'] == "1" )? ' checked' : '';
   $content .= '<form id="tango_form" action="" method="POST" enctype="multipart/form-data">
-                 <label for="avatar">' . $LANG['bb']['profile']['change_avatar'] . '</label>
-                 <input type="file" name="avatar" id="avatar" />
-                 <br />
+                 <div class="iko avatar_uploader">
+                   <label for="avatar">' . $LANG['bb']['profile']['change_avatar'] . '</label>
+                   <input type="file" name="avatar" id="avatar" />
+                   <br />
+                 </div>
                  <input type="checkbox" id="gravatar" name="gravatar" value="1"' . $gravatar_checked . ' /> <label for="gravatar">' . $LANG['bb']['profile']['use_gravatar'] . '</label>
                  <br /><br />
                  <input type="submit" name="edit" value="' . $LANG['bb']['profile']['form_save'] . '" />

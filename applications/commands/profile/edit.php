@@ -21,9 +21,10 @@
           NoCSRF::check( 'csrf_token', $_POST );
           $email = $_POST['email'];
           $tz    = $_POST['timezone'];
+          $about = $_POST['about'];
           $pass  = $_POST['confirm_password'];
 
-          if( !$email or !$tz ) {
+          if( !$email or !$tz or !$about ) {
               throw new Exception ($LANG['global_form_process']['all_fields_required']);
           } elseif( !validEmail($email) ) {
               throw new Exception ($LANG['global_form_process']['invalid_email']);
@@ -36,6 +37,7 @@
 
                       $data  = array(
                           'user_email' => $email,
+                          'about_user' => $about,
                           'set_timezone' => $tz
                       );
                       $MYSQL->where('id', $TANGO->sess->data['id']);
@@ -58,7 +60,8 @@
               } else {
 
                   $data  = array(
-                    'set_timezone' => $tz
+                    'set_timezone' => $tz,
+                    'about_user' => $about
                   );
                   $MYSQL->where('id', $TANGO->sess->data['id']);
 
@@ -127,6 +130,9 @@
                  ' . $FORM->build('text', $LANG['bb']['members']['form_email'], 'email', array('value' => $TANGO->sess->data['user_email'])) . '
                  <label for="timezone">Timezone</label>
                  ' . $timezones . '
+                 <br />
+                 <label for="editor">' . $LANG['bb']['profile']['about_you'] . '</label><br />
+                 <textarea name="about" id="editor" style="min-width:100%;max-width:100%;height:150px;">' . $TANGO->sess->data['about_user'] . '</textarea>
                  ' . $FORM->build('password', $LANG['bb']['profile']['confirm_password'], 'confirm_password') . '
                  <br /><br />
                  ' . $FORM->build('submit', '', 'edit', array('value' => $LANG['bb']['profile']['form_save'])) . '

@@ -13,6 +13,14 @@ $(document).ready(function() {
         'height':'auto'
     });
 });
+$(function() {
+    if( $('input[type="checkbox"]#gravatar').is(':checked') ) {
+        $('.iko.avatar_uploader').css("display", 'none');
+    }
+    $('input[type="checkbox"]#gravatar').click(function() {
+        $('.iko.avatar_uploader').slideToggle();
+    });
+});
 var formsave1=new autosaveform({
     formid: 'tango_form',
     pause: 1000 //<--no comma following last option!

@@ -6,49 +6,46 @@
    */
 
   $LANG = array(
-  	//Main Forum
-  	'bb' => array(
-  		'forum' => 'Forum',
-  		'members' => 'Members',
-  		'search' => 'Search',
-  		'edit_post_in' => 'Edit post in:',
-  		'new_thread_in' => 'New thread in:',
-  		'new_reply_in' => 'New reply in:',
-  		'new_report' => 'Report',
-  		'new_thread_breadcrumb' => 'New Thread',
-  		'edit_post_breadcrumb' => 'Edit Post',
-  		'new_reply_breadcrumb' => 'New Reply',
+    //Main Forum
+    'bb' => array(
+      'forum' => 'Forum',
+      'members' => 'Members',
+      'search' => 'Search',
+      'edit_post_in' => 'Edit post in:',
+      'new_thread_in' => 'New thread in:',
+      'new_reply_in' => 'New reply in:',
+      'new_report' => 'Report',
+      'new_thread_breadcrumb' => 'New Thread',
+      'edit_post_breadcrumb' => 'Edit Post',
+      'new_reply_breadcrumb' => 'New Reply',
       'already_watched_thread' => 'You are already watching this thread.',
       'already_unwatched_thread' => 'You are already not watching this thread.',
       'watch_thread' => 'You are now watching this thread.',
       'unwatch_thread' => 'You are now not watching this thread.',
       'error_watching' => 'Error watching thread.',
       'error_unwatching' => 'Error unwatching thread.',
-  		'form' => array(
-  			'edit_post' => 'Edit Post',
-  			'report' => 'Report',
-  			'report_reason' => 'Reason'
-  		),
-  		'conversations' => array(
-            'my_conversations' => 'My Conversations', // added by N8boy
-            'page_conversations' => 'Conversations',
-            'page_new' => 'Start Conversation',
-            'page_reply' => 'Reply Conversation:',
-            'starter' => 'Started by',
-            'reciever' => 'sent to',
-            'by' => 'By:', // not needed anymore | N8boy
-  			'for' => 'For:', // not needed anymore | N8boy
-  			'form_to'=> 'To <small>Seperated with a ","</small>',
-  			'form_send' => 'Send',
-  			'form_title' => 'Title',
-  			'form_reply' => 'Reply',
-  			'no_conversations' => 'No conversations yet.',
-  			'user_not_exist' => 'User <strong>%username%</strong> does not exist!',
-  			'message_sent' => 'Your message to <strong>%username%</strong> has been sent!',
-  			'error_sending' => 'Error sending message to <strong>%username%</strong>.',
-  			'error_sending_alt' => 'Error sending message.'
-  		),
-  		'members' => array(
+      'form' => array(
+        'edit_post' => 'Edit Post',
+        'report' => 'Report',
+        'report_reason' => 'Reason'
+      ),
+      'conversations' => array(
+        'page_conversations' => 'Conversations',
+        'page_new' => 'Start Conversation',
+        'page_reply' => 'Reply Conversation:',
+        'by' => 'By:',
+        'for' => 'For:',
+        'form_to'=> 'To <small>Seperated with a ","</small>',
+        'form_send' => 'Send',
+        'form_title' => 'Title',
+        'form_reply' => 'Reply',
+        'no_conversations' => 'No conversations yet.',
+        'user_not_exist' => 'User <strong>%username%</strong> does not exist!',
+        'message_sent' => 'Your message to <strong>%username%</strong> has been sent!',
+        'error_sending' => 'Error sending message to <strong>%username%</strong>.',
+        'error_sending_alt' => 'Error sending message.'
+      ),
+      'members' => array(
         'home' => 'Members',
         'activate_account' => 'Activate Account',
         'account_activated' => 'Your account has been activated! <a href="' . SITE_URL . '/members.php/cmd/signin">Sign in</a> now.',
@@ -87,7 +84,7 @@
         'profile_of' => 'Profile of',
         'posted_thread' => 'Posted a new thread <a href="%url%">%title%</a> <small>(%date%)</small><hr size="1" />',
         'replied_to' => 'Replied to the thread <a href="%url%">%title%</a> <small>(%date%)</small><hr size="1" />'
-  		),
+      ),
       'profile' => array(
         'avatar' => 'Avatar',
         'change_avatar' => 'Change Avatar <small>A maximum of 500x500 Pixels</small>',
@@ -97,6 +94,7 @@
         'successful_adding_gravatar' => 'Gravatar successfully saved!',
         'error_upload_avatar' => 'Error uploading avatar. Try again later.',
         'successful_upload_avatar' => 'Avatar suceessfully saved!',
+        'about_you' => 'About You',
         'password' => 'Password',
         'current_password' => 'Current Password',
         'new_password' => 'New Password',
@@ -110,7 +108,7 @@
         'theme_error' => 'Error setting theme.',
         'theme_not_exist' => 'Theme does not exist.'
       )
-  	),
+    ),
     //Error Pages
     'error_pages' => array(
       '404' => array(
@@ -118,18 +116,18 @@
         'message' => 'Sorry, the resource you are looking for could not be found.'
       )
     ),
-  	//Global Form Variables
-  	'global_form_process' => array(
-  		'all_fields_required' => 'All fields are required!',
-  		'enter_search_query' => 'Please enter a search query!',
-  		'error_updating_post' => 'Error updating post. Try again later.',
-  		'error_creating_thread' => 'Error creating thread. Try again later.',
-  		'error_replying_thread' => 'Error replying to thread. Try again later.',
-  		'error_submitting_report' => 'Error submitting report. Try again later.',
-  		'thread_create_success' => 'Successfully created thread! Redirecting you...',
-  		'report_create_success' => 'Report has been successfully submitted!',
-  		'search_no_result' => 'No results.',
-  		'different_message_previous' => 'Please write a different message from your previous post.',
+    //Global Form Variables
+    'global_form_process' => array(
+      'all_fields_required' => 'All fields are required!',
+      'enter_search_query' => 'Please enter a search query!',
+      'error_updating_post' => 'Error updating post. Try again later.',
+      'error_creating_thread' => 'Error creating thread. Try again later.',
+      'error_replying_thread' => 'Error replying to thread. Try again later.',
+      'error_submitting_report' => 'Error submitting report. Try again later.',
+      'thread_create_success' => 'Successfully created thread! Redirecting you...',
+      'report_create_success' => 'Report has been successfully submitted!',
+      'search_no_result' => 'No results.',
+      'different_message_previous' => 'Please write a different message from your previous post.',
       'email_not_exist' => 'Email does not exist in our records!',
       'email_used' => 'Email is used, please use a new one.',
       'invalid_email' => 'Email is not valid!',
@@ -154,8 +152,8 @@
         'more_info' => '<br />Click <a href="%url%">here</a> to find out more.'
       )
     ),
-  	//Moderator Panel
-  	'mod' => array(
+    //Moderator Panel
+    'mod' => array(
       'ban' => array(
         'ban' => 'Ban User',
         'ban_success' => 'User has been banned. <a href="%url%">Back to user profile</a>.',

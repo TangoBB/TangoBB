@@ -26,8 +26,10 @@
  /* Logo */
  .logo {
  	background-image: url('../img/logo_b.png');
- 	height: 48px;
- 	width: 165px;
+ 	height: 40px;
+ 	width: 64px;
+  /* Margin */
+  margin-bottom: 4px;
  }
  .search_box {
  	width: 200px;

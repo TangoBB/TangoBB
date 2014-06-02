@@ -59,13 +59,13 @@
           );*/
           $this->addParam(
               'editor_settings',
-              '<link rel="stylesheet" href="' . SITE_URL . '/public/css/tangobb.css" />
+              '<link rel="stylesheet" href="' . SITE_URL . '/public/css/iko.css" />
                <script type="text/javascript" src="' . SITE_URL . '/public/js/jquery.min.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/autosaveform.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/wysibb/jquery.wysibb.min.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/highlighter/highlight.pack.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/jquery.tagsinput.min.js"></script>
-               <script type="text/javascript" src="' . SITE_URL . '/public/js/tangobb.js"></script>'
+               <script type="text/javascript" src="' . SITE_URL . '/public/js/iko.js"></script>'
           );
       }
       
