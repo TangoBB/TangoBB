@@ -24,8 +24,8 @@
           $about = $_POST['about'];
           $pass  = $_POST['confirm_password'];
 
-          if( !$email or !$tz or !$about ) {
-              throw new Exception ($LANG['global_form_process']['all_fields_required']);
+          if( !$email or !$tz ) {
+              throw new Exception ($LANG['global_form_process']['all_fields_required']); // Email and Timezone required
           } elseif( !validEmail($email) ) {
               throw new Exception ($LANG['global_form_process']['invalid_email']);
           } elseif( !userExists($TANGO->sess->data['user_email'], $pass) ) {

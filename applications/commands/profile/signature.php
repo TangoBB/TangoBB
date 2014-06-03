@@ -21,9 +21,9 @@
           NoCSRF::check( 'csrf_token', $_POST );
           $sig = $_POST['sig'];
 
-          if( !$sig ) {
+          /*if( !$sig ) {
               throw new Exception ($LANG['global_form_process']['all_fields_required']);
-          } else {
+          } else {*/
 
               $data = array(
                   'user_signature' => $sig
@@ -41,7 +41,7 @@
                   throw new Exception ($LANG['bb']['profile']['error_updating_signature']);
               }
 
-          }
+        //  }
 
       } catch( Exception $e ) {
           $notice .= $TANGO->tpl->entity(
