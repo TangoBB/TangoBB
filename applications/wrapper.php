@@ -131,6 +131,10 @@
   require_once(PATH_A . LIB . 'form.php');
   $FORM = new Library_FormBuilder();
 
+  //Form Validator
+  require_once(PATH_A . 'dependencies/error_handler.php');
+  require_once(PATH_A . CLA . 'validator.php');
+
   //Timezone
   require_once(PATH_A . 'timezone.php');
 
