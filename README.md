@@ -1,4 +1,4 @@
-[![Iko(https://raw.githubusercontent.com/IkoBulletin/Iko/master/public/img/iko_logo.png "Iko")](http://iko.im "Iko")
+[![Iko](https://raw.githubusercontent.com/IkoBulletin/Iko/master/public/img/iko_logo.png "Iko")](http://iko.im "Iko")
 ##The new simple bulletin board.
 Please note that this forum software will be as generic but a little complex on the theme design aspect as we want it to be very customizable for amateur web developers to learn.
 Iko is released under the MIT License.
