@@ -19,10 +19,11 @@
           }
 
           NoCSRF::check( 'csrf_token', $_POST );
-          $email = $_POST['email'];
-          $tz    = $_POST['timezone'];
-          $about = $_POST['about'];
-          $pass  = $_POST['confirm_password'];
+          $email    = $_POST['email'];
+          $tz       = $_POST['timezone'];
+          $about    = $_POST['about'];
+          $location = $_POST['location'];
+          $pass     = $_POST['confirm_password'];
 
           if( !$email or !$tz ) {
               throw new Exception ($LANG['global_form_process']['all_fields_required']); // Email and Timezone required
@@ -34,11 +35,11 @@
               if( $email !== $TANGO->sess->data['user_email'] ) {
 
                   if( !emailTaken($email) ) {
-
                       $data  = array(
                           'user_email' => $email,
                           'about_user' => $about,
-                          'set_timezone' => $tz
+                          'set_timezone' => $tz,
+                          'location' => $location
                       );
                       $MYSQL->where('id', $TANGO->sess->data['id']);
 
@@ -61,6 +62,7 @@
 
                   $data  = array(
                     'set_timezone' => $tz,
+                    'location' => $location,
                     'about_user' => $about
                   );
                   $MYSQL->where('id', $TANGO->sess->data['id']);
@@ -108,6 +110,16 @@
     }
   }
   $timezones .= '</select>';
+  
+  $locations = '<select id="location" name="location">';
+  foreach( $LANG['location'] as $code => $location ) {
+    if( $TANGO->sess->data['location'] == $code ) {
+      $locations .= '<option value="' . $code . '" selected="selected">' . $location . '</option>';
+    } else {
+      $locations .= '<option value="' . $code . '">' . $location . '</option>';
+    }
+  }
+  $locations .= '</select>';
 
   //Breadcrumbs
   $TANGO->tpl->addBreadcrumb(
@@ -128,8 +140,11 @@
   $content .= '<form id="tango_form" action="" method="POST">
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                  ' . $FORM->build('text', $LANG['bb']['members']['form_email'], 'email', array('value' => $TANGO->sess->data['user_email'])) . '
-                 <label for="timezone">Timezone</label>
+                 <label for="timezone">' . $LANG['bb']['profile']['timezone'] . '</label>
                  ' . $timezones . '
+                 <br />
+                 <label for="location">' . $LANG['bb']['profile']['location'] . '</label>
+                 ' . $locations . '
                  <br />
                  <label for="editor">' . $LANG['bb']['profile']['about_you'] . '</label><br />
                  <textarea name="about" id="editor" style="min-width:100%;max-width:100%;height:150px;">' . $TANGO->sess->data['about_user'] . '</textarea>

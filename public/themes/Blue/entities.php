@@ -315,7 +315,8 @@
         <font class="lead">%username%</font>
         <br />
         (%usergroup%)<br />
-        <b>Registered On:</b> %registered_date%
+        <b>Registered On:</b> %registered_date% <br />
+        <b>Location:</b> %flag% %location%
     </p>
     <p class="pull-right">
         <img src="%user_avatar%" class="img-thumbnail" style="width:75px;height:75px;" />

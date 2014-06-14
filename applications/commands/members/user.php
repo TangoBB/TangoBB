@@ -120,6 +120,8 @@
                   'registered_date',
                   'user_signature',
                   'about_user',
+                  'location',
+                  'flag',
                   'recent_activity',
                   'mod_tools'
               ),
@@ -130,6 +132,8 @@
                   date('F j, Y', $user['date_joined']),
                   $TANGO->lib_parse->parse($user['user_signature']),
                   $TANGO->lib_parse->parse($user['about_user']),
+                  $LANG['location'][$user['location']],
+                  '<img src="'.SITE_URL.'/public/img/flags_iso/16/'.strtolower($user['location']).'.png" />', // Thanks to 365icon.com for the free icons! http://365icon.com/icon-styles/ethnic/classic2/
                   $recent_activity,
                   $mod_tools
               )
@@ -209,6 +213,8 @@
                   'registered_date',
                   'user_signature',
                   'about_user',
+                  'location',
+                  'flag',
                   'recent_activity',
                   'mod_tools'
               ),
@@ -219,6 +225,8 @@
                   date('F j, Y', $TANGO->sess->data['date_joined']),
                   $TANGO->lib_parse->parse($TANGO->sess->data['user_signature']),
                   $TANGO->lib_parse->parse($TANGO->sess->data['about_user']),
+                  $LANG['location'][$user['location']],
+                  '<img src="'.SITE_URL.'/public/img/flags_iso/16/'.strtolower($user['location']).'.png" />', 
                   $recent_activity,
                   ''
               )
