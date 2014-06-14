@@ -22,6 +22,7 @@
           $email    = $_POST['email'];
           $tz       = $_POST['timezone'];
           $about    = $_POST['about'];
+          $birthday = $_POST['birthday'];
           $location = $_POST['location'];
           $pass     = $_POST['confirm_password'];
 
@@ -39,6 +40,7 @@
                           'user_email' => $email,
                           'about_user' => $about,
                           'set_timezone' => $tz,
+                          'user_birthday' => $birthday,
                           'location' => $location
                       );
                       $MYSQL->where('id', $TANGO->sess->data['id']);
@@ -63,6 +65,7 @@
                   $data  = array(
                     'set_timezone' => $tz,
                     'location' => $location,
+                    'user_birthday' => $birthday,
                     'about_user' => $about
                   );
                   $MYSQL->where('id', $TANGO->sess->data['id']);
@@ -136,6 +139,13 @@
     true
   );
   $bc       = $TANGO->tpl->breadcrumbs();
+  if(isset($TANGO->sess->data['user_birthday']) && $TANGO->sess->data['user_birthday']!='0000-00-00')
+  {
+    $val_birthday = $TANGO->sess->data['user_birthday'];
+  }
+  else {
+    $val_birthday = 'YYYY-MM-DD';
+  }
 
   $content .= '<form id="tango_form" action="" method="POST">
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
@@ -146,6 +156,7 @@
                  <label for="location">' . $LANG['bb']['profile']['location'] . '</label>
                  ' . $locations . '
                  <br />
+                 ' . $FORM->build('text', $LANG['bb']['members']['birthday'], 'birthday', array('value' => $val_birthday)) . '
                  <label for="editor">' . $LANG['bb']['profile']['about_you'] . '</label><br />
                  <textarea name="about" id="editor" style="min-width:100%;max-width:100%;height:150px;">' . $TANGO->sess->data['about_user'] . '</textarea>
                  ' . $FORM->build('password', $LANG['bb']['profile']['confirm_password'], 'confirm_password') . '

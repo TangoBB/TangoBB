@@ -52,6 +52,7 @@
         'home' => 'Members',
         'activate_account' => 'Activate Account',
         'account_activated' => 'Your account has been activated! <a href="' . SITE_URL . '/members.php/cmd/signin">Sign in</a> now.',
+        'birthday' => 'Birthday',
         'error_activating' => 'Error activating account. Try again later.',
         'forgot_password' => 'Forgot Password',
         'reset_password' => 'Reset Password',
