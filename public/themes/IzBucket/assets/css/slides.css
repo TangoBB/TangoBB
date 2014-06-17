@@ -1,0 +1,36 @@
+/*
+ * Slides
+ */
+
+/* Home */
+.slide_page.home {
+	background-image: url('../img/home.png');
+	background-size: cover;
+}
+
+.slide_page.home .msg {
+	max-width: 500px;
+	min-width: 400px;
+	height: auto;
+	/* Position */
+	position: absolute;
+	/* Font */
+	font-family: 'Minecraft Regular';
+	color: #f4f4f4;
+	text-align: center;
+	text-shadow: 1px 1px 0px #3a3a3a;
+}
+
+.slide_page.home .msg h1 {
+	/* Font */
+	font-size: 50px;
+}
+
+/* Default */
+.slide_page.default {
+	background-image: url('../img/default_bg.png');
+}
+
+.slide_page.default .users_online img {
+	margin: 2px;
+}

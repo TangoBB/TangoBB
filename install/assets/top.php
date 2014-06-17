@@ -20,9 +20,9 @@
       <div class="header">
         <ul class="nav nav-pills pull-right">
           <li class="active"><a href="#">Install</a></li>
-          <li><a href="https://github.com/TangoBB" target-"_blank">Github</a></li>
-          <li><a href="http://codetana.me/" target="_blank">Codetana</a></li>
+          <li><a href="https://github.com/IkoBulletin/Iko" target-"_blank">Github</a></li>
+          <li><a href="http://codetana.com/" target="_blank">Codetana</a></li>
         </ul>
-        <h3 class="text-muted">TangoBB</h3>
+        <h3 class="text-muted">Iko</h3>
       </div>
       <div class="row marketing">

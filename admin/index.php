@@ -35,8 +35,8 @@
 
   echo $ADMIN->box(
       'Github and Updates',
-      'Fork TangoBB on Github <a href="https://github.com/TangoBB">here</a>.<br />
-       To keep up with the updates on TangoBB, you can fork/watch the TangoBB Github repository or visit our website at <a href="http://tangobb.net">TangoBB.Net</a> regularly!'
+      'Fork Iko on Github <a href="https://github.com/IkoBulletin/Iko">here</a>.<br />
+       To keep up with the updates on Iko, you can fork/watch the TangoBB Github repository or visit our website at <a href="http://iko.im">Iko.Im</a> regularly!'
   );
 
   require_once('template/bot.php');
