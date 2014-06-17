@@ -147,89 +147,89 @@
     //Email Variables.
     'email' => array(
       'forgot_password' => array(
-        'subject' => 'Passwort zurücksetzen', /// TO DO the next lines
-        'content' => '<p>You have recently requested a password reset on %site_name%.</p><p>To set a new password, please use the following URL: %token_url%</p>'
+        'subject' => 'Passwort zurücksetzen', 
+        'content' => '<p>Du hast kürzlich auf der Seite %site_name% eine Passwort-Rücksetzung angefordert..</p><p>Um das Passwort zurückzusetzen benutze bitte folgenden Link: %token_url%</p>'
       ),
       'register' => array(
-        'subject' => 'Account Activation',
-        'content' => '<p>You have registered on %site_name%</p><p>Click <a href="%activate_url%">here</a> to activate your account.</p>'
+        'subject' => 'Konto Aktivierung',
+        'content' => '<p>Du hast dich erfolgreich bei %site_name% registriert.</p><p>Klicke <a href="%activate_url%">hier</a> um dein Konto zu Aktivieren.</p>'
       ),
       'notify' => array(
-        'more_info' => '<br />Click <a href="%url%">here</a> to find out more.'
+        'more_info' => '<br />Klicke <a href="%url%">hier</a> um mehr herrauszufinden..'
       )
     ),
     //Moderator Panel
     'mod' => array(
       'ban' => array(
-        'ban' => 'Ban User',
-        'ban_success' => 'User has been banned. <a href="%url%">Back to user profile</a>.',
-        'ban_error' => 'Error banning user.',
-        'already_banned' => 'User is already banned.',
-        'unban' => 'Unban User',
-        'unban_success' => 'User has been unbanned. <a href="%url%">Back to user profile</a>.',
-        'unban_error' => 'Error unbanning user.',
-        'already_unbanned' => 'User is already unbanned.',
+        'ban' => 'Benutzer sperren',
+        'ban_success' => 'Benutzer wurde gesperrt. <a href="%url%">Zurück zum Benutzerprofil</a>.',
+        'ban_error' => 'Fehler beim Sperren des Benutzers.',
+        'already_banned' => 'Benutzer ist bereits gesperrt.',
+        'unban' => 'Benutzer entsperren',
+        'unban_success' => 'Benutzer wurde entsperrt. <a href="%url%">Zurück zum Benutzerprofil</a>.',
+        'unban_error' => 'Fehler beim Entsperren des Benutzers.',
+        'already_unbanned' => 'Benutzer ist bereits entsperrt.',
       ),
       'close' => array(
-        'close' => 'Close Thread',
-        'close_success' => 'Thread has been closed. <a href="%url%">Back to thread</a>.',
-        'close_error' => 'Error closing thread.',
-        'already_closed' => 'Thread is already closed.',
-        'open' => 'Open Thread',
-        'open_success' => 'Thread has been opened. <a href="%url%">Back to thread</a>.',
-        'open_error' => 'Error opening user.',
-        'already_opened' => 'Thread is already opened.'
+        'close' => 'Thread schließen',
+        'close_success' => 'Thread wurde geschlossen. <a href="%url%">Zurück zum Thread</a>.',
+        'close_error' => 'Fehler beim Schließen des Threads.',
+        'already_closed' => 'Thread ist bereits geschlossen.',
+        'open' => 'Thread öffnen',
+        'open_success' => 'Thread wurde geöffnet. <a href="%url%">Zurück zum Thread</a>.',
+        'open_error' => 'Fehler beim Öffnen des Threads.',
+        'already_opened' => 'Thread ist bereits offen.'
       ),
       'stick' => array(
-        'stick' => 'Stick Thread',
-        'stick_success' => 'Thread has been stuck. <a href="%url%">Back to thread</a>.',
-        'stick_error' => 'Error sticking thread.',
-        'already_stuck' => 'Thread is already stuck.',
-        'unstick' => 'Unstick Thread',
-        'unstick_success' => 'Thread has been unstuck. <a href="%url%">Back to thread</a>.',
-        'unstick_error' => 'Error sticking thread.',
-        'already_unstuck' => 'Thread is already unstuck.'
+        'stick' => 'Thread anpinnen',
+        'stick_success' => 'Thread wurde angepinnt. <a href="%url%">Zurück zum Thread</a>.',
+        'stick_error' => 'Fehler beim Anpinnen des Threads.',
+        'already_stuck' => 'Thread ist bereits angepinnt.',
+        'unstick' => 'Thread abpinnen',
+        'unstick_success' => 'Thread wurde abgepinnt. <a href="%url%">Zurück zum Thread</a>.',
+        'unstick_error' => 'Fehler beim Abpinnen des Threads.',
+        'already_unstuck' => 'Thread ist bereits abgepinnt.'
       ),
       'reports' => array(
-        'reports' => 'Reports',
+        'reports' => 'Meldungen',
         'thread' => 'Thread:',
-        'user' => 'User:',
-        'reason' => 'Reason:',
-        'reported_time' => 'Reported Time:'
+        'user' => 'Benutzer:',
+        'reason' => 'Grund:',
+        'reported_time' => 'Zeitpunkt der Meldung:'
       ),
       'delete' => array(
-        'delete' => 'Delete Post',
-        'thread_deleted' => 'Thread has been deleted.',
-        'error_deleting' => 'Error deleting post.',
-        'post_deleted' => 'Post has been deleted.'
+        'delete' => 'Nachricht löschen',
+        'thread_deleted' => 'Thread wurde gelöscht.', // Thread or post??
+        'error_deleting' => 'Fehler beim Löschen der Nachricht.',
+        'post_deleted' => 'Nachricht wurde gelöscht.'
       ),
       'move' => array(
-        'move' => 'Move Thread',
-        'thread_moved' => 'Thread has been moved. <a href="%url%">Back to thread</a>.',
-        'error_moving' => 'Error moving thread.'
+        'move' => 'Thread bewegen',
+        'thread_moved' => 'Thread wurde bewegt. <a href="%url%">Zurück zum Thread</a>.',
+        'error_moving' => 'Fehler beim Bewegen des Threads.'
       ),
       'del_report' => array(
-        'delete' => 'Delete Report',
-        'report_deleted' => 'Report has been deleted. <a href="%url%">Back</a>.',
-        'error_deleting' => 'Error deleting report. <a href="%url%">Back</a>.'
+        'delete' => 'Meldung löschen',
+        'report_deleted' => 'Meldung wurde gelöscht. <a href="%url%">Zurück</a>.',
+        'error_deleting' => 'Fehler beim Löschen der Meldung. <a href="%url%">Zurück</a>.'
       )
     ),
     'notification' => array(
-      'mention' => '%username% have mentioned you in a post!',
-      'reply' => '%username% has replied to the thread <strong>%thread_title%</strong>',
-      'quoted' => '%username% quoted your post in <strong>%thread_title%</strong>'
+      'mention' => '%username% hat dich in einer Nachricht erwähnt!',
+      'reply' => '%username% hat auf den Thread <strong>%thread_title%</strong> geantwortet!',
+      'quoted' => '%username% hat dich zitiert in <strong>%thread_title%</strong>!'
     ),
     'flat' => array(
       'merge_post' => '----------'
     ),
     'time' => array(
-      'hours_ago' => '%time% hours ago.',
-      'minutes_ago' => '%time% minutes ago.',
-      'just_now' => 'Just now.'
+      'hours_ago' => 'vor %time% Stunden.',
+      'minutes_ago' => 'vor %time% Minuten.',
+      'just_now' => 'Gerade eben.'
     ),
     // ISO 3166-1 Country codes
     'location' => array( 
-      '--' => 'Nothing selected',
+      '--' => 'Nichts ausgewählt',
       'AD' => 'Andorra',
       'AE' => 'United Arab Emirates',
       'AF' => 'Afghanistan',
@@ -241,8 +241,8 @@
       'AQ' => 'Antarctica',
       'AR' => 'Argentina',
       'AS' => 'American Samoa',
-      'AT' => 'Austria',
-      'AU' => 'Australia',
+      'AT' => 'Österreich', // Done
+      'AU' => 'Australien', // Done
       'AW' => 'Aruba',
       'AX' => 'Aland Islands',
       'AZ' => 'Azerbaijan',
@@ -260,7 +260,7 @@
       'BN' => 'Brunei Darussalam',
       'BO' => 'Bolivia',
       'BQ' => 'Bonaire',
-      'BR' => 'Brazil',
+      'BR' => 'Brazilien', // Done
       'BS' => 'Bahamas',
       'BT' => 'Bhutan',
       'BV' => 'Bouvet Island',
@@ -272,7 +272,7 @@
       'CD' => 'Congo (the Democratic Republic)',
       'CF' => 'Central African Republic',
       'CG' => 'Congo',
-      'CH' => 'Switzerland',
+      'CH' => 'Schweiz', // Done
       'CI' => 'Cote d\'Ivoire',
       'CK' => 'Cook Islands',
       'CL' => 'Chile',
@@ -286,45 +286,45 @@
       'CX' => 'Christmas Island',
       'CY' => 'Cyprus',
       'CZ' => 'Czech Republic',
-      'DE' => 'Germany',
+      'DE' => 'Deutschland', // Done
       'DJ' => 'Djibouti',
-      'DK' => 'Denmark',
+      'DK' => 'Dänemark', // Done
       'DM' => 'Dominica',
       'DO' => 'Dominican Republic',
       'DZ' => 'Algeria',
       'EC' => 'Ecuador',
       'EE' => 'Estonia',
-      'EG' => 'Egypt',
+      'EG' => 'Ägypten', // Done
       'EH' => 'Western Sahara',
       'ER' => 'Eritrea',
-      'ES' => 'Spain',
+      'ES' => 'Spanien', // Done
       'ET' => 'Ethiopia',
-      'FI' => 'Finland',
+      'FI' => 'Finnland',  // Done
       'FJ' => 'Fiji',
       'FK' => 'Falkland Islands',
       'FM' => 'Micronesia',
       'FO' => 'Faroe Islands',
-      'FR' => 'France',
+      'FR' => 'Frankreich', // Done
       'GA' => 'Gabon',
-      'GB' => 'United Kingdom',
+      'GB' => 'Großbritannien', // Done       
       'GD' => 'Grenada',
       'GE' => 'Georgia',
       'GF' => 'French Guiana',
       'GG' => 'Guernsey',
       'GH' => 'Ghana',
       'GI' => 'Gibraltar',
-      'GL' => 'Greenland',
+      'GL' => 'Grönland', // Done
       'GM' => 'Gambia',
       'GN' => 'Guinea',
       'GP' => 'Guadeloupe',
       'GQ' => 'Equatorial Guinea',
-      'GR' => 'Greece',
+      'GR' => 'Griechenland', // Done
       'GS' => 'South Georgia and the South Sandwich Islands',
       'GT' => 'Guatemala',
       'GU' => 'Guam',
       'GW' => 'Guinea-Bissau',
       'GY' => 'Guyana',
-      'HK' => 'Hong Kong',
+      'HK' => 'Hong Kong', // Done
       'HM' => 'Heard Island and McDonald Islands',
       'HN' => 'Honduras',
       'HR' => 'Croatia',
@@ -333,13 +333,13 @@
       'ID' => 'Indonesia',
       'IE' => 'Ireland',
       'IL' => 'Israel',
-      'IM' => 'Isle of Man',
-      'IN' => 'India',
+      'IM' => 'Isle of Man', // Done
+      'IN' => 'Indien', // Done
       'IO' => 'British Indian Ocean Territory',
-      'IQ' => 'Iraq',
-      'IR' => 'Iran',
-      'IS' => 'Iceland',
-      'IT' => 'Italy',
+      'IQ' => 'Irak', // Done
+      'IR' => 'Iran', // Done
+      'IS' => 'Island', // Done
+      'IT' => 'Italien', // Done
       'JE' => 'Jersey',
       'JM' => 'Jamaica',
       'JO' => 'Jordan',
@@ -396,11 +396,11 @@
       'NG' => 'Nigeria',
       'NI' => 'Nicaragua',
       'NL' => 'Netherlands',
-      'NO' => 'Norway',
+      'NO' => 'Norwegen', // Done
       'NP' => 'Nepal',
       'NR' => 'Nauru',
       'NU' => 'Niue',
-      'NZ' => 'New Zealand', 
+      'NZ' => 'Neuseeland', // Done
       'OM' => 'Oman',
       'PA' => 'Panama',
       'PE' => 'Peru',
@@ -413,14 +413,14 @@
       'PN' => 'Pitcairn',
       'PR' => 'Puerto Rico',
       'PS' => 'Palestine',
-      'PT' => 'Portugal',
+      'PT' => 'Portugal', // Done
       'PW' => 'Palau',
       'PY' => 'Paraguay',
       'QA' => 'Qatar',
       'RE' => 'Réunion',
       'RO' => 'Romania',
-      'RS' => 'Serbia',
-      'RU' => 'Russian Federation',
+      'RS' => 'Serbien', // Done
+      'RU' => 'Russland', // Done
       'RW' => 'Rwanda',
       'SA' => 'Saudi Arabia',
       'SB' => 'Solomon Islands',
@@ -454,15 +454,15 @@
       'TM' => 'Turkmenistan',
       'TN' => 'Tunisia',
       'TO' => 'Tonga',
-      'TR' => 'Turkey',
+      'TR' => 'Türkei', // Done
       'TT' => 'Trinidad and Tobago',
       'TV' => 'Tuvalu',
       'TW' => 'Taiwan',
       'TZ' => 'Tanzania',
-      'UA' => 'Ukraine',
+      'UA' => 'Ukraine', // Done
       'UG' => 'Uganda',
       'UM' => 'United States Minor Outlying Islands',
-      'US' => 'United States',
+      'US' => 'Vereinigte Staaten von Amerika', // Done
       'UY' => 'Uruguay',
       'UZ' => 'Uzbekistan',
       'VA' => 'Holy See',

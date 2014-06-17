@@ -177,7 +177,7 @@
         'already_closed' => 'Thread is already closed.',
         'open' => 'Open Thread',
         'open_success' => 'Thread has been opened. <a href="%url%">Back to thread</a>.',
-        'open_error' => 'Error opening user.',
+        'open_error' => 'Error opening thread.',
         'already_opened' => 'Thread is already opened.'
       ),
       'stick' => array(
