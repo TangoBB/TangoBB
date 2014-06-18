@@ -20,6 +20,7 @@
         if( empty($query) ) {
 
           $loc = '../applications/extensions/' . $ext . '/';
+          require_once('../applications/dependencies/extension_implementation.php');
           require_once($loc . 'setup.php');
 
           if( !class_exists('Extension_Setup') ) {
@@ -81,6 +82,7 @@
 
         $ext = $PGET->g('uninstall');
         $loc = '../applications/extensions/' . $ext . '/';
+        require_once('../applications/dependencies/extension_implementation.php');
         require_once($loc . 'setup.php');
 
         if( !class_exists('Extension_Setup') ) {

@@ -36,7 +36,7 @@
   echo $ADMIN->box(
       'Github and Updates',
       'Fork Iko on Github <a href="https://github.com/IkoBulletin/Iko">here</a>.<br />
-       To keep up with the updates on Iko, you can fork/watch the TangoBB Github repository or visit our website at <a href="http://iko.im">Iko.Im</a> regularly!'
+       To keep up with the updates on Iko, you can fork/watch the Iko Github repository or visit our website at <a href="http://iko.im">Iko.Im</a> regularly!'
   );
 
   require_once('template/bot.php');

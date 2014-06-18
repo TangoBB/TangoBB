@@ -1,8 +1,6 @@
 <?php
 
-  class Extension_Setup {
-
-  	public $extension_name;
+  class Extension_Setup extends Iko_Extensions_Setup {
 
   	public function __construct() {
   		$this->extension_name = 'Testing Extension';//The name of your extension.
