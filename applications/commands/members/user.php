@@ -133,7 +133,7 @@
                   $TANGO->lib_parse->parse($user['user_signature']),
                   $TANGO->lib_parse->parse($user['about_user']),
                   $LANG['location'][$user['location']],
-                  '<img src="'.SITE_URL.'/public/img/flags_iso/16/'.strtolower($user['location']).'.png" />', // Thanks to 365icon.com for the free icons! http://365icon.com/icon-styles/ethnic/classic2/
+                  '<span class="flag-icon flag-icon-'.strtolower($user['location']).'"></span>', 
                   $recent_activity,
                   $mod_tools
               )
@@ -226,7 +226,7 @@
                   $TANGO->lib_parse->parse($TANGO->sess->data['user_signature']),
                   $TANGO->lib_parse->parse($TANGO->sess->data['about_user']),
                   $LANG['location'][$TANGO->sess->data['location']],
-                  '<img src="'.SITE_URL.'/public/img/flags_iso/16/'.strtolower($TANGO->sess->data['location']).'.png" />', 
+                  '<span class="flag-icon flag-icon-'.strtolower($user['location']).'"></span>', 
                   $recent_activity,
                   ''
               )

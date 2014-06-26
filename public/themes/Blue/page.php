@@ -11,6 +11,9 @@
     <link href="%site_url%/public/themes/Blue/assets/css/bootstrap-theme.css" rel="stylesheet">
     <link href="%site_url%/public/themes/Blue/assets/css/blue.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Flags -->
+    <link href="%site_url%/public/css/flag/css/flag-icon.css" rel="stylesheet">
+    
     %editor_settings%
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
