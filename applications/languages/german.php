@@ -1,7 +1,7 @@
 <?php
 
   /*
-   * TangoBB Language Entity.
+   * Iko Language Entity.
    * Language: German.
    */
 
