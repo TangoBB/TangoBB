@@ -312,7 +312,7 @@
 <!--- tpl:user_profile_page:start -->
 <div class="well" style="overflow:auto;">
     <p class="pull-left">
-        <font class="lead">%username%</font>
+        <font class="lead">%username% %gender%</font>
         <br />
         (%usergroup%)<br />
         <b>Registered On:</b> %registered_date% <br />

@@ -23,7 +23,7 @@
       'watch_thread' => 'Du beobachtest nun diesen Thread.',
       'unwatch_thread' => 'Du beobachtest diesen Thread nicht mehr.',
       'error_watching' => 'Fehler beim Beobachten des Threads',
-      'error_unwatching' => 'Fehler beim Nicht-Beobachten des Threads.',                        // Überarbeiten
+      'error_unwatching' => 'Fehler beim Nicht-Beobachten des Threads.',                        // &Uuml;berarbeiten
       'form' => array(
         'edit_post' => 'Bearbeiten',
         'report' => 'Melden',
@@ -38,7 +38,7 @@
         'reciever' => 'gesendet an',
         'by' => 'By:', // not needed anymore | N8boy
         'for' => 'For:', // not needed anymore | N8boy
-        'form_to'=> 'Empfänger <small>Getrennt mit ","</small>',
+        'form_to'=> 'Empf&auml;nger <small>Getrennt mit ","</small>',
         'form_send' => 'Senden',
         'form_title' => 'Titel',
         'form_reply' => 'Antworten',
@@ -53,66 +53,70 @@
         'activate_account' => 'Konto aktivieren',
         'account_activated' => 'Dein Konto wurde erfolgreich aktiviert! <a href="' . SITE_URL . '/members.php/cmd/signin">Log dich jetzt ein.</a>',
         'birthday' => 'Geburtstag',
-        'error_activating' => 'Fehler beim aktivieren des Kontos. Bitte probiere es später erneut.',
+        'error_activating' => 'Fehler beim aktivieren des Kontos. Bitte probiere es sp&auml;ter erneut.',
         'forgot_password' => 'Passwort vergessen',
-        'reset_password' => 'Passwort zurücksetzen',
-        'error_request_password_reset' => 'Passwort-Rücksetz-Anfrage fehlgeschlagen.',
-        'form_reset_password' => 'Passwort zurücksetzen',
+        'reset_password' => 'Passwort zur&uuml;cksetzen',
+        'error_request_password_reset' => 'Passwort-R&uuml;cksetz-Anfrage fehlgeschlagen.',
+        'form_reset_password' => 'Passwort zur&uuml;cksetzen',
         'form_email' => 'E-Mail',
         'form_password' => 'Passwort',
-        'form_confirm_password' => 'Passwort bestätigen',
+        'form_confirm_password' => 'Passwort best&auml;tigen',
         'form_username' => 'Benutzername',
         'form_register' => 'Registrieren',
-        'password_reset_link_sent' => 'Ein Link zum Zurücksetzen Ihres Passwortes wurde versendet.',
-        'error_password_reset_token_used' => 'Das Token wurde bereits verwendet. Bitte fordern Sie eine neue Passwort-Rücksetzung an.',
-        'error_password_reset_token_expired' => 'Das Tolen ist ausgelaufen. Bitte fordern Sie eine neue Passwort-Rücksetzung an.',
+        'password_reset_link_sent' => 'Ein Link zum Zur&uuml;cksetzen Ihres Passwortes wurde versendet.',
+        'error_password_reset_token_used' => 'Das Token wurde bereits verwendet. Bitte fordern Sie eine neue Passwort-R&uuml;cksetzung an.',
+        'error_password_reset_token_expired' => 'Das Tolen ist ausgelaufen. Bitte fordern Sie eine neue Passwort-R&uuml;cksetzung an.',
         'error_password_reset_token_unknown' => 'Unbekanntes Token. Bitte benutzen Sie den Link in der E-Mail.',
         'error_password_reset_token_missing' => 'Fehlender Token. Bitte benutzen Sie den Link in der E-Mail.',
-        'error_password_reset' => 'Ändern des Passwortes ist fehlgeschlagen.',
-        'password_reset_successful' => 'Dein Passwort wurde zurückgesetzt.',
+        'error_password_reset' => '&Auml;ndern des Passwortes ist fehlgeschlagen.',
+        'password_reset_successful' => 'Dein Passwort wurde zur&uuml;ckgesetzt.',
         'register' => 'Registrieren',
         'password_different' => 'Das Passwort ist unterschiedlich!',
         'username_taken' => 'Benutzername ist bereits vergeben!',
-        'error_register' => 'Fehler bei der Registrierung. Bitte probieren Sie es später erneut.',
+        'error_register' => 'Fehler bei der Registrierung. Bitte probieren Sie es sp&auml;ter erneut.',
         'register_successful' => 'Erfolgreich Registriert. Sie werden automatisch angemeldet...',
         'register_successful_email' => 'Erfolgreich Registriert. Eine Verifizierung wurde an Ihre  E-Mail Adresse gesendet.',
         'register_message' => 'Mit dem Klicken auf "Registrieren", akzeptieren sie die <a href="' . SITE_URL . '/members.php/cmd/rules">Foren Regeln</a>.',
         'register_disabled' => 'Die Registrierung ist zur Zeit deaktiviert.',
         'log_in' => 'Anmelden',
-        'invalid_login' => 'Ungültiges Passwort und/oder Benutzername.',
+        'invalid_login' => 'Ung&uuml;ltiges Passwort und/oder Benutzername.',
         'login_success' => 'Erfolgreich angemeldet! Klicken Sie <a href="' . SITE_URL . '">hier</a>, falls Sie nicht automatisch weitergeleitet werden.',
         'email_not_activated' => 'Deine E-Mail wurde bisher nicht aktiviert.',
-        'banned' => 'Sie sin zur Zeit gesperrt. Kontaktieren Sie das Team für weitere Details.<br />Entsperr Datum: <b>%unban_date%</b><br />Sperr Grund: <b>%ban_reason%</b>',
+        'banned' => 'Sie sin zur Zeit gesperrt. Kontaktieren Sie das Team f&uuml;r weitere Details.<br />Entsperr Datum: <b>%unban_date%</b><br />Sperr Grund: <b>%ban_reason%</b>',
         'rules' => 'Foren Regeln',
-        'rules_message' => 'Alle Benutzer müssen die Foren Regeln akzeptieren.<br />%rules%<br />Beim Verstoßen gegen die Regeln, kann Ihre Nachricht gelöscht werden oder es führt im Extremfall zu einer permanenten Sperrung.',
+        'rules_message' => 'Alle Benutzer m&uuml;ssen die Foren Regeln akzeptieren.<br />%rules%<br />Beim Verstoßen gegen die Regeln, kann Ihre Nachricht gel&ouml;scht werden oder es f&uuml;hrt im Extremfall zu einer permanenten Sperrung.',
         'profile_of' => 'Profil von',
         'posted_thread' => 'Hat einen neuen Thread erstellt: <a href="%url%">%title%</a> <small>(%date%)</small><hr size="1" />',
         'replied_to' => 'Hat einem Thread geantwortet: <a href="%url%">%title%</a> <small>(%date%)</small><hr size="1" />'
       ),
       'profile' => array(
         'avatar' => 'Avatar',
-        'change_avatar' => 'Avatar ändern <small>Maximal 500x500 Pixel</small>',
+        'change_avatar' => 'Avatar &auml;ndern <small>Maximal 500x500 Pixel</small>',
         'use_gravatar' => 'Benutze Gravatar',
-        'form_save' => 'Änderungen speichern',
-        'error_adding_gravatar' => 'Fehler beim Benutzen von Gravatar. Bitte später erneut probieren.',
+        'form_save' => '&Auml;nderungen speichern',
+        'error_adding_gravatar' => 'Fehler beim Benutzen von Gravatar. Bitte sp&auml;ter erneut probieren.',
         'successful_adding_gravatar' => 'Gravatar erfolgreich gespeichert!',
-        'error_upload_avatar' => 'Fehler beim Hochladen des Avatars. Bitte später erneut probieren.',
-        'about_you' => 'Über mich',
+        'error_upload_avatar' => 'Fehler beim Hochladen des Avatars. Bitte sp&auml;ter erneut probieren.',
+        'about_you' => '&Uuml;ber mich',
         'successful_upload_avatar' => 'Avatar erfolgreich gespeichert!',
         'password' => 'Passwort',
         'current_password' => 'Aktuelles Passwort',
         'new_password' => 'Neues Passwort',
-        'error_updaing_password' => 'Fehler beim Ändern des Passwortes.',
+        'error_updaing_password' => 'Fehler beim &Auml;ndern des Passwortes.',
         'signature' => 'Signatur',
         'timezone' => 'Zeitzone',
         'location' => 'Wohnort',
-        'error_updating_signature' => 'Fehler beim Ändern der Signatur. Bitte später erneut probieren.',
-        'personal_details' => 'Persönliche Details',
-        'confirm_password' => 'Passwort bestätigen',
-        'change_theme' => 'Design ändern',
-        'theme_set' => 'Design wurde geändert.',
-        'theme_error' => 'Fhler beim Ändern des Designs.',
-        'theme_not_exist' => 'Design existiert nicht.'
+        'error_updating_signature' => 'Fehler beim &Auml;ndern der Signatur. Bitte sp&auml;ter erneut probieren.',
+        'personal_details' => 'Pers&ouml;nliche Details',
+        'confirm_password' => 'Passwort best&auml;tigen',
+        'change_theme' => 'Design &auml;ndern',
+        'theme_set' => 'Design wurde ge&auml;ndert.',
+        'theme_error' => 'Fehler beim &Auml;ndern des Designs.',
+        'theme_not_exist' => 'Design existiert nicht.',
+        'gender' => 'Geschlecht',
+        'female' => 'Weiblich',
+        'male' => 'M&aumlnnlich',
+        'not_telling' => 'Egal'
       )
     ),
     //Error Pages
@@ -124,31 +128,31 @@
     ),
     //Global Form Variables
     'global_form_process' => array(
-      'all_fields_required' => 'Alle Felder werden benötigt.',
+      'all_fields_required' => 'Alle Felder werden ben&ouml;tigt.',
       'enter_search_query' => 'Bitte geben Sie eine Suchanfrage ein!',
-      'error_updating_post' => 'Fehler beim Ändern Ihrer Nachricht. Bitte später erneut probieren.',
-      'error_creating_thread' => 'Fehler beim Erstellen des Threads. Bitte später erneut probieren.',
-      'error_replying_thread' => 'Fehler beim Antworten. Bitte später erneut probieren.',
-      'error_submitting_report' => 'Fehler beim Übermittel der Meldung.  Bitte später erneut probieren.',
+      'error_updating_post' => 'Fehler beim &Auml;ndern Ihrer Nachricht. Bitte sp&auml;ter erneut probieren.',
+      'error_creating_thread' => 'Fehler beim Erstellen des Threads. Bitte sp&auml;ter erneut probieren.',
+      'error_replying_thread' => 'Fehler beim Antworten. Bitte sp&auml;ter erneut probieren.',
+      'error_submitting_report' => 'Fehler beim &Uuml;bermittel der Meldung.  Bitte sp&auml;ter erneut probieren.',
       'thread_create_success' => 'Thread wurde erfolgeich erstellt. Sie werden weitergeleitet...',
-      'report_create_success' => 'Ihre Meldung wurde efolgreich übermittelt!',
+      'report_create_success' => 'Ihre Meldung wurde efolgreich &uuml;bermittelt!',
       'search_no_result' => 'Keine Ergebnisse.',
       'different_message_previous' => 'Bitte schreiben Sie eine Nachricht, die sich von der vorherigen unterscheidet.',
       'email_not_exist' => 'Die E-Mail Adresse exisitiert nicht.',
       'email_used' => 'E-Mail wird bereits verwendet, nutzen Sie bitte eine andere.',
-      'invalid_email' => 'E-Mail Adresse ist ungültig!',
-      'invalid_file_format' => 'Ungültiges Dateiformat!',
-      'img_dimension_limit' => 'Bilgröße ist zu groß!',
+      'invalid_email' => 'E-Mail Adresse ist ung&uuml;ltig!',
+      'invalid_file_format' => 'Ung&uuml;ltiges Dateiformat!',
+      'img_dimension_limit' => 'Bilgr&ouml;ße ist zu groß!',
       'save_success' => 'Gespeichert!',
-      'error_saving' => 'Fehler beim Speichern. Bitte später erneut probieren.',
-      'invalid_password' => 'Das aktuelle Passwort ist ungültig!',
-      'captcha_incorrect' => 'Ungültiges captcha!'
+      'error_saving' => 'Fehler beim Speichern. Bitte sp&auml;ter erneut probieren.',
+      'invalid_password' => 'Das aktuelle Passwort ist ung&uuml;ltig!',
+      'captcha_incorrect' => 'Ung&uuml;ltiges captcha!'
     ),
     //Email Variables.
     'email' => array(
       'forgot_password' => array(
-        'subject' => 'Passwort zurücksetzen', 
-        'content' => '<p>Du hast kürzlich auf der Seite %site_name% eine Passwort-Rücksetzung angefordert..</p><p>Um das Passwort zurückzusetzen benutze bitte folgenden Link: %token_url%</p>'
+        'subject' => 'Passwort zur&uuml;cksetzen', 
+        'content' => '<p>Du hast k&uuml;rzlich auf der Seite %site_name% eine Passwort-R&uuml;cksetzung angefordert..</p><p>Um das Passwort zur&uuml;ckzusetzen benutze bitte folgenden Link: %token_url%</p>'
       ),
       'register' => array(
         'subject' => 'Konto Aktivierung',
@@ -162,31 +166,31 @@
     'mod' => array(
       'ban' => array(
         'ban' => 'Benutzer sperren',
-        'ban_success' => 'Benutzer wurde gesperrt. <a href="%url%">Zurück zum Benutzerprofil</a>.',
+        'ban_success' => 'Benutzer wurde gesperrt. <a href="%url%">Zur&uuml;ck zum Benutzerprofil</a>.',
         'ban_error' => 'Fehler beim Sperren des Benutzers.',
         'already_banned' => 'Benutzer ist bereits gesperrt.',
         'unban' => 'Benutzer entsperren',
-        'unban_success' => 'Benutzer wurde entsperrt. <a href="%url%">Zurück zum Benutzerprofil</a>.',
+        'unban_success' => 'Benutzer wurde entsperrt. <a href="%url%">Zur&uuml;ck zum Benutzerprofil</a>.',
         'unban_error' => 'Fehler beim Entsperren des Benutzers.',
         'already_unbanned' => 'Benutzer ist bereits entsperrt.',
       ),
       'close' => array(
         'close' => 'Thread schließen',
-        'close_success' => 'Thread wurde geschlossen. <a href="%url%">Zurück zum Thread</a>.',
+        'close_success' => 'Thread wurde geschlossen. <a href="%url%">Zur&uuml;ck zum Thread</a>.',
         'close_error' => 'Fehler beim Schließen des Threads.',
         'already_closed' => 'Thread ist bereits geschlossen.',
-        'open' => 'Thread öffnen',
-        'open_success' => 'Thread wurde geöffnet. <a href="%url%">Zurück zum Thread</a>.',
-        'open_error' => 'Fehler beim Öffnen des Threads.',
+        'open' => 'Thread &ouml;ffnen',
+        'open_success' => 'Thread wurde ge&ouml;ffnet. <a href="%url%">Zur&uuml;ck zum Thread</a>.',
+        'open_error' => 'Fehler beim &Ouml;ffnen des Threads.',
         'already_opened' => 'Thread ist bereits offen.'
       ),
       'stick' => array(
         'stick' => 'Thread anpinnen',
-        'stick_success' => 'Thread wurde angepinnt. <a href="%url%">Zurück zum Thread</a>.',
+        'stick_success' => 'Thread wurde angepinnt. <a href="%url%">Zur&uuml;ck zum Thread</a>.',
         'stick_error' => 'Fehler beim Anpinnen des Threads.',
         'already_stuck' => 'Thread ist bereits angepinnt.',
         'unstick' => 'Thread abpinnen',
-        'unstick_success' => 'Thread wurde abgepinnt. <a href="%url%">Zurück zum Thread</a>.',
+        'unstick_success' => 'Thread wurde abgepinnt. <a href="%url%">Zur&uuml;ck zum Thread</a>.',
         'unstick_error' => 'Fehler beim Abpinnen des Threads.',
         'already_unstuck' => 'Thread ist bereits abgepinnt.'
       ),
@@ -198,24 +202,24 @@
         'reported_time' => 'Zeitpunkt der Meldung:'
       ),
       'delete' => array(
-        'delete' => 'Nachricht löschen',
-        'thread_deleted' => 'Thread wurde gelöscht.', // Thread or post??
-        'error_deleting' => 'Fehler beim Löschen der Nachricht.',
-        'post_deleted' => 'Nachricht wurde gelöscht.'
+        'delete' => 'Nachricht l&ouml;schen',
+        'thread_deleted' => 'Thread wurde gel&ouml;scht.', // Thread or post??
+        'error_deleting' => 'Fehler beim L&ouml;schen der Nachricht.',
+        'post_deleted' => 'Nachricht wurde gel&ouml;scht.'
       ),
       'move' => array(
         'move' => 'Thread bewegen',
-        'thread_moved' => 'Thread wurde bewegt. <a href="%url%">Zurück zum Thread</a>.',
+        'thread_moved' => 'Thread wurde bewegt. <a href="%url%">Zur&uuml;ck zum Thread</a>.',
         'error_moving' => 'Fehler beim Bewegen des Threads.'
       ),
       'del_report' => array(
-        'delete' => 'Meldung löschen',
-        'report_deleted' => 'Meldung wurde gelöscht. <a href="%url%">Zurück</a>.',
-        'error_deleting' => 'Fehler beim Löschen der Meldung. <a href="%url%">Zurück</a>.'
+        'delete' => 'Meldung l&ouml;schen',
+        'report_deleted' => 'Meldung wurde gel&ouml;scht. <a href="%url%">Zur&uuml;ck</a>.',
+        'error_deleting' => 'Fehler beim L&ouml;schen der Meldung. <a href="%url%">Zur&uuml;ck</a>.'
       )
     ),
     'notification' => array(
-      'mention' => '%username% hat dich in einer Nachricht erwähnt!',
+      'mention' => '%username% hat dich in einer Nachricht erw&auml;hnt!',
       'reply' => '%username% hat auf den Thread <strong>%thread_title%</strong> geantwortet!',
       'quoted' => '%username% hat dich zitiert in <strong>%thread_title%</strong>!'
     ),
@@ -229,7 +233,7 @@
     ),
     // ISO 3166-1 Country codes
     'location' => array( 
-      '--' => 'Nichts ausgewählt',
+      '--' => 'Nichts ausgew&auml;hlt',
       'AD' => 'Andorra',
       'AE' => 'United Arab Emirates',
       'AF' => 'Afghanistan',
@@ -241,7 +245,7 @@
       'AQ' => 'Antarctica',
       'AR' => 'Argentina',
       'AS' => 'American Samoa',
-      'AT' => 'Österreich', // Done
+      'AT' => '&Ouml;sterreich', // Done
       'AU' => 'Australien', // Done
       'AW' => 'Aruba',
       'AX' => 'Aland Islands',
@@ -288,13 +292,13 @@
       'CZ' => 'Czech Republic',
       'DE' => 'Deutschland', // Done
       'DJ' => 'Djibouti',
-      'DK' => 'Dänemark', // Done
+      'DK' => 'D&auml;nemark', // Done
       'DM' => 'Dominica',
       'DO' => 'Dominican Republic',
       'DZ' => 'Algeria',
       'EC' => 'Ecuador',
       'EE' => 'Estonia',
-      'EG' => 'Ägypten', // Done
+      'EG' => '&Auml;gypten', // Done
       'EH' => 'Western Sahara',
       'ER' => 'Eritrea',
       'ES' => 'Spanien', // Done
@@ -313,7 +317,7 @@
       'GG' => 'Guernsey',
       'GH' => 'Ghana',
       'GI' => 'Gibraltar',
-      'GL' => 'Grönland', // Done
+      'GL' => 'Gr&ouml;nland', // Done
       'GM' => 'Gambia',
       'GN' => 'Guinea',
       'GP' => 'Guadeloupe',
@@ -454,7 +458,7 @@
       'TM' => 'Turkmenistan',
       'TN' => 'Tunisia',
       'TO' => 'Tonga',
-      'TR' => 'Türkei', // Done
+      'TR' => 'T&uuml;rkei', // Done
       'TT' => 'Trinidad and Tobago',
       'TV' => 'Tuvalu',
       'TW' => 'Taiwan',

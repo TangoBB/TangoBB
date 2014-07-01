@@ -24,6 +24,7 @@
           $about    = $_POST['about'];
           $birthday = $_POST['birthday'];
           $location = $_POST['location'];
+          $gender   = $_POST['gender'];
           $pass     = $_POST['confirm_password'];
 
           if( !$email or !$tz ) {
@@ -41,7 +42,8 @@
                           'about_user' => $about,
                           'set_timezone' => $tz,
                           'user_birthday' => $birthday,
-                          'location' => $location
+                          'location' => $location,
+                          'gender' => $gender
                       );
                       $MYSQL->where('id', $TANGO->sess->data['id']);
 
@@ -65,6 +67,7 @@
                   $data  = array(
                     'set_timezone' => $tz,
                     'location' => $location,
+                    'gender' => $gender,
                     'user_birthday' => $birthday,
                     'about_user' => $about
                   );
@@ -124,6 +127,24 @@
   }
   $locations .= '</select>';
 
+  $gender = '<select id="gender" name="gender">';
+  if($TANGO->sess->data['gender']==0) {
+    $gender .= '<option value="0" selected="selected">'.$LANG['bb']['profile']['not_telling'].'</option>
+                <option value="1">'.$LANG['bb']['profile']['female'].'</option>
+                <option value="2">'.$LANG['bb']['profile']['male'].'</option>';
+  }
+  elseif($TANGO->sess->data['gender']==1) {
+    $gender .= '<option value="0">'.$LANG['bb']['profile']['not_telling'].'</option>
+                <option value="1" selected="selected">'.$LANG['bb']['profile']['female'].'</option>
+                <option value="2">'.$LANG['bb']['profile']['male'].'</option>';
+  }
+  elseif($TANGO->sess->data['gender']==2) {
+    $gender .= '<option value="0">'.$LANG['bb']['profile']['not_telling'].'</option>
+                <option value="1">'.$LANG['bb']['profile']['female'].'</option>
+                <option value="2" selected="selected">'.$LANG['bb']['profile']['male'].'</option>';
+  }
+  $gender .= '</select>';
+
   //Breadcrumbs
   $TANGO->tpl->addBreadcrumb(
     $LANG['bb']['forum'],
@@ -150,6 +171,8 @@
   $content .= '<form id="tango_form" action="" method="POST">
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                  ' . $FORM->build('text', $LANG['bb']['members']['form_email'], 'email', array('value' => $TANGO->sess->data['user_email'])) . '
+                 <label for="gender">' . $LANG['bb']['profile']['gender'] . '</label>
+                 ' . $gender . '
                  <label for="timezone">' . $LANG['bb']['profile']['timezone'] . '</label>
                  ' . $timezones . '
                  <br />

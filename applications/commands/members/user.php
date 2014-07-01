@@ -122,6 +122,7 @@
                   'about_user',
                   'location',
                   'flag',
+                  'gender',
                   'recent_activity',
                   'mod_tools'
               ),
@@ -133,7 +134,8 @@
                   $TANGO->lib_parse->parse($user['user_signature']),
                   $TANGO->lib_parse->parse($user['about_user']),
                   $LANG['location'][$user['location']],
-                  '<span class="flag-icon flag-icon-'.strtolower($user['location']).'"></span>', 
+                  '<span class="flag-icon flag-icon-'.strtolower($user['location']).'"></span>',
+                  gender($user['gender']), 
                   $recent_activity,
                   $mod_tools
               )
@@ -215,6 +217,7 @@
                   'about_user',
                   'location',
                   'flag',
+                  'gender',
                   'recent_activity',
                   'mod_tools'
               ),
@@ -226,7 +229,8 @@
                   $TANGO->lib_parse->parse($TANGO->sess->data['user_signature']),
                   $TANGO->lib_parse->parse($TANGO->sess->data['about_user']),
                   $LANG['location'][$TANGO->sess->data['location']],
-                  '<span class="flag-icon flag-icon-'.strtolower($user['location']).'"></span>', 
+                  '<span class="flag-icon flag-icon-'.strtolower($TANGO->sess->data['location']).'"></span>',
+                  gender($TANGO->sess->data['gender']),
                   $recent_activity,
                   ''
               )

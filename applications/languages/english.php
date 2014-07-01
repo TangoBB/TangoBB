@@ -112,7 +112,11 @@
         'change_theme' => 'Change Theme',
         'theme_set' => 'Theme has been set.',
         'theme_error' => 'Error setting theme.',
-        'theme_not_exist' => 'Theme does not exist.'
+        'theme_not_exist' => 'Theme does not exist.',
+        'gender' => 'Gender',
+        'female' => 'Female',
+        'male' => 'Male',
+        'not_telling' => 'Not telling'
       )
     ),
     //Error Pages

@@ -487,5 +487,20 @@
       return number_format(count($query));
       }
   }
+  function gender($in) {
+    if($in==1)
+    {
+        $out = '&#9792;';
+    }
+    elseif($in==2)
+    {
+        $out = '&#9794;';
+    }
+    else
+    {
+        $out = '-';
+    }
+    return $out;
+  }
 
 ?>
