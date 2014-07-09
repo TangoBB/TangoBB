@@ -316,7 +316,8 @@
         <br />
         (%usergroup%)<br />
         <b>Registered On:</b> %registered_date% <br />
-        <b>Location:</b> %flag% %location%
+        <b>Location:</b> %flag% %location%<br />
+        <b>Age:</b> %age%
     </p>
     <p class="pull-right">
         <img src="%user_avatar%" class="img-thumbnail" style="width:75px;height:75px;" />

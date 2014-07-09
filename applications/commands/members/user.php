@@ -123,6 +123,7 @@
                   'location',
                   'flag',
                   'gender',
+                  'age',
                   'recent_activity',
                   'mod_tools'
               ),
@@ -135,7 +136,8 @@
                   $TANGO->lib_parse->parse($user['about_user']),
                   $LANG['location'][$user['location']],
                   '<span class="flag-icon flag-icon-'.strtolower($user['location']).'"></span>',
-                  gender($user['gender']), 
+                  gender($user['gender']),
+                  birthday_to_age($user['user_birthday']),
                   $recent_activity,
                   $mod_tools
               )
@@ -218,6 +220,7 @@
                   'location',
                   'flag',
                   'gender',
+                  'age',
                   'recent_activity',
                   'mod_tools'
               ),
@@ -231,6 +234,7 @@
                   $LANG['location'][$TANGO->sess->data['location']],
                   '<span class="flag-icon flag-icon-'.strtolower($TANGO->sess->data['location']).'"></span>',
                   gender($TANGO->sess->data['gender']),
+                  birthday_to_age($TANGO->sess->data['user_birthday']),
                   $recent_activity,
                   ''
               )

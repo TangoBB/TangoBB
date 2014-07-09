@@ -502,5 +502,23 @@
     }
     return $out;
   }
+  function birthday_to_age($date) {
+    $year   = substr($date,0,4);
+    $month  = substr($date,5,2);
+    $day    = substr($date,8,2);
+    
+    $cur_year  = date("Y");
+    $cur_month = date("m");
+    $cur_day   = date("d");
+    
+    $calc_year = $cur_year - $year;
+    if($month > $cur_month) 
+        return $calc_year - 1;
+    elseif($month==$cur_month && $day > $cur_day)
+        return $calc_year - 1;
+    else
+        return $calc_year;
+    
+    }
 
 ?>
