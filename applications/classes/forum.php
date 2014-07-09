@@ -206,7 +206,7 @@
                       $post_time         = date('F jS, Y', $post['post_time']);
                       $post_time_tooltip = date('l h:i A', $post['post_time']);
                   }*/
-                  $post_time = simplify_time($post['post_time']);
+                  $post_time = simplify_time($post['post_time'],@$TANGO->sess->data['location']);
                   /** Output */
                   $return .= $TANGO->tpl->entity(
                       'forum_listings_node_latest',
@@ -282,7 +282,7 @@
                       $post_time         = date('F jS, Y', $post['post_time']);
                       $post_time_tooltip = date('l h:i A', $post['post_time']);
                   }*/
-                  $post_time = simplify_time($post['post_time']);
+                  $post_time = simplify_time($post['post_time'],@$TANGO->sess->data['location']);
                   /** Output */
                   $return .= $TANGO->tpl->entity(
                       'forum_listings_node_sub_forums_latest',

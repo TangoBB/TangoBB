@@ -23,7 +23,7 @@
               $user     = $TANGO->user($post['post_user']);
               $closed   = ( $post['post_locked'] == "1" )? $TANGO->tpl->entity('thread_closed') : '';
               $stickied =  ( $post['post_sticky'] == "1" ) ? $TANGO->tpl->entity('thread_stickied') : '';
-              $post_time = simplify_time($post['post_time']);
+              $post_time = simplify_time($post['post_time'],@$TANGO->sess->data['location']);
               
               $return .= $TANGO->tpl->entity(
                   'forum_listings_node_threads_posts',
@@ -75,7 +75,7 @@
               $page   = ( $q > 1 )? '/page/' . ceil($q) . '/' : '';
               
               $user   = $TANGO->user($query['0']['post_user']);
-              $post_time = simplify_time($query['0']['post_time']);
+              $post_time = simplify_time($query['0']['post_time'],@$TANGO->sess->data['location']);
               
               $return = $TANGO->tpl->entity(
                   'forum_listings_node_threads_latestreply',

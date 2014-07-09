@@ -482,6 +482,27 @@
       'ZA' => 'South Africa',
       'ZM' => 'Zambia',
       'ZW' => 'Zimbabwe'
+      ),
+    'date' => array(
+      'month_1' => 'Januar',
+      'month_2' => 'Februar',
+      'month_3' => 'M&auml;rz',
+      'month_4' => 'April',
+      'month_5' => 'Mai',
+      'month_6' => 'Juni',
+      'month_7' => 'Juli',
+      'month_8' => 'August',
+      'month_9' => 'September',
+      'month_10' => 'Oktober',
+      'month_11' => 'November',
+      'month_12' => 'Dezember',
+      'day_1' => 'Montag',
+      'day_2' => 'Dienstag',
+      'day_3' => 'Mittwoch',
+      'day_4' => 'Donnerstag',
+      'day_5' => 'Freitag',
+      'day_6' => 'Samstag',
+      'day_7' => 'Sonntag'
       )
   );
 

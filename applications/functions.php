@@ -436,11 +436,11 @@
    *  - tooltip
    *  - time
    */
-  function simplify_time($timestamp) {
+  function simplify_time($timestamp, $location = 'EN') {
     global $LANG;
     if( (time()-$timestamp) > 86400 && (time()-$timestamp) < 604800 ) {
-      $post_time         = date('l h:i A', $timestamp);
-      $post_time_tooltip = date('F jS, Y', $timestamp);
+      $post_time         = date('l h:i A', $timestamp); // Sunday 12:00 AM 
+      $post_time_tooltip = localized_date($timestamp, $location); // January 1st, 2014
     } elseif( (time()-$timestamp) > 3600 && (time()-$timestamp) < 86400 ) {
       //$post_time         = round((time()-$timestamp)/3600).' hours ago.';
       $post_time         = str_replace(
@@ -448,7 +448,7 @@
         round((time()-$timestamp)/3600),
         $LANG['time']['hours_ago']
       );
-      $post_time_tooltip = date('F jS, Y', $timestamp);
+      $post_time_tooltip = localized_date($timestamp, $location);
     } elseif( (time()-$timestamp) > 60 && (time()-$timestamp) < 3600 ) {
       //$post_time         = round((time()-$timestamp)/60).' minutes ago.';
       $time              = round((time()-$timestamp)/60);
@@ -457,13 +457,13 @@
         $time,
         $LANG['time']['minutes_ago']
       );
-      $post_time_tooltip = date('F jS, Y', $timestamp);
+      $post_time_tooltip = localized_date($timestamp, $location);
     } elseif( (time()-$timestamp) < 60 ) {
       //$post_time         = 'Just now.';
       $post_time         = $LANG['time']['just_now'];
-      $post_time_tooltip = date('F jS, Y', $timestamp);
+      $post_time_tooltip = localized_date($timestamp, $location);
     } else {
-      $post_time         = date('F jS, Y', $timestamp);
+      $post_time         = localized_date($timestamp, $location);
       $post_time_tooltip = date('l h:i A', $timestamp);
     }
 
@@ -502,6 +502,7 @@
     }
     return $out;
   }
+  
   function birthday_to_age($date) {
     $year   = substr($date,0,4);
     $month  = substr($date,5,2);
@@ -518,7 +519,20 @@
         return $calc_year - 1;
     else
         return $calc_year;
+    }
     
+    function localized_date($date, $location = 'EN') {
+        global $LANG;
+        if(is_int($date)===false)
+            $date = strtotime($date);
+            
+        $day = date("j", $date);
+        $month = date("n", $date);
+        $year = date("Y", $date);
+        if($location == 'DE')        
+            return $day . '. ' . $LANG['date']['month_' . $month] . ' ' . $year; 
+        else
+            return $LANG['date']['month_' . $month] . ' ' . $day.', '. $year;
     }
 
 ?>
