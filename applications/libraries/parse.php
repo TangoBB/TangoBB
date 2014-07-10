@@ -126,6 +126,11 @@ class Library_Parse {
             if (is_callable($replacement)) {
                 $result = preg_replace_callback($pattern, $replacement, $result);
             } else {
+                if($pattern=='#\\[code\\](.*?)\\[/code\\]#uis')
+                {
+                    $result = preg_replace('/[\n\r]+/', '<br>',$result);
+                }
+                
                 $result = preg_replace($pattern, $replacement, $result);
             }
         }

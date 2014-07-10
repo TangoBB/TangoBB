@@ -534,5 +534,4 @@
         else
             return $LANG['date']['month_' . $month] . ' ' . $day.', '. $year;
     }
-
 ?>
