@@ -22,6 +22,7 @@ class Library_Parse {
      * Parsing BBCode into HTML.
      */
     public function parse($string) {
+        global $ICONS, $SYNONYM;
         // closures can't access $this directly until PHP 5.4
         $this_object = $this;
 
@@ -134,7 +135,16 @@ class Library_Parse {
                 $result = preg_replace($pattern, $replacement, $result);
             }
         }
-
+        
+        foreach($SYNONYM as $code => $translation) {
+            $result = str_replace($code, $translation, $result);
+        }
+        
+        foreach($ICONS as $var1 => $var2) {
+            foreach ($var2 as $code => $translation) {
+                $result = str_replace($code, $translation, $result);
+            }
+        }
         $result = preg_replace(array_keys($this->custom_codes), array_values($this->custom_codes), $result);
 
         //Mentions

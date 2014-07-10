@@ -83,6 +83,10 @@
     }
     //die(var_dump($LANG));
   }
+  
+  //Smiles for the posts
+  require_once(PATH_A . 'smilies/emoteicons.php');
+  require_once(PATH_A . 'smilies/synonymes.php');
 
   //Classes to run TangoBB
   require_once(PATH_A . CLA . 'core.php');
