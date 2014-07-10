@@ -89,6 +89,7 @@
                 @else
                 <li role="presentation" class="dropdown-header">No Messages</li>
                 @endif
+                <li><a href="%site_url%/conversations.php">Conversations</a></li>
                 <li><a href="%site_url%/conversations.php/cmd/new">New Message</a></li>
               </ul>
             </li>

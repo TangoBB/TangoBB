@@ -12,7 +12,7 @@
       private $session;
 
       public function __construct() {
-          global $TANGO, $MYSQL;
+          global $TANGO, $MYSQL, $LANG;
           $this->clear();
           if( $this->check() ) {
               //die(var_dump($session_id));
@@ -45,12 +45,12 @@
 
               //Adding links for users who are logged in and everything else in the template.
               $TANGO->user->addUserLink(array(
-                  'Profile' => SITE_URL . '/members.php/cmd/user/',
-                  'Conversations' => SITE_URL . '/conversations.php',
-                  'Personal Details' => SITE_URL . '/profile.php/cmd/edit',
-                  'Avatar' => SITE_URL . '/profile.php/cmd/avatar',
-                  'Signature' => SITE_URL . '/profile.php/cmd/signature',
-                  'Password' => SITE_URL . '/profile.php/cmd/password'
+                  $LANG['bb']['profile']['profile'] => SITE_URL . '/members.php/cmd/user/',
+                  //$LANG['bb']['conversations']['page_conversations'] => SITE_URL . '/conversations.php', // has been moved in the Conversation category
+                  $LANG['bb']['profile']['personal_details'] => SITE_URL . '/profile.php/cmd/edit',
+                  $LANG['bb']['profile']['avatar'] => SITE_URL . '/profile.php/cmd/avatar',
+                  $LANG['bb']['profile']['signature'] => SITE_URL . '/profile.php/cmd/signature',
+                  $LANG['bb']['profile']['password'] => SITE_URL . '/profile.php/cmd/password'
               ));
 
               //Getting user's total post/messages.

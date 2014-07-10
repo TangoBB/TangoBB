@@ -90,6 +90,7 @@
         'replied_to' => 'Replied to the thread <a href="%url%">%title%</a> <small>(%date%)</small><hr size="1" />'
       ),
       'profile' => array(
+        'profile' => 'Profile',
         'avatar' => 'Avatar',
         'change_avatar' => 'Change Avatar <small>A maximum of 500x500 Pixels</small>',
         'use_gravatar' => 'Use Gravatar Instead',
