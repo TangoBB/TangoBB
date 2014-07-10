@@ -131,7 +131,7 @@
                   $user['username_style'],
                   $user['user_avatar'],
                   $userg['group_name'],
-                  localized_date($user['date_joined'],$TANGO->sess->data['location']),
+                  localized_date($user['date_joined'],@$TANGO->sess->data['location']),
                   $TANGO->lib_parse->parse($user['user_signature']),
                   $TANGO->lib_parse->parse($user['about_user']),
                   $LANG['location'][$user['location']],
