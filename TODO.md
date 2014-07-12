@@ -4,3 +4,7 @@
 * Attachment-System
 * Extended mod area
 * Language-Country dependency
+
+
+##Work in progress
+* Smilies / Emojis (N8boy)
