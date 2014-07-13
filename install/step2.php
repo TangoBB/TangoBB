@@ -102,6 +102,8 @@
 ");
                 $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "notifications` (`id` int(11) NOT NULL AUTO_INCREMENT, `notice_content` varchar(255) NOT NULL, `notice_link` varchar(255) NOT NULL DEFAULT '0', `user` int(11) NOT NULL DEFAULT '0', `time_received` int(11) NOT NULL DEFAULT '0', `viewed` int(11) NOT NULL DEFAULT '0', PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");             
+                $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "thread_tracking`(`user_id` INT(11) NOT NULL, `thread_id` INT(11) NOT NULL, `last_visit` INT(11) NOT NULL, PRIMARY KEY (`user_id`, `topic_id`));
+");
                 $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "countries` (`id` int(11) NOT NULL AUTO_INCREMENT, `iso` varchar(2) NOT NULL, `language` varchar(255) NOT NULL DEFAULT 'english' PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;");
                 $MYSQL->query("INSERT INTO `" . $mysql_prefix . "countries` (`iso`, `language`) VALUES ('AD', 'english'),
                                                                                                        ('AE', 'english'),

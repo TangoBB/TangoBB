@@ -127,6 +127,10 @@
         'message' => 'Sorry, the resource you are looking for could not be found.'
       )
     ),
+    'errors' => array(
+      'thread_tracker_insert' => 'An Error accured while creating a thread tracker.',
+      'thread_tracker_update' => 'An Error accured while updating a thread tracker.'
+    ),
     //Global Form Variables
     'global_form_process' => array(
       'all_fields_required' => 'All fields are required!',
@@ -228,9 +232,9 @@
       'merge_post' => '----------'
     ),
     'time' => array(
-      'hours_ago' => '%time% hours ago.',
-      'minutes_ago' => '%time% minutes ago.',
-      'just_now' => 'Just now.'
+      'hours_ago' => '%time% hours ago',
+      'minutes_ago' => '%time% minutes ago',
+      'just_now' => 'Just now'
     ),
     // ISO 3166-1 Country codes
     'location' => array( 

@@ -115,6 +115,8 @@
           );
           $breadcrumb = $TANGO->tpl->breadcrumbs();
           
+          $TANGO->node->thread_mark_read($node_id);
+          
           $reply_button  = '';
           $quote_thread  = '';
           $edit_thread   = '';
@@ -603,7 +605,6 @@
                   $content
               )
           );
-          
       } else {
           redirect(SITE_URL . '/404.php');
       }
