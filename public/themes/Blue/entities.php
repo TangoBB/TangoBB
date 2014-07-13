@@ -198,7 +198,7 @@
 <!--- tpl:forum_listings_node:start -->
 <tr>
     <td style="width:70%;">
-        <span class="tooltip_toggle" data-toggle="tooltip" title="%node_desc%" data-placement="right">%node_name%</span><br />
+        <span class="tooltip_toggle" data-toggle="tooltip" title="%node_desc%" data-placement="right">%node_name%</span><span class="label label-info pull-right">%status%</span><br />
         <small>Sub-Forums: %sub_forums%</small>
     </td>
     <td style="width:30%;">
@@ -273,7 +273,7 @@
 <!--- tpl:forum_listings_node_sub_forums_latest:end -->
 <!--- tpl:forum_listings_node_threads_posts:start -->
 <tr>
-    <td><img src="%user_avatar%" class="img-thumbnail pull-left" style="width:42;height:42px;margin-right:5px;" />%thread_name%<br /><small>%user%, %post_time%</small></td>
+    <td><img src="%user_avatar%" class="img-thumbnail pull-left" style="width:42;height:42px;margin-right:5px;" />%thread_name%<span class="label label-info pull-right">%status%</span><br /><small>%user%, %post_time%</small></td>
     <td>
         %latest_post%
     </td>
