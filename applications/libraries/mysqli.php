@@ -67,10 +67,28 @@
         // throw exceptions in case of errors
         $mysqli_driver = new mysqli_driver();
         $mysqli_driver->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
-		$this->_mysqli = new mysqli($host, $username, $password, $db);
+
+        $fp = @fsockopen($host, MYSQL_PORT);
+
+        if( is_resource($fp) ) {
+          $this->_mysqli = new mysqli($host, $username, $password, $db);  
+          $this->_prefix = $prefix;      	
+        } else {
+
+            $databases = json_decode(ADDITIONAL_MYSQL_DATABASE, true);
+
+        	foreach( $databases as $db ) {
+        		$fp = @fsockopen($db['mysql_host'], $db['mysql_port']);
+        		if( is_resource($fp) ) {
+        			$this->_mysqli = new mysqli($db['mysql_host'], $db['mysql_username'], $db['mysql_password'], $db['mysql_database']);
+        			$this->_prefix = $db['mysql_prefix'];
+        		}
+        	}
+
+        }
+
 		$this->_mysqli->set_charset('utf8');
 		self::$_instance = $this;
-		$this->_prefix = $prefix;
 		$this->queries_count = 0;
 		//$this->_query = str_replace('{prefix}', $this->_prefix, $this->_query);
 	}
