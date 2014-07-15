@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TangoBB Installation</title>
+    <title>Iko Installation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
@@ -20,7 +20,7 @@
       <div class="header">
         <ul class="nav nav-pills pull-right">
           <li class="active"><a href="#">Install</a></li>
-          <li><a href="https://github.com/IkoBulletin/Iko" target-"_blank">Github</a></li>
+          <li><a href="https://github.com/Codetana/Iko" target-"_blank">Github</a></li>
           <li><a href="http://codetana.com/" target="_blank">Codetana</a></li>
         </ul>
         <h3 class="text-muted">Iko</h3>
