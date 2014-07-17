@@ -8,7 +8,7 @@
 
   echo $ADMIN->box(
       'Dashboard',
-      'This forum is powered by TangoBB <strong>' . TANGOBB_VERSION . '</strong>.',
+      'This forum is powered by Iko <strong>' . TANGOBB_VERSION . '</strong>.',
       '<table class="table">
          <thead>
            <tr>
