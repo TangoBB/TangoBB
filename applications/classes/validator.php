@@ -95,7 +95,8 @@
   	}
 
   	protected function required($field, $value, $satisfier) {
-  		return !empty(trim($value));
+  		return trim($value); // Just a test fix
+        
   	}
 
   	protected function minlength($field, $value, $satisfier) {
