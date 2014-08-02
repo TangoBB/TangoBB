@@ -63,9 +63,32 @@
                <script type="text/javascript" src="' . SITE_URL . '/public/js/jquery.min.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/autosaveform.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/wysibb/jquery.wysibb.min.js"></script>
-               <script type="text/javascript" src="' . SITE_URL . '/public/js/highlighter/highlight.pack.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/jquery.tagsinput.min.js"></script>
-               <script type="text/javascript" src="' . SITE_URL . '/public/js/iko.js"></script>'
+               <script type="text/javascript" src="' . SITE_URL . '/public/js/iko.js"></script>
+               <link type="text/css" rel="Stylesheet" href="' . SITE_URL . '/public/js/highlighter/styles/shThemeDefault.css"/>
+               <link type="text/css" rel="Stylesheet" href="' . SITE_URL . '/public/js/highlighter/styles/shCore.css"/>
+               '
+          );
+          
+          $this->addParam(
+            'highlighter_footer',
+            '<script type="text/javascript" src="' . SITE_URL . '/public/js/highlighter/shCore.js"></script>
+             <script type="text/javascript" src="' . SITE_URL . '/public/js/highlighter/shAutoloader.js" ></script>
+             <script type="text/javascript">
+             SyntaxHighlighter.autoloader(
+                [\'js\',\'jscript\',\'javascript\',\'' . SITE_URL . '/public/js/highlighter/shBrushJScript.js\'],
+                [\'bash\',\'shell\',\'' . SITE_URL . '/public/js/highlighter/shBrushBash.js\'],
+                [\'css\',\'' . SITE_URL . '/public/js/highlighter/shBrushCss.js\'],
+                [\'xml\',\'' . SITE_URL . '/public/js/highlighter/shBrushXml.js\'],
+                [\'sql\',\'' . SITE_URL . '/public/js/highlighter/shBrushSql.js\'],
+                [\'c-sharp\',\'csharp\',\'' . SITE_URL . '/public/js/highlighter/shBrushCSharp.js\'],
+                [\'cpp\',\'c\',\'' . SITE_URL . '/public/js/highlighter/shBrushCpp.js\'],
+                [\'vb\',\'vbnet\',\'' . SITE_URL . '/public/js/highlighter/shBrushVb.js\'],
+                [\'java\',\'' . SITE_URL . '/public/js/highlighter/shBrushJava.js\'],
+                [\'php\',\'' . SITE_URL . '/public/js/highlighter/shBrushPhp.js\']
+             );
+            SyntaxHighlighter.all();
+            </script>'
           );
       }
       

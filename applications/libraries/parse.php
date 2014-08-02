@@ -60,7 +60,9 @@ class Library_Parse {
             // font face
             '#\\[font=([^\\]]*?)\\](.*?)\\[/font\\]#uis' => '<font face="\\1">\\2</font>',
             // preformatted
-            '#\\[code\\](.*?)\\[/code\\]#uis' => '<pre>\\1</pre>',
+            '#\\[code\\](.*?)\\[/code\\]#uis' => '<pre class="brush: php">\\1</pre>',
+            
+            '#\\[code=([^\\]]*?)\\](.*?)\\[/code\\]#uis' => '<pre class="brush: \\1">\\2</pre>',
             // flags
             '#\\[flag\\](.*?)\\[/flag\\]#uis' => '<span class="flag-icon flag-icon-\\1"></span>',
             // image
@@ -97,14 +99,7 @@ class Library_Parse {
 
                 return $output;
             },
-            // unordered list
-            '#\\[ul\\](.*?)\[/ul\\]#uis' => function ($matches) use ($this_object) {
-                return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
-            },
-            // unordered list (alternative syntax)
-            '#\\[list\\](.*?)\[/list\\]#uis' => function ($matches) use ($this_object) {
-                return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
-            },
+            
             // ordered list
             '#\\[ol\\](.*?)\[/ol\\]#uis' => function ($matches) use ($this_object) {
                 return '<ol>' . trim($this_object->parseListElements($matches[1])) . '</ol>';
@@ -141,12 +136,7 @@ class Library_Parse {
         foreach ($tags as $pattern => $replacement) {
             if (is_callable($replacement)) {
                 $result = preg_replace_callback($pattern, $replacement, $result);
-            } else {
-                if($pattern=='#\\[code\\](.*?)\\[/code\\]#uis')
-                {
-                    $result = preg_replace('/[\n\r]+/', '<br>',$result);
-                }
-                
+            } else {                
                 $result = preg_replace($pattern, $replacement, $result);
             }
         }
@@ -177,9 +167,9 @@ class Library_Parse {
             ),
             $result
         );
-
-        $result = nl2br($result);
-
+        
+        $result = nl2brPre($result);
+        
         return $result;
     }
 
@@ -203,7 +193,7 @@ class Library_Parse {
 
     public function parseListElements($list_content) {
         /*
-         * TangoBB uses both the [li] tag and the [*] tag for list elements.
+         * Iko uses both the [li] tag and the [*] tag for list elements.
          * Allowing both variants at the same time would be confusing, though.
          * If [li] is used, we only parse those tags. Otherwise, we only parse
          * the [*] tags.

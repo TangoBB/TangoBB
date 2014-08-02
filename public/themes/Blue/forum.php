@@ -270,7 +270,7 @@
       </div>
     </div>
     @endif
-
+    %highlighter_footer%
     <!-- Include all compiled plugins (below), or include individual files as needed -->
      <script src="%site_url%/public/themes/Blue/assets/js/bootstrap.min.js"></script>
      <script src="%site_url%/public/themes/Blue/assets/js/blue.js"></script>
