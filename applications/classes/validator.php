@@ -95,7 +95,8 @@
   	}
 
   	protected function required($field, $value, $satisfier) {
-  		return trim($value); // Just a test fix
+        $value = trim($value);          
+        return !empty($value);
         
   	}
 
