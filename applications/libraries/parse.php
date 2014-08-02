@@ -99,7 +99,14 @@ class Library_Parse {
 
                 return $output;
             },
-            
+            // unordered list
+            '#\\[ul\\](.*?)\[/ul\\]#uis' => function ($matches) use ($this_object) {
+            return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
+            },
+            // unordered list (alternative syntax)
+            '#\\[list\\](.*?)\[/list\\]#uis' => function ($matches) use ($this_object) {
+            return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
+            },
             // ordered list
             '#\\[ol\\](.*?)\[/ol\\]#uis' => function ($matches) use ($this_object) {
                 return '<ol>' . trim($this_object->parseListElements($matches[1])) . '</ol>';
