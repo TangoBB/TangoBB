@@ -61,6 +61,8 @@ class Library_Parse {
             '#\\[font=([^\\]]*?)\\](.*?)\\[/font\\]#uis' => '<font face="\\1">\\2</font>',
             // preformatted
             '#\\[code\\](.*?)\\[/code\\]#uis' => '<pre>\\1</pre>',
+            // flags
+            '#\\[flag\\](.*?)\\[/flag\\]#uis' => '<span class="flag-icon flag-icon-\\1"></span>',
             // image
             '#\\[img\\](.*?)\\[/img\\]#uis' => function ($matches) {
                 $output = '';
@@ -115,6 +117,19 @@ class Library_Parse {
             '#\[quote\](.*?)\[/quote\]#uis' => function ($matches) use ($this_object) {
                 return $this_object->parseQuote($matches[1]);
             },
+            // media like YouTube, Vimeo and so on
+            '#\\[media=([^\\]]*?)\\](.*?)\\[/media\\]#uis' => function($matches) {
+                if(strtolower($matches[1])=='youtube') {
+                    $output = '<iframe width="560" height="315" src="//www.youtube.com/embed/'.$matches[2].'?rel=0" frameborder="0" allowfullscreen></iframe>';
+                }
+                elseif(strtolower($matches[1])=='vimeo') {
+                    $output = '<iframe src="//player.vimeo.com/video/'.$matches[2].'?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;color=ffffff" width="560" height="240" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+                }
+                elseif(strtolower($matches[1])=='twitch') {
+                    $output = '<object type="application/x-shockwave-flash" width="620" height="378" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel='.$matches[2].'" bgcolor="#000000"><param name="allowFullScreen" value="true" /><param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" /><param name="flashvars" value="hostname=www.twitch.tv&channel='.$matches[2].'&auto_play=true&start_volume=100" /></object>';
+                }
+                return $output;
+            }
 
         );
 
