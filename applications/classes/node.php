@@ -1,7 +1,7 @@
 <?php
 
   /*
-   * Node Display class of TangoBB
+   * Node Display class of Iko
    */
   if( !defined('BASEPATH') ){ die(); }
 

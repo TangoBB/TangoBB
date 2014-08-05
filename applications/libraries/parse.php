@@ -62,7 +62,7 @@ class Library_Parse {
             // preformatted
             '#\\[code\\](.*?)\\[/code\\]#uis' => '<pre class="brush: php">\\1</pre>',
             
-            '#\\[code=([^\\]]*?)\\](.*?)\\[/code\\]#uis' => '<pre class="brush: \\1">\\2</pre>',
+            '#\\[code=([^\\]]*?)\\](.*?)\\[/code\\]#uis' => '<b>\\1 Code:</b><pre class="brush: \\1">\\2</pre>',
             // flags
             '#\\[flag\\](.*?)\\[/flag\\]#uis' => '<span class="flag-icon flag-icon-\\1"></span>',
             // image
@@ -154,7 +154,7 @@ class Library_Parse {
         
         foreach($ICONS as $var1 => $var2) {
             foreach ($var2 as $code => $translation) {
-                $result = str_replace($code, $translation, $result);
+                $result = str_replace($code, '<span style="font-size: 18px">'.$translation.'</span>', $result);
             }
         }
         $result = preg_replace(array_keys($this->custom_codes), array_values($this->custom_codes), $result);
