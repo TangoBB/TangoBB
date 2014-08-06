@@ -204,7 +204,8 @@
         'thread' => 'Thread:',
         'user' => 'Benutzer:',
         'reason' => 'Grund:',
-        'reported_time' => 'Zeitpunkt der Meldung:'
+        'reported_time' => 'Zeitpunkt:',
+        'no_reports' => 'Im Moment gibt es keine Meldungen.'
       ),
       'delete' => array(
         'delete' => 'Nachricht l&ouml;schen',

@@ -204,7 +204,8 @@
         'thread' => 'Thread:',
         'user' => 'User:',
         'reason' => 'Reason:',
-        'reported_time' => 'Reported Time:'
+        'reported_time' => 'Reported Time:',
+        'no_reports' => 'There are no reports at the moment.'
       ),
       'delete' => array(
         'delete' => 'Delete Post',

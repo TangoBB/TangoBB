@@ -17,6 +17,9 @@
 <!--- tpl:success_notice:start -->
 <div class="alert alert-success">%content%</div>
 <!--- tpl:success_notice:end -->
+<!--- tpl:warning_notice:start -->
+<div class="alert alert-warning">%content%</div>
+<!--- tpl:warning_notice:end -->
 <!--- tpl:breadcrumbs:start -->
 <ol class="breadcrumb">
     %bread%
