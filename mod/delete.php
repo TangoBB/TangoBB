@@ -31,7 +31,7 @@
                 $content .= $TANGO->tpl->entity(
                     'danger_notice',
                     'content',
-                    'FELHER 1'.$LANG['mod']['delete']['error_deleting']
+                    $LANG['mod']['delete']['error_deleting']
                 );
             }
         // Checking if there are subposts
@@ -52,7 +52,7 @@
                     $content .= $TANGO->tpl->entity(
                         'danger_notice',
                         'content',
-                        'FELHER 2'.$LANG['mod']['delete']['error_deleting']
+                        $LANG['mod']['delete']['error_deleting']
                     );
                 }
             }
@@ -71,7 +71,7 @@
               $content .= $TANGO->tpl->entity(
                 'danger_notice',
                 'content',
-                'FELHER 3'.$LANG['mod']['delete']['error_deleting']
+                $LANG['mod']['delete']['error_deleting']
               );
             }   
         }
@@ -90,14 +90,14 @@
                 $content .= $TANGO->tpl->entity(
                   'danger_notice',
                   'content',
-                  'FELHER 1'.$LANG['mod']['delete']['error_deleting']
+                  $LANG['mod']['delete']['error_deleting']
                 );
               }
             } else {
               $content .= $TANGO->tpl->entity(
                 'danger_notice',
                 'content',
-                'FELHER 2'.$LANG['mod']['delete']['error_deleting']
+                $LANG['mod']['delete']['error_deleting']
               );
             }
           } else {
@@ -112,7 +112,7 @@
               $content .= $TANGO->tpl->entity(
                 'danger_notice',
                 'content',
-                'FELHER 3'.$LANG['mod']['delete']['error_deleting']
+                $LANG['mod']['delete']['error_deleting']
               );
             }
           }
