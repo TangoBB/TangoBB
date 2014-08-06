@@ -529,7 +529,8 @@
         $day = date("j", $date);
         $month = date("n", $date);
         $year = date("Y", $date);
-        if($location == 'DE')        
+        $location = strtoupper($location);
+        if($location == 'DE' || 'AT')        
             return $day . '. ' . $LANG['date']['month_' . $month] . ' ' . $year; 
         else
             return $LANG['date']['month_' . $month] . ' ' . $day.', '. $year;
