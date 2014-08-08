@@ -38,9 +38,15 @@
           $query['0']['username_style'] = $this->usergroup($query['0']['user_group'], 'username_style', $query['0']['username']);
 
           if( $query['0']['avatar_type'] == "0" ) {
-            $query['0']['user_avatar'] = SITE_URL . '/public/img/avatars/' . $query['0']['user_avatar'];
+            $file = './public/img/avatars/' . $query['0']['user_avatar'];
+            if(file_exists($file)) {
+                $query['0']['user_avatar'] = SITE_URL . '/public/img/avatars/' . $query['0']['user_avatar'];
+            }
+            else {
+                $query['0']['user_avatar'] = SITE_URL . '/public/img/avatars/default.png';
+            }
           } else {
-            $query['0']['user_avatar'] = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($query['0']['user_email']))) . "?d=" . urlencode('http://www.somewhere.com/homestar.jpg') . "&s=200";
+                $query['0']['user_avatar'] = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($query['0']['user_email']))) . "?d=mm&s=200";
           }
 
           if( $query['0']['additional_permissions'] !== "0" ) {
