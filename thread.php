@@ -344,7 +344,8 @@
                 'watch_link',
                 'thread_notice',
                 'id',
-                'user_id'
+                'user_id',
+                'flag'
               ),
               array(
                 $breadcrumb,
@@ -367,7 +368,8 @@
                 $watch_link,
                 $thread_notice,
                 $query['0']['id'],
-                $user['id']
+                $user['id'],
+                '<span class="flag-icon flag-icon-'.strtolower($user['location']).'"></span>'
               )
             );
           } else {
@@ -500,7 +502,8 @@
                       'post_time',
                       'mod_tools',
                       'id',
-                      'user_id'
+                      'user_id',
+                      'flag'
                   ),
                   array(
                       'post-' . $post['id'],
@@ -520,7 +523,8 @@
                       $time_reply['time'],
                       $post_mod_tools,
                       $post['id'],
-                      $ur['id']
+                      $ur['id'],
+                      '<span class="flag-icon flag-icon-'.strtolower($user['location']).'"></span>'
                   )
               );
           }
