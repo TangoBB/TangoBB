@@ -8,15 +8,17 @@
   $notice = '';
   
   $versions = file_get_contents('http://127.0.0.1/update_packages/version_list.php'); //@jtPox insert the real IP here
-  if($versions!='') {
+  
+  if($versions != '') {
         $versionList = explode("|", $versions);
         foreach($versionList as $version) {
             if( version_compare(TANGOBB_VERSION, $version, '<') ) {
-                echo '<p>New version found: ' . $version . '<br /><a href="?doUpdate=true">&raquo; Install Now?</a></p>';
+                echo '<p>New version found: ' . $version . '<br /><a href="?doUpdate=true&step=1">&raquo; Download Now?</a></p>';
                 
             // do update
-                if (isset($_GET['doUpdate']) && $_GET['doUpdate'] == true) {
+                if (isset($_GET['doUpdate']) && $_GET['doUpdate'] == true && isset($_GET['step']) && $_GET['step'] == 1) {
                     
+                    // Step 1 downloading the file
                     if ( !is_file(  'updates/Iko_update_package_'.$version.'.zip' )) {
                         $newUpdate = curl_init('http://127.0.0.1/update_packages/Iko_update_package_'.$version.'.zip'); //@jtPox insert the real IP here
                         if ( !is_dir( 'updates/' ) ) mkdir ( 'updates/' );
@@ -28,11 +30,14 @@
                         echo '<p>Download successful.</p>';
                     } 
                     else echo '<p>Update already downloaded.</p>'; 
+                    echo '<p><a href="?doUpdate=true&step=2">&raquo; Install Now?</a></p>';
+                }
+                elseif(isset($_GET['doUpdate']) && $_GET['doUpdate'] == true && isset($_GET['step']) && $_GET['step'] == 2) {
                     
                     $zipHandle = zip_open('updates/Iko_update_package_'.$version.'.zip');
                     
                     
-                    // extracting
+                    // Step 2 extracting
                     $i = 0;
                     $file_message = array();
                     $error = array();
@@ -97,7 +102,8 @@
                     }
 
                     zip_close($zipHandle);
-                }
+                
+                
                 echo '<ul>';
                 foreach($file_message as $i => $message)
                 {
@@ -112,7 +118,14 @@
                     echo '</li>';
                 }
                 echo '</ul>';
+                echo '<p><a href="?doUpdate=true&step=3">&raquo; Last step</a></p>';
+                }
+                
+                // Step 3 Execute upgrade.php
+                elseif(isset($_GET['doUpdate']) && $_GET['doUpdate'] == true && isset($_GET['step']) && $_GET['step']==3) {
                 if(is_file('updates/upgrade.php')) include('updates/upgrade.php');
+                
+                }
                 
             }
         }
