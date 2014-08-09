@@ -200,8 +200,13 @@
 <!--- tpl:forum_listings_category:end -->
 <!--- tpl:forum_listings_node:start -->
 <tr>
+    @if( '%status%' == 'read') 
+    <td><i class="fa fa-folder-o fa-3 node-read"></i></td>
+    @else
+    <td><i class="fa fa-folder fa-3 node-read"></i></td>
+    @endif
     <td style="width:70%;">
-        <span class="tooltip_toggle" data-toggle="tooltip" title="%node_desc%" data-placement="right">%node_name%</span><span class="label label-info pull-right">%status%</span><br />
+        <span class="tooltip_toggle" data-toggle="tooltip" title="%node_desc%" data-placement="right">%node_name%</span><br />
         <small>Sub-Forums: %sub_forums%</small>
     </td>
     <td style="width:30%;">
