@@ -387,7 +387,7 @@
 	<input type="text" name="mysql_d" id="database" class="form-control" />
 
 	<label for="prefix">MySQL Prefix</label>
-	<input type="text" name="mysql_pr" id="prefix" class="form-control" value="tan_" />
+	<input type="text" name="mysql_pr" id="prefix" class="form-control" value="iko_" />
     <br />
     Before you proceed, please make sure that the file in <code>/applications/config.php</code> has permission of <code>755</code><br />
 	<input type="submit" name="mysql" value="Test Connection & Continue" class="btn btn-default" />
