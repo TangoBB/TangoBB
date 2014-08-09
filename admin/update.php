@@ -22,7 +22,7 @@
                 // Step 1 downloading the file
                 if (isset($_GET['doUpdate']) && $_GET['doUpdate'] == true && isset($_GET['step']) && $_GET['step'] == 1)
                 {
-                    $ADMIN->download('http://127.0.0.1/update_packages/Iko_update_package_'.$version.'.zip', false);
+                    $ADMIN->download('http://127.0.0.1/update_packages/Iko_update_package_'.$version.'.zip', true);
                     echo '<p><a href="?doUpdate=true&step=2">&raquo; Install Now?</a></p>';
                 }
                 // Step 2 Extract zip
