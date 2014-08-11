@@ -1965,7 +1965,7 @@ fieldset[disabled] .form-control + .input-icon,
 .progress {
   background: #ebedef;
   border-radius: 32px;
-  height: 12px;
+  height: 22px;
   -webkit-box-shadow: none;
   box-shadow: none;
 }

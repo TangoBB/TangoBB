@@ -5,10 +5,22 @@
 
   if( !$TANGO->perm->check('access_administration') ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
   require_once('template/top.php');
-
+  
+  $versions = @file_get_contents('http://127.0.0.1/update_packages/version_list.php'); //@jtPox insert the real IP here
+  if($versions != '') 
+  {
+        $versionList = explode("|", $versions);
+        foreach($versionList as $version) 
+        {
+            if( version_compare(TANGOBB_VERSION, $version, '<') ) 
+            {
+                $alert = $ADMIN->alert('<p>New version found: ' . $version . '<br /><a href="'.SITE_URL.'/admin/update.php?doUpdate=true&step=1">&raquo; Download Now?</a></p>','warning');
+            }
+        }
+  }
   echo $ADMIN->box(
       'Dashboard',
-      'This forum is powered by Iko <strong>' . TANGOBB_VERSION . '</strong>.',
+      'This forum is powered by Iko <strong>' . TANGOBB_VERSION . '</strong>.'.@$alert,
       '<table class="table">
          <thead>
            <tr>
