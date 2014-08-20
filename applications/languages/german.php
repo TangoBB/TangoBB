@@ -73,6 +73,7 @@
         'register' => 'Registrieren',
         'password_different' => 'Das Passwort ist unterschiedlich!',
         'username_taken' => 'Benutzername ist bereits vergeben!',
+        'space_user' => 'Du darfst keine Leerzeichen im Benutzernamen verwenden!',
         'error_register' => 'Fehler bei der Registrierung. Bitte probieren Sie es sp&auml;ter erneut.',
         'register_successful' => 'Erfolgreich Registriert. Sie werden automatisch angemeldet...',
         'register_successful_email' => 'Erfolgreich Registriert. Eine Verifizierung wurde an Ihre  E-Mail Adresse gesendet.',

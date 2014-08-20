@@ -99,7 +99,7 @@
                   NoCSRF::check( 'csrf_token', $_POST );
                   $thread_title = clean($_POST['title']);
                   //die($_POST['content']);
-                  $thread_cont  = $_POST['content'];
+                  $thread_cont  = emoji_to_text($_POST['content']);
                   //die($thread_title);
 
 				  $data = array($TANGO->sess->data['id']);

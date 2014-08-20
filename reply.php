@@ -130,7 +130,7 @@
                       NoCSRF::check('csrf_token', $_POST);
                   }
 
-                  $cont    = $_POST['content'];
+                  $cont    = emoji_to_text($_POST['content']);
                   $cont    = ( !empty($q_query) )? '[quote]' . $PGET->g('quote') . '[/quote]' . $cont : $cont;
                   $cont    = preg_replace('#\\[quote\\]Post ID: (.*?)\\[/quote\\]#uis', '[quote]\\1[/quote]', $cont);
 

@@ -26,7 +26,7 @@
       		}
 
       		NoCSRF::check( 'csrf_token', $_POST );
-      		$cont = clean($_POST['content']);
+      		$cont = clean(emoji_to_text($_POST['content']));
       		$time = time();
 
       		if( !$cont ) {

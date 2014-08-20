@@ -21,7 +21,7 @@
           NoCSRF::check( 'csrf_token', $_POST );
           $email    = $_POST['email'];
           $tz       = $_POST['timezone'];
-          $about    = $_POST['about'];
+          $about    = emoji_to_text($_POST['about']);
           $birthday = $_POST['birthday'];
           $location = $_POST['location'];
           $gender   = $_POST['gender'];

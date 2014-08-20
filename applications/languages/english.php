@@ -73,6 +73,7 @@
         'register' => 'Register',
         'password_different' => 'Password is different!',
         'username_taken' => 'Username is already taken!',
+        'space_user' => 'You are not allowed to use spaces in your Username!',
         'error_register' => 'Error registering you, please try again later.',
         'register_successful' => 'Successfully registered! Now logging you in...',
         'register_successful_email' => 'Successfully registered! An email has been sent to be verified.',

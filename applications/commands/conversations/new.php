@@ -18,7 +18,7 @@
   		}
 
   		$user  = $_POST['receiver'];
-  		$cont  = $_POST['content'];
+  		$cont  = emoji_to_text($_POST['content']);
   		$title = $_POST['title'];
   		$time  = time();
       $uid   = explode(',', $user);
