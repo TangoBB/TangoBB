@@ -7,7 +7,7 @@
   require_once('template/top.php');
   $notice = '';
   
-  $versions = @file_get_contents('http://127.0.0.1/update_packages/version_list.php'); //@jtPox insert the real IP here
+  $versions = @file_get_contents('http://api.codetana.com/iko/version_list.php'); //@jtPox insert the real IP here
   
   if($versions != '') 
   {
@@ -22,7 +22,7 @@
                 // Step 1 downloading the file
                 if (isset($_GET['doUpdate']) && $_GET['doUpdate'] == true && isset($_GET['step']) && $_GET['step'] == 1)
                 {
-                    $ADMIN->download('http://127.0.0.1/update_packages/Iko_update_package_'.$version.'.zip', true);
+                    $ADMIN->download('http://api.codetana.com/iko/update_packages/Iko_update_package_'.$version.'.zip', true);
                     echo '<div class="progress">
                             <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%;">
                                 33%
