@@ -73,6 +73,7 @@
         'register' => 'Register',
         'password_different' => 'Password is different!',
         'username_taken' => 'Username is already taken!',
+        'space_user' => 'You are not allowed to use spaces in your Username!',
         'error_register' => 'Error registering you, please try again later.',
         'register_successful' => 'Successfully registered! Now logging you in...',
         'register_successful_email' => 'Successfully registered! An email has been sent to be verified.',
@@ -126,6 +127,10 @@
         'header' => '404',
         'message' => 'Sorry, the resource you are looking for could not be found.'
       )
+    ),
+    'errors' => array(
+      'thread_tracker_insert' => 'An Error accured while creating a thread tracker.',
+      'thread_tracker_update' => 'An Error accured while updating a thread tracker.'
     ),
     //Global Form Variables
     'global_form_process' => array(
@@ -200,7 +205,8 @@
         'thread' => 'Thread:',
         'user' => 'User:',
         'reason' => 'Reason:',
-        'reported_time' => 'Reported Time:'
+        'reported_time' => 'Reported Time:',
+        'no_reports' => 'There are no reports at the moment.'
       ),
       'delete' => array(
         'delete' => 'Delete Post',
@@ -228,9 +234,9 @@
       'merge_post' => '----------'
     ),
     'time' => array(
-      'hours_ago' => '%time% hours ago.',
-      'minutes_ago' => '%time% minutes ago.',
-      'just_now' => 'Just now.'
+      'hours_ago' => '%time% hours ago',
+      'minutes_ago' => '%time% minutes ago',
+      'just_now' => 'Just now'
     ),
     // ISO 3166-1 Country codes
     'location' => array( 

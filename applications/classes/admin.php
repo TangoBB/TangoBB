@@ -98,6 +98,111 @@
           return $return;
       }
       
+      public function zip_extract($file_input, $report = false, $update = false) {
+        $zipHandle = zip_open($file_input);
+        $i = 0;
+        $file_message = array();
+        $error = array();
+        while ($file = zip_read($zipHandle) )
+        {
+            $i++;
+            $thisFileName = zip_entry_name($file);
+            $thisFileDir = dirname($thisFileName);
+                        
+            if(!zip_entry_open($zipHandle, $file, 'r'))
+            {
+                $error[$i] = 'File could not be handled: '.$thisFileName.'<br />';
+                continue;
+            }
+            if(!is_dir($thisFileDir))
+            {
+                $file_message[$i] = '<li>' . $thisFileDir . ': ';
+                mkdir($thisFileDir, 0755);
+            }
+            $zip_filesize = zip_entry_filesize($file);
+            if(empty($zip_filesize))
+            {
+                if(substr($thisFileName, -1) == '/')
+                {
+                    $file_message[$i] = '<li>' . $thisFileName . ': ';
+                    if(!is_dir('../'.$thisFileName)) {
+                        mkdir('../'.$thisFileName, 0755);
+                    }
+                                
+                    unset($thisFileDir);
+                    unset($thisFileName);
+                    continue;
+                }
+            }
+            $content = zip_entry_read($file, $zip_filesize);
+                        
+            if($thisFileName == 'upgrade.php' && $update === true){
+                $file_message[$i] = '<li>' . $thisFileName . ': ';
+                if(@file_put_contents('updates/'.$thisFileName, $content) === false)
+                {
+                    $error[$i] = 'File could not be handled: '.$thisFileName.'<br />';
+                }
+            }
+            else 
+            {
+                $file_message[$i] = '<li>' . $thisFileName . ': ';
+                if(@file_put_contents('../'.$thisFileName, $content) === false)
+                {
+                    $error[$i] = '#2 File could not be handled: '.$thisFileName.'<br />';
+                }
+            }
+            zip_entry_close($file);
+            unset($thisFileDir);
+            unset($thisFileName);
+        }
+        zip_close($zipHandle);
+        if($report === true)
+        {
+            $output = '<ul>';
+            foreach($file_message as $i => $message)
+            {
+                $output .= $message;
+                if(@$error[$i]=='') 
+                {
+                    $output .= '-> Done';
+                }
+                else
+                {
+                    $output .= $error[$i];
+                }
+                $output .= '</li>';
+            }
+            $output .= '</ul>';
+        }
+        
+        return $output;        
+      }
+      
+      public function download($link, $update = false) {
+        $file_name = basename($link);
+        if($update === true && !is_file('updates/'.$file_name))
+        {
+            $file = curl_init($link);
+            if(!is_dir( 'updates/' )) mkdir ( 'updates/' );
+            $dlHandler = fopen('updates/'.$file_name, 'w');
+            curl_setopt($file, CURLOPT_FILE, $dlHandler);
+            curl_setopt($file, CURLOPT_TIMEOUT, 3600);
+            curl_exec($file);
+            fclose($dlHandler);
+        }
+        elseif(!is_file('downloads/'.$file_name))
+        {
+            $file = curl_init($link);
+            if(!is_dir( 'downloads/' )) mkdir ( 'downloads/' );
+            $dlHandler = fopen('downloads/'.$file_name, 'w');
+            curl_setopt($file, CURLOPT_FILE, $dlHandler);
+            curl_setopt($file, CURLOPT_TIMEOUT, 3600);
+            curl_exec($file);
+            fclose($dlHandler);
+        }
+        return $file_name; 
+      }
+      
   }
 
 ?>

@@ -69,22 +69,45 @@
                     $subs[] = '<a href="' . SITE_URL . '/node.php/' . $suf['name_friendly'] . '.' . $suf['id'] . '">' . $suf['node_name'] . '</a>';
                   }
                 }
-
                 $subs = (!empty($subs))? implode(', ', array_slice($subs, 0, 3)) : 'None';
-
+                
+                // New posts in node?
+                $data = array($node['id']);                
+                $posts = $MYSQL->rawQuery("SELECT id FROM
+                                  {prefix}forum_posts
+                                  WHERE
+                                  origin_node = ?
+                                  AND post_type = 1
+                                  ORDER BY
+                                  post_time
+                                  DESC", $data);
+                $node_status = 'read';
+                if(!empty($posts)) {
+                    foreach($posts as $post) {
+                        $status = $TANGO->node->thread_new_posts($post['id']);
+                        if ($status == 'unread') {
+                            $node_status = 'unread';
+                            break;
+                        }
+                    }
+                }
+                
+                
                 $return .= $TANGO->tpl->entity(
                     'forum_listings_node',
                     array(
                       'node_name',
                       'node_desc',
                       'latest_post',
-                      'sub_forums'
+                      'sub_forums',
+                      'status'
                     ),
                     array(
                       '<a href="' . SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'] . '">' . $node['node_name'] . '</a>',
                       $node['node_desc'],
                       $this->latestPost($node['id']),
-                      $subs
+                      $subs,
+                      $node_status
                     )
                 );
               }

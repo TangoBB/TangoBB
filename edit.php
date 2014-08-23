@@ -132,7 +132,7 @@
 
                   //$con = $MYSQL->escape($_POST['content']);
                   //die($con);
-                  $con = $_POST['content'];
+                  $con = emoji_to_text($_POST['content']);
 
                   if( !$con ) {
                       throw new Exception ($LANG['global_form_process']['all_fields_required']);

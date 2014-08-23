@@ -529,9 +529,30 @@
         $day = date("j", $date);
         $month = date("n", $date);
         $year = date("Y", $date);
-        if($location == 'DE')        
+        $location = strtoupper($location);
+        if($location == 'DE' || 'AT')        
             return $day . '. ' . $LANG['date']['month_' . $month] . ' ' . $year; 
         else
             return $LANG['date']['month_' . $month] . ' ' . $day.', '. $year;
+    }
+    
+    function nl2brPre($input) {
+	   $input = preg_replace('%\n%i','<br/>',$input);
+	   preg_match_all('%<pre\s*[^>]*>.+?</pre>%i',$input,$a);
+	   for($i=0;$i<sizeof($a);$i++){
+			$input = str_replace($a[$i],str_replace("<br/>","\n",$a[$i]),$input);
+    	}
+	   return $input; 
+    }
+    
+    function emoji_to_text($input) {
+        global $ICONS;
+        $clean = mb_convert_encoding($input, 'HTML-ENTITIES', 'UTF-8');
+        foreach($ICONS as $var1 => $var2) {
+            foreach ($var2 as $code => $translation) {
+                $clean = str_replace($translation, $code, $clean);
+            }
+        }
+        return $clean;
     }
 ?>

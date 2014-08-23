@@ -60,7 +60,11 @@ class Library_Parse {
             // font face
             '#\\[font=([^\\]]*?)\\](.*?)\\[/font\\]#uis' => '<font face="\\1">\\2</font>',
             // preformatted
-            '#\\[code\\](.*?)\\[/code\\]#uis' => '<pre>\\1</pre>',
+            '#\\[code\\](.*?)\\[/code\\]#uis' => '<pre class="brush: php">\\1</pre>',
+            
+            '#\\[code=([^\\]]*?)\\](.*?)\\[/code\\]#uis' => '<b>\\1 Code:</b><pre class="brush: \\1">\\2</pre>',
+            // flags
+            '#\\[flag\\](.*?)\\[/flag\\]#uis' => '<span class="flag-icon flag-icon-\\1"></span>',
             // image
             '#\\[img\\](.*?)\\[/img\\]#uis' => function ($matches) {
                 $output = '';
@@ -97,11 +101,11 @@ class Library_Parse {
             },
             // unordered list
             '#\\[ul\\](.*?)\[/ul\\]#uis' => function ($matches) use ($this_object) {
-                return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
+            return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
             },
             // unordered list (alternative syntax)
             '#\\[list\\](.*?)\[/list\\]#uis' => function ($matches) use ($this_object) {
-                return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
+            return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
             },
             // ordered list
             '#\\[ol\\](.*?)\[/ol\\]#uis' => function ($matches) use ($this_object) {
@@ -115,6 +119,19 @@ class Library_Parse {
             '#\[quote\](.*?)\[/quote\]#uis' => function ($matches) use ($this_object) {
                 return $this_object->parseQuote($matches[1]);
             },
+            // media like YouTube, Vimeo and so on
+            '#\\[media=([^\\]]*?)\\](.*?)\\[/media\\]#uis' => function($matches) {
+                if(strtolower($matches[1])=='youtube') {
+                    $output = '<iframe width="560" height="315" src="//www.youtube.com/embed/'.$matches[2].'?rel=0" frameborder="0" allowfullscreen></iframe>';
+                }
+                elseif(strtolower($matches[1])=='vimeo') {
+                    $output = '<iframe src="//player.vimeo.com/video/'.$matches[2].'?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;color=ffffff" width="560" height="240" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+                }
+                elseif(strtolower($matches[1])=='twitch') {
+                    $output = '<object type="application/x-shockwave-flash" width="620" height="378" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel='.$matches[2].'" bgcolor="#000000"><param name="allowFullScreen" value="true" /><param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" /><param name="flashvars" value="hostname=www.twitch.tv&channel='.$matches[2].'&auto_play=true&start_volume=100" /></object>';
+                }
+                return $output;
+            }
 
         );
 
@@ -126,12 +143,7 @@ class Library_Parse {
         foreach ($tags as $pattern => $replacement) {
             if (is_callable($replacement)) {
                 $result = preg_replace_callback($pattern, $replacement, $result);
-            } else {
-                if($pattern=='#\\[code\\](.*?)\\[/code\\]#uis')
-                {
-                    $result = preg_replace('/[\n\r]+/', '<br>',$result);
-                }
-                
+            } else {                
                 $result = preg_replace($pattern, $replacement, $result);
             }
         }
@@ -142,7 +154,7 @@ class Library_Parse {
         
         foreach($ICONS as $var1 => $var2) {
             foreach ($var2 as $code => $translation) {
-                $result = str_replace($code, $translation, $result);
+                $result = str_replace($code, '<span style="font-size: 18px">'.$translation.'</span>', $result);
             }
         }
         $result = preg_replace(array_keys($this->custom_codes), array_values($this->custom_codes), $result);
@@ -162,9 +174,9 @@ class Library_Parse {
             ),
             $result
         );
-
-        $result = nl2br($result);
-
+        
+        $result = nl2brPre($result);
+        
         return $result;
     }
 
@@ -188,7 +200,7 @@ class Library_Parse {
 
     public function parseListElements($list_content) {
         /*
-         * TangoBB uses both the [li] tag and the [*] tag for list elements.
+         * Iko uses both the [li] tag and the [*] tag for list elements.
          * Allowing both variants at the same time would be confusing, though.
          * If [li] is used, we only parse those tags. Otherwise, we only parse
          * the [*] tags.

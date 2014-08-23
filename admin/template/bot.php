@@ -6,7 +6,7 @@
           
           <hr size="1" />
           <div style="text-align:center;">
-            Team Iko 2014<br />
+            Codetana 2014<br />
             <a href="https://github.com/IkoBulletin/Iko">GitHub</a> | <a href="https://github.com/IkoBulletin/Iko/wiki">Documentation</a> | <a href="http://iko.im/">Website</a>
           </div>
           

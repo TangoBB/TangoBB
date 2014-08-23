@@ -19,7 +19,7 @@
           }
 
           NoCSRF::check( 'csrf_token', $_POST );
-          $sig = $_POST['sig'];
+          $sig = emoji_to_text($_POST['sig']);
 
           /*if( !$sig ) {
               throw new Exception ($LANG['global_form_process']['all_fields_required']);

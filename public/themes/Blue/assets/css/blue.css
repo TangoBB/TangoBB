@@ -281,3 +281,18 @@ footer a:hover {
     padding-left: 2px;
     padding-top: 4px;
 }
+.node-read {
+    margin-left: 7px;
+    margin-top:  7px;
+    font-size: 28px;
+    color: #dddddd;
+}
+.node-unread {
+    margin-left: 7px;
+    margin-top:  7px;
+    font-size: 28px;
+    color: #000000;
+}
+.thread-read {
+    visibility: hidden;
+}

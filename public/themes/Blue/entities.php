@@ -17,6 +17,9 @@
 <!--- tpl:success_notice:start -->
 <div class="alert alert-success">%content%</div>
 <!--- tpl:success_notice:end -->
+<!--- tpl:warning_notice:start -->
+<div class="alert alert-warning">%content%</div>
+<!--- tpl:warning_notice:end -->
 <!--- tpl:breadcrumbs:start -->
 <ol class="breadcrumb">
     %bread%
@@ -197,6 +200,11 @@
 <!--- tpl:forum_listings_category:end -->
 <!--- tpl:forum_listings_node:start -->
 <tr>
+    @if( '%status%' == 'read') 
+    <td><i class="fa fa-folder-o fa-3 node-read"></i></td>
+    @else
+    <td><i class="fa fa-folder fa-3 node-read"></i></td>
+    @endif
     <td style="width:70%;">
         <span class="tooltip_toggle" data-toggle="tooltip" title="%node_desc%" data-placement="right">%node_name%</span><br />
         <small>Sub-Forums: %sub_forums%</small>
@@ -273,7 +281,7 @@
 <!--- tpl:forum_listings_node_sub_forums_latest:end -->
 <!--- tpl:forum_listings_node_threads_posts:start -->
 <tr>
-    <td><img src="%user_avatar%" class="img-thumbnail pull-left" style="width:42;height:42px;margin-right:5px;" />%thread_name%<br /><small>%user%, %post_time%</small></td>
+    <td><img src="%user_avatar%" class="img-thumbnail pull-left" style="width:42;height:42px;margin-right:5px;" />%thread_name%<span class="label label-info pull-right">%status%</span><br /><small>%user%, %post_time%</small></td>
     <td>
         %latest_post%
     </td>

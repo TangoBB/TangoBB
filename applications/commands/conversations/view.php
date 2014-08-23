@@ -87,7 +87,8 @@
                   'post_time',
                   'mod_tools',
                   'thread_notice',
-                  'watch_link'
+                  'watch_link',
+                  'flag'
               ),
               array(
                   $breadcrumb,
@@ -105,7 +106,8 @@
                   date('F j, Y', $query['0']['message_time']),
                   $thread_mod_tools,
                   '',
-                  ''
+                  '',
+                  '<span class="flag-icon flag-icon-'.strtolower($user['location']).'"></span>'
               )
           );
 
@@ -181,7 +183,8 @@
                       'reply_content',
                       'user_signature',
                       'post_time',
-                      'mod_tools'
+                      'mod_tools',
+                      'flag'
                   ),
                   array(
                       'post-' . $post['id'],
@@ -196,7 +199,8 @@
                       $TANGO->lib_parse->parse($post['message_content']),
                       $TANGO->lib_parse->parse($ur['user_signature']),
                       date('F j, Y', $post['message_time']),
-                      ''
+                      '',
+                      '<span class="flag-icon flag-icon-'.strtolower($user['location']).'"></span>'
                   )
               );
           }

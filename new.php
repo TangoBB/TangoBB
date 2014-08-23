@@ -99,7 +99,7 @@
                   NoCSRF::check( 'csrf_token', $_POST );
                   $thread_title = clean($_POST['title']);
                   //die($_POST['content']);
-                  $thread_cont  = $_POST['content'];
+                  $thread_cont  = emoji_to_text($_POST['content']);
                   //die($thread_title);
 
 				  $data = array($TANGO->sess->data['id']);
@@ -163,6 +163,10 @@
                               'content',
                               $LANG['global_form_process']['thread_create_success']
                           );
+                          $community = $MYSQL->get('{prefix}users');
+                          foreach($community as $user){
+                            $TANGO->node->thread_mark_unread($tid['0']['id'], $user['id'],'0');
+                          }
                           //die(SITE_URL . '/thread.php/v/' . $friendly_url . '.' . $tid['0']['id']);
                           redirect(SITE_URL . '/thread.php/' . $friendly_url . '.' . $tid['0']['id']);
 

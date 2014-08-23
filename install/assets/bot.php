@@ -1,6 +1,6 @@
 </div>
 <div class="footer">
-        <p>&copy; Team TangoBB 2014</p>
+        <p>&copy; Codetana 2014</p>
       </div>
 
     </div> <!-- /container -->

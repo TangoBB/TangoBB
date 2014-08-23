@@ -24,9 +24,10 @@
       $query = $MYSQL->get('{prefix}forum_posts');
       if( !empty($query) ) {
           
-          $user        = $TANGO->user($query['0']['post_user']);
-          $node        = node($query['0']['origin_node']);
-          $time_post   = simplify_time($query['0']['post_time']);
+          $user         = $TANGO->user($query['0']['post_user']);
+          $node         = node($query['0']['origin_node']);
+          $time_post    = simplify_time($query['0']['post_time'],@$TANGO->sess->data['location']);
+          $user_joinded = simplify_time($user['date_joined'], @$TANGO->sess->data['location']);
 
           /*$breadcrumbs = $TANGO->tpl->entity(
             'breadcrumbs_before',
@@ -114,6 +115,8 @@
             true
           );
           $breadcrumb = $TANGO->tpl->breadcrumbs();
+          
+          $TANGO->node->thread_mark_read($node_id);
           
           $reply_button  = '';
           $quote_thread  = '';
@@ -341,7 +344,8 @@
                 'watch_link',
                 'thread_notice',
                 'id',
-                'user_id'
+                'user_id',
+                'flag'
               ),
               array(
                 $breadcrumb,
@@ -352,7 +356,7 @@
                 $user['user_avatar'],
                 SITE_URL . '/members.php/cmd/user/id/' . $user['id'],
                 $user['username_style'],
-                date('M jS, Y', $user['date_joined']),
+                $user_joinded['time'],
                 $user['post_count'],
                 //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])),
                 //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])->get_html()),
@@ -364,7 +368,8 @@
                 $watch_link,
                 $thread_notice,
                 $query['0']['id'],
-                $user['id']
+                $user['id'],
+                '<span class="flag-icon flag-icon-'.strtolower($user['location']).'"></span>'
               )
             );
           } else {
@@ -393,7 +398,7 @@
               $quote_p  = '';
               $edit_p   = '';
               $report_p = '';
-              $time_reply = simplify_time($post['post_time']);
+              $time_reply = simplify_time($post['post_time'], @$TANGO->sess->data['location']);
               if( $TANGO->perm->check('reply_thread') && ($query['0']['post_locked'] == "0") ) {
                   /*$quote_p .= $TANGO->tpl->entity(
                       'quote_post',
@@ -497,7 +502,8 @@
                       'post_time',
                       'mod_tools',
                       'id',
-                      'user_id'
+                      'user_id',
+                      'flag'
                   ),
                   array(
                       'post-' . $post['id'],
@@ -507,7 +513,7 @@
                       $ur['user_avatar'],
                       SITE_URL . '/members.php/cmd/user/id/' . $ur['id'],
                       $ur['username_style'],
-                      date('M jS, Y', $ur['date_joined']),
+                      $user_joinded['time'],
                       $ur['post_count'],
                       $TANGO->lib_parse->parse($post['post_content']),
                       //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($post['post_content'])->get_html()),
@@ -517,7 +523,8 @@
                       $time_reply['time'],
                       $post_mod_tools,
                       $post['id'],
-                      $ur['id']
+                      $ur['id'],
+                      '<span class="flag-icon flag-icon-'.strtolower($user['location']).'"></span>'
                   )
               );
           }
@@ -603,7 +610,6 @@
                   $content
               )
           );
-          
       } else {
           redirect(SITE_URL . '/404.php');
       }

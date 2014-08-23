@@ -36,7 +36,10 @@
                     throw new Exception ($LANG['global_form_process']['invalid_email']);
                 } elseif( emailTaken($email) ) {
                     throw new Exception ($LANG['global_form_process']['email_used']);
-                } else {
+                } elseif(substr_count($username," ") > 0) {
+                    throw new Exception ($LANG['bb']['members']['space_user']);
+                }
+                 else {
 
                     //Verifying the captcha.
                     $TANGO->captcha->verify();
