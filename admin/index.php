@@ -6,7 +6,7 @@
   if( !$TANGO->perm->check('access_administration') ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
   require_once('template/top.php');
   
-  $versions = @file_get_contents('http://127.0.0.1/update_packages/version_list.php'); //@jtPox insert the real IP here
+  $versions = @file_get_contents('http://api.codetana.com/iko/version_list.php'); //@jtPox insert the real IP here
   if($versions != '') 
   {
         $versionList = explode("|", $versions);
