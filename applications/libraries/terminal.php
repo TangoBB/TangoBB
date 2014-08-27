@@ -15,10 +15,10 @@
         global $MYSQL;
         $MYSQL->where('command_name', $name);
         $query = $MYSQL->get('{prefix}terminal');
-        if( !empty($query) ) {
-          return false;
-        } else {
+        if( $query ) {
           return true;
+        } else {
+          return false;
         }
       }
 
@@ -29,17 +29,34 @@
        * $function - Function to be ran when the command is called out. Full function terminal_FUNCTION(). Only FUNCTION() is allowed
        */
       public function create($name, $syntax, $function) {
-        global $MYSQL;
-        $data = array(
-          'command_name' => $name,
-          'command_syntax' => $syntax,
-          'run_function' => $function
-        );
-        try {
-            $MYSQL->insert('{prefix}terminal', $data);
-          return true;
-        } catch (mysqli_sql_exception $e) {
+        if( $this->commandExists($name) ) {
           return false;
+        } else {
+          global $MYSQL;
+          $data = array(
+            'command_name' => $name,
+            'command_syntax' => $syntax,
+            'run_function' => $function
+          );
+          if( $MYSQL->insert('{prefix}terminal', $data) ) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      }
+
+      public function delete($name) {
+        global $MYSQL;
+        if( $this->commandExists($name) ) {
+          $MYSQL->where('command_name');
+          if( $MYSQL->delete('{prefix}terminal') ) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return true;
         }
       }
 

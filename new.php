@@ -102,8 +102,10 @@
                   $thread_cont  = emoji_to_text($_POST['content']);
                   //die($thread_title);
 
-				  $data = array($TANGO->sess->data['id']);
+                  $data = array($TANGO->sess->data['id']);
                   $c_query      = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 1", $data);
+                  $c_query['0']['post_content'] = (isset($c_query['0']['post_content']))? $c_query['0']['post_content'] : '';
+
 
                   if( !$thread_title or !$thread_cont ) {
                       throw new Exception ($LANG['global_form_process']['all_fields_required']);
