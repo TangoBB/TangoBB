@@ -2,6 +2,10 @@
 ##TODO-List
 * Attachment-System
 * Language-Country dependency
+* Register: Save the value of the fields
+* More commands for the terminal
+* Profile comments
+* Last visitors
 
 
 ##Work in progress
