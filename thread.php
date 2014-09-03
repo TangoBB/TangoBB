@@ -27,7 +27,7 @@
           $user         = $TANGO->user($query['0']['post_user']);
           $node         = node($query['0']['origin_node']);
           $time_post    = simplify_time($query['0']['post_time'],@$TANGO->sess->data['location']);
-          $user_joinded = simplify_time($user['date_joined'], @$TANGO->sess->data['location']);
+          $user_joined = simplify_time($user['date_joined'], @$TANGO->sess->data['location']);
 
           /*$breadcrumbs = $TANGO->tpl->entity(
             'breadcrumbs_before',
@@ -356,7 +356,7 @@
                 $user['user_avatar'],
                 SITE_URL . '/members.php/cmd/user/id/' . $user['id'],
                 $user['username_style'],
-                $user_joinded['time'],
+                $user_joined['time'],
                 $user['post_count'],
                 //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])),
                 //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])->get_html()),
@@ -398,7 +398,8 @@
               $quote_p  = '';
               $edit_p   = '';
               $report_p = '';
-              $time_reply = simplify_time($post['post_time'], @$TANGO->sess->data['location']);
+              $time_reply  = simplify_time($post['post_time'], @$TANGO->sess->data['location']);
+              $user_joined = simplify_time($ur['date_joined'], @$TANGO->sess->data['location']);
               if( $TANGO->perm->check('reply_thread') && ($query['0']['post_locked'] == "0") ) {
                   /*$quote_p .= $TANGO->tpl->entity(
                       'quote_post',
@@ -513,7 +514,7 @@
                       $ur['user_avatar'],
                       SITE_URL . '/members.php/cmd/user/id/' . $ur['id'],
                       $ur['username_style'],
-                      $user_joinded['time'],
+                      $user_joined['time'],
                       $ur['post_count'],
                       $TANGO->lib_parse->parse($post['post_content']),
                       //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($post['post_content'])->get_html()),
