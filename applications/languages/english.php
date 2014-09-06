@@ -45,7 +45,7 @@
         'no_conversations' => 'No conversations yet.',
         'user_not_exist' => 'User <strong>%username%</strong> does not exist!',
         'message_sent' => 'Your message to <strong>%username%</strong> has been sent!',
-        'error_sending' => 'Error sending message to <strong>%username%</strong>.',
+        'error_sending' => 'Error sending message to <strong>%username%</strong>.',s
         'error_sending_alt' => 'Error sending message.'
       ),
       'members' => array(
@@ -266,7 +266,7 @@
       'BH' => 'Bahrain',
       'BI' => 'Burundi',
       'BJ' => 'Benin',
-      'BL' => 'Saint Barthélemy',
+      'BL' => 'Saint BarthÃ©lemy',
       'BM' => 'Bermuda',
       'BN' => 'Brunei Darussalam',
       'BO' => 'Bolivia',
@@ -428,7 +428,7 @@
       'PW' => 'Palau',
       'PY' => 'Paraguay',
       'QA' => 'Qatar',
-      'RE' => 'Réunion',
+      'RE' => 'RÃ©union',
       'RO' => 'Romania',
       'RS' => 'Serbia',
       'RU' => 'Russian Federation',
@@ -509,7 +509,7 @@
       'day_4' => 'Thursday',
       'day_5' => 'Friday',
       'day_6' => 'Saturday',
-      'day_7' => 'Suntag'
+      'day_7' => 'Sunday'
       )
   );
 
