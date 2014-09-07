@@ -1,5 +1,5 @@
 <?php
 
-  die('Iko not yet installed.');
+  header('Location: install/index.php')
 
 ?>
