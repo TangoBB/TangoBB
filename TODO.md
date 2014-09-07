@@ -9,8 +9,8 @@
 
 ##Work in progress
 * Extended mod area / Rework of the old one (1.4.1)
-* Register: Save the value of the fields
 
 ##Done
 * Smilies / Emojis (N8boy)
 * Auto-Updater
+* Registration AJAX (JT)
