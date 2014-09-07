@@ -3,6 +3,6 @@
   define('BASEPATH', 'Forum');
   require_once('applications/wrapper.php');
 
-  redirect('forum.php');
+  header('Location: forum.php');
 
 ?>
