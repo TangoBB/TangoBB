@@ -23,6 +23,11 @@
                 $password   = $_POST['password'];
                 $a_password = $_POST['a_password'];
                 $email      = $_POST['email'];
+
+                //Remembering Username and Email.
+                $_SESSION['register_form_username'] = $username;
+                $_SESSION['register_form_email']    = $email;
+
                 //preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $email)
                 $time       = time();
 
@@ -92,6 +97,7 @@
                                      ->send();
 
                             if( $send ) {
+
                               $notice .= $TANGO->tpl->entity(
                                 'success_notice',
                                 'content',
@@ -169,6 +175,10 @@
         );
         $content .= $TANGO->tpl->breadcrumbs();
 
+        //Form Values
+        $username_value = (isset($_SESSION['register_form_username']))? $_SESSION['register_form_username'] : '';
+        $email_value    = (isset($_SESSION['register_form_email']))? $_SESSION['register_form_email'] : '';
+
         if( $TANGO->data['register_enable'] == 1 ) {
           $content .= $TANGO->tpl->entity(
             'register_form',
@@ -181,7 +191,9 @@
               'email_field_name',
               'captcha',
               'submit_name',
-              'register_notice'
+              'register_notice',
+              'form_username_value',
+              'form_email_value'
             ),
             array(
               $notice,
@@ -192,9 +204,15 @@
               'email',
               $TANGO->captcha->display(),
               'register',
-              $LANG['bb']['members']['register_message']
+              $LANG['bb']['members']['register_message'],
+              $username_value,
+              $email_value
             )
           );
+
+          //Resetting the form values.
+          unset($_SESSION['register_form_username']);
+          unset($_SESSION['register_form_email']);
         } else {
           $content .= $TANGO->tpl->entity(
             'danger_notice',

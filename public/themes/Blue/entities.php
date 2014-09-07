@@ -400,13 +400,13 @@
     %notice%
     %csrf_field%
     <label for="username">Username</label>
-    <input type="text" name="%username_field_name%" id="username" />
+    <input type="text" name="%username_field_name%" value="%form_username_value%" id="username" />
     <label for="password">Password</label>
     <input type="password" name="%password_field_name%" id="password" />
     <label for="a_password">Confirm Password</label>
     <input type="password" name="%password_a_field_name%" id="a_password" />
     <label for="email">Email</label>
-    <input type="text" name="%email_field_name%" id="email" />
+    <input type="text" name="%email_field_name%" value="%form_email_value%" id="email" />
     <label for="tangobb_captcha">Are you a bot?</label><br />
     %captcha%
     <br /><br />
