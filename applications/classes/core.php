@@ -33,6 +33,10 @@
 
           $query = (!$query)? $u_query : $query;
 
+          if( empty($query) ) {
+            return array();
+          }
+
           $MYSQL->where('post_user', $query['0']['id']);
           $query['0']['post_count']     = count($MYSQL->get('{prefix}forum_posts'));
           $query['0']['username_style'] = $this->usergroup($query['0']['user_group'], 'username_style', $query['0']['username']);

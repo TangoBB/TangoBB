@@ -162,16 +162,18 @@
                         if( !empty($watchers) ) {
                           foreach( $watchers as $watcher ) {
                             $user = $TANGO->user($watcher);
-                            $TANGO->user->notifyUser(
-                              'reply',
-                              $user['id'],
-                              true,
-                              array(
-                                'username' => $TANGO->sess->data['username'],
-                                'thread_title' => $query['0']['post_title'],
-                                'link' => SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id']
-                              )
-                            );
+                            if( !empty($user) ) {
+                              $TANGO->user->notifyUser(
+                                'reply',
+                                $user['id'],
+                                true,
+                                array(
+                                  'username' => $TANGO->sess->data['username'],
+                                  'thread_title' => $query['0']['post_title'],
+                                  'link' => SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id']
+                                )
+                              );
+                            }
                           }
                         }
 
