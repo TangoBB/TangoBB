@@ -24,6 +24,7 @@
       'unwatch_thread' => 'You are now not watching this thread.',
       'error_watching' => 'Error watching thread.',
       'error_unwatching' => 'Error unwatching thread.',
+      'none' => 'None',
       'form' => array(
         'edit_post' => 'Edit Post',
         'report' => 'Report',

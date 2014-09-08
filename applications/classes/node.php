@@ -40,7 +40,7 @@
                       '<a href="' . SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id'] . '">' . $post['post_title'] . '</a>' . $closed . $stickied,
                       '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a>',
                        $user['user_avatar'],
-                      '<span data-toggle="tooltip" data-placement="bottom" title="' . $post_time['tooltip'] . '">' . $post_time['time'] . '</span>',
+                      '<span title="' . $post_time['tooltip'] . '">' . $post_time['time'] . '</span>',
                       $this->latestReply($post['id'], SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id']),
                       $status
                   )
@@ -90,14 +90,14 @@
                   array(
                       $user['user_avatar'],
                       '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a>',
-                      '<small><a href="' . $url . $page . '#post-' . $query['0']['id'] . '"><span data-toggle="tooltip" data-placement="bottom" title="' . $post_time['tooltip'] . '">' . $post_time['time'] . '</span></a></small>',
+                      '<small><a href="' . $url . $page . '#post-' . $query['0']['id'] . '"><span title="' . $post_time['tooltip'] . '">' . $post_time['time'] . '</span></a></small>',
                   )
               );
               
               return $return;
               
           } else {
-              return 'None';
+              return $LANG['bb']['none'];
           }
       }
       
