@@ -53,7 +53,7 @@
        * Adding latest reply to the thread.
        */
       public function latestReply($id, $url) {
-          global $MYSQL, $TANGO;
+          global $MYSQL, $TANGO, $LANG;
           
           /*$MYSQL->where('origin_thread', $id);
           $MYSQL->where('post_type', '2');
