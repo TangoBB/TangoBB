@@ -46,7 +46,7 @@
         'no_conversations' => 'No conversations yet.',
         'user_not_exist' => 'User <strong>%username%</strong> does not exist!',
         'message_sent' => 'Your message to <strong>%username%</strong> has been sent!',
-        'error_sending' => 'Error sending message to <strong>%username%</strong>.',s
+        'error_sending' => 'Error sending message to <strong>%username%</strong>.',
         'error_sending_alt' => 'Error sending message.'
       ),
       'members' => array(
