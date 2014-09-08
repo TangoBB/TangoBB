@@ -93,9 +93,9 @@
           
           $table .= '<tr>
                         <td style="width: 55px;">
-                            <img class="avatar_mini" src="' . $sender['user_avatar'] . '" />
+                            <img style="width:55px;height:55px;" src="' . $sender['user_avatar'] . '" />
                         </td>
-                        <td><span class="pull-right">'. $badge .'</span>
+                        <td><span style="float:right">'. $badge .'</span>
                             <h4><a href="' . SITE_URL . '/conversations.php/cmd/view/v/' . $msg['id'] . '">' . $msg['message_title'] . '</a></h4>
                             ' . $LANG['bb']['conversations']['starter'] .' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $sender['id'] . '">' . $sender['username_style'] . '</a>, ' . $LANG['bb']['conversations']['reciever'] .' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $receiver['id'] . '">' . $receiver['username_style'] . '</a>
                         </td>
