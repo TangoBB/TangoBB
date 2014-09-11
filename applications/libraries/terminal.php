@@ -49,7 +49,7 @@
       public function delete($name) {
         global $MYSQL;
         if( $this->commandExists($name) ) {
-          $MYSQL->where('command_name');
+          $MYSQL->where('command_name', $name);
           if( $MYSQL->delete('{prefix}terminal') ) {
             return true;
           } else {
