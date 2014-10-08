@@ -1,6 +1,12 @@
 <?php
 
 $SYNONYM = array (
+        //angel
+        'O:-)' => ':angel:',
+        'O:)' => ':angel:',
+        '0:-)' => ':angel:',
+        '0:)' => ':angel:',
+
         //happy
         ':)' => ':happy:',
         '(:' => ':happy:',
@@ -11,7 +17,6 @@ $SYNONYM = array (
         //sad
         ':(' => ':sad:',
         ':-(' => ':sad:',
-        '):' => ':sad:',
         ')-:' => ':sad:',
         
         //laughing
@@ -26,25 +31,29 @@ $SYNONYM = array (
         ':\'(' => ':cry:',
         ':-\'(' => ':cry:',
         
-        //angel
-        'O:-)' => ':angel:',
-        'O:)' => ':angel:',
-        '0:-)' => ':angel:',
-        '0:)' => ':angel:',
-        
         //devil
-        '}:->' => ':devil:',
+        '}:-&gt;' => ':devil:',
         '}:-)' => ':devil:',
-        '}:>' => ':devil:',
+        '}:&gt;' => ':devil:',
         '}:)' => ':devil:',
-        ']:->' => ':devil:',
+        ']:-&gt;' => ':devil:',
         ']:-)' => ':devil:',
-        ']:>' => ':devil:',
+        ']:&gt;' => ':devil:',
         ']:)' => ':devil:',
         
         //cool
         '8-)' => ':cool:',
-        '8)' => ':cool:'
+        '8)' => ':cool:',
+        
+        //wink
+        ';)' => ':wink:',
+        ';-)' => ':wink:',
+        
+        //weary
+        ':/' => ':weary:',
+        ':-/' => ':weary:',
+        ':\\' => ':weary:',
+        ':-\\'=> ':weary:'
 );
 
 ?>
