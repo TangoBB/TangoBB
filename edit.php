@@ -124,7 +124,6 @@
           } else {
               $thread         = thread($query['0']['origin_thread']);
               $page_title     = $thread['post_title'];
-              $friendly_url   = $thread['title_friendly'];
               $thread_id      = $thread['id'];
               $input_type     = 'hidden'; 
           }
@@ -143,15 +142,22 @@
                   if( !$con ) {
                       throw new Exception ($LANG['global_form_process']['all_fields_required']);
                   } else {
-                      if ($friendly_url == '') { $friendly_url = title_friendly($thread_title); }
-                      
+                    
+                      $friendly_url = title_friendly($thread_title);                      
                       $origin_thread .= $friendly_url . '.' . $thread_id;
                       
-                      $data = array(
-                          'post_title' => $thread_title,
-                          'title_friendly' => $friendly_url,
-                          'post_content' => $con
-                      );
+                      if( $query['0']['post_type'] == "1" ) {
+                        $data = array(
+                            'post_title' => $thread_title,
+                            'title_friendly' => $friendly_url,
+                            'post_content' => $con
+                        );
+                      }
+                      else {
+                        $data = array(
+                            'post_content' => $con
+                        );
+                      }
                       $MYSQL->where('id', $post_id);
 
                       try {
@@ -185,7 +191,7 @@
           $content = $breadcrumb .
                      '<form id="tango_form" action="" method="POST">
                         ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
-                        <input id="title" name="title" type="' . $input_type . '" value="' . $query['0']['post_title'] . '" /><br />
+                        <input id="title" name="title" type="' . $input_type . '" value="' . $page_title  . '" /><br />
                         <textarea id="editor" name="content" style="width:100%;height:300px;max-width:100%;min-width:100%;">' . $query['0']['post_content'] . '</textarea>
                         <br />
                         ' . $FORM->build('submit', '', 'edit', array('value' => $LANG['bb']['form']['edit_post'])) . '
