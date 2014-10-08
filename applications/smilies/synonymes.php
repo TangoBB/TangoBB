@@ -1,6 +1,16 @@
 <?php
 
 $SYNONYM = array (
+        //devil
+        '}:-&gt;' => ':devil:',
+        '}:-)' => ':devil:',
+        '}:&gt;' => ':devil:',
+        '}:)' => ':devil:',
+        ']:-&gt;' => ':devil:',
+        ']:-)' => ':devil:',
+        ']:&gt;' => ':devil:',
+        ']:)' => ':devil:',
+        
         //angel
         'O:-)' => ':angel:',
         'O:)' => ':angel:',
@@ -30,16 +40,6 @@ $SYNONYM = array (
         //cry
         ':\'(' => ':cry:',
         ':-\'(' => ':cry:',
-        
-        //devil
-        '}:-&gt;' => ':devil:',
-        '}:-)' => ':devil:',
-        '}:&gt;' => ':devil:',
-        '}:)' => ':devil:',
-        ']:-&gt;' => ':devil:',
-        ']:-)' => ':devil:',
-        ']:&gt;' => ':devil:',
-        ']:)' => ':devil:',
         
         //cool
         '8-)' => ':cool:',
