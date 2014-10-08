@@ -205,7 +205,7 @@
             }
           }
           $content .= $TANGO->tpl->entity(
-              'smiliy_list',
+              'smiley_list',
               array(
                   'smilies',
                   'misc',

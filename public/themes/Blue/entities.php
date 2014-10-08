@@ -465,7 +465,7 @@
     %conversations%
 </div>
 <!--- tpl:conversation_overview:end -->
-<!--- tpl:smiliy_list:start -->
+<!--- tpl:smiley_list:start -->
 <br />
 <ul class="nav nav-tabs">
     <li class="active"><a href="#smilies" data-toggle="tab">Smilies</a></li>
