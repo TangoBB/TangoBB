@@ -24,6 +24,7 @@
       'unwatch_thread' => 'Du beobachtest diesen Thread nicht mehr.',
       'error_watching' => 'Fehler beim Beobachten des Threads',
       'error_unwatching' => 'Fehler beim Nicht-Beobachten des Threads.',                        // &Uuml;berarbeiten
+      'none' => 'Keine',
       'form' => array(
         'edit_post' => 'Bearbeiten',
         'report' => 'Melden',
