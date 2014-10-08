@@ -13,6 +13,16 @@ else {
     $check['php_version'] = PHP_VERSION;
     $check['php_css'] = 'success';
 }
+if(function_exists('mysqli_connect')){
+    $check['mysql'] = true;
+    $check['mysql_version'] = 'Installed';
+    $check['mysql_css'] = 'success';
+}
+else {
+    $check['mysql'] = false;
+    $check['mysql_version'] = 'Not installed';
+    $check['mysql_css'] = 'danger';
+}
 $config_chmods = substr(decoct(fileperms("../applications/config.php")), -3);
 if($config_chmods < '666') {
     $check['chmods'] = false;
@@ -25,7 +35,7 @@ else {
     $check['chmods_css'] = 'success';
 }
 
-if($check['php'] === true && $check['chmods'] === true) {
+if($check['php'] === true && $check['chmods'] === true && $check['mysql'] === true) {
      $_SESSION['tangobb_install_step1'] = true;
      ?>
      <div class="alert alert-success">
@@ -41,6 +51,7 @@ else {
         <?php 
         if($check['php']===false) { echo '<br />Your current PHP version is lower than the recommended version.';}
         if($check['chmods']===false) { echo '<br />Please change the chmod of the \'<em>config.php</em>\' file in the \'<em>applications</em>\' folder to <em>777</em>.';}
+        if($check['mysql']===false) { echo '<br />Please check if you have installed mysql.';}
         ?>
     </div>
 <?php
@@ -59,6 +70,11 @@ else {
         <td>PHP Version</td>
         <td><span class="label label-default">5.3.3 +</span></td>
         <td><span class="label label-<?php echo $check['php_css']; ?>"><?php echo $check['php_version']; ?></span></td>
+    </tr>
+    <tr>
+        <td>mySQL</td>
+        <td><span class="label label-default">Installed</span></td>
+        <td><span class="label label-<?php echo $check['mysql_css']; ?>"><?php echo $check['mysql_version']; ?></span></td>
     </tr>
     <tr>
         <td>chmod '<em>applications/config.php</em>'</td>

@@ -158,7 +158,7 @@
     'email' => array(
       'forgot_password' => array(
         'subject' => 'Passwort zur&uuml;cksetzen', 
-        'content' => '<p>Du hast k&uuml;rzlich auf der Seite %site_name% eine Passwort-R&uuml;cksetzung angefordert..</p><p>Um das Passwort zur&uuml;ckzusetzen benutze bitte folgenden Link: %token_url%</p>'
+        'content' => '<p>Du hast k&uuml;rzlich auf der Seite %site_name% eine Passwort-R&uuml;cksetzung angefordert.</p><p>Um das Passwort zur&uuml;ckzusetzen benutze bitte folgenden Link: %token_url%</p>'
       ),
       'register' => array(
         'subject' => 'Konto Aktivierung',
