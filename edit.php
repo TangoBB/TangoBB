@@ -196,6 +196,29 @@
                         <br />
                         ' . $FORM->build('submit', '', 'edit', array('value' => $LANG['bb']['form']['edit_post'])) . '
                       </form>';
+                      
+        foreach($ICONS as $category=>$icons_cat)
+          {
+            $icon_package[$category] = '';
+            foreach($icons_cat as $code=>$html){
+                $icon_package[$category] .= '<span style="font-size: 30px;" title="'.$code.'">'.$html.'</span> ';
+            }
+          }
+          $content .= $TANGO->tpl->entity(
+              'smiliy_list',
+              array(
+                  'smilies',
+                  'misc',
+                  'food',
+                  'animals'
+              ),
+              array(
+                  $icon_package['smilies'],
+                  $icon_package['misc'],
+                  $icon_package['food'],
+                  $icon_package['animals']
+              )
+          );
 
           $TANGO->tpl->addParam(
               array(
