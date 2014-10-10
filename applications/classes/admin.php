@@ -103,6 +103,7 @@
         $i = 0;
         $file_message = array();
         $error = array();
+        var_dump($zipHandle);
         while ($file = zip_read($zipHandle) )
         {
             $i++;
@@ -180,28 +181,35 @@
       
       public function download($link, $update = false) {
         $file_name = basename($link);
-        if($update === true && !is_file('updates/'.$file_name))
+        if(@fopen($link,'r'))
         {
-            $file = curl_init($link);
-            if(!is_dir( 'updates/' )) mkdir ( 'updates/' );
-            $dlHandler = fopen('updates/'.$file_name, 'w');
-            curl_setopt($file, CURLOPT_FILE, $dlHandler);
-            curl_setopt($file, CURLOPT_TIMEOUT, 3600);
-            curl_exec($file);
-            fclose($dlHandler);
-        }
-        elseif(!is_file('downloads/'.$file_name))
-        {
-            $file = curl_init($link);
-            if(!is_dir( 'downloads/' )) mkdir ( 'downloads/' );
-            $dlHandler = fopen('downloads/'.$file_name, 'w');
-            curl_setopt($file, CURLOPT_FILE, $dlHandler);
-            curl_setopt($file, CURLOPT_TIMEOUT, 3600);
-            curl_exec($file);
-            fclose($dlHandler);
-        }
-        return $file_name; 
+            if($update === true && !is_file('updates/'.$file_name))
+            {
+                $file = curl_init($link);
+                if(!is_dir( 'updates/' )) mkdir ( 'updates/' );
+                $dlHandler = fopen('updates/'.$file_name, 'w');
+                curl_setopt($file, CURLOPT_FILE, $dlHandler);
+                curl_setopt($file, CURLOPT_TIMEOUT, 3600);
+                curl_exec($file);
+                fclose($dlHandler);
+            }
+            elseif(!is_file('downloads/'.$file_name))
+            {
+                $file = curl_init($link);
+                if(!is_dir( 'downloads/' )) mkdir ( 'downloads/' );
+                $dlHandler = fopen('downloads/'.$file_name, 'w');
+                curl_setopt($file, CURLOPT_FILE, $dlHandler);
+                curl_setopt($file, CURLOPT_TIMEOUT, 3600);
+                curl_exec($file);
+                fclose($dlHandler);
+            }
+            return $file_name; 
       }
+      else 
+      {
+        return false;
+      }
+    }
       
   }
 

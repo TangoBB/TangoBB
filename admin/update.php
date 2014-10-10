@@ -33,7 +33,13 @@
                 // Step 2 Extract zip
                 elseif(isset($_GET['doUpdate']) && $_GET['doUpdate'] == true && isset($_GET['step']) && $_GET['step'] == 2)
                 {
-                    $output = $ADMIN->zip_extract('updates/Iko_update_package_'.$version.'.zip', true, true); 
+                    if(is_file('updates/Iko_update_package_'.$version.'.zip')) {
+                        $output = $ADMIN->zip_extract('updates/Iko_update_package_'.$version.'.zip', true, true);
+                    }
+                    else
+                    {
+                        $output = '<div class="alert alert-danger" role="alert">Downloaded file not found!</div>';
+                    }
                     echo '<div class="progress">
                             <div class="progress-bar" role="progressbar" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100" style="width: 66%;">
                                 66%
