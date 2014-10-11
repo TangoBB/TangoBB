@@ -225,11 +225,11 @@
                       $p_query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_thread = {$thread['id']} ORDER BY post_time DESC");
                       //die(var_dump($thread));
                       //die(var_dump($o_query));
-                      if( $o_query && $o_query['0']['post_user'] == $TANGO->sess->data['id'] ) {
+                      if( $o_query && $o_query['0']['post_user'] == $TANGO->sess->data['id'] && $TANGO->data['post_merge'] == 1) {
                         //die('First');
                         $t_cont = $o_query['0']['post_content'] . '
-' . $LANG['flat']['merge_post'] . '
-' . $cont;
+                                    ' . $LANG['flat']['merge_post'] . '
+                                    ' . $cont;
 
                         $MYSQL->where('id', $o_query['0']['id']);
                         $n_cont = array(

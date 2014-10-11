@@ -37,6 +37,7 @@
           $site_lang    = $_POST['default_language'];
           $site_rules   = $_POST['board_rules'];
           $enable_reg   = (isset($_POST['register_enable']))? '1' : '0';
+          $post_merge   = (isset($_POST['post_merge']))? '1' : '0';
 
           $fb_app_id    = $_POST['fb_app_id'];
           $fb_app_sec   = $_POST['fb_app_secret'];
@@ -61,6 +62,7 @@
                   'site_rules' => $site_rules,
                   'site_language' => $site_lang,
                   'register_enable' => $enable_reg,
+                  'post_merge' => $post_merge,
                   'facebook_app_id' => $fb_app_id,
                   'facebook_app_secret' => $fb_app_sec,
                   'facebook_authenticate' => $enable_fb,
@@ -100,6 +102,7 @@
   echo '<form action="" method="POST">';
 
   $reg_check = ($TANGO->data['register_enable'] == 1)? ' CHECKED' : '';
+  $merge_check = ($TANGO->data['post_merge'] == 1)? ' CHECKED' : '';
   echo $ADMIN->box(
       'General Settings',
       $notice .
@@ -108,7 +111,8 @@
        <input type="text" class="form-control" name="site_name" id="site_name" value="' . $TANGO->data['site_name'] . '" />
        <label for="board_email">Board Email</label>
        <input type="text" class="form-control" name="board_email" id="board_email" value="' . $TANGO->data['site_email'] . '" />
-       <input type="checkbox" name="register_enable" value="1" id="reg_enable" ' . $reg_check . ' /><label for="reg_enable">Enable Register</label>
+       <input type="checkbox" name="register_enable" value="1" id="reg_enable" ' . $reg_check . ' /> <label for="reg_enable">Enable Register</label><br />
+       <input type="checkbox" name="post_merge" value="1" id="post_merge" ' . $merge_check . ' /> <label for="post_merge">Merge posts of the same user?</label>
        <br />
        <label for="default_language">Default Languge</label><br />
        <select name="default_language" id="Default_language">
