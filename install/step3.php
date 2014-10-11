@@ -32,7 +32,7 @@
 			}else{
 
                 $rules = '
--No spamming.
+- No spamming.
 - No racist comments.
 - Do not start a political discussion unless permitted.
 - No illegal stuff are to be posted on anywhere in the forum.';
