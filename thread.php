@@ -525,7 +525,7 @@
                       $post_mod_tools,
                       $post['id'],
                       $ur['id'],
-                      '<span class="flag-icon flag-icon-'.strtolower($user['location']).'"></span>'
+                      '<span class="flag-icon flag-icon-'.strtolower($ur['location']).'"></span>'
                   )
               );
           }
