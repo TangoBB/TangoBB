@@ -1,7 +1,16 @@
 $(document).ready(function() {
     //Setting up the Wysibb Editor.
     $('#editor').wysibb({
-        buttons :  'bold,italic,underline,strike,|,fontcolor,fontsize,fontfamily,|,justifyleft,justifycenter,justifyright,|,bullist,|,img,link,|,code,quote',
+        buttons :  'bold,italic,underline,strike,smiley,|,fontcolor,fontsize,fontfamily,|,justifyleft,justifycenter,justifyright,|,bullist,|,img,link,|,code,quote',
+        allButtons: {
+            smiley: {
+                title: 'Smiley',
+                'buttonText': ':)',
+                transform: {
+                    '<span>{SELHTML}</span>':'{SELTEXT}',
+                }
+            }
+        },
         tabInsert: false
     });
     //The syntex highlighting in <pre> tags.
@@ -33,4 +42,10 @@ var formsave1=new autosaveform({
 //Quote Post.
 function quote(id) {
     $('#editor').execCommand('quote',{author: '',seltext:'Post ID: ' + id + ''});
+}
+
+//Inserting Smilies.
+function add_emoji(text, html) {
+    console.log(text);
+    $('#editor').execCommand('smiley',{seltext: text,selhtml: html});
 }

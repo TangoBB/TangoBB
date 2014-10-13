@@ -10,8 +10,10 @@
   if( $PGET->g('node') ) {
 
       $node  = clean($PGET->g('node'));
-      $MYSQL->where('id', $node);
-      $query = $MYSQL->get('{prefix}forum_node');
+      //$MYSQL->where('id', $node);
+      //$query = $MYSQL->get('{prefix}forum_node');
+      $MYSQL->bind('id', $node);
+      $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE id = :id");
 
       if( !empty($query) ) {
 
@@ -219,7 +221,7 @@
           {
             $icon_package[$category] = '';
             foreach($icons_cat as $code=>$html){
-                $icon_package[$category] .= '<span style="font-size: 30px;" title="'.$code.'">'.$html.'</span> ';
+                $icon_package[$category] .= '<a href="javascript:add_emoji(\'' . $code . '\', \'' . $html . '\');"><span style="font-size: 30px;" title="'.$code.'">'.$html.'</span></a> ';
             }
           }
           $content .= $TANGO->tpl->entity(

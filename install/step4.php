@@ -41,7 +41,7 @@
 
               try {
                   $MYSQL->insert('{prefix}users', $data);
-                  echo '<div class="alert alert-success">TangoBB has been successfully installed! Please delete the installation folder.</div>';
+                  echo '<div class="alert alert-success">Iko has been successfully installed! Please delete the installation folder.</div>';
               } catch (mysqli_sql_exception $e) {
                   throw new Exception ('Error inserting user into database!');
               }

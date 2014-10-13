@@ -24,24 +24,39 @@
        */
       public function changeUserGroup($user, $group) {
         global $MYSQL;
-        $MYSQL->where('id', $user);
-        $user  = $MYSQL->get('{prefix}users');
-        $MYSQL->where('id', $group);
-        $group = $MYSQL->get('{prefix}usergroups');
+        //$MYSQL->where('id', $user);
+        //$user  = $MYSQL->get('{prefix}users');
+        $MYSQL->bind('id', $user);
+        $user  = $MYSQL->query("SELECT * FROM {prefix}users WHERE id = :id");
+        //$MYSQL->where('id', $group);
+        //$group = $MYSQL->get('{prefix}usergroups');
+        $MYSQL->bind('id', $group);
+        $group = $MYSQL->query("SELECT * FROM {prefix}usergroups WHERE id = :id");
 
         if( !empty($user) && !empty($group) ) {
 
-          $data = array(
-            'user_group' => $group
-          );
-          $MYSQL->where('id', $user);
+          $MYSQL->bind('user_group', $group['0']['id']);
+          $MYSQL->bind('id', $user);
+          $query = $MYSQL->query("INSERT INTO {prefix}users SET user_group :user_group WHERE id = :id");
 
-          try {
+          if( $query > 0 ) {
+            return true;
+          } else {
+            return false;
+          }
+
+          /*$data = array(
+            'user_group' => $group
+          );*/
+
+          //$MYSQL->where('id', $user);
+
+          /*try {
             $MYSQL->update('{prefix}users', $data);
             return true;
           } catch (mysqli_sql_exception $e) {
             return false;
-          }
+          }*/
 
         } else {
           return false;
@@ -172,9 +187,12 @@
       public function userMessages() {
           global $MYSQL, $TANGO;
           $return = array();
-          $MYSQL->where('message_receiver', $TANGO->sess->data['id']);
-          $MYSQL->where('receiver_viewed', 0);
-          $query = $MYSQL->get('{prefix}messages');
+          //$MYSQL->where('message_receiver', $TANGO->sess->data['id']);
+          //$MYSQL->where('receiver_viewed', 0);
+          //$query = $MYSQL->get('{prefix}messages');
+          $MYSQL->bind('message_receiver', $TANGO->sess->data['id']);
+          $MYSQL->bind('receiver_viewed', 0);
+          $query = $MYSQL->query("SELECT * FROM {prefix}messages WHERE message_receiver = :message_receiver AND receiver_viewed = :receiver_viewed");
           foreach( $query as $msg ) {
               if( $msg['message_type'] == 1 ) {
                 $receiver = $TANGO->user($msg['message_receiver']);

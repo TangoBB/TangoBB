@@ -229,7 +229,8 @@
    */
   function modReportInteger() {
       global $MYSQL;
-      $query = $MYSQL->get('{prefix}reports');
+      //$query = $MYSQL->get('{prefix}reports');
+      $query = $MYSQL->query("SELECT * FROM {prefix}reports");
 
       return count($query);
   }
@@ -305,11 +306,15 @@
 
       $login_successful = false;
 
-      $MYSQL->where('user_email', $email);
-      $a = $MYSQL->get('{prefix}users');
+      //$MYSQL->where('user_email', $email);
+      //$a = $MYSQL->get('{prefix}users');
+      $MYSQL->bind('user_email', $email);
+      $a = $MYSQL->query("SELECT * FROM {prefix}users WHERE user_email = :user_email");
 
-      $MYSQL->where('username', $email);
-      $b = $MYSQL->get('{prefix}users');
+      //$MYSQL->where('username', $email);
+      //$b = $MYSQL->get('{prefix}users');
+      $MYSQL->bind('username', $email);
+      $b = $MYSQL->query("SELECT * FROM {prefix} WHERE username = :username");
       if( $a or $b ) {
           $user_data = ( $a )? $a[0] : $b[0];
           $hash = $user_data['user_password'];
@@ -407,7 +412,8 @@
    */
   function include_extensions() {
     global $MYSQL;
-    $query = $MYSQL->get('{prefix}extensions');
+    //$query = $MYSQL->get('{prefix}extensions');
+    $query = $MYSQL->query("SELECT * FROM {prefix}extensions");
     foreach( $query as $extension ) {
       require_once('extensions/' . $extension['extension_folder'] . '/manifest.php');
     }

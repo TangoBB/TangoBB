@@ -1,0 +1,23 @@
+/* Form Elements */
+input[type="text"].form-control, input[type="password"].form-control, textarea.form-control {
+	background-color: none;
+	/* Box Shadow */
+	box-shadow: none;
+	/* Border */
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: 2px solid #d2d2d2;
+	/* Border Radius */
+	-webkit-border-radius: 0;
+	   -moz-border-radius: 0;
+	        border-radius: 0;
+}
+
+input[type="text"].form-control:active, input[type="password"].form-control:active, textarea.form-control:active,
+input[type="text"].form-control:focus, input[type="password"].form-control:focus, textarea.form-control:focus {
+	/* Box Shadow */
+	box-shadow: none;
+	/* Border */
+	border-bottom: 2px solid #4386be;
+}

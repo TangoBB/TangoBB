@@ -14,9 +14,11 @@
       public function threads($id) {
           global $MYSQL, $TANGO;
           
-          $MYSQL->where('id', $id); // id? Shouldn't it be origin_node?
-          $MYSQL->where('post_type', 1);
-          $query = $MYSQL->get('{prefix}forum_posts');
+          //$MYSQL->where('id', $id); // id? Shouldn't it be origin_node?
+          //$MYSQL->where('post_type', 1);
+          //$query = $MYSQL->get('{prefix}forum_posts');
+          $MYSQL->bind('id', $id);
+          $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_type = 1 AND id = :id");
           $status = $this->thread_new_posts($id);
           
           $return = '';

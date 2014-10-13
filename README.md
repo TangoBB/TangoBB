@@ -1,13 +1,12 @@
 [![Iko](https://raw.githubusercontent.com/IkoBulletin/Iko/master/public/img/iko_logo.png "Iko")](http://iko.im "Iko")
-##The new simple bulletin board.
-Please note that this forum software will be as generic but a little complex on the theme design aspect as we want it to be very customizable for amateur web developers to learn.
-Iko is released under the MIT License.
+##PDO conversion from MySQLi
+This branch is dedicated to converting the current MySQLi-dependent framework to a PDO-dependent framework for a wider variety of database choices for administrators to go into.
 
-###More Info
-More information on Iko and archived versions of it can be found on our website at http://iko.im/
+###Progress
+Currently, the conversion is still in development and still contains *many* unconverted codes and is *not* recommended for production use.
 
-###Documentation
-The documentation can be found at the "Wiki" tab to the right!
+###Eventuality
+This branch will eventually merge with the master branch for full support of the PDO version over the MySQLi.
 
-###Why are some classes named "TangoBB"?
-Iko's unofficial name is "TangoBB". The project has since rebranded to "Iko".
+###API Changes?
+We will also be updating the API consistently throughout the update of this branch with the goal of making the code more secure and load with lesser time. 

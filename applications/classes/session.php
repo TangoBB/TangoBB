@@ -34,13 +34,16 @@
 
               if( $this->session['session_time'] >= strtotime('24 hours ago') ) {
                 $time = time();
-                $MYSQL->where('session_id', $this->session['session_id']);
-                $MYSQL->update(
+                //$MYSQL->where('session_id', $this->session['session_id']);
+                /*$MYSQL->update(
                   '{prefix}sessions',
                   array(
                     'session_time' => $time
                     )
-                );
+                );*/
+                $MYSQL->bind('session_id', $this->session['session_id']);
+                $MYSQL->bind('session_time', $time);
+                $MYSQL->query("UPDATE {prefix}sessions SET session_time = :session_time WHERE session_id = :session_id");
               }
 
               //Adding links for users who are logged in and everything else in the template.
@@ -54,8 +57,10 @@
               ));
 
               //Getting user's total post/messages.
-              $MYSQL->where('post_user', $this->data['id']);
-              $user_post_count = $MYSQL->get('{prefix}forum_posts');
+              //$MYSQL->where('post_user', $this->data['id']);
+              //$user_post_count = $MYSQL->get('{prefix}forum_posts');
+              $MYSQL->bind('post_user', $this->data['id']);
+              $user_post_count = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = :post_user");
               $user_post_count = number_format(count($user_post_count));
 
               $mod_report_integer = modReportInteger();
@@ -99,8 +104,10 @@
 
           if( isset($_SESSION['tangobb_sess']) or isset($_COOKIE['tangobb_sess']) ) {
               $id = (isset($_SESSION['tangobb_sess']))? $_SESSION['tangobb_sess'] : $_COOKIE['tangobb_sess'];
-              $MYSQL->where('session_id', $id);
-              $query = $MYSQL->get('{prefix}sessions');
+              //$MYSQL->where('session_id', $id);
+              //$query = $MYSQL->get('{prefix}sessions');
+              $MYSQL->bind('session_id', $id);
+              $query = $MYSQL->query("SELECT * FROM {prefix}sessions WHERE session_id = :session_id");
               if( !empty($query) ) {
                   $this->session = $query['0'];
                   return true;
@@ -121,8 +128,10 @@
           $query = $MYSQL->query("SELECT * FROM {prefix}sessions");
           foreach( $query as $s ) {
               if( $s['session_time'] < $time ) {
-			      $data = array($s['id']);
-                  $MYSQL->rawQuery("DELETE FROM {prefix}sessions WHERE id = ?", $data);
+			          //$data = array($s['id']);
+                //$MYSQL->rawQuery("DELETE FROM {prefix}sessions WHERE id = ?", $data);
+                $MYSQL->bind('id', $s['id']);
+                $MYSQL->query("DELETE FROM {prefix}sessions WHERE id = :id");
               }
           }
       }

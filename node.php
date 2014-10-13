@@ -18,9 +18,12 @@
       $node_id   = $get['id'];
       $node_name = $get['value'];
       
-      $MYSQL->where('id', $node_id);
-      $MYSQL->where('name_friendly', $node_name);
-      $query = $MYSQL->get('{prefix}forum_node');
+      //$MYSQL->where('id', $node_id);
+      //$MYSQL->where('name_friendly', $node_name);
+      //$query = $MYSQL->get('{prefix}forum_node');
+      $MYSQL->bind('id', $node_id);
+      $MYSQL->bind('name_friendly', $node_name);
+      $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE id = :id AND name_friendly = :name_friendly");
       if( !empty($query) ) {
 
           $allowed = explode(',', $query['0']['allowed_usergroups']);
