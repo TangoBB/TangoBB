@@ -11,3 +11,6 @@ The documentation can be found at the "Wiki" tab to the right!
 
 ###Why are some classes named "TangoBB"?
 Iko's unofficial name is "TangoBB". The project has since rebranded to "Iko".
+
+###Themes
+Iko has a dedicated theme repository. [Check it out](https://github.com/cxdy/iko-themes).
