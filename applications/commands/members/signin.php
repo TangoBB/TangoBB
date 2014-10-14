@@ -62,7 +62,7 @@
               
               $remember = (isset($_POST['remember']))? true : false;
               $TANGO->sess->assign($email, $remember);
-              header($_SERVER['HTTP_REFERER']);
+              header('refresh:3;url=' . SITE_URL . '/forum.php');
               
               $content .= $TANGO->tpl->entity(
                   'success_notice',
