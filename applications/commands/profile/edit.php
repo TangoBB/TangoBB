@@ -25,13 +25,14 @@
           $birthday = $_POST['birthday'];
           $location = $_POST['location'];
           $gender   = $_POST['gender'];
+          $pass     = $_POST['confirm_password'];
 
           if( !$email or !$tz ) {
               throw new Exception ($LANG['global_form_process']['all_fields_required']); // Email and Timezone required
           } elseif( !validEmail($email) ) {
               throw new Exception ($LANG['global_form_process']['invalid_email']);
-          } elseif( !userExists($TANGO->sess->data['user_email']) ) {
-              throw new Exception ($LANG['global_form_process']);
+          } elseif( !userExists($TANGO->sess->data['user_email'], $pass) ) {
+-              throw new Exception ($LANG['global_form_process']['invalid_password']);
           } else {
               if( $email !== $TANGO->sess->data['user_email'] ) {
 
@@ -181,6 +182,7 @@
                  ' . $FORM->build('text', $LANG['bb']['members']['birthday'], 'birthday', array('value' => $val_birthday)) . '
                  <label for="editor">' . $LANG['bb']['profile']['about_you'] . '</label><br />
                  <textarea name="about" id="editor" style="min-width:100%;max-width:100%;height:150px;">' . $TANGO->sess->data['about_user'] . '</textarea>
+                 ' . $FORM->build('password', $LANG['bb']['profile']['confirm_password'], 'confirm_password') . '
                  <br /><br />
                  ' . $FORM->build('submit', '', 'edit', array('value' => $LANG['bb']['profile']['form_save'])) . '
                </form>';
