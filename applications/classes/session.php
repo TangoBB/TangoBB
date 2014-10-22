@@ -145,10 +145,14 @@
       public function assign($email, $remember = false, $facebook = false) {
           global $MYSQL;
 
-          $MYSQL->where('user_email', $email);
-          $a         = $MYSQL->get('{prefix}users');
-          $MYSQL->where('username', $email);
-          $b         = $MYSQL->get('{prefix}users');
+          //$MYSQL->where('user_email', $email);
+          //$a                    = $MYSQL->get('{prefix}users');
+          $MYSQL->bind('user_email', $email);
+          $a = $MYSQL->query("SELECT * FROM {prefix}users WHERE user_email = :user_email");
+          //$MYSQL->where('username', $email);
+          //$b                    = $MYSQL->get('{prefix}users');
+          $MYSQL->bind('username', $email);
+          $b = $MYSQL->query("SELECT * FROM {prefix}users WHERE username = :username");
 
           $query     = ( $a )? $a : $b;
 
@@ -161,7 +165,7 @@
 
           if( $remember ) {
 
-              $data = array(
+              /*$data = array(
                   'session_id' => $session_id,
                   'logged_user' => $query['0']['id'],
                   'session_type' => '2',
@@ -172,11 +176,21 @@
                   return setcookie('tangobb_sess', $session_id, time()+TANGO_SESSION_TIMEOUT, '/', NULL, isset($_SERVER['HTTPS']), true);
               } catch (mysqli_sql_exception $e) {
                   return false;
+              }*/
+              $MYSQL->bind('session_id', $session_id);
+              $MYSQL->bind('logged_user', $query['0']['id']);
+              $MYSQL->bind('session_type', 2);
+              $MYSQL->bind('session_time', $time);
+              $insert = $MYSQL->query("INSERT INTO {prefix}sessions (session_id, logged_user, session_type, session_time) VALUES (:session_id, :logged_user, :session_type, :session_time)");
+              if( $insert > 0 ) {
+                return setcookie('tangobb_sess', $session_id, time()+TANGO_SESSION_TIMEOUT, '/', NULL, isset($_SERVER['HTTPS']), true);
+              } else {
+                return false;
               }
 
           } else {
 
-              $data = array(
+              /*$data = array(
                   'session_id' => $session_id,
                   'logged_user' => $query['0']['id'],
                   'session_type' => '1',
@@ -188,6 +202,17 @@
                   return true;
               } catch (mysqli_sql_exception $e) {
                   return false;
+              }*/
+              $MYSQL->bind('session_id', $session_id);
+              $MYSQL->bind('logged_user', $query['0']['id']);
+              $MYSQL->bind('session_type', 1);
+              $MYSQL->bind('session_time', $time);
+              $insert = $MYSQL->query("INSERT INTO {prefix}sessions (session_id, logged_user, session_type, session_time) VALUES (:session_id, :logged_user, :session_type, :session_time)");
+              if( $insert > 0 ) {
+                $_SESSION['tangobb_sess'] = $session_id;
+                return true;
+              } else {
+                return false;
               }
 
           }
@@ -200,13 +225,17 @@
           global $MYSQL;
 
           if( isset($_SESSION['tangobb_sess']) ) {
-              $MYSQL->where('session_id', $_SESSION['tangobb_sess']);
-              $MYSQL->delete('{prefix}sessions');
-              session_destroy();
+            //$MYSQL->where('session_id', $_SESSION['tangobb_sess']);
+            //$MYSQL->delete('{prefix}sessions');
+            $MYSQL->bind('session_id', $_SESSION['tangobb_sess']);
+            $MYSQL->query("DELETE FROM {prefix}sessions WHERE session_id = :session_id");
+            session_destroy();
           } else {
-              $MYSQL->where('session_id', $_COOKIE['tangobb_sess']);
-              $MYSQL->delete('{prefix}sessions');
-              return setcookie('tangobb_sess', '', time()-3600, '/', NULL, isset($_SERVER['HTTPS']), true);
+            //$MYSQL->where('session_id', $_COOKIE['tangobb_sess']);
+            //$MYSQL->delete('{prefix}sessions');
+            $MYSQL->bind('session_id', $_COOKIE['tangobb_sess']);
+            $MYSQL->query("DELETE FROM {prefix}sessions WHERE session_id = :session_id");
+            return setcookie('tangobb_sess', '', time()-3600, '/', NULL, isset($_SERVER['HTTPS']), true);
           }
       }
 

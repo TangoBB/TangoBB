@@ -445,4 +445,27 @@
     </div>
 </div>
 <!--- tpl:conversation_overview:end -->
+<!--- tpl:smiley_list:start -->
+<br />
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#smilies" data-toggle="tab">Smilies</a></li>
+    <li><a href="#misc" data-toggle="tab">Misc</a></li>
+    <li><a href="#food" data-toggle="tab">Food</a></li>
+    <li><a href="#animals" data-toggle="tab">Animals</a></li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" id="smilies">
+        %smilies%
+    </div>
+    <div class="tab-pane" id="misc">
+        %misc%
+    </div>
+    <div class="tab-pane" id="food">
+        %food%
+    </div>
+    <div class="tab-pane" id="animals">
+        %animals%
+    </div>
+</div>
+<!--- tpl:smiliy_list:end -->
 <!--- parent:theme_entity_file:end -->

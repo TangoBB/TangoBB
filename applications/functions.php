@@ -269,12 +269,16 @@
   }
   function userBanned($email) {
       global $MYSQL;
-      $MYSQL->where('user_email', $email);
-      $a                    = $MYSQL->get('{prefix}users');
-      $MYSQL->where('username', $email);
-      $b                    = $MYSQL->get('{prefix}users');
+      //$MYSQL->where('user_email', $email);
+      //$a                    = $MYSQL->get('{prefix}users');
+      $MYSQL->bind('user_email', $email);
+      $a = $MYSQL->query("SELECT * FROM {prefix}users WHERE user_email = :user_email");
+      //$MYSQL->where('username', $email);
+      //$b                    = $MYSQL->get('{prefix}users');
+      $MYSQL->bind('username', $email);
+      $b = $MYSQL->query("SELECT * FROM {prefix}users WHERE username = :username");
 
-      $a                    = ( $a )? $a : $b;
+      $a = ( $a )? $a : $b;
 
       $return['unban_time'] = $a['0']['unban_time'];
       $return['ban_reason'] = $a['0']['ban_reason'];
@@ -287,11 +291,14 @@
   }
   function userActivated($email) {
       global $MYSQL;
-      $MYSQL->where('user_email', $email);
-      $a = $MYSQL->get('{prefix}users');
-
-      $MYSQL->where('username', $email);
-      $b = $MYSQL->get('{prefix}users');
+      //$MYSQL->where('user_email', $email);
+      //$a                    = $MYSQL->get('{prefix}users');
+      $MYSQL->bind('user_email', $email);
+      $a = $MYSQL->query("SELECT * FROM {prefix}users WHERE user_email = :user_email");
+      //$MYSQL->where('username', $email);
+      //$b                    = $MYSQL->get('{prefix}users');
+      $MYSQL->bind('username', $email);
+      $b = $MYSQL->query("SELECT * FROM {prefix}users WHERE username = :username");
 
       $a = ( $a )? $a : $b;
 
@@ -314,7 +321,7 @@
       //$MYSQL->where('username', $email);
       //$b = $MYSQL->get('{prefix}users');
       $MYSQL->bind('username', $email);
-      $b = $MYSQL->query("SELECT * FROM {prefix} WHERE username = :username");
+      $b = $MYSQL->query("SELECT * FROM {prefix}users WHERE username = :username");
       if( $a or $b ) {
           $user_data = ( $a )? $a[0] : $b[0];
           $hash = $user_data['user_password'];
@@ -372,8 +379,10 @@
    */
   function thread($id, $callback = null) {
       global $MYSQL;
-      $MYSQL->where('id', $id);
-      $query = $MYSQL->get('{prefix}forum_posts');
+      //$MYSQL->where('id', $id);
+      //$query = $MYSQL->get('{prefix}forum_posts');
+      $MYSQL->bind('id', $id);
+      $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE id = :id");
 
       if( is_callable($callback) ) {
           call_user_func($callback, $query['0']);
@@ -383,8 +392,10 @@
   }
   function node($id, $callback = null) {
       global $MYSQL;
-      $MYSQL->where('id', $id);
-      $query = $MYSQL->get('{prefix}forum_node');
+      //$MYSQL->where('id', $id);
+      //$query = $MYSQL->get('{prefix}forum_node');
+      $MYSQL->bind('id', $id);
+      $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE id = :id");
 
       if( is_callable($callback) ) {
           call_user_func($callback, $query['0']);
@@ -425,7 +436,8 @@
   function list_forums() {
       global $MYSQL;
       $return = array();
-      $query  = $MYSQL->get('{prefix}forum_node');
+      //$query  = $MYSQL->get('{prefix}forum_node');
+      $query = $MYSQL->query("SELECT * FROM {prefix}forum_node");
       foreach( $query as $node ) {
         $return[] = array(
           'id' => $node['id'],
@@ -486,13 +498,16 @@
   function amount_replies($origin_massage_id){
     global $MYSQL;
     if(is_numeric($origin_massage_id)){
-      $query = $MYSQL->query("SELECT * FROM
+      /*$query = $MYSQL->query("SELECT * FROM
                               {prefix}messages
                               WHERE
-                              origin_message = " . $origin_massage_id);
+                              origin_message = " . $origin_massage_id);*/
+      $MYSQL->bind('origin_message', $origin_massage_id);
+      $query = $MYSQL->query("SELECT * FROM {prefix}messages WHERE origin_message = :origin_message");  
       return number_format(count($query));
-      }
+    }
   }
+  
   function gender($in) {
     if($in==1)
     {

@@ -238,8 +238,10 @@
         $update = array(
           'viewed' => '1'
         );
-        $MYSQL->where('user', $TANGO->sess->data['id']);
-        $MYSQL->update('{prefix}notifications', $update);
+        //$MYSQL->where('user', $TANGO->sess->data['id']);
+        //$MYSQL->update('{prefix}notifications', $update);
+        $MYSQL->bind('user', $TANGO->sess->data['id']);
+        $MYSQL->query("UPDATE {prefix}notifications SET viewed = 1 WHERE user = :user");
       }
 
       public function notifyUser($type, $user, $email = false, $extra = array()) {
@@ -254,11 +256,19 @@
               $extra['username'],
               $LANG['notification']['mention']
             );
-            $insert  = array(
+            /*$insert  = array(
               'notice_content' => $notice,
               'notice_link' => $extra['link'],
               'user' => $user,
               'time_received' => $time
+            );*/
+            $MYSQL->bindMore(
+              array(
+                'notice_content' => $notice,
+                'notice_link' => $extra['link'],
+                'user' => $user,
+                'time_received' => $time
+              )
             );
             break;
 
@@ -275,11 +285,19 @@
               ),
               $LANG['notification']['reply']
             );
-            $insert  = array(
+            /*$insert  = array(
               'notice_content' => $notice,
               'notice_link' => $extra['link'],
               'user' => $user,
               'time_received' => $time
+            );*/
+            $MYSQL->bindMore(
+              array(
+                'notice_content' => $notice,
+                'notice_link' => $extra['link'],
+                'user' => $user,
+                'time_received' => $time
+              )
             );
             break;
 
@@ -296,11 +314,19 @@
               ),
               $LANG['notification']['quoted']
             );
-            $insert  = array(
+            /*$insert  = array(
               'notice_content' => $notice,
               'notice_link' => $extra['link'],
               'user' => $user,
               'time_received' => $time
+            );*/
+            $MYSQL->bindMore(
+              array(
+                'notice_content' => $notice,
+                'notice_link' => $extra['link'],
+                'user' => $user,
+                'time_received' => $time
+              )
             );
             break;
           }
@@ -309,14 +335,23 @@
           $link          = (isset($extra['link']))? $extra['link'] : '';
           $extra['link'] = $link;
           $notice       .= $type;
-          $insert        = array(
+          /*$insert        = array(
             'notice_content' => $notice,
             'notice_link' => $link,
             'user' => $user,
             'time_received' => $time
+          );*/
+          $MYSQL->bindMore(
+            array(
+              'notice_content' => $notice,
+              'notice_link' => $link,
+              'user' => $user,
+              'time_received' => $time 
+            )
           );
         }
-        if( $MYSQL->insert('{prefix}notifications', $insert) ) {
+        //$MYSQL->insert('{prefix}notifications', $insert)
+        if( $MYSQL->query("INSERT INTO {prefix}notifications (notice_content, notice_link, user, time_received) VALUES (:notice_content, :notice_link, :user, :time_received)") > 0 ) {
           $info = str_replace(
             '%url%',
             $extra['link'],
