@@ -10,14 +10,16 @@
 
   if( $PGET->g('id') ) {
 
-      $MYSQL->where('id', $PGET->g('id'));
-      $query = $MYSQL->get('{prefix}users');
+      //$MYSQL->where('id', $PGET->g('id'));
+      //$query = $MYSQL->get('{prefix}users');
+      $MYSQL->bind('id', $PGET->g('id'));
+      $query = $MYSQL->query("SELECT * FROM {prefix}users WHERE id = :id");
 
       if( !empty($query) ) {
 
           if( $query['0']['is_banned'] == "0" ) {
 
-              $data = array(
+              /*$data = array(
                   'is_banned' => '1',
                   'user_group' => BAN_ID
               );
@@ -35,6 +37,30 @@
                   );
               } catch (mysqli_sql_exception $e) {
                   $content .= $TANGO->tpl->entity(
+                      'danger_notice',
+                      'content',
+                      $LANG['mod']['ban']['ban_error']
+                  );
+              }*/
+              $MYSQL->bindMore(
+                array(
+                  'user_group' => BAN_ID,
+                  'id' => $PGET->g('id')
+                )
+              );
+
+              if( $MYSQL->query("UPDATE {prefix}users SET is_banned = 1, user_group = :user_group WHERE id = :id") > 0 ) {
+                $content .= $TANGO->tpl->entity(
+                      'success_notice',
+                      'content',
+                      str_replace(
+                        '%url%',
+                        SITE_URL . '/members.php/cmd/user/id/' . $query['0']['id'],
+                        $LANG['mod']['ban']['ban_success']
+                      )
+                  );
+              } else {
+                $content .= $TANGO->tpl->entity(
                       'danger_notice',
                       'content',
                       $LANG['mod']['ban']['ban_error']

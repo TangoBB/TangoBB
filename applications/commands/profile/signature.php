@@ -25,7 +25,7 @@
               throw new Exception ($LANG['global_form_process']['all_fields_required']);
           } else {*/
 
-              $data = array(
+              /*$data = array(
                   'user_signature' => $sig
               );
               $MYSQL->where('id', $TANGO->sess->data['id']);
@@ -39,6 +39,21 @@
                   );
               } catch (mysqli_sql_exception $e) {
                   throw new Exception ($LANG['bb']['profile']['error_updating_signature']);
+              }*/
+              $MYSQL->bindMore(
+                array(
+                  'user_signature' => $sig,
+                  'id' => $TANGO->sess->data['id']
+                )
+              );
+              if( $MYSQL->query("UPDATE {prefix}users SET user_signature = :user_signature WHERE id = :id") > 0 ) {
+                $notice .= $TANGO->tpl->entity(
+                  'success_notice',
+                  'content',
+                  $LANG['global_form_process']['save_success']
+                  );
+              } else {
+                throw new Exception ($LANG['bb']['profile']['error_updating_signature']);
               }
 
         //  }

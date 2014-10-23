@@ -9,8 +9,10 @@
   if( $PGET->g('post') ) {
 
       $post_id = clean($PGET->g('post'));
-      $MYSQL->where('id', $post_id);
-      $query = $MYSQL->get('{prefix}forum_posts');
+      //$MYSQL->where('id', $post_id);
+      //$query = $MYSQL->get('{prefix}forum_posts');
+      $MYSQL->bind('id', $post_id);
+      $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE id = :id");
 
       if( !empty($query) ) {
 
@@ -147,24 +149,45 @@
                       $origin_thread .= $friendly_url . '.' . $thread_id;
                       
                       if( $query['0']['post_type'] == "1" ) {
-                        $data = array(
+                        /*$data = array(
                             'post_title' => $thread_title,
                             'title_friendly' => $friendly_url,
                             'post_content' => $con
+                        );*/
+                        $MYSQL->bindMore(
+                          array(
+                            'post_title' => $thread_title,
+                            'title_friendly' => $friendly_url,
+                            'post_content' => $con,
+                            'id' => $post_id
+                          )
                         );
+                        $u_query = $MYSQL->query("UPDATE {prefix}forum_posts SET post_title = :post_title, title_friendly = :title_friendly, post_content = :post_content WHERE id = :id");
                       }
                       else {
-                        $data = array(
+                        /*$data = array(
                             'post_content' => $con
+                        );*/
+                        $MYSQL->bindMore(
+                          array(
+                            'post_content' => $con,
+                            'id' => $post_id
+                          )
                         );
+                        $u_query = $MYSQL->query("UPDATE {prefix}forum_posts SET post_content = :post_content WHERE id = :id");
                       }
-                      $MYSQL->where('id', $post_id);
+                      //$MYSQL->where('id', $post_id);
 
-                      try {
+                      /*try {
                           $MYSQL->update('{prefix}forum_posts', $data);
                           redirect(SITE_URL . '/thread.php/' . $origin_thread);
                       } catch (mysqli_sql_exception $e) {
                           throw new Exception ($LANG['global_form_process']['error_updating_post']);
+                      }*/
+                      if( $u_query > 0 ) {
+                        redirect(SITE_URL . '/thread.php/' . $origin_thread);
+                      } else {
+                        throw new Exception ($LANG['global_form_process']['error_updating_post']);
                       }
 
                   }
@@ -201,7 +224,7 @@
           {
             $icon_package[$category] = '';
             foreach($icons_cat as $code=>$html){
-                $icon_package[$category] .= '<span style="font-size: 30px;" title="'.$code.'">'.$html.'</span> ';
+                $icon_package[$category] .= '<a href="javascript:add_emoji(\'' . $code . '\');"><span style="font-size: 30px;" title="'.$code.'">'.$html.'</span></a> ';
             }
           }
           $content .= $TANGO->tpl->entity(

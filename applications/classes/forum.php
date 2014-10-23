@@ -201,7 +201,7 @@
                                      ORDER BY
                                      post_time
                                      DESC LIMIT 1", $data);*/
-          $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_node IN (" . $where . ")");
+          $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_node IN (" . $where . ") ORDER BY post_time DESC LIMIT 1");
 
           if( !empty($query) ) {
 
@@ -214,7 +214,7 @@
                       //$MYSQL->where('origin_thread', $post['origin_thread']);
                       //$q      = $MYSQL->get('{prefix}forum_posts');
                       $MYSQL->bind('origin_thread', $post['origin_thread']);
-                      $q = $MYSQL->query("SELECT * FROM {prefix}forum_post WHERE origin_thread = :origin_thread");
+                      $q = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_thread = :origin_thread");
 
                       $q      = (count($q) / POST_RESULTS_PER_PAGE);
                       $page   = ( $q > 1 )? '/page/' . ceil($q) . '/' : '';

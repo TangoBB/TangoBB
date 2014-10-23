@@ -1,0 +1,237 @@
+/* Buttons */
+
+.btn-default, .btn-primary, .btn-success, .btn-info, .btn-warning, .btn-danger {
+	/* Font */
+	text-shadow: none;
+	/* Box Shadow */
+	-webkit-box-shadow: none;
+            box-shadow: none;
+    /* Border Radius */
+	-webkit-border-radius: 3px;
+	   -moz-border-radius: 3px;
+	        border-radius: 3px;
+}
+
+.btn-default:active, .btn-primary:active, .btn-success:active, .btn-info:active, .btn-warning:active, .btn-danger:active,
+.btn-default.active, .btn-primary.active, .btn-success.active, .btn-info.active, .btn-warning.active, .btn-danger.active {
+	/* Box Shadow */
+    -webkit-box-shadow: none;
+            box-shadow: none;
+}
+
+.btn:active, .btn.active {
+    background-image: none;
+}
+
+.btn-default {
+	background-color: none;
+	background-image: none;
+	/* Font */
+	color: #c9c9c9;
+	/* Border */
+	border: 2px solid #d2d2d2;
+}
+
+.btn-default:hover, .btn-default:focus {
+	background-color: rgba(255, 255, 255, 0);
+	background-image: none;
+	/* Font */
+	color: #a2a2a2;
+	/* Border */
+	border: 2px solid #bebebe;
+	/* Transition */
+	-webkit-transition: color ease-in-out 0.15s, border ease-in-out 0.15s;
+	        transition: color ease-in-out 0.15s, border ease-in-out 0.15s;
+}
+
+.btn-default:active, .btn-default.active {
+	background-color: rgba(190, 190, 190, 0.2);
+	/* Font */
+	color: #a2a2a2;
+	/* Transition */
+	-webkit-transition: background-color ease-in-out 0.15s;
+	        transition: background-color ease-in-out 0.15s;
+}
+
+.btn-default:disabled, .btn-default[disabled] {
+    background-color: rgba(190, 190, 190, 0.2);
+	/* Font */
+	color: #a2a2a2;
+}
+
+.btn-primary {
+	background-color: rgba(255, 255, 255, 0);
+	background-image: none;
+	/* Font */
+	color: #548ebe;
+	/* Border */
+	border: 2px solid #548ebe;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+	background-color: rgba(255, 255, 255, 0);
+	background-image: none;
+	/* Font */
+	color: #3c78aa;
+	/* Border */
+	border: 2px solid #3c78aa;
+	/* Transition */
+	-webkit-transition: color ease-in-out 0.15s, border ease-in-out 0.15s;
+	        transition: color ease-in-out 0.15s, border ease-in-out 0.15s;
+}
+
+.btn-primary:active, .btn-primary.active {
+	background-color: rgba(60, 120, 170, 0.2);
+	/* Font */
+	color: #3c78aa;
+	/* Transition */
+	-webkit-transition: background-color ease-in-out 0.15s;
+	        transition: background-color ease-in-out 0.15s;
+}
+
+.btn-primary:disabled, .btn-primary[disabled] {
+    background-color: rgba(60, 120, 170, 0.2);
+	/* Font */
+	color: #3c78aa;
+}
+
+.btn-success {
+	background-color: rgba(255, 255, 255, 0);
+	background-image: none;
+	/* Font */
+	color: #72be72;
+	/* Border */
+	border: 2px solid #72be72;
+}
+
+.btn-success:hover, .btn-success:focus {
+	background-color: rgba(255, 255, 255, 0);
+	background-image: none;
+	/* Font */
+	color: #63a463;
+	/* Border */
+	border: 2px solid #63a463;
+	/* Transition */
+	-webkit-transition: color ease-in-out 0.15s, border ease-in-out 0.15s;
+	        transition: color ease-in-out 0.15s, border ease-in-out 0.15s;
+}
+
+.btn-success:active,  .btn-success.active {
+	background-color: rgba(99, 164, 99, 0.2);
+	/* Font */
+	color: #63a463;
+	/* Transition */
+	-webkit-transition: background-color ease-in-out 0.15s;
+	        transition: background-color ease-in-out 0.15s;
+}
+.btn-success:disabled, .btn-success[disabled] {
+	background-color: rgba(99, 164, 99, 0.2);
+	/* Font */
+	color: #63a463;
+}
+
+.btn-info {
+	background-color: rgba(255, 255, 255, 0);
+	background-image: none;
+	/* Font */
+	color: #3a9bb0;
+	/* Border */
+	border: 2px solid #3a9bb0;
+}
+
+.btn-info:hover, .btn-info:focus {
+	background-color: rgba(255, 255, 255, 0);
+	background-image: none;
+	/* Font */
+	color: #328799;
+	/* Border */
+	border: 2px solid #328799;
+	/* Transition */
+	-webkit-transition: color ease-in-out 0.15s, border ease-in-out 0.15s;
+	        transition: color ease-in-out 0.15s, border ease-in-out 0.15s;
+}
+
+.btn-info:active, .btn-info.active {
+	background-color: rgba(50, 135, 153, 0.2);
+	/* Font */
+	color: #328799;
+	/* Transition */
+	-webkit-transition: background-color ease-in-out 0.15s;
+	        transition: background-color ease-in-out 0.15s;
+}
+.btn-info:disabled, .btn-info[disabled] {
+	background-color: rgba(50, 135, 153, 0.2);
+	/* Font */
+	color: #328799;
+}
+
+.btn-warning {
+	background-color: rgba(255, 255, 255, 0);
+	background-image: none;
+	/* Font */
+	color: #e69045;
+	/* Border */
+	border: 2px solid #e69045;
+}
+
+.btn-warning:hover, .btn-warning:focus {
+	background-color: rgba(255, 255, 255, 0);
+	background-image: none;
+	/* Font */
+	color: #da8941;
+	/* Border */
+	border: 2px solid #da8941;
+	/* Transition */
+	-webkit-transition: color ease-in-out 0.15s, border ease-in-out 0.15s;
+	        transition: color ease-in-out 0.15s, border ease-in-out 0.15s;
+}
+
+.btn-warning:active, .btn-warning.active {
+	background-color: rgba(218, 137, 65, 0.2);
+	/* Font */
+	color: #da8941;
+	/* Transition */
+	-webkit-transition: background-color ease-in-out 0.15s;
+	        transition: background-color ease-in-out 0.15s;
+}
+
+.btn-warning:disabled, .btn-warning[disabled] {
+	background-color: rgba(218, 137, 65, 0.2);
+	/* Font */
+	color: #da8941;
+}
+
+.btn-danger {
+	background-color: rgba(255, 255, 255, 0);
+	background-image: none;
+	/* Font */
+	color: #e66d6b;
+	/* Border */
+	border: 2px solid #e66d6b;
+}
+
+.btn-danger:hover, .btn-danger:focus {
+	background-color: rgba(255, 255, 255, 0);
+	background-image: none;
+	/* Font */
+	color: #c75e5c;
+	/* Border */
+	border: 2px solid #c75e5c;
+	/* Transition */
+	-webkit-transition: color ease-in-out 0.15s, border ease-in-out 0.15s;
+	        transition: color ease-in-out 0.15s, border ease-in-out 0.15s;
+}
+
+.btn-danger:active, .btn-danger.active {
+	background-color: rgba(199, 94, 92, 0.2);
+	/* Font */
+	color: #c75e5c;
+	/* Transition */
+	-webkit-transition: background-color ease-in-out 0.15s;
+	        transition: background-color ease-in-out 0.15s;
+}
+.btn-danger:disabled, .btn-danger[disabled] {
+	background-color: rgba(199, 94, 92, 0.2);
+	/* Font */
+	color: #c75e5c;
+}

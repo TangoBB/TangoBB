@@ -32,7 +32,7 @@
                   } else {
 
                       $time = time();
-                      $data = array(
+                      /*$data = array(
                           'report_reason' => $reason,
                           'reported_by' => $TANGO->sess->data['id'],
                           'reported_post' => $post,
@@ -48,6 +48,24 @@
                           );
                       } catch (mysqli_sql_exception $e) {
                           throw new Exception ($LANG['global_form_process']['error_submitting_report']);
+                      }*/
+                      $MYSQL->bindMore(
+                        array(
+                          'report_reason' => $reason,
+                          'reported_by' => $TANGO->sess->data['id'],
+                          'reported_post' => $post,
+                          'reported_time' => $time
+                        )
+                      );
+
+                      if( $MYSQL->query("INSERT INTO {prefix}reports (report_reason, reported_by, reported_post, reported_time) VALUES (:report_reason, :reported_by, :reported_post, :reported_time)") > 0 ) {
+                        $notice .= $TANGO->tpl->entity(
+                          'success_notice',
+                          'content',
+                          $LANG['global_form_process']['report_create_success']
+                        );
+                      } else {
+                        throw new Exception ($LANG['global_form_process']['error_submitting_report']);
                       }
 
                   }

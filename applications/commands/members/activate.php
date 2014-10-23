@@ -13,8 +13,10 @@
   if( $PGET->g('code') ) {
 
       $code = clean($PGET->g('code'));
-      $MYSQL->where('date_joined', $code);
-      $query = $MYSQL->get('{prefix}users');
+      //$MYSQL->where('date_joined', $code);
+      //$query = $MYSQL->get('{prefix}users');
+      $MYSQL->bind('date_joined', $code);
+      $query = $MYSQL->query("SELECT * FROM {prefix}users WHERE date_joined = :date_joined");
 
       if( !empty($query) ) {
 
@@ -36,7 +38,7 @@
 
           if( $query['0']['user_disabled'] == 1 ) {
 
-              $data = array(
+              /*$data = array(
                   'user_disabled' => '0'
               );
               $MYSQL->where('id', $query['0']['id']);
@@ -54,6 +56,20 @@
                       'content',
                       $LANG['bb']['members']['error_activating']
                   );
+              }*/
+              $MYSQL->bind('id', $query['0']['id']);
+              if( $MYSQL->query("UPDATE {prefix}users SET user_disabled = 0 WHERE id = :id") > 0 ) {
+                $content .= $TANGO->tpl->entity(
+                  'success_notice',
+                  'content',
+                  $LANG['bb']['members']['account_activated']
+                );
+              } else {
+                $content .= $TANGO->tpl->entity(
+                  'danger_notice',
+                  'content',
+                  $LANG['bb']['members']['error_activating']
+                );
               }
 
           } else {

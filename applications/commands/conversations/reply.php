@@ -12,9 +12,11 @@
 
   if( $PGET->g('id') ) {
 
-    $MYSQL->where('id', $PGET->g('id'));
-    $MYSQL->where('message_type', 1);
-    $query = $MYSQL->get('{prefix}messages');
+    //$MYSQL->where('id', $PGET->g('id'));
+    //$MYSQL->where('message_type', 1);
+    //$query = $MYSQL->get('{prefix}messages');
+    $MYSQL->bind('id', $PGET->g('id'));
+    $query = $MYSQL->query("SELECT * FROM {prefix}messages WHERE id = :id AND message_type = 1");
 
     if( !empty($query) ) {
 
@@ -38,7 +40,7 @@
                 else{
                     $receiver = $query['0']['message_sender'];
                 }
-      			$data = array(
+      			/*$data = array(
       				'message_title' => 'RE: ' . $query['0']['message_title'],
       				'message_content' => $cont,
       				'message_time' => $time,
@@ -53,7 +55,23 @@
       				redirect(SITE_URL . '/conversations.php/cmd/view/v/' . $query['0']['id']);
       			} catch (mysqli_sql_exception $e) {
       				throw new Exception ($LANG['bb']['conversations']['error_sending_alt']);
-      			}
+      			}*/
+            $MYSQL->bindMore(
+              array(
+                'message_title' => 'RE: ' . $query['0']['message_title'],
+                'mssage_content' => $cont,
+                'message_time' => $time,
+                'origin_message' => $query['0']['id'],
+                'message_sender' => $TANGP->sess->data['id'],
+                'message_receiver' => $receiver
+              )
+            );
+
+            if( $MYSQL->query("INSERT INTO {prefix}messages (message_title, message_content, message_time, origin_message, message_sender, message_receiver, message_type) VALUES (:message_title, :message_content, :message_time, :origin_message, :message_sender, :message_receiver, 2)") > 0 ) {
+              redirect(SITE_URL . '/conversations.php/cmd/view/v/' . $query['0']['id']);
+            } else {
+              throw new Exception ($LANG['bb']['conversations']['error_sending_alt']);
+            }
 
       		}
 

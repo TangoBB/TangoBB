@@ -25,7 +25,7 @@
 
          if( $gravatar == "1" ) {
 
-             $data = array(
+             /*$data = array(
               'avatar_type' => '1'
              );
              $MYSQL->where('id', $TANGO->sess->data['id']);
@@ -39,6 +39,16 @@
                  );
              } catch (mysqli_sql_exception $e) {
                  throw new Exception ($LANG['bb']['profile']['error_adding_gravatar']);
+             }*/
+             $MYSQL->bind('id', $TANGO->sess->data['id']);
+             if( $MYSQL->query("UPDATE {prefix}users SET avatar_type = 1 WHERE id = :id") > 0 ) {
+              $notice .= $TANGO->tpl->entity(
+                'success_notice',
+                'content',
+                $LANG['bb']['profile']['successful_adding_gravatar']
+              );
+             } else {
+              throw new Exception ($LANG['bb']['profile']['error_adding_gravatar']);
              }
 
          } elseif( !$_FILES['avatar'] ) {
@@ -61,7 +71,7 @@
                  $avatar_dir = 'public/img/avatars/' . $TANGO->sess->data['id'] . '.png';
                  if( copy($image['tmp_name'], $avatar_dir) ) {
 
-                     $data = array(
+                     /*$data = array(
                          'user_avatar' => $TANGO->sess->data['id'] . '.png',
                          'avatar_type' => '0'
                      );
@@ -80,7 +90,18 @@
                              'content',
                              $LANG['bb']['profile']['successful_upload_avatar']
                          );
-                     }
+                     }*/
+                     $MYSQL->bind('user_avatar', $TANGO->sess->data['id'] . '.png');
+                     $MYSQL->bind('id', $TANGO->sess->data['id']);
+                     $MYSQL->query("UPDATE {prefix}users SET user_avatar = :user_avatar WHERE id = :id");
+                     $MYSQL->MYSQL->bind('id', $TANGO->sess->data['id']);
+                     $MYSQL->query("UPDATE {prefix}users SET avatar_type = 0 WHERE id = :id");
+                     $notice .= $TANGO->tpl->entity(
+                      'success_notice',
+                      'content',
+                      $LANG['bb']['profile']['successful_upload_avatar']
+                    );
+
                  } else {
                      throw new Exception ($LANG['bb']['profile']['error_upload_avatar']);
                  }

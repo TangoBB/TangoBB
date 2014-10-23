@@ -13,9 +13,11 @@
       
       $get = clean($PGET->g('v'));
       
-      $MYSQL->where('id', $get);
+      /*$MYSQL->where('id', $get);
       $MYSQL->where('message_type', 1);
-      $query = $MYSQL->get('{prefix}messages');
+      $query = $MYSQL->get('{prefix}messages');*/
+      $MYSQL->bind('id', $get);
+      $query = $MYSQL->query("SELECT * FROM {prefix}messages WHERE id = :id AND message_type = 1");
       if( !empty($query) ) {
           $auth = array(
             $query['0']['message_sender'],
@@ -113,9 +115,11 @@
 
           $content = $starter;
           
-          $MYSQL->where('origin_message', $get);
-          $MYSQL->where('message_type', 2);
-          $rep = $MYSQL->get('{prefix}messages');
+          //$MYSQL->where('origin_message', $get);
+          //$MYSQL->where('message_type', 2);
+          //$rep = $MYSQL->get('{prefix}messages');
+          $MYSQL->bind('origin_message', $get);
+          $rep = $MYSQL->query("SELECT * FROM {prefix}messages WHERE origin_message = :origin_message AND message_type = 2");
           foreach( $rep as $post ) {
 
               if( $post['receiver_viewed'] == 0  && $TANGO->sess->data['id'] == $post['message_receiver']) {

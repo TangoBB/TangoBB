@@ -1,0 +1,134 @@
+/*
+ * Codetana Forum Layout
+ */
+
+@import url('bootstrap.min.css');
+@import url('logo.font.css');
+@import url('http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic');
+@import url('http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
+
+/* Bootstrap Elements */
+@import url('navigation.css');
+@import url('panel.css');
+@import url('button.css');
+@import url('forum.css');
+@import url('form.css');
+@import url('notice.css');
+
+h1, h2, h3, h4, h5 {
+	/* Font */
+	font-family: 'fira_sanslight';
+	text-shadow: 1px 1px 0px #f1f1f1;
+	/* Margin */
+	margin: 0;
+}
+
+body {
+    background-image: url('../img/crossword.png');
+	/* Font */
+	font-family: 'Noto Sans', sans-serif;
+}
+
+/* Row */
+.row-main {
+	background-color: #fff;
+	position: relative;
+	/* Margin and Padding */
+	padding: 10px;
+	/* Border */
+	border: 1px solid #f1f1f1;
+	/* Border Radius */
+	-moz-border-radius: 3px;
+	     border-radius: 3px;
+	/* Box Shadow */
+	-webkit-box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.1);
+       -moz-box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.1);
+}
+
+.row-main:after, .row-main:before {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.row-main:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #fff;
+	border-width: 10px;
+	margin-left: -10px;
+}
+.row-main:before {
+	border-color: rgba(241, 241, 241, 0);
+	border-bottom-color: #f1f1f1;
+	border-width: 11px;
+	margin-left: -11px;
+}
+
+/*
+ * Logo
+ */
+.logo {
+	height: auto;
+	width: 250px;
+	/* Font */
+	font-size: 50px;
+}
+
+.logo-small {
+	height: auto;
+	width: 125px;
+	/* Margin */
+	margin: 0 auto;
+	/* Font */
+	font-size: 30px;
+}
+
+.logo:before, .logo-small:before, .logo-animate:before {
+	content: 'Code';
+	/* Font */
+	font-family: 'fira_sansmedium';
+	color: #a57aa0;
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.logo:after, .logo-small:after, .logo-animate:after {
+	content: 'tana';
+	/* Font */
+	font-family: 'artbrushmedium';
+	color: #c75e5c;
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Footer */
+footer.footer {
+	/* Font */
+	color: #adadad;
+	font-family: 'fira_sanslight';
+	text-align: center;
+	text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+	/* Margin */
+	margin: 5px 0 5px 0;
+}
+
+.hosted_by {
+	background-image: url('../img/hosted_by.png');
+	height: 25px;
+	width: 95px;
+	/* Margin */
+	margin: 0 auto;
+}
+
+/* Well */
+.well {
+	background-color: #e3e3e3;
+	/* Box Shadow */
+    -webkit-box-shadow: none;
+	   -moz-box-shadow: none;
+	        box-shadow: none;
+}
