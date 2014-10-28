@@ -14,3 +14,6 @@ Iko's unofficial name is "TangoBB". The project has since rebranded to "Iko".
 
 ###Themes
 Iko has a dedicated theme repository. [Check it out](https://github.com/cxdy/iko-themes).
+
+###Bitnami
+Use Bitnami? Soon you'll be able to install Iko as a stack. [Vote here](https://bitnami.com/stack/iko).
