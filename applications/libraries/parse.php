@@ -54,11 +54,11 @@ class Library_Parse {
             // aligned right
             '#\\[right\\](.*?)\\[/right\\]#uis' => '<p align="right">\\1</p>',
             // font size
-            '#\\[size=([^\\]]*?)\\](.*?)\\[/size\\]#uis' => '<span size="\\1">\\2</span>',
+            '#\\[size=([^\\]]*?)\\](.*?)\\[/size\\]#uis' => '<span style="font-size: \\1;">\\2</span>',
             // font color
-            '#\\[color=([^\\]]*?)\\](.*?)\\[/color\\]#uis' => '<span color="\\1">\\2</span>',
+            '#\\[color=([^\\]]*?)\\](.*?)\\[/color\\]#uis' => '<span style="color: \\1;">\\2</span>',
             // font face
-            '#\\[font=([^\\]]*?)\\](.*?)\\[/font\\]#uis' => '<span face="\\1">\\2</span>',
+            '#\\[font=([^\\]]*?)\\](.*?)\\[/font\\]#uis' => '<span style="font-family: \\1;">\\2</span>',
             // codeblock without a specific brush
             '#\\[code\\](.*?)\\[/code\\]#uis' => '<pre class="brush: php">\\1</pre>',
             // codeblock with a specific brush
@@ -121,6 +121,7 @@ class Library_Parse {
             },
             // media like YouTube, Vimeo and so on
             '#\\[media=([^\\]]*?)\\](.*?)\\[/media\\]#uis' => function($matches) {
+                $output = "";
                 if(strtolower($matches[1])=='youtube') {
                     $output = '<iframe width="560" height="315" src="//www.youtube.com/embed/'.$matches[2].'?rel=0" frameborder="0" allowfullscreen></iframe>';
                 }
