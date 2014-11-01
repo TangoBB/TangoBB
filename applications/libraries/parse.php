@@ -54,15 +54,15 @@ class Library_Parse {
             // aligned right
             '#\\[right\\](.*?)\\[/right\\]#uis' => '<p align="right">\\1</p>',
             // font size
-            '#\\[size=([^\\]]*?)\\](.*?)\\[/size\\]#uis' => '<font size="\\1">\\2</font>',
+            '#\\[size=([^\\]]*?)\\](.*?)\\[/size\\]#uis' => '<span size="\\1">\\2</span>',
             // font color
-            '#\\[color=([^\\]]*?)\\](.*?)\\[/color\\]#uis' => '<font color="\\1">\\2</font>',
+            '#\\[color=([^\\]]*?)\\](.*?)\\[/color\\]#uis' => '<span color="\\1">\\2</span>',
             // font face
-            '#\\[font=([^\\]]*?)\\](.*?)\\[/font\\]#uis' => '<font face="\\1">\\2</font>',
-            // preformatted
+            '#\\[font=([^\\]]*?)\\](.*?)\\[/font\\]#uis' => '<span face="\\1">\\2</span>',
+            // codeblock without a specific brush
             '#\\[code\\](.*?)\\[/code\\]#uis' => '<pre class="brush: php">\\1</pre>',
-            
-            '#\\[code=([^\\]]*?)\\](.*?)\\[/code\\]#uis' => '<b>\\1 Code:</b><pre class="brush: \\1">\\2</pre>',
+            // codeblock with a specific brush
+            '#\\[code=([^\\]]*?)\\](.*?)\\[/code\\]#uis' => '<pre class="brush: \\1">\\2</pre>',
             // flags
             '#\\[flag\\](.*?)\\[/flag\\]#uis' => '<span class="flag-icon flag-icon-\\1"></span>',
             // image
@@ -82,7 +82,7 @@ class Library_Parse {
 
                 $url = trim($matches[1]);
                 if ($this_object->checkSafeUrl($url)) {
-                    $output = '<a href="' . $url . '" rel="nofollow">' . $url . '</a>';
+                    $output = '<a href="' . $url . '">' . $url . '</a>';
                 }
 
                 return $output;
@@ -94,7 +94,7 @@ class Library_Parse {
                 $url = trim($matches[1]);
                 $text = $matches[2];
                 if ($this_object->checkSafeUrl($url)) {
-                    $output = '<a href="' . $url . '" rel="nofollow">' . $text . '</a>';
+                    $output = '<a href="' . $url . '">' . $text . '</a>';
                 }
 
                 return $output;
