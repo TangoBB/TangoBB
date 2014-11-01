@@ -22,7 +22,7 @@
 	        $site_url = explode('/install/', $request);
 	        $site_url = $site_url[0];
 
-    	    if(!$mysql_host or !$mysql_username or !$mysql_password or !$mysql_database or !$mysql_prefix){//Check if all values are there.
+    	    if(!$mysql_host or !$mysql_username or !$mysql_database or !$mysql_prefix){//Check if all values are there.
     		    throw new Exception('All fields are required!');//If not, error.
 		    }elseif(!$conn = @mysqli_connect($mysql_host, $mysql_username, $mysql_password)){//Checks if MySQL connection could be established.
 			    throw new Exception('MySQL Server connection could not be established.');//If not, error.
