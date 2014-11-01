@@ -628,11 +628,13 @@
           $TANGO->tpl->addParam(
               array(
                   'page_title',
-                  'content'
+                  'content',
+                  'description'
               ),
               array(
                   $query['0']['post_title'],
-                  $content
+                  $content,
+                  substr($query['0']['post_content'], 0, 200).'...'
               )
           );
       } else {

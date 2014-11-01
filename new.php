@@ -243,11 +243,13 @@
           $TANGO->tpl->addParam(
               array(
                   'page_title',
-                  'content'
+                  'content',
+                  'description'
               ),
               array(
                   $LANG['bb']['new_thread_in'] . ' ' . $query['0']['node_name'],
-                  $notice . $content
+                  $notice . $content,
+                  ''
               )
           );
 

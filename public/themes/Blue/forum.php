@@ -3,9 +3,24 @@
 ?>
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>%site_name%</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="%description%">
+
+    <meta property="og:title" content="%site_name%" />
+    <meta property="og:url" content="%site_url%" />
+    <meta property="og:site_name" content="%site_name%"/>
+    <meta property="og:description" content="%description%" />
+    <meta property="og:image" content="" />
+
+    <!-- Not supported tags:
+    <meta property="fb:admins" content="" />
+    <meta property="fb:page_id" content="" />
+    <meta property="article:publisher" content="" />
+    <meta property="article:author" content="" />
+    -->
+
     <!-- Bootstrap -->
     <link href="%site_url%/public/themes/Blue/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="%site_url%/public/themes/Blue/assets/css/bootstrap-theme.css" rel="stylesheet">
@@ -13,117 +28,118 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
     <!-- Flags -->
     <link href="%site_url%/public/css/flag/css/flag-icon.css" rel="stylesheet">
-    
+
     %editor_settings%
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
-  </head>
-  <body>
-
-    <div class="container">
-      <a href="#"><div class="logo pull-left"></div></a>
-      <div class="search_box pull-right">
+</head>
+<body>
+<div class="container">
+    <a href="#"><div class="logo pull-left"></div></a>
+    <div class="search_box pull-right">
         <form action="%site_url%/search.php" method="POST">
-          <div class="left-inner-addon">
-            <i class="glyphicon glyphicon-search"></i>
-            <input name="search_query" type="text" class="form-control tooltip_toggle" placeholder="Search..." data-toggle="tooltip" data-placement="left" title="Press Enter">
-            <input type="submit" name="search_submit" style="visibility:hidden;display:none;" value="Search" />
-          </div>
+            <div class="left-inner-addon">
+                <i class="glyphicon glyphicon-search"></i>
+                <input name="search_query" type="text" class="form-control tooltip_toggle" placeholder="Search..." data-toggle="tooltip" data-placement="left" title="Press Enter">
+                <input type="submit" name="search_submit" style="visibility:hidden;display:none;" value="Search" />
+            </div>
         </form>
-      </div>
     </div>
+</div>
 
-    <nav class="navbar navbar-default" role="navigation">
-      <div class="container">
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="%site_url%">Forums</a></li>
-            <li><a href="%site_url%/members.php">Members</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            @if ($TANGO->sess->isLogged)
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> %username%</a>
-              <ul class="dropdown-menu">
-                @foreach ($TANGO->user->userLinks() as $name => $link)
-                <li>
-                  <a href="{{ $link }}">
-                    {{ $name }}
-                  </a>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="%site_url%">Forums</a></li>
+                <li><a href="%site_url%/members.php">Members</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                @if ($TANGO->sess->isLogged)
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> %username%</a>
+                    <ul class="dropdown-menu">
+                        @foreach ($TANGO->user->userLinks() as $name => $link)
+                        <li>
+                            <a href="{{ $link }}">
+                                {{ $name }}
+                            </a>
+                        </li>
+                        @endforeach
+                    </ul>
                 </li>
-                @endforeach
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="glyphicon glyphicon-envelope"></i> Conversations
-                @if (count($TANGO->user->userMessages()) > 0)
-                <span class="label label-success">{{ count($TANGO->user->userMessages()) }}</span>
-                @endif
-              </a>
-              <ul class="dropdown-menu">
-                @if (count($TANGO->user->userMessages()) > 0)
-                @foreach ($TANGO->user->userMessages() as $msg)
-                <li><a href="{{ $msg['view_url'] }}">
-                  <h4>
-                    {{ $msg['message_title'] }}
-                    </h4>
-                    <small>By {{ $msg['message_sender'] }} at
-                      {{ date('F j, Y', $msg['message_time']) }}</small>
-                  </a>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="glyphicon glyphicon-envelope"></i> Conversations
+                        @if (count($TANGO->user->userMessages()) > 0)
+                        <span class="label label-success">{{ count($TANGO->user->userMessages()) }}</span>
+                        @endif
+                    </a>
+                    <ul class="dropdown-menu">
+                        @if (count($TANGO->user->userMessages()) > 0)
+                        @foreach ($TANGO->user->userMessages() as $msg)
+                        <li>
+                            <a href="{{ $msg['view_url'] }}">
+                                <h4>
+                                    {{ $msg['message_title'] }}
+                                </h4>
+                                <small>By {{ $msg['message_sender'] }} at
+                                    {{ date('F j, Y', $msg['message_time']) }}</small>
+                            </a>
+                        </li>
+                        @endforeach
+                        @else
+                        <li role="presentation" class="dropdown-header">No Messages</li>
+                        @endif
+                        <li><a href="%site_url%/conversations.php">Conversations</a></li>
+                        <li><a href="%site_url%/conversations.php/cmd/new">New Message</a></li>
+                    </ul>
                 </li>
-                @endforeach
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="overflow:auto;">
+                        <i class="fa fa-bell"></i>
+                        @if (count($TANGO->user->notifications()) > 0)
+                                    <span class="badge">
+                                        {{ count($TANGO->user->notifications()) }}
+                                    </span>
+                        @endif
+                    </a>
+                    <ul class="dropdown-menu">
+                        @if (count($TANGO->user->notifications()) < 1)
+                        <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">No new notifications yet.</a></li>
+                        @else
+                        @foreach ($TANGO->user->notifications() as $note)
+                        <li>
+                            <a href="{{ $note['notice_link'] }}">
+                                {{ $note['notice_content'] }}
+                                <small class="text-muted">{{ date('F j, Y', $note['time_received']) }}</small>
+                            </a>
+                        </li>
+                        @endforeach
+                        {{ $TANGO->user->clearNotification() }}
+                        @endif
+                    </ul>
+                </li>
                 @else
-                <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">No Messages</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#login_modal">Sign In</a></li>
                 @endif
-                <li><a href="%site_url%/conversations.php">Conversations</a></li>
-                <li><a href="%site_url%/conversations.php/cmd/new">New Message</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="overflow:auto;">
-                <i class="fa fa-bell"></i>
-                @if (count($TANGO->user->notifications()) > 0)
-                <span class="badge">
-                  {{ count($TANGO->user->notifications()) }}
-                </span>
-                @endif
-              </a>
-              <ul class="dropdown-menu">
-                @if (count($TANGO->user->notifications()) < 1)
-                <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">No new notifications yet.</a></li>
-                @else
-                 @foreach ($TANGO->user->notifications() as $note)
-                 <li><a href="{{ $note['notice_link'] }}">
-                   {{ $note['notice_content'] }}
-                   <small class="text-muted">{{ date('F j, Y', $note['time_received']) }}</small>
-                   </a>
-                 </li>
-                 @endforeach
-                 {{ $TANGO->user->clearNotification() }}
-                @endif
-              </ul>
-            </li>
-            @else
-            <li><a href="#" data-toggle="modal" data-target="#login_modal">Sign In</a></li>
-            @endif
-          </ul>
+            </ul>
         </div>
-      </div>
-    </nav>
+    </div>
+</nav>
 
     <div id="wrap" class="container">
       <div class="row">
