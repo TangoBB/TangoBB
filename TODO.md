@@ -1,7 +1,6 @@
 [![Iko](https://raw.githubusercontent.com/IkoBulletin/Iko/master/public/img/iko_logo.png "Iko")](http://iko.im "Iko")
 ##TODO-List
 * Attachment-System
-* Language-Country dependency
 * More commands for the terminal
 * Profile comments
 * Last visitors
