@@ -17,4 +17,3 @@ Iko has a dedicated theme repository. [Check it out](https://github.com/cxdy/iko
 
 ###Bitnami
 Use Bitnami? Soon you'll be able to install Iko as a stack. [Vote here](https://bitnami.com/stack/iko).
-<iframe allowTransparency="true" frameborder="0" scrolling="no" src="https://bitnami.com/product/iko/widget" style="border:none;width:230px; height:100px;"></iframe>
