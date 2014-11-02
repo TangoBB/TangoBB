@@ -168,7 +168,7 @@
       <footer class="footer">
         <div class="row">
           <div class="col-md-6">
-            <a href="http://iko.im/">Powered by Iko</a><br />
+            <a href="http://tangobb.com/">Powered by TangoBB</a><br />
             <small class="text-muted">Load Time: %elapsed_time% seconds | Memory: %memory_usage%</small>
           </div>
           <div class="col-md-6 change_theme">

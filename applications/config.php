@@ -1,5 +1,5 @@
 <?php
 
-  die('Iko not yet installed.');
+  die('TangoBB not yet installed!');
 
 ?>

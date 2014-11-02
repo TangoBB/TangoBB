@@ -1,0 +1,55 @@
+Time : 14:40:26
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '+birthday, ?, about_user = ? WHERE id = ?' at line 1
+Raw SQL : UPDATE iko_users SET set_timezone = :set_timezone, location = :location, gender = :gender, user+birthday, :user_birthday, about_user = :about_user WHERE id = :id
+
+Time : 14:19:40
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'iko.iko_forum_post' doesn't exist
+Raw SQL : SELECT * FROM iko_forum_post WHERE origin_thread = :origin_thread
+
+Time : 14:19:12
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'iko.iko_forum_post' doesn't exist
+Raw SQL : SELECT * FROM iko_forum_post WHERE origin_thread = :origin_thread
+
+Time : 14:19:09
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'iko.iko_forum_post' doesn't exist
+Raw SQL : SELECT * FROM iko_forum_post WHERE origin_thread = :origin_thread
+
+Time : 10:51:25
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '}forum_posts WHERE origin_thread = ? AND post_type = 2 ORDER BY post_time DESC' at line 1
+Raw SQL : SELECT * FROM {prefi}forum_posts WHERE origin_thread = :origin_thread AND post_type = 2 ORDER BY post_time DESC
+
+Time : 10:48:23
+SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+Raw SQL : SELECT * FROM iko_forum_posts WHERE origin_thread = :origin_thread OR id = :id ORDER BY post_time DESC
+
+Time : 10:47:29
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '}forum_posts WHERE origin_thread = ? OR id = ? ORDER BY post_time DESC' at line 1
+Raw SQL : SELECT * FROM {prefi}forum_posts WHERE origin_thread = :origin_thread OR id = :id ORDER BY post_time DESC
+
+Time : 10:42:07
+SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+Raw SQL : SELECT * FROM iko_forum_posts WHERE post_time = :post_time
+
+Time : 10:39:59
+SQLSTATE[21S01]: Insert value list does not match column list: 1136 Column count doesn't match value count at row 1
+Raw SQL : INSERT INTO iko_forum_posts (post_title, title_friendly, post_content, post_tags, post_time, post_user, origin_node, post_type, last_updated, watchers)
+                                         VALUES
+                                         (:post_title, :title_friendly, :post_content, :post_tags, :post_user, :origin_node, :post_type, :last_updated, :watchers)
+
+Time : 10:39:40
+SQLSTATE[21S01]: Insert value list does not match column list: 1136 Column count doesn't match value count at row 1
+Raw SQL : INSERT INTO iko_forum_posts (post_title, title_friendly, post_content, post_tags, post_time, post_user, origin_node, post_type, last_updated, watchers)
+                                         VALUES
+                                         (:post_title, :title_friendly, :post_content, :post_tags, :post_user, :origin_node, :post_type, :last_updated, :watchers)
+
+Time : 10:38:58
+SQLSTATE[21S01]: Insert value list does not match column list: 1136 Column count doesn't match value count at row 1
+Raw SQL : INSERT INTO iko_forum_posts (post_title, title_friendly, post_content, post_tags, post_time, post_user, origin_node, post_type, last_updated, watchers)
+                                         VALUES
+                                         (:post_title, :title_friendly, :post_content, :post_tags, :post_user, :origin_node, :post_type, :last_updated, :watchers)
+
+Time : 10:37:35
+SQLSTATE[21S01]: Insert value list does not match column list: 1136 Column count doesn't match value count at row 1
+Raw SQL : INSERT INTO iko_forum_posts (post_title, title_friendly, post_content, post_tags, post_time, post_user, origin_node, post_type, last_updated, watchers)
+                                         VALUES
+                                         (:post_title, :title_friendly, :post_content, :post_tags, :post_user, :origin_node, :post_type, :last_updated, :watchers)
