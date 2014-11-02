@@ -1,19 +1,19 @@
-[![Iko](https://raw.githubusercontent.com/IkoBulletin/Iko/master/public/img/iko_logo.png "Iko")](http://iko.im "Iko")
+[![TangoBB](https://raw.githubusercontent.com/IkoBulletin/Iko/master/public/img/iko_logo.png "Iko")](http://iko.im "Iko")
 ##The new simple bulletin board.
 Please note that this forum software will be as generic but a little complex on the theme design aspect as we want it to be very customizable for amateur web developers to learn.
-Iko is released under the MIT License.
+TangoBB is released under the MIT License.
 
-###More Info
-More information on Iko and archived versions of it can be found on our website at http://iko.im/
+###Urgent Notice
+Iko will be rebranded back to TangoBB due to popular demand. This will take effect in the next major release.
 
 ###Documentation
 The documentation can be found at the "Wiki" tab to the right!
 
-###Why are some classes named "TangoBB"?
-Iko's unofficial name is "TangoBB". The project has since rebranded to "Iko".
+###Why are some classes named "Iko"?
+TangoBB's unofficial name is "Iko". The project has since been rebranded back to "TangoBB" due to popular demand.
 
 ###Themes
-Iko has a dedicated theme repository. [Check it out](https://github.com/cxdy/iko-themes).
+The theme repository can be located [here](https://github.com/Codetana/TangoBB-Themes).
 
 ###Bitnami
 Use Bitnami? Soon you'll be able to install Iko as a stack. [Vote here](https://bitnami.com/stack/iko).
