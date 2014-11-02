@@ -1,4 +1,4 @@
-[![Iko](https://raw.githubusercontent.com/IkoBulletin/Iko/master/public/img/tangobb_logo.png "Iko")](http://iko.im "TangoBB")
+[![Iko](https://raw.githubusercontent.com/Codetana/Iko/PDO/public/img/tangobb_logo.png "Iko")](http://iko.im "TangoBB")
 ##PDO conversion from MySQLi
 This branch is dedicated to converting the current MySQLi-dependent framework to a PDO-dependent framework for a wider variety of database choices for administrators to go into.
 
