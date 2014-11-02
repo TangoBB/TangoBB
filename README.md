@@ -9,4 +9,4 @@ Currently, the conversion is still in development and still contains *many* unco
 This branch will eventually merge with the master branch for full support for the PDO version over the MySQLi version.
 
 ###API Changes?
-We will also be updating the API consistently throughout the update of this branch with the goal of making the code more secure and reduced load time.
+We will also be updating the API consistently throughout the update of this branch with the goal of making the code more secure and reducing load times.
