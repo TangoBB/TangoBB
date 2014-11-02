@@ -4,33 +4,65 @@
    * User Profile module for TangoBB
    * Everything that you want to display MUST be in the $content variable.
    */
+
   if( !defined('BASEPATH') ){ die(); }
   $content    = '';
   $page_title = '';
 
   if( $PGET->g('id') ) {
-      
-      $id    = clean($PGET->g('id'));
+
+      $id      = clean($PGET->g('id'));
       $MYSQL->where('id', $id);
-      $query = $MYSQL->get('{prefix}users');
+      $query   = $MYSQL->get('{prefix}users');
 
       $MYSQL->where('username', $id);
       $u_query = $MYSQL->get('{prefix}users');
 
-      $query = (empty($query))? $u_query : $query;
-      
-      if( !empty($query) ) {
-          
-          $page_title     .= $LANG['bb']['members']['profile_of'] . ' ' . $query['0']['username'];
-          $userg           = $TANGO->usergroup($query['0']['user_group']);
-          $user            = $TANGO->user($id);
-          
+      $query   = (empty($query)) ? $u_query : $query;
+
+      if (!empty($query)) {
+
+          $page_title .= $LANG['bb']['members']['profile_of'] . ' ' . $query['0']['username'];
+          $userg       = $TANGO->usergroup($query['0']['user_group']);
+          $user        = $TANGO->user($id);
+
+          if($TANGO->sess->isLogged && $TANGO->sess->data['id'] != $user['id']){
+              // Inserting a new visitor
+              $data = array(
+                  'profile_owner' => $user['id'],
+                  'visitor' => $TANGO->sess->data['id']
+              );
+              try {
+                  /*
+                   * ToDo: Check if the user already visited the page -> update entry
+                   */
+                  $MYSQL->insert('{prefix}user_visitors', $data);
+              } catch (mysqli_sql_exception $e) {
+                  throw new Exception ($LANG['global_form_process']['error_creating_thread']);
+              }
+          }
+      }
+  }
+  else {
+      if( $TANGO->sess->isLogged ) {
+          $page_title .= $LANG['bb']['members']['profile_of'] . ' ' . $TANGO->sess->data['username'];
+          $userg       = $TANGO->usergroup($TANGO->sess->data['user_group']);
+          $user        = $TANGO->user($TANGO->sess->data['id']);
+      }
+      else {
+          redirect(SITE_URL . '/404.php');
+      }
+  }
+
+if(isset($user) && isset($userg) && isset($page_title))
+{
+          //Recent activity protocol
           $recent_activity = '';
-      $data = array($query['0']['id']);
-          $query           = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 15", $data);
+          $data  = array($query['0']['id']);
+          $query = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 15", $data);
           foreach( $query as $ac ) {
+              //User created thread
               if( $ac['post_type'] == "1" ) {
-                  //$recent_activity .= 'Posted a new thread <a href="' . SITE_URL . '/thread.php/v/' . $ac['title_friendly'] . '.' . $ac['id'] . '">' . $ac['post_title'] . '</a> <small>(' . date('F j, Y', $ac['post_time']) . ')</small><hr size="1" />';
                   $recent_activity .= str_replace(
                     array(
                       '%url%',
@@ -45,8 +77,8 @@
                     $LANG['bb']['members']['posted_thread']
                   );
               } else {
+                  //User replied to thread
                   $thread           = thread($ac['origin_thread']);
-                  //$recent_activity .= 'Replied to the thread <a href="' . SITE_URL . '/thread.php/v/' . $thread['title_friendly'] . '.' . $thread['id'] . '#post-' . $thread['id'] . '">' . $thread['post_title'] . '</a> <small>(' . date('F j, Y', $ac['post_time']) . ')</small><hr size="1" />';
                   $recent_activity .= str_replace(
                     array(
                       '%url%',
@@ -62,9 +94,9 @@
                   );
               }
           }
-          
-          $mod_tools       = '';
-          
+
+          //Moderation tools
+          $mod_tools = '';
           if( $TANGO->perm->check('access_moderation') ) {
              if( $user['is_banned'] == "1" ) {
                   $mod_tools .= $TANGO->tpl->entity(
@@ -95,6 +127,43 @@
              }
           }
 
+          //profile comments
+          $comments = '';
+          $query = $MYSQL->rawQuery("SELECT writer,comment,timestamp FROM {prefix}user_comments WHERE profile_owner = ? ORDER BY timestamp DESC LIMIT 10", $data);
+          foreach( $query as $entry ) {
+
+              /*
+               * ToDo: - date[format]
+               */
+              $writer  = $TANGO->user($entry['writer']);
+              $comment = $TANGO->lib_parse->parse($entry['comment']);
+              $date    = $entry['timestamp'];
+
+              $comments .= $TANGO->tpl->entity(
+                  'user_profile_comments',
+                  array(
+                      'writer',
+                      'comment',
+                      'date'
+                  ),
+                  array(
+                      $writer['username_style'],
+                      $comment,
+                      $date
+                  )
+              );
+          }
+
+          //profile visitors
+          $visitors = '<div><ul class="visitors_framed">';
+          $query = $MYSQL->rawQuery("SELECT visitor FROM {prefix}user_visitors WHERE profile_owner = ? ORDER BY timestamp DESC LIMIT 10", $data);
+          foreach( $query as $entry ) {
+              $visitor   = $TANGO->user($entry['visitor']);
+              $visitors .= '<li><a href="'.SITE_URL.'/members.php/cmd/user/id/'.$visitor['id'].'"><img src="' . $visitor['user_avatar'] . '" class="img-thumbnail" style="width:45px;height:45px;" /></a></li>';
+          }
+          $visitors .= '</ul></div>';
+
+
           //Breadcrumbs
           $TANGO->tpl->addBreadcrumb(
             $LANG['bb']['forum'],
@@ -110,8 +179,9 @@
             true
           );
           $content .= $TANGO->tpl->breadcrumbs();
-          
-          $content        .= $TANGO->tpl->entity(
+
+          //user profile
+          $content .= $TANGO->tpl->entity(
               'user_profile_page',
               array(
                   'username',
@@ -125,7 +195,9 @@
                   'gender',
                   'age',
                   'recent_activity',
-                  'mod_tools'
+                  'mod_tools',
+                  'visitors',
+                  'comments'
               ),
               array(
                   $user['username_style'],
@@ -139,111 +211,12 @@
                   gender($user['gender']),
                   birthday_to_age($user['user_birthday']),
                   $recent_activity,
-                  $mod_tools
+                  $mod_tools,
+                  $visitors,
+                  $comments
               )
           );
           
-      } else {
-          redirect(SITE_URL . '/404.php');
       }
-      
-  } else {
-      
-      if( $TANGO->sess->isLogged ) {
-          
-          $page_title     .= $LANG['bb']['members']['profile_of'] . ' ' . $TANGO->sess->data['username'];
-          $user            = $TANGO->usergroup($TANGO->sess->data['user_group']);
-          
-          $recent_activity = '';
-      $data = array($TANGO->sess->data['id']);
-          $query           = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 15", $data);
-          foreach( $query as $ac ) {
-              if( $ac['post_type'] == "1" ) {
-                  //$recent_activity .= 'Posted a new thread <a href="' . SITE_URL . '/thread.php/v/' . $ac['title_friendly'] . '.' . $ac['id'] . '">' . $ac['post_title'] . '</a> <small>(' . date('F j, Y', $ac['post_time']) . ')</small><hr size="1" />';
-                  $recent_activity .= str_replace(
-                    array(
-                      '%url%',
-                      '%title%',
-                      '%date%'
-                    ),
-                    array(
-                      SITE_URL . '/thread.php/' . $ac['title_friendly'] . '.' . $ac['id'],
-                      $ac['post_title'],
-                      date('F j, Y', $ac['post_time'])
-                    ),
-                    $LANG['bb']['members']['posted_thread']
-                  );      
-              } else {
-                  $thread           = thread($ac['origin_thread']);
-                  //$recent_activity .= 'Replied to the thread <a href="' . SITE_URL . '/thread.php/v/' . $thread['title_friendly'] . '.' . $thread['id'] . '#post-' . $thread['id'] . '">' . $thread['post_title'] . '</a> <small>(' . date('F j, Y', $ac['post_time']) . ')</small><hr size="1" />';
-                  $recent_activity .= str_replace(
-                    array(
-                      '%url%',
-                      '%title%',
-                      '%date%'
-                    ),
-                    array(
-                      SITE_URL . '/thread.php/' . $thread['title_friendly'] . '.' . $thread['id'] . '#post-' . $thread['id'],
-                      $thread['post_title'],
-                      date('F j, Y', $ac['post_time'])
-                    ),
-                    $LANG['bb']['members']['replied_to']
-                  );
-              }
-          }
-
-          //Breadcrumbs
-          $TANGO->tpl->addBreadcrumb(
-            $LANG['bb']['forum'],
-            SITE_URL . '/forum.php'
-          );
-          $TANGO->tpl->addBreadcrumb(
-            $LANG['bb']['members']['home'],
-            SITE_URL . '/members.php'
-          );
-          $TANGO->tpl->addBreadcrumb(
-            $LANG['bb']['members']['profile_of'] . ' ' . $TANGO->sess->data['username'],
-            '#',
-            true
-          );
-          $content .= $TANGO->tpl->breadcrumbs();
-          
-          $content        .= $TANGO->tpl->entity(
-              'user_profile_page',
-              array(
-                  'username',
-                  'user_avatar',
-                  'usergroup',
-                  'registered_date',
-                  'user_signature',
-                  'about_user',
-                  'location',
-                  'flag',
-                  'gender',
-                  'age',
-                  'recent_activity',
-                  'mod_tools'
-              ),
-              array(
-                  $TANGO->sess->data['username_style'],
-                  $TANGO->sess->data['user_avatar'],
-                  $user['group_name'],
-                  localized_date($TANGO->sess->data['date_joined'],$TANGO->sess->data['location']),
-                  $TANGO->lib_parse->parse($TANGO->sess->data['user_signature']),
-                  $TANGO->lib_parse->parse($TANGO->sess->data['about_user']),
-                  $LANG['location'][$TANGO->sess->data['location']],
-                  '<span class="flag-icon flag-icon-'.strtolower($TANGO->sess->data['location']).'"></span>',
-                  gender($TANGO->sess->data['gender']),
-                  birthday_to_age($TANGO->sess->data['user_birthday']),
-                  $recent_activity,
-                  ''
-              )
-          );
-          
-      } else {
-          redirect(SITE_URL . '/404.php');
-      }
-      
-  }
 
 ?>

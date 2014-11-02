@@ -296,3 +296,18 @@ footer a:hover {
 .thread-read {
     visibility: hidden;
 }
+
+.visitors_framed:after {
+    content: "";
+    height: 0px;
+    display: block;
+    clear: both;
+}
+.visitors_framed {
+    list-style: outside none none;
+    padding-left: 0px;
+}
+.visitors_framed li {
+    float: left;
+    margin: 0px 2px 4px 0px;
+}

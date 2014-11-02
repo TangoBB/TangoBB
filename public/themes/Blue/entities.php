@@ -318,22 +318,28 @@
 </form>
 <!--- tpl:reply_thread_page:end -->
 <!--- tpl:user_profile_page:start -->
-<div class="well" style="overflow:auto;">
+<div class="well col-md-4" style="overflow:auto;">
+    <p style="text-align: center;">
+        <img src="%user_avatar%" class="img-thumbnail" style="width: 100px; height: 100px;" />
+    </p>
     <p class="pull-left">
-        <font class="lead">%username% %gender%</font>
-        <br />
-        (%usergroup%)<br />
+        <span class="lead">%username% | %gender%</span><br />
+        %usergroup%<br />
         <b>Registered On:</b> %registered_date% <br />
         <b>Location:</b> %flag% %location%<br />
         <b>Age:</b> %age%
     </p>
-    <p class="pull-right">
-        <img src="%user_avatar%" class="img-thumbnail" style="width:75px;height:75px;" />
+    <p>
+        %visitors%
     </p>
 </div>
+
+<div class="col-md-8">
+
 <ul class="nav nav-tabs">
     <li class="active"><a href="#profile_info" data-toggle="tab">Information</a></li>
     <li><a href="#profile_activity" data-toggle="tab">Recent Activity</a></li>
+    <li><a href="#profile_comments" data-toggle="tab">Comments</a></li>
 </ul>
 <div class="tab-content">
     <div class="tab-pane active" id="profile_info">
@@ -351,8 +357,20 @@
         <br />
         %recent_activity%
     </div>
+    <div class="tab-pane" id="profile_comments">
+        <br />
+        %comments%
+    </div>
+</div>
 </div>
 <!--- tpl:user_profile_page:end -->
+<!--- tpl:user_profile_comments:start -->
+<div>
+    <strong>WORK IN PROGRESS</strong><br />
+    %writer% - %date%<br />
+    %comment%
+</div>
+<!--- tpl:user_profile_comments:end -->
 <!--- tpl:search_page:start -->
 <ul class="nav nav-tabs">
     <li class="active"><a href="#search_threads" data-toggle="tab">Threads</a></li>
