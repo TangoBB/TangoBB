@@ -18,7 +18,7 @@
 		    $mysql_database = $_POST['mysql_d'];//MySQL Database
 		    $mysql_prefix   = $_POST['mysql_pr'];//MySQL Prefix.
 
-            $request  = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+            $request  = '//'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	        $site_url = explode('/install/', $request);
 	        $site_url = $site_url[0];
 
