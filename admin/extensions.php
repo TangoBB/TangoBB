@@ -13,7 +13,7 @@
   if( $PGET->g('install') ) {
       if( file_exists('../applications/extensions/' . $PGET->g('install') . '/') ) {
 
-        $ext = $PGET->g('install');
+        $ext = clean($PGET->g('install'));
         $MYSQL->where('extension_folder', $ext);
         $query = $MYSQL->get('{prefix}extensions');
 
@@ -80,7 +80,7 @@
       $query = $MYSQL->get('{prefix}extensions');
       if( !empty($query) ) {
 
-        $ext = $PGET->g('uninstall');
+        $ext = clean($PGET->g('uninstall'));
         $loc = '../applications/extensions/' . $ext . '/';
         require_once('../applications/dependencies/extension_implementation.php');
         require_once($loc . 'setup.php');

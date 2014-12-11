@@ -6,9 +6,8 @@
    */
   if( !defined('BASEPATH') ){ die(); }
 
-  $page = $PGET->g('page');
-  $page = (!$page)? '1' : $PGET->g('page');
-  $sort = $PGET->g('sort');
+  $page = (!$page)? '1' : clean($PGET->g('page'));
+  $sort = clean($PGET->g('sort'));
 
   $content = '';
   $m_cont  = '';

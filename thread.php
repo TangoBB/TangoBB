@@ -295,7 +295,7 @@
 
           //Watch link.
           if( $TANGO->sess->isLogged ) {
-            $page = ($PGET->g('page'))? '/page/' . $PGET->g('page') : '';
+            $page = ($PGET->g('page'))? '/page/' . clean($PGET->g('page')) : '';
             if( in_array($TANGO->sess->data['id'], $watchers) ) {
               $watch_link = $TANGO->tpl->entity(
                 'unwatch_thread',

@@ -148,12 +148,12 @@
           
           $total_pages = ceil(fetchTotalThread($node_id) / THREAD_RESULTS_PER_PAGE);
           
-          $sort = $PGET->g('sort');
+          $sort = clean($PGET->g('sort'));
           $pag  = '';
           if( $total_pages > 1 ) {
               $i   = '';
               for( $i = 1; $i <= $total_pages; ++$i ) {
-                  $link = ($sort)? SITE_URL . '/node.php/' . $node_name . '.' . $node_id . '/sort/' . $sort . '/page/' . $i : SITE_URL . '/node.php/' . $PGET->g('v') . '/page/' . $i;
+                  $link = ($sort)? SITE_URL . '/node.php/' . $node_name . '.' . $node_id . '/sort/' . $sort . '/page/' . $i : SITE_URL . '/node.php/' . $node_name . '.' . $node_id . '/page/' . $i;
                   if( $i == $page ) {
                       $pag .= $TANGO->tpl->entity(
                           'pagination_link_current',
@@ -168,7 +168,7 @@
                               'page'
                           ),
                           array(
-                              SITE_URL . '/node.php/' . $node_name . '.' . $node_id . '/page/' . $i,
+                              $link,
                               $i
                           )
                       );
