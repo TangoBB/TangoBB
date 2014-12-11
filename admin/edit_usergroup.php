@@ -42,7 +42,7 @@
                   NoCSRF::check( 'csrf_token', $_POST );
 
                   $name   = clean($_POST['g_name']);
-                  $style  = $_POST['g_style'];
+                  $style  = clean($_POST['g_style']);
 
                   if( list_permissions() == $_POST['permissions'] ) {
                       $permissions = '*';

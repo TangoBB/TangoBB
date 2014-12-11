@@ -64,14 +64,14 @@
                   $desc   = (!$_POST['node_desc'])? '' : clean($_POST['node_desc']);
                   $locked = (isset($_POST['lock_node']))? '1' : '0';
 
-                  $all_u  = (isset($_POST['allowed_ug']))? implode(',', $_POST['allowed_ug']) : '0';
+                  $all_u  = (isset($_POST['allowed_ug']))? implode(',', clean($_POST['allowed_ug'])) : '0';
 
                   if( !$title ) {
                       throw new Exception ('All fields are required!');
                   } else {
 
                     if( substr_count($_POST['node_parent'], '&') > 0 ) {
-                      $explode = explode('&', $_POST['node_parent']);
+                      $explode = explode('&', clean($_POST['node_parent']));
                       $parent  = node($explode['1']);
                       $data = array(
                         'node_name' => $title,
@@ -88,7 +88,7 @@
                         'name_friendly' => title_friendly($title),
                         'node_desc' => $desc,
                         'node_locked' => $locked,
-                        'in_category' => $_POST['node_parent'],
+                        'in_category' => clean($_POST['node_parent']),
                         'node_type' => 1,
                         'allowed_usergroups' => $all_u
                       );

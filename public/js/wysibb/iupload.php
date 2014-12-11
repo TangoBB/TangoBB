@@ -7,7 +7,7 @@ $posturl="http://www.imageshack.us/upload_api.php";
 $fileupload = $_FILES["img"]['tmp_name'];
 
 $isIframe =($_POST["iframe"]) ? true:false;
-$idarea = $_POST["idarea"];
+$idarea = htmlentities($_POST["idarea"]);
 $maxwidth = is_numeric($_POST["maxwidth"]) ? $_POST["maxwidth"]:600;
 $maxheight = is_numeric($_POST["maxheight"]) ? $_POST["maxheight"]:600;
 
