@@ -403,6 +403,12 @@
           return $query['0'];
       }
   }
+  function category($id) {
+    global $MYSQL;
+    $MYSQL->bind('id', $id);
+    $query = $MYSQL->query("SELECT * FROM {prefix}forum_category WHERE id = :id");
+    return $query['0'];
+  }
 
   /*
    * Delete a folder with contents in it.

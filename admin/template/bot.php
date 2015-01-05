@@ -7,7 +7,7 @@
           <hr size="1" />
           <div style="text-align:center;">
             Codetana 2014<br />
-            <a href="https://github.com/IkoBulletin/Iko">GitHub</a> | <a href="https://github.com/IkoBulletin/Iko/wiki">Documentation</a> | <a href="http://iko.im/">Website</a>
+            <a href="https://github.com/Codetana/TangoBB">GitHub</a> | <a href="https://github.com/Codetana/TangoBB/wiki">Documentation</a> | <a href="http://tangobb.com/">Website</a>
           </div>
           
       </div>

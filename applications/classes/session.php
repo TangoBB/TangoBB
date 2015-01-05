@@ -127,7 +127,7 @@
           $time = strtotime(TANGO_SESSION_TIMEOUT . ' seconds ago');
           $query = $MYSQL->query("SELECT * FROM {prefix}sessions");
           foreach( $query as $s ) {
-              if( $s['session_time'] < $time ) {
+              if( $s['session_time'] < $time && $s['session_type'] !== 2 ) {
 			          //$data = array($s['id']);
                 //$MYSQL->rawQuery("DELETE FROM {prefix}sessions WHERE id = ?", $data);
                 $MYSQL->bind('id', $s['id']);

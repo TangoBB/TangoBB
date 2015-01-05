@@ -20,7 +20,7 @@
   }
   echo $ADMIN->box(
       'Dashboard',
-      'This forum is powered by Iko <strong>' . TANGOBB_VERSION . '</strong>.'.@$alert,
+      'This forum is powered by TangoBB <strong>' . TANGOBB_VERSION . '</strong>.'.@$alert,
       '<table class="table">
          <thead>
            <tr>
@@ -47,8 +47,8 @@
 
   echo $ADMIN->box(
       'Github and Updates',
-      'Fork Iko on Github <a href="https://github.com/IkoBulletin/Iko">here</a>.<br />
-       To keep up with the updates on Iko, you can fork/watch the Iko Github repository or visit our website at <a href="http://iko.im">Iko.Im</a> regularly!'
+      'Fork TangoBB on Github <a href="https://github.com/Codetana/TangoBB">here</a>.<br />
+       To keep up with the updates on TangoBB, you can fork/watch the TangoBB Github repository or visit our website at <a href="http://tangobb.com">TangoBB.Com</a> regularly!'
   );
 
   require_once('template/bot.php');
