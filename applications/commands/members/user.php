@@ -32,15 +32,15 @@
 
           if($TANGO->sess->isLogged && $TANGO->sess->data['id'] != $user['id']){
               // Inserting a new visitor
-              $data = array(
+              $MYSQL->bindMore(array(
                   'profile_owner' => $user['id'],
                   'visitor' => $TANGO->sess->data['id']
-              );
+              ));
               try {
                   /*
                    * ToDo: Check if the user already visited the page -> update entry
                    */
-                  $MYSQL->insert('{prefix}user_visitors', $data);
+                  $MYSQL->query('INSERT INTO {prefix}user_visitors (profile_owner, visitor) VALUES (:profile_owner, :visitor)');
               } catch (mysqli_sql_exception $e) {
                   throw new Exception ($LANG['global_form_process']['error_creating_thread']);
               }
@@ -135,7 +135,8 @@ if(isset($user) && isset($userg) && isset($page_title))
 
           //profile comments
           $comments = '';
-          $query = $MYSQL->rawQuery("SELECT writer,comment,timestamp FROM {prefix}user_comments WHERE profile_owner = ? ORDER BY timestamp DESC LIMIT 10", $data);
+          $MYSQL->bind('profile_owner', $user['id']);
+          $query = $MYSQL->query("SELECT writer,comment,timestamp FROM {prefix}user_comments WHERE profile_owner = :profile_owner ORDER BY timestamp DESC LIMIT 10");
           foreach( $query as $entry ) {
 
               /*
@@ -162,7 +163,8 @@ if(isset($user) && isset($userg) && isset($page_title))
 
           //profile visitors
           $visitors = '<div><ul class="visitors_framed">';
-          $query = $MYSQL->rawQuery("SELECT visitor FROM {prefix}user_visitors WHERE profile_owner = ? ORDER BY timestamp DESC LIMIT 10", $data);
+          $MYSQL->bind('profile_owner', $user['id']);
+          $query = $MYSQL->query("SELECT visitor FROM {prefix}user_visitors WHERE profile_owner = :profile_owner ORDER BY timestamp DESC LIMIT 10");
           foreach( $query as $entry ) {
               $visitor   = $TANGO->user($entry['visitor']);
               $visitors .= '<li><a href="'.SITE_URL.'/members.php/cmd/user/id/'.$visitor['id'].'"><img src="' . $visitor['user_avatar'] . '" class="img-thumbnail" style="width:45px;height:45px;" /></a></li>';
