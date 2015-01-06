@@ -19,7 +19,7 @@
                              id = ?  
                              LIMIT 1", $data_temp);*/
     $MYSQL->bind('id', $PGET->g('id'));
-    $msg = $MYSQL->query("SELECT * FROM {prefix}mesages WHERE id = :id LIMIT 1");
+    $msg = $MYSQL->query("SELECT * FROM {prefix}messages WHERE id = :id LIMIT 1");
                              
     // store the data from database
     $sender_deleted   = $msg['0']['sender_deleted'];
@@ -48,7 +48,7 @@
       array(
         'receiver_deleted' => $receiver_deleted,
         'sender_deleted' => $sender_deleted,
-        'id' => $PGET->g('id');
+        'id' => $PGET->g('id')
       )
     );
     $MYSQL->query("UPDATE {prefix}messages SET receiver_deleted = :receiver_deleted, sender_deleted = :sender_deleted WHERE id = :id");
@@ -65,7 +65,7 @@
         //$MYSQL->where('origin_message',$PGET->g('id'));
         //$MYSQL->delete('{prefix}messages');
         $MYSQL->bind('origin_message', $PGET->g('id'));
-        $MYSQL->query("DELETE FROM {prefi}messages WHERE origin_message = :origin_message");
+        $MYSQL->query("DELETE FROM {prefix}messages WHERE origin_message = :origin_message");
     }
     
     

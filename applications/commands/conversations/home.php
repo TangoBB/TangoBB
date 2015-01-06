@@ -61,6 +61,7 @@
           
           $sender   = $TANGO->user($msg['message_sender']);
           $receiver = $TANGO->user($msg['message_receiver']);
+
           $message_time = simplify_time($msg['message_time']);
           
           /** Added by N8boy:
@@ -106,7 +107,7 @@
                         </td>
                         <td><span style="float:right">'. $badge .'</span>
                             <h4><a href="' . SITE_URL . '/conversations.php/cmd/view/v/' . $msg['id'] . '">' . $msg['message_title'] . '</a></h4>
-                            ' . $LANG['bb']['conversations']['starter'] .' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $sender['id'] . '">' . $sender['username_style'] . '</a>, ' . $LANG['bb']['conversations']['reciever'] .' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $receiver['id'] . '">' . $receiver['username_style'] . '</a>
+                            ' . $LANG['bb']['conversations']['starter'] .' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $sender['id'] . '">' . $sender['username'] . '</a>, ' . $LANG['bb']['conversations']['reciever'] .' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $receiver['id'] . '">' . $receiver['username_style'] . '</a>
                         </td>
                         <td style="width: 250px;">
                             ' . amount_replies($msg['id']) . ' Replies<br />

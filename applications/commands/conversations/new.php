@@ -11,21 +11,20 @@
   $notice     = '';
 
   if( isset($_POST['create']) ) {
-  	try {
+    try {
+        foreach( $_POST as $parent => $child ) {
+            $_POST[$parent] = clean($child);
+        }
 
-  		foreach( $_POST as $parent => $child ) {
-  			$_POST[$parent] = clean($child);
-  		}
+        $user  = $_POST['receiver'];
+        $cont  = emoji_to_text($_POST['content']);
+        $title = $_POST['title'];
+        $time  = time();
+        $uid   = explode(',', $user);
 
-  		$user  = $_POST['receiver'];
-  		$cont  = emoji_to_text($_POST['content']);
-  		$title = $_POST['title'];
-  		$time  = time();
-      $uid   = explode(',', $user);
-
-  		if( !$user or !$cont or !$title ) {
-  			throw new Exception ($LANG['global_form_process']['all_fields_required']);
-  		} else {
+        if( !$user or !$cont or !$title ) {
+            throw new Exception ($LANG['global_form_process']['all_fields_required']);
+        } else {
 
         foreach( $uid as $u ) {
 
@@ -77,11 +76,11 @@
               'message_content' => $cont,
               'message_time' => $time,
               'message_sender' => $TANGO->sess->data['id'],
-              'message_receiver' => $us['username']
+              'message_receiver' => $us['id']
             )
           );
 
-          if( $MYSQL->query("INSERT INTO {prefix}messages (message_title, message_content, message_time, message_sender, message_receiver, message_type) VALUES (:message_title, :message_content, :message_time, :message_Sender, :message_receiver, 1)") > 0 ) {
+          if( $MYSQL->query("INSERT INTO {prefix}messages (message_title, message_content, message_time, message_sender, message_receiver, message_type) VALUES (:message_title, :message_content, :message_time, :message_sender, :message_receiver, 1)") > 0 ) {
             $notice .= $TANGO->tpl->entity(
               'success_notice',
               'content',
