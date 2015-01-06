@@ -30,8 +30,10 @@
               }
 
               list($command) = sscanf($cmd, '/%s');
-              $MYSQL->where('command_name', $command);
-              $query = $MYSQL->get('{prefix}terminal');
+              /*$MYSQL->where('command_name', $command);
+              $query = $MYSQL->get('{prefix}terminal');*/
+              $MYSQL->bind('command_name', $command);
+              $query = $MYSQL->query('SELECT * FROM {prefix}terminal WHERE command_name = :command_name');
 
               if( !empty($query) ) {
                 $list    = sscanf($cmd, '/' . $query['0']['command_syntax']);
