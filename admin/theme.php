@@ -14,13 +14,15 @@
       $default = clean($PGET->g('set_default'));
       if( in_array($default, $directory) ) {
 
-          $data = array(
+          /*$data = array(
               'site_theme' => $default
           );
-          $MYSQL->where('id', 1);
+          $MYSQL->where('id', 1);*/
+          $MYSQL->bind('site_theme', $default);
 
           try {
-              $MYSQL->update('{prefix}generic', $data);
+              //$MYSQL->update('{prefix}generic', $data);
+              $MYSQL->query('UPDATE {prefix}generic SET site_theme = :site_theme WHERE id = 1');
               $notice .= $ADMIN->alert(
                   'Theme <strong>' . $default . '</strong> has been set as default!',
                   'success'
