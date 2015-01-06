@@ -15,7 +15,7 @@
           $site_url = explode('/install/', $request);
           $site_url = $site_url[0];
 
-          if(!$mysql_host or !$mysql_username or !$mysql_password or !$mysql_database or !$mysql_prefix){//Check if all values are there.
+          if(!$mysql_host or !$mysql_username or !$mysql_database or !$mysql_prefix){//Check if all values are there.
               throw new Exception('All fields are required!');//If not, error.
          /* }elseif(!$conn = @mysqli_connect($mysql_host, $mysql_username, $mysql_password)){//Checks if MySQL connection could be established.
               throw new Exception('MySQL Server connection could not be established.');//If not, error.
@@ -328,7 +328,7 @@
                                                                                                        ('ZM', 'english'),
                                                                                                        ('ZW', 'english');");
 
-              echo '<div class="alert alert-success">Success! <a href="javascript:ajaxLoad(\'pages/forum.php\')">Continue</a>.</div>';
+              echo '<div class="alert alert-success">Success! <a href="#" onclick="javascript:ajaxLoad(\'pages/forum.php\')">Continue</a>.</div>';
           }
 
       } catch (Exception $e) {
@@ -336,14 +336,14 @@
       }
     }
   ?>
-  <form action="javascript:ajaxForm('pages/mysql.php')" class="ajaxForm" method="POST">
+  <form onsubmit="javascript:ajaxForm('pages/mysql.php')" action="#" class="ajaxForm" method="POST">
     <input type="text" name="host" class="form-control input-lg" placeholder="MySQL Host" />
     <input type="text" name="username" class="form-control input-lg" placeholder="MySQL Username" />
     <input type="password" name="password" class="form-control input-lg" placeholder="MySQL Password" />
     <input type="text" name="database" class="form-control input-lg" placeholder="MySQL Database" />
     <input type="text" name="prefix" class="form-control input-lg" placeholder="MySQL Prefix" value="tango_" />
     <br />
-    <input type="hidden" name="submit" value="" />
-    <input type="submit" name="submit" class="btn btn-primary btn-lg btn-block" value="Test Connection and Continue" />
+    <input type="hidden" name="submit" value=""  />
+    <input type="submit" name="submit"  class="btn btn-primary btn-lg btn-block" value="Test Connection and Continue" />
   </form>
 </div>

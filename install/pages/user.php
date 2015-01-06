@@ -34,7 +34,7 @@
 	  	}
 	  }
 	?>
-	<form action="javascript:ajaxForm('pages/user.php')" class="ajaxForm" method="POST">
+	<form action="#" onsubmit="javascript:ajaxForm('pages/user.php')" class="ajaxForm" method="POST">
 		<input type="text" name="username" class="form-control input-lg" placeholder="Username" />
         <input type="password" name="password" class="form-control input-lg" placeholder="Password" />
         <input type="text" name="email" class="form-control input-lg" placeholder="Email" />
