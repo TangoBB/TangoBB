@@ -18,6 +18,11 @@
       define('PATH_A', '../../../applications/');
       define('TEMPLATE', '../../../');
       define('APPLICATION', '../../../applications/');
+  }elseif( BASEPATH == "Install" ) {
+      define('PATH', '../../');
+      define('PATH_A', '../../applications/');
+      define('TEMPLATE', '../../');
+      define('APPLICATION', '../../applications/');
   } else {
       define('PATH', '');
       define('PATH_A', '');

@@ -3,8 +3,8 @@
   if( !defined('BASEPATH') ){ die(); }
 
   /*
-   * TangoBB Configuration File.
-   * TangoBB (http://tangobb.net)
+   * Iko Configuration File.
+   * Iko (http://iko.im) was previously TangoBB (http://tangobb.net)
    */
   define('MYSQL_HOST', '%mysql_host%');
   define('MYSQL_USERNAME', '%mysql_username%');
