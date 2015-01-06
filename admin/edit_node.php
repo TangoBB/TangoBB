@@ -9,13 +9,18 @@
 
   function list_category($check) {
       global $MYSQL;
-      $query  = $MYSQL->get('{prefix}forum_category');
+      //$query  = $MYSQL->get('{prefix}forum_category');
+      $query  = $MYSQL->query('SELECT * FROM {prefix}forum_category');
       $return = '';
       foreach( $query as $s ) {
-          $MYSQL->where('node_type', 1);
+          /*$MYSQL->where('node_type', 1);
           $MYSQL->where('in_category', $s['id']);
-          $query = $MYSQL->get('{prefix}forum_node');
+          $query = $MYSQL->get('{prefix}forum_node'); */
           //$check   = ($s['id'] == $check)? ' selected' : '';
+          $MYSQL->bind('node_type', 1);
+          $MYSQL->bind('in_category', $s['id']);
+          $query = $MYSQL->query('SELECT * FROM {prefix}forum_node WHERE node_type = :node_type AND in_category = :in_category');
+
           $return .= '<option value="' . $s['id'] . '"' . $check . '>' . $s['category_title'] . '</option>';
           foreach( $query as $n ) {
             if( $s['id'] !== $check ) {
@@ -29,7 +34,8 @@
   function allowed_usergroups($groups) {
     global $TANGO, $MYSQL;
     $groups = explode(',', $groups);
-    $query  = $MYSQL->get('{prefix}usergroups');
+    //$query  = $MYSQL->get('{prefix}usergroups');
+    $query  = $MYSQL->query('SELECT * FROM {prefix}usergroups');
     $return = '<input type="checkbox" name="allowed_ug[]" value="0" CHECKED /> Guest<br />';
     foreach( $query as $u ) {
       if( in_array($u['id'], $groups) ) {
@@ -44,8 +50,10 @@
   if( $PGET->g('id') ) {
 
       $id    = clean($PGET->g('id'));
-      $MYSQL->where('id', $id);
-      $query = $MYSQL->get('{prefix}forum_node');
+      /*$MYSQL->where('id', $id);
+      $query = $MYSQL->get('{prefix}forum_node');*/
+      $MYSQL->bind('id', $id);
+      $query = $MYSQL->query('SELECT * FROM {prefix}forum_node WHERE id = :id');
 
       if( !empty($query) ) {
 
@@ -83,7 +91,7 @@
                         'allowed_usergroups' => $all_u
                       );
                     } else {
-                      $data = array(
+                      /*$data = array(
                         'node_name' => $title,
                         'name_friendly' => title_friendly($title),
                         'node_desc' => $desc,
@@ -91,13 +99,28 @@
                         'in_category' => $_POST['node_parent'],
                         'node_type' => 1,
                         'allowed_usergroups' => $all_u
-                      );
+                      );*/
+                      $MYSQL->bind('node_name', $title);
+                      $MYSQL->bind('name_friendly', title_friendly($title));
+                      $MYSQL->bind('node_desc', $desc);
+                      $MYSQL->bind('node_locked', $locked);
+                      $MYSQL->bind('in_category', $_POST['node_parent']);
+                      $MYSQL->bind('node_type', 1);
+                      $MYSQL->bind('allowed_usergroups', $all_u);
                     }
 
-                      $MYSQL->where('id', $id);
+                      //$MYSQL->where('id', $id);
+                      $MYSQL->bind('id', $id);
 
                       try {
-                          $MYSQL->update('{prefix}forum_node', $data);
+                          //$MYSQL->update('{prefix}forum_node', $data);
+                          $MYSQL->query('UPDATE {prefix}forum_node SET node_name = :node_name,
+                                                                       name_friendly = :name_friendly,
+                                                                       node_desc = :node_desc,
+                                                                       node_locked = :node_locked,
+                                                                       in_category = :in_category,
+                                                                       node_type = :node_type,
+                                                                       allowed_usergroups = :allowed_usergroups WHERE id = :id');
                           redirect(SITE_URL . '/admin/manage_node.php/notice/edit_success');
                       } catch (mysqli_sql_exception $e) {
                           throw new Exception ('Error updating node.');
