@@ -64,8 +64,8 @@
             $a_perm = explode(',', $query['0']['additional_permissions']);
             $n_perm = array();
             foreach( $a_perm as $cp ) {
-              $MYSQL->where('id', $cp);
-              $p_query = $MYSQL->get('{prefix}permissions');
+              $MYSQL->bind('id', $cp);
+              $p_query = $MYSQL->query('SELECT * FROM {prefix}permissions WHERE id = :id');
               if( $p_query ) {
                 $n_perm[] = $p_query['0']['permission_name'];
               }
@@ -104,8 +104,8 @@
                     $perms   = array();
                     
                     foreach( $perm_id as $id ) {
-                        $MYSQL->where('id', $id);
-                        $p_query = $MYSQL->get('{prefix}permissions');
+                        $MYSQL->bind('id', $id);
+                        $p_query = $MYSQL->query('SELECT * FROM {prefix}permissions WHERE id = :id');
                         $perms[] = $p_query['0']['permission_name'];
                     }
                 }
