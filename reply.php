@@ -149,8 +149,8 @@
 
           $q_query = false;
           if( $PGET->g('quote') ) {
-              $MYSQL->where('id', $PGET->g('quote'));
-              $q_query = $MYSQL->get('{prefix}forum_posts');
+              $MYSQL->bind('id', $PGET->g('quote'));
+              $q_query = $MYSQL->query('SELECT * FROM {prefix}forum_posts WHERE id = :id');
           }
 
           if( isset($_POST['reply']) ) {
@@ -268,19 +268,16 @@
                                     ' . $LANG['flat']['merge_post'] . '
                                     ' . $cont;
 
-                        $MYSQL->where('id', $o_query['0']['id']);
-                        $n_cont = array(
-                          'post_content' => $t_cont
-                        );
+                        $MYSQL->bind('id', $o_query['0']['id']);
+                        $MYSQL->bind('post_content', $t_cont);
 
                         try {
-                          $MYSQL->update('{prefix}forum_posts', $n_cont);
-                          $t_data = array(
-                            'last_updated'=> $time
-                          );
-                          $MYSQL->where('id', $thread['id']);
+                          $MYSQL->query('UPDATE {prefix}forum_posts SET post_content = :post_content WHERE id = :id');
+
+                          $MYSQL->bind('id', $thread['id']);
+                            $MYSQL->bind('last_updated', $time);
                           try {
-                            $MYSQL->update('{prefix}forum_posts', $t_data);
+                            $MYSQL->query('UPDATE {prefix}forum_posts SET last_updated = :last_updated WHERE id = :id');
                             redirect(SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id']);
                           } catch (mysqli_sql_exception $e) {
                             redirect(SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id']);
