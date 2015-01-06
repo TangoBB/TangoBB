@@ -4,7 +4,7 @@
   //An example to make use of the template system and MySQL library.
 
   //Running MySQL stuff.
-  $users  = $MYSQL->get('{prefix}users');
+  $users  = $MYSQL->query('SELECT * FROM {prefix}users');
   $return = '<ul>';
   foreach( $users as $user ) {
   	$return .= '<li>' . $user['username'] . '</li>';
