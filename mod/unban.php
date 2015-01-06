@@ -45,7 +45,7 @@
 
               $MYSQL->bind('id', $PGET->g('id'));
 
-              if( $MYSQL->query("UPDATE {prefix}users SET is_banned = 0, user_group = 0 WHERE id = :id") > 0 ) {
+              if( $MYSQL->query("UPDATE {prefix}users SET is_banned = 0, user_group = DEFAULT WHERE id = :id") > 0 ) {
                 $content .= $TANGO->tpl->entity(
                       'success_notice',
                       'content',
