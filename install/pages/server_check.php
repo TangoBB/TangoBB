@@ -23,7 +23,7 @@
   //$config_chmods = substr(decoct(fileperms("../applications/config.php")), -3);
   $config_chmods = substr(decoct(fileperms("../../applications/config.php")), -3);
 
-  if($config_chmods < '666') {
+  if($config_chmods < '777') {
       $check['chmods'] = false;
       $check['chmods_value'] = $config_chmods;
       $check['chmods_css'] = 'danger';
@@ -78,7 +78,7 @@
     </tr>
     <tr>
         <td>chmod '<em>applications/config.php</em>'</td>
-        <td><span class="label label-default">666 +</span></td>
+        <td><span class="label label-default">777</span></td>
         <td><span class="label label-<?php echo $check['chmods_css']; ?>"><?php echo $check['chmods_value']; ?></span></td>
     </tr>
 </table>
