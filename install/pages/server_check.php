@@ -38,7 +38,7 @@
 ?>
 <div class="panel-body">
   <div class="alert alert-success">
-    System check done! <a href="#" onclick="javascript:ajaxLoad('pages/mysql.php')">Continue</a>.
+    System check done! <a href="javascript:return false;" onclick="javascript:ajaxLoad('pages/mysql.php')">Continue</a>.
   </div>
 </div>
 <?php

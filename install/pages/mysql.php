@@ -337,7 +337,7 @@
       }
     }
   ?>
-  <form onsubmit="javascript:ajaxForm('pages/mysql.php')" action="#" class="ajaxForm" method="POST">
+  <form onsubmit="javascript:ajaxForm('pages/mysql.php')" action="javascript:return false;" class="ajaxForm" method="POST">
     <input type="text" name="host" class="form-control input-lg" placeholder="MySQL Host" />
     <input type="text" name="username" class="form-control input-lg" placeholder="MySQL Username" />
     <input type="password" name="password" class="form-control input-lg" placeholder="MySQL Password" />

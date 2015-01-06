@@ -37,7 +37,7 @@
 - Do not start a political discussion unless permitted.
 - No illegal stuff are to be posted on anywhere in the forum.';
                 $MYSQL->query("INSERT INTO `" . MYSQL_PREFIX . "generic` (`id`, `site_rules`, `site_name`, `site_theme`, `site_language`, `site_email`) VALUES ('1', '$rules', '$name', 'Sand', 'english', '$email');");
-                echo '<div class="alert alert-success">Success! <a href="#" onclick="javascript:ajaxLoad(\'pages/user.php\')">Continue</a>.</div>';
+                echo '<div class="alert alert-success">Success! <a href="javascript:return false;" onclick="javascript:ajaxLoad(\'pages/user.php\')">Continue</a>.</div>';
 
 	  		}
 	  	} catch (Exception $e) {
@@ -45,7 +45,7 @@
 	  	}
 	  }
 	?>
-	<form action="#" onsubmit="javascript:ajaxForm('pages/forum.php')" class="ajaxForm" method="POST">
+	<form action="javascript:return false;" onsubmit="javascript:ajaxForm('pages/forum.php')" class="ajaxForm" method="POST">
 		<input type="text" name="name" class="form-control input-lg" placeholder="Forum Name" />
         <input type="text" name="email" class="form-control input-lg" placeholder="Forum Email" />
 		<br />
