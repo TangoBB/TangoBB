@@ -57,6 +57,19 @@
           if( $node['node_type'] == 2 ) {
 
             $parent_node = node($node['parent_node']);
+            $ori_cat     = category($parent_node['in_category']);
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+                'breadcrumbs_before',
+                array(
+                    'link',
+                    'name'
+                ),
+                array(
+                    '#',
+                    $ori_cat['category_title']
+                )
+            );
 
             $breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_before',
@@ -83,6 +96,21 @@
             );
 
           } elseif( $node['node_type'] == 1 ) {
+
+            $ori_cat      = category($node['in_category']);
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+                'breadcrumbs_before',
+                array(
+                    'link',
+                    'name'
+                ),
+                array(
+                    '#',
+                    $ori_cat['category_title']
+                )
+            );
+
             $breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_before',
               array(

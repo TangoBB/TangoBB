@@ -41,6 +41,19 @@
             );
           if( $query['0']['node_type'] == 2 ) {
             $parent_node = node($query['0']['parent_node']);
+            $ori_cat     = category($parent_node['in_category']);
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+                'breadcrumbs_before',
+                array(
+                    'link',
+                    'name'
+                ),
+                array(
+                    '#',
+                    $ori_cat['category_title']
+                )
+            );
 
             $breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_before',
@@ -65,6 +78,20 @@
               );
 
           } elseif( $query['0']['node_type'] == 1 ) {
+
+            $ori_cat      = category($query['0']['in_category']);
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+                'breadcrumbs_before',
+                array(
+                    'link',
+                    'name'
+                ),
+                array(
+                    '#',
+                    $ori_cat['category_title']
+                )
+            );
 
             $breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_before',

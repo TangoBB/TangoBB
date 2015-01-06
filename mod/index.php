@@ -25,8 +25,8 @@
           if( $report['reported_post'] !== 0 ) {
               
               $user  = $TANGO->user($report['reported_by']);
-              $MYSQL->where('id', $report['reported_post']);
-              $query = $MYSQL->get('{prefix}forum_posts');
+              $MYSQL->bind('id', $report['reported_post']);
+              $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE id = :id");
               if( $query['0']['post_type'] == "1" ) {
                   $posts .= '<tr>
                                 <td><a href="' . SITE_URL . '/thread.php/' . $query['0']['title_friendly'] . '.' . $query['0']['id'] . '">' . $query['0']['post_title'] . '</a></td>
