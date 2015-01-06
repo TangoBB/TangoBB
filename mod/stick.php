@@ -12,7 +12,7 @@
 
       //$MYSQL->where('id', $PGET->g('thread'));
       //$query = $MYSQL->get('{prefix}forum_posts');
-      $MYSQL->find('id', $PGET->g('thread'));
+      $MYSQL->bind('id', $PGET->g('thread'));
       $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE id = :id");
 
       if( !empty($query) ) {
