@@ -342,7 +342,7 @@
     <input type="text" name="username" class="form-control input-lg" placeholder="MySQL Username" />
     <input type="password" name="password" class="form-control input-lg" placeholder="MySQL Password" />
     <input type="text" name="database" class="form-control input-lg" placeholder="MySQL Database" />
-    <input type="text" name="prefix" class="form-control input-lg" placeholder="MySQL Prefix" value="tango_" />
+    <input type="text" name="prefix" class="form-control input-lg" placeholder="MySQL Prefix" value="tan_" />
     <br />
     <input type="hidden" name="submit" value=""  />
     <input type="submit" name="submit"  class="btn btn-primary btn-lg btn-block" value="Test Connection and Continue" />
