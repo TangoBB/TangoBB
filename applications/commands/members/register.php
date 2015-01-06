@@ -50,25 +50,25 @@
                     $TANGO->captcha->verify();
 
                     if( $TANGO->data['register_email_activate'] == "1" ) {
-                        $data = array(
+                        $MYSQL->bindMore(array(
                             'username' => $username,
                             'user_password' => encrypt($password),
                             'user_email' => $email,
                             'date_joined' => $time,
                             'user_disabled' => 1
-                        );
+                        )) ;
                     } else {
-                        $data = array(
+                        $MYSQL->bindMore(array(
                             'username' => $username,
                             'user_password' => encrypt($password),
                             'user_email' => $email,
                             'date_joined' => $time,
                             'user_disabled' => 0
-                        );
+                        )) ;
                     }
 
                     try {
-                        $MYSQL->insert('{prefix}users', $data);
+                        $MYSQL->query('INSERT INTO {prefix}users (username, user_password, user_email, date_joined, user_disabled) VALUES (:username, :user_password, :user_email, :date_joined, :user_disabled)');
 
                         /*$email = 'You have registered on ' . $TANGO->data['site_name'] . '<br />
                                   Click <a href="' . SITE_URL . '/members.php/activate/code/' . $time . '">here</a> to activate your account.';*/
@@ -107,8 +107,8 @@
                               throw new Exception ($LANG['bb']['members']['error_register']);
                             }
                         } else {
-                            $MYSQL->where('username', $username);
-                            $l_q     = $MYSQL->get('{prefix}users');
+                            $MYSQL->bind('username', $username);
+                            $l_q     = $MYSQL->query('SELECT * FROM {prefix}users WHERE username = :username');
                             $TANGO->sess->assign($l_q['0']['user_email'], true);
                             header('refresh:3;url=' . SITE_URL . '/forum.php');
                             $notice .= $TANGO->tpl->entity(
