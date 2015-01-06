@@ -329,7 +329,7 @@
                                                                                                      ('ZA', 'english'),
                                                                                                      ('ZM', 'english'),
                                                                                                      ('ZW', 'english');");
-              echo '<div class="alert alert-success">Success! <a href="#" onclick="javascript:ajaxLoad(\'pages/forum.php\')">Continue</a>.</div>';
+              echo '<div class="alert alert-success">Success! <a href="javascript:return false;" onclick="javascript:ajaxLoad(\'pages/forum.php\')">Continue</a>.</div>';
           }
 
       } catch (Exception $e) {
