@@ -30,7 +30,11 @@
           $title = clean($_POST['cat_title']);
           $desc  = (!$_POST['cat_desc'])? '' : clean($_POST['cat_desc']);
 
-          $all_u = (isset($_POST['allowed_ug']))? implode(',', clean($_POST['allowed_ug'])) : '0';
+          foreach( $_POST['allowed_ug'] as $ug ) {
+              $_POST['allowed_ug'][] = clean($ug);
+          }
+
+          $all_u = (isset($_POST['allowed_ug']))? implode(',', $_POST['allowed_ug']) : '0';
 
           if( !$title ) {
               throw new Exception ('All fields are required!');

@@ -1,3 +1,0 @@
-Time : 04:34:53
-SQLSTATE[42S22]: Column not found: 1054 Unknown column 'messae_sender' in 'where clause'
-Raw SQL : SELECT * FROM iko_messages WHERE (messae_sender = :message_sender OR message_receiver = :message_receiver) AND message_type = 1 ORDER BY message_time DESC

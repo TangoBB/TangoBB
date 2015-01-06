@@ -70,9 +70,11 @@
             $breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_before',
               array(
+                'link',
                 'name'
               ),
               array(
+                SITE_URL . '/node.php/' . $query['0']['name_friendly'] . '.' . $query['0']['id'],
                 $query['0']['node_name']
                 )
               );

@@ -1,7 +1,0 @@
-Time : 00:55:01
-SQLSTATE[42S02]: Base table or view not found: 1146 Table 'iko.iko_' doesn't exist
-Raw SQL : SELECT * FROM iko_ WHERE username = :username
-
-Time : 00:44:03
-SQLSTATE[42S02]: Base table or view not found: 1146 Table 'iko.iko_' doesn't exist
-Raw SQL : SELECT * FROM iko_ WHERE username = :username

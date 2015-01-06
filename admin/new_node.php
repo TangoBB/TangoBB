@@ -52,14 +52,18 @@
           $desc   = (!$_POST['node_desc'])? '' : clean($_POST['node_desc']);
           $locked = (isset($_POST['lock_node']))? '1' : '0';
 
-          $all_u  = (isset($_POST['allowed_ug']))? implode(',', clean($_POST['allowed_ug'])) : '0';
+          foreach( $_POST['allowed_ug'] as $ug ) {
+              $_POST['allowed_ug'][] = clean($ug);
+          }
+
+          $all_u  = (isset($_POST['allowed_ug']))? implode(',', $_POST['allowed_ug']) : '0';
 
           if( !$title ) {
               throw new Exception ('All fields are required!');
           } else {
 
               if( substr_count($_POST['node_parent'], '&') > 0 ) {
-                $explode = explode('&', clean($_POST['node_parent']));
+                $explode = explode('&', $_POST['node_parent']);
                 $parent  = node($explode['1']);
                 $data = array(
                   'node_name' => $title,
@@ -70,31 +74,52 @@
                   'parent_node' => $parent['id'],
                   'allowed_usergroups' => $all_u
                 );
+                  /*$MYSQL->bindMore(
+                      array(
+                          'node_name' => $title,
+                          'node_desc' => $desc,
+                          'name_friendly' => title_friendly($title),
+                          'in_category' => $parent['in_category'],
+                          'node_type' => 2,
+                          'parent_node' => $parent['id'],
+                          'allowed_usergroups' => $all_u
+                      )
+                  );*/
+
+                  try {
+                      //$MYSQL->insert('{prefix}forum_node', $data);
+                      $MYSQL->query('INSERT INTO {prefix}forum_node (node_name, node_desc, name_friendly, in_category, node_type, parent_node, allowed_usergroups) VALUES (:node_name, :node_desc, :name_friendly, :in_category, :node_type, :parent_node, :allowed_usergroups)', $data);
+                      redirect(SITE_URL . '/admin/manage_node.php/notice/create_success');
+                  } catch (mysqli_sql_exception $e) {
+                      throw new Exception ('Error creating forum node.');
+                  }
+
               } else {
-                /*$data = array(
+                $data = array(
                   'node_name' => $title,
                   'node_desc' => $desc,
                   'name_friendly' => title_friendly($title),
                   'in_category' => clean($_POST['node_parent']),
                   'node_type' => 1,
                   'allowed_usergroups' => $all_u
-                );*/
-                $MYSQL->bindMore(array(
+                );
+                /*$MYSQL->bindMore(array(
                     'node_name' => $title,
                     'node_desc' => $desc,
                     'name_friendly' => title_friendly($title),
                     'in_category' => $_POST['node_parent'],
                     'node_type' => 1,
                     'allowed_usergroups' => $all_u
-                ));
-              }
+                ));*/
 
-              try {
-                  //$MYSQL->insert('{prefix}forum_node', $data);
-                  $MYSQL->query('INSERT INTO {prefix}forum_node (node_name, node_desc, name_friendly, in_category, node_type, allowed_usergroups) VALUES (:node_name, :node_desc, :name_friendly, :in_category, :node_type, :allowed_usergroups)');
-                  redirect(SITE_URL . '/admin/manage_node.php/notice/create_success');
-              } catch (mysqli_sql_exception $e) {
-                  throw new Exception ('Error creating forum node.');
+                  try {
+                      //$MYSQL->insert('{prefix}forum_node', $data);
+                      $MYSQL->query('INSERT INTO {prefix}forum_node (node_name, node_desc, name_friendly, in_category, node_type, allowed_usergroups) VALUES (:node_name, :node_desc, :name_friendly, :in_category, :node_type, :allowed_usergroups)', $data);
+                      redirect(SITE_URL . '/admin/manage_node.php/notice/create_success');
+                  } catch (mysqli_sql_exception $e) {
+                      throw new Exception ('Error creating forum node.');
+                  }
+
               }
 
           }
