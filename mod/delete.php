@@ -13,7 +13,7 @@
       //$MYSQL->where('id', $PGET->g('post'));
       //$query = $MYSQL->get('{prefix}forum_posts');
     $MYSQL->bind('id', $PGET->g('post'));
-    $query = $MYSQL-query("SELECT * FROM {prefix}forum_posts WHERE id = :id");
+    $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE id = :id");
 
       if( !empty($query) ) {
 
