@@ -1,4 +1,4 @@
-[![TangoBB](https://raw.githubusercontent.com/IkoBulletin/Iko/master/public/img/tangobb_logo.png "Iko")](http://iko.im "TangoBB")
+[![TangoBB](https://raw.githubusercontent.com/Codetana/TangoBB/master/public/img/tangobb_logo.png "TangoBB")](http://iko.im "TangoBB")
 ##The new simple bulletin board.
 Please note that this forum software will be as generic but a little complex on the theme design aspect as we want it to be very customizable for amateur web developers to learn.
 TangoBB is released under the MIT License.
