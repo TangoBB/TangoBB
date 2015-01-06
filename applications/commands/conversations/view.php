@@ -62,11 +62,9 @@
               );
           }
           if( $query['0']['receiver_viewed'] == 0 && $TANGO->sess->data['id'] == $query['0']['message_receiver']) { //Is this needed?
-            $data = array(
-              'receiver_viewed' => 1
-            );
-            $MYSQL->where('id', $get);
-            $MYSQL->update('{prefix}messages', $data);
+
+            $MYSQL->bind('id', $get);
+            $MYSQL->query('UPDATE {prefix}messages SET receiver_viewed = 1 WHERE id = :id');
           }
 
           $thread_mod_tools = '';
