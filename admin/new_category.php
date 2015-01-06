@@ -9,7 +9,8 @@
 
   function allowed_usergroups() {
     global $TANGO, $MYSQL;
-    $query  = $MYSQL->get('{prefix}usergroups');
+    //$query  = $MYSQL->get('{prefix}usergroups');
+    $query  = $MYSQL->query('SELECT * FROM {prefix}usergroups');
     $return = '<input type="checkbox" name="allowed_ug[]" value="0" CHECKED /> Guest<br />';
     foreach( $query as $u ) {
       $return .= '<input type="checkbox" name="allowed_ug[]" value="' . $u['id'] . '" /> ' . $u['group_name'] . '<br />';
@@ -35,14 +36,20 @@
               throw new Exception ('All fields are required!');
           } else {
 
-              $data = array(
+              /*$data = array(
                   'category_title' => $title,
                   'category_desc' => $desc,
                   'allowed_usergroups' => $all_u
-              );
+              );*/
+              $MYSQL->bindMore(array(
+                  'category_title' => $title,
+                  'category_desc' => $desc,
+                  'allowed_usergroups' => $all_u
+              ));
 
               try {
-                  $MYSQL->insert('{prefix}forum_category', $data);
+                  //$MYSQL->insert('{prefix}forum_category', $data);
+                  $MYSQL->query('INSERT INTO {prefix}forum_category (category_title, category_desc, allowed_usergroups) VALUES (:category_title, :category_desc, :allowed_usergroups)');
                   redirect(SITE_URL . '/admin/manage_category.php/notice/create_success');
               } catch (mysqli_sql_exception $e) {
                   throw new Exception ('Error creating forum category.');
