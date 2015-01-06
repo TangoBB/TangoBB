@@ -36,14 +36,34 @@
                   'profile_owner' => $user['id'],
                   'visitor' => $TANGO->sess->data['id']
               ));
-              try {
-                  /*
-                   * ToDo: Check if the user already visited the page -> update entry
-                   */
-                  $MYSQL->query('INSERT INTO {prefix}user_visitors (profile_owner, visitor) VALUES (:profile_owner, :visitor)');
-              } catch (mysqli_sql_exception $e) {
-                  throw new Exception ($LANG['global_form_process']['error_creating_thread']);
+              $query = $MYSQL->query('SELECT * FROM  {prefix}user_visitors WHERE profile_owner = :profile_owner AND visitor = :visitor');
+              if(empty($query)){
+                  $MYSQL->bindMore(array(
+                      'profile_owner' => $user['id'],
+                      'visitor' => $TANGO->sess->data['id']
+                  ));
+                  try {
+                      /*
+                       * ToDo: Check if the user already visited the page -> update entry
+                       */
+                      $MYSQL->query('INSERT INTO {prefix}user_visitors (profile_owner, visitor) VALUES (:profile_owner, :visitor)');
+                  } catch (mysqli_sql_exception $e) {
+                      throw new Exception ($LANG['global_form_process']['error_creating_thread']);
+                  }
               }
+              else {
+                  $MYSQL->bindMore(array(
+                      'profile_owner' => $user['id'],
+                      'visitor' => $TANGO->sess->data['id']
+                  ));
+                  try {
+                      $MYSQL->query('UPDATE {prefix}user_visitors SET timestamp = CURRENT_TIMESTAMP WHERE profile_owner = :profile_owner AND visitor = :visitor');
+                  } catch (mysqli_sql_exception $e) {
+                      throw new Exception ($LANG['global_form_process']['error_creating_thread']);
+                  }
+
+              }
+
           }
       }
   }
