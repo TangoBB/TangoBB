@@ -56,7 +56,7 @@
               throw new Exception ('All fields are required!');
           } else {
 
-              $data = array(
+              /*$data = array(
                   'site_name' => $site_name,
                   'site_email' => $board_email,
                   'site_rules' => $site_rules,
@@ -75,10 +75,47 @@
                   'smtp_username' => $smtp_user,
                   'smtp_password' => $smtp_pass
               );
-              $MYSQL->where('id', 1);
+              $MYSQL->where('id', 1);*/
+              $MYSQL->bindMore(array(
+                  'site_name' => $site_name,
+                  'site_email' => $board_email,
+                  'site_rules' => $site_rules,
+                  'site_language' => $site_lang,
+                  'register_enable' => $enable_reg,
+                  'post_merge' => $post_merge,
+                  'facebook_app_id' => $fb_app_id,
+                  'facebook_app_secret' => $fb_app_sec,
+                  'facebook_authenticate' => $enable_fb,
+                  'recaptcha_public_key' => $rcap_public,
+                  'recaptcha_private_key' => $rcap_private,
+                  'captcha_type' => $enable_rcap,
+                  'mail_type' => $enable_smtp,
+                  'smtp_address' => $smtp_add,
+                  'smtp_port' => $smtp_port,
+                  'smtp_username' => $smtp_user,
+                  'smtp_password' => $smtp_pass
+              ));
 
               try {
-                  $MYSQL->update('{prefix}generic', $data);
+                  //$MYSQL->update('{prefix}generic', $data);
+                  $MYSQL->query('UPDATE {prefix}generic SET site_name = :site_name,
+                                                            site_email = :site_email,
+                                                            site_rules = :site_rules,
+                                                            site_language = :site_language,
+                                                            register_enable = :register_enable,
+                                                            post_merge = :post_merge,
+                                                            facebook_app_id = :facebook_app_id,
+                                                            facebook_app_secret = :facebook_app_secret,
+                                                            facebook_authenticate = :facebook_authenticate,
+                                                            recaptcha_public_key = :recaptcha_public_key,
+                                                            recaptcha_private_key = :recaptcha_private_key,
+                                                            captcha_type = :captcha_type,
+                                                            mail_type = :mail_type,
+                                                            smtp_address = :smtp_address,
+                                                            smtp_port = :smtp_port,
+                                                            smtp_username = :smtp_username,
+                                                            smtp_password = :smtp_password
+                                                            WHERE id = 1');
                   $notice .= $ADMIN->alert(
                       'Informations saved!',
                       'success'
