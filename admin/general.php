@@ -56,7 +56,7 @@
               throw new Exception ('All fields are required!');
           } else {
 
-              $data = array(
+              /*$data = array(
                   'site_name' => $site_name,
                   'site_email' => $board_email,
                   'site_rules' => $site_rules,
@@ -75,10 +75,47 @@
                   'smtp_username' => $smtp_user,
                   'smtp_password' => $smtp_pass
               );
-              $MYSQL->where('id', 1);
+              $MYSQL->where('id', 1);*/
+              $MYSQL->bindMore(array(
+                  'site_name' => $site_name,
+                  'site_email' => $board_email,
+                  'site_rules' => $site_rules,
+                  'site_language' => $site_lang,
+                  'register_enable' => $enable_reg,
+                  'post_merge' => $post_merge,
+                  'facebook_app_id' => $fb_app_id,
+                  'facebook_app_secret' => $fb_app_sec,
+                  'facebook_authenticate' => $enable_fb,
+                  'recaptcha_public_key' => $rcap_public,
+                  'recaptcha_private_key' => $rcap_private,
+                  'captcha_type' => $enable_rcap,
+                  'mail_type' => $enable_smtp,
+                  'smtp_address' => $smtp_add,
+                  'smtp_port' => $smtp_port,
+                  'smtp_username' => $smtp_user,
+                  'smtp_password' => $smtp_pass
+              ));
 
               try {
-                  $MYSQL->update('{prefix}generic', $data);
+                  //$MYSQL->update('{prefix}generic', $data);
+                  $MYSQL->query('UPDATE {prefix}generic SET site_name = :site_name,
+                                                            site_email = :site_email,
+                                                            site_rules = :site_rules,
+                                                            site_language = :site_language,
+                                                            register_enable = :register_enable,
+                                                            post_merge = :post_merge,
+                                                            facebook_app_id = :facebook_app_id,
+                                                            facebook_app_secret = :facebook_app_secret,
+                                                            facebook_authenticate = :facebook_authenticate,
+                                                            recaptcha_public_key = :recaptcha_public_key,
+                                                            recaptcha_private_key = :recaptcha_private_key,
+                                                            captcha_type = :captcha_type,
+                                                            mail_type = :mail_type,
+                                                            smtp_address = :smtp_address,
+                                                            smtp_port = :smtp_port,
+                                                            smtp_username = :smtp_username,
+                                                            smtp_password = :smtp_password
+                                                            WHERE id = 1');
                   $notice .= $ADMIN->alert(
                       'Informations saved!',
                       'success'
@@ -112,7 +149,7 @@
        <label for="board_email">Board Email</label>
        <input type="text" class="form-control" name="board_email" id="board_email" value="' . $TANGO->data['site_email'] . '" />
        <input type="checkbox" name="register_enable" value="1" id="reg_enable" ' . $reg_check . ' /> <label for="reg_enable">Enable Register</label><br />
-       <input type="checkbox" name="post_merge" value="1" id="post_merge" ' . $merge_check . ' /> <label for="post_merge">Merge posts of the same user?</label>
+       <input type="checkbox" name="post_merge" value="1" id="post_merge" ' . $merge_check . ' /> <label for="post_merge">Merge Posts (<a href="#" title="Merge consecutive posts by the same user." id="tooltip">?</a>)</label>
        <br />
        <label for="default_language">Default Languge</label><br />
        <select name="default_language" id="Default_language">

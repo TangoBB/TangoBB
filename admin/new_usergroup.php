@@ -9,7 +9,8 @@
 
   function list_permissions_as_checkbox() {
       global $MYSQL;
-      $query   = $MYSQL->get('{prefix}permissions');
+      //$query   = $MYSQL->get('{prefix}permissions');
+      $query   = $MYSQL->query('SELECT * FROM {prefix}permissions');
       $return  = '';
       foreach( $query as $u ) {
           $return .= '<input type="checkbox" name="permissions[]" value="' . $u['id'] . '"> ' . $u['permission_name'] . '<br />';
@@ -18,7 +19,8 @@
   }
   function list_permissions() {
       global $MYSQL;
-      $query   = $MYSQL->get('{prefix}permissions');
+      //$query   = $MYSQL->get('{prefix}permissions');
+      $query   = $MYSQL->query('SELECT * FROM {prefix}permissions');
       $return  = array();
       foreach( $query as $g ) {
           $return[] = $g['id'];
@@ -47,15 +49,22 @@
           if( !$name or !$style ) {
               throw new Exception ('All fields are required!');
           } else {
-              $data = array(
+              /*$data = array(
                   'group_name' => $name,
                   'group_style' => $style,
                   'group_permissions' => $permissions,
                   'is_staff' => $is_staff
-              );
+              );*/
+              $MYSQL->bindMore(array(
+                  'group_name' => $name,
+                  'group_style' => $style,
+                  'group_permissions' => $permissions,
+                  'is_staff' => $is_staff
+              ));
 
               try {
-                  $MYSQL->insert('{prefix}usergroups', $data);
+                  //$MYSQL->insert('{prefix}usergroups', $data);
+                  $MYSQL->query('INSERT INTO {prefix}usergroups (group_name, group_style, group_permissions, is_staff) VALUES (:group_name, :group_style, :group_permissions, :is_staff)');
                   redirect(SITE_URL . '/admin/usergroups.php/notice/create_success');
               } catch (mysqli_sql_exception $e) {
                   throw new Exception ('Error creating usergroup.');

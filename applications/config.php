@@ -1,5 +1,5 @@
 <?php
 
-  header('Location: install/index.php')
+  die('TangoBB not yet installed.');
 
 ?>

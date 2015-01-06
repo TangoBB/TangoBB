@@ -9,7 +9,8 @@
 
   function list_permissions_as_checkbox($checked) {
       global $MYSQL;
-      $query   = $MYSQL->get('{prefix}permissions');
+      //$query   = $MYSQL->get('{prefix}permissions');
+      $query   = $MYSQL->query('SELECT * FROM {prefix}permissions');
       $checked = explode(',', $checked);
       $return  = '';
       foreach( $query as $u ) {
@@ -20,7 +21,8 @@
   }
   function list_permissions() {
       global $MYSQL;
-      $query   = $MYSQL->get('{prefix}permissions');
+      //$query   = $MYSQL->get('{prefix}permissions');
+      $query   = $MYSQL->query('SELECT * FROM {prefix}permissions');
       $return  = array();
       foreach( $query as $g ) {
           $return[] = $g['id'];
@@ -31,8 +33,10 @@
   if( $PGET->g('id') ) {
 
       $id    = clean($PGET->g('id'));
-      $MYSQL->where('id', $id);
-      $query = $MYSQL->get('{prefix}usergroups');
+      /*$MYSQL->where('id', $id);
+      $query = $MYSQL->get('{prefix}usergroups');*/
+      $MYSQL->bind('id', $id);
+      $query = $MYSQL->query('SELECT * FROM {prefix}usergroups WHERE id = :id');
 
       if( !empty($query) ) {
 
@@ -58,15 +62,22 @@
                       throw new Exception ('All fields are required!');
                   } else {
 
-                      $data = array(
+                      /*$data = array(
                           'group_name' => $name,
                           'group_style' => $style,
                           'group_permissions' => $permissions
                       );
-                      $MYSQL->where('id', $id);
+                      $MYSQL->where('id', $id);*/
+                      $MYSQL->bindMore(array(
+                          'group_name' => $name,
+                          'group_style' => $style,
+                          'group_permissions' => $permissions,
+                          'id' => $id));
+
 
                       try {
-                          $MYSQL->update('{prefix}usergroups', $data);
+                          //$MYSQL->update('{prefix}usergroups', $data);
+                          $MYSQL->query('UPDATE {prefix}usergroups SET group_name = :group_name, group_style = :group_style, group_permissions = :group_permissions WHERE id = :id');
                           redirect(SITE_URL . '/admin/usergroups.php/notice/edit_success');
                       } catch (mysqli_sql_exception $e) {
                           throw new Exception ('Error updating usergroup.');

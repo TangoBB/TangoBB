@@ -9,7 +9,7 @@
   $page_title = $LANG['bb']['conversations']['page_conversations'];
 
   if( !$TANGO->sess->isLogged ){ redirect(SITE_URL); } //If user is not logged in.
-  $data = array($TANGO->sess->data['id'], $TANGO->sess->data['id']);
+  /*$data = array($TANGO->sess->data['id'], $TANGO->sess->data['id']);
   $query = $MYSQL->rawQuery("SELECT * FROM
                           {prefix}messages
                           WHERE
@@ -18,7 +18,14 @@
                           message_type = 1
                           ORDER BY
                           message_time
-                          DESC", $data);
+                          DESC", $data);*/
+  $MYSQL->bindMore(
+    array(
+      'message_sender' => $TANGO->sess->data['id'],
+      'message_receiver' => $TANGO->sess->data['id']
+    )
+  );
+  $query = $MYSQL->query("SELECT * FROM {prefix}messages WHERE (message_sender = :message_sender OR message_receiver = :message_receiver) AND message_type = 1 ORDER BY message_time DESC");
 
   //Breadcrumbs
   $TANGO->tpl->addBreadcrumb(
@@ -39,7 +46,7 @@
       foreach( $query as $msg ) {
           $badge      = '';
           // Getting the latest reply
-          $data_latest_reply  =array($msg['id']);
+          /*$data_latest_reply  =array($msg['id']);
           $last_reply = $MYSQL->rawQuery("SELECT * FROM 
                                                 {prefix}messages 
                                                 WHERE 
@@ -47,7 +54,9 @@
                                                 ORDER BY 
                                                 message_time 
                                                 DESC 
-                                                LIMIT 1", $data_latest_reply);
+                                                LIMIT 1", $data_latest_reply);*/
+          $MYSQL->bind('origin_message', $msg['id']);
+          $last_reply = $MYSQL->query("SELECT * FROM {prefix}messages WHERE origin_message = :origin_message ORDER BY message_time DESC LIMIT 1");
           //var_dump ($query_last_reply);
           
           $sender   = $TANGO->user($msg['message_sender']);

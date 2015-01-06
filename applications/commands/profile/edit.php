@@ -34,7 +34,7 @@
               if( $email !== $TANGO->sess->data['user_email'] ) {
 
                   if( !emailTaken($email) ) {
-                      $data  = array(
+                      /*$data  = array(
                           'user_email' => $email,
                           'about_user' => $about,
                           'set_timezone' => $tz,
@@ -53,6 +53,26 @@
                           );
                       } catch (mysqli_sql_exception $e) {
                           throw new Exception ($LANG['global_form_process']['error_saving']);
+                      }*/
+                      $MYSQL->bindMore(
+                        array(
+                          'user_email' => $email,
+                          'about_user' => $about,
+                          'set_timezone' => $tz,
+                          'user_birthday' => $birthday,
+                          'location' => $location,
+                          'gender' => $gender,
+                          'id' => $TANGO->sess->data['id']
+                          )
+                      );
+                      if( $MYSQL->query("UPDATE {prefix}users SET user_email = :user_email, about_user = :about_user, set_timezone = :set_timezone, user_birthday = :user_birthday, location = :location, gender = :gender WHERE id = :id") > 0 ) {
+                        $notice .= $TANGO->tpl->entity(
+                          'success_notice',
+                          'content',
+                          $LANG['global_form_process']['save_success']
+                        );
+                      } else {
+                        throw new Exception ($LANG['global_form_process']['error_saving']);
                       }
 
                   } else {
@@ -61,7 +81,7 @@
 
               } else {
 
-                  $data  = array(
+                  /*$data  = array(
                     'set_timezone' => $tz,
                     'location' => $location,
                     'gender' => $gender,
@@ -78,6 +98,26 @@
                       $LANG['global_form_process']['save_success']
                       );
                   } catch (mysqli_sql_exception $e) {
+                    throw new Exception ($LANG['global_form_process']['error_saving']);
+                  }*/
+                  $MYSQL->bindMore(
+                    array(
+                      'set_timezone' => $tz,
+                      'location' => $location,
+                      'gender' => $gender,
+                      'user_birthday' => $birthday,
+                      'about_user' => $about,
+                      'id' => $TANGO->sess->data['id']
+                    )
+                  );
+
+                  if( $MYSQL->query("UPDATE {prefix}users SET set_timezone = :set_timezone, location = :location, gender = :gender, user_birthday = :user_birthday, about_user = :about_user WHERE id = :id") > 0 ) {
+                    $notice .= $TANGO->tpl->entity(
+                      'success_notice',
+                      'content',
+                      $LANG['global_form_process']['save_success']
+                    );
+                  } else {
                     throw new Exception ($LANG['global_form_process']['error_saving']);
                   }
 

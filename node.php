@@ -18,9 +18,12 @@
       $node_id   = $get['id'];
       $node_name = $get['value'];
       
-      $MYSQL->where('id', $node_id);
-      $MYSQL->where('name_friendly', $node_name);
-      $query = $MYSQL->get('{prefix}forum_node');
+      //$MYSQL->where('id', $node_id);
+      //$MYSQL->where('name_friendly', $node_name);
+      //$query = $MYSQL->get('{prefix}forum_node');
+      $MYSQL->bind('id', $node_id);
+      $MYSQL->bind('name_friendly', $node_name);
+      $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE id = :id AND name_friendly = :name_friendly");
       if( !empty($query) ) {
 
           $allowed = explode(',', $query['0']['allowed_usergroups']);
@@ -48,6 +51,19 @@
 
           if( $query['0']['node_type'] == 2 ) {
             $parent_node = node($query['0']['parent_node']);
+            $ori_cat     = category($parent_node['0']['in_category']);
+
+            $breadcrumbs .= $TNAGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'link',
+                'name'
+              ),
+              array(
+                '#',
+                $ori_cat['category_title']
+              )
+            );
 
             $breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_before',
@@ -72,6 +88,20 @@
             );
 
           } elseif( $query['0']['node_type'] == 1 ) {
+
+            $ori_cat = category($query['0']['in_category']);
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+              'breadcrumbs_before',
+              array(
+                'name',
+                'link'
+              ),
+              array(
+                $ori_cat['category_title'],
+                '#'
+              )
+            );
 
             $breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_current',

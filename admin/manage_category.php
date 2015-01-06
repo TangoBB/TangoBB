@@ -45,12 +45,15 @@
           if( !$place or !$p_cat ) {
               throw new Exception ('All fields are required!');
           } else {
-              $data = array(
+              /*$data = array(
                   'category_place' => $place
               );
-              $MYSQL->where('id', $p_cat);
+              $MYSQL->where('id', $p_cat);*/
+              $MYSQL->bind('id', $p_cat);
+              $MYSQL->bind('category_place', $place);
               try {
-                  $MYSQL->update('{prefix}forum_category', $data);
+                  //$MYSQL->update('{prefix}forum_category', $data);
+                  $MYSQL->query('UPDATE {prefix}forum_category SET category_place = :category_place WHERE id = :id');
                   $notice .= $ADMIN->alert(
                       'Category place has been updated!',
                       'success'
@@ -73,14 +76,18 @@
    */
   if( $PGET->g('delete_category') ) {
       $d_cat = clean($PGET->g('delete_category'));
-      $MYSQL->where('id', $d_cat);
-      $query = $MYSQL->get('{prefix}forum_category');
+      /*$MYSQL->where('id', $d_cat);
+      $query = $MYSQL->get('{prefix}forum_category');*/
+      $MYSQL->bind('id', $d_cat);
+      $query = $MYSQL->query('SELECT * FROM {prefix}forum_category WHERE id = :id');
 
       if( !empty($query) ) {
 
-          $MYSQL->where('id', $d_cat);
+          //$MYSQL->where('id', $d_cat);
+          $MYSQL->bind('id', $d_cat);
           try {
-              $MYSQL->delete('{prefix}forum_category');
+              //$MYSQL->delete('{prefix}forum_category');
+              $MYSQL->query('DELETE FROM {prefix}forum_category WHERE id = :id');
               $notice .= $ADMIN->alert(
                   'Category <strong>' . $query['0']['category_title'] . '</strong> has been deleted!',
                   'success'
@@ -100,11 +107,7 @@
       }
   }
 
-  $query = $MYSQL->query("SELECT * FROM
-                          {prefix}forum_category
-                          ORDER BY
-                          category_place
-                          ASC");
+  $query = $MYSQL->query("SELECT * FROM {prefix}forum_category ORDER BY category_place ASC");
 
   $token      = NoCSRF::generate('csrf_token');
   $categories = '';

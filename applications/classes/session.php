@@ -34,13 +34,16 @@
 
               if( $this->session['session_time'] >= strtotime('24 hours ago') ) {
                 $time = time();
-                $MYSQL->where('session_id', $this->session['session_id']);
-                $MYSQL->update(
+                //$MYSQL->where('session_id', $this->session['session_id']);
+                /*$MYSQL->update(
                   '{prefix}sessions',
                   array(
                     'session_time' => $time
                     )
-                );
+                );*/
+                $MYSQL->bind('session_id', $this->session['session_id']);
+                $MYSQL->bind('session_time', $time);
+                $MYSQL->query("UPDATE {prefix}sessions SET session_time = :session_time WHERE session_id = :session_id");
               }
 
               //Adding links for users who are logged in and everything else in the template.
@@ -54,8 +57,10 @@
               ));
 
               //Getting user's total post/messages.
-              $MYSQL->where('post_user', $this->data['id']);
-              $user_post_count = $MYSQL->get('{prefix}forum_posts');
+              //$MYSQL->where('post_user', $this->data['id']);
+              //$user_post_count = $MYSQL->get('{prefix}forum_posts');
+              $MYSQL->bind('post_user', $this->data['id']);
+              $user_post_count = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = :post_user");
               $user_post_count = number_format(count($user_post_count));
 
               $mod_report_integer = modReportInteger();
@@ -99,8 +104,10 @@
 
           if( isset($_SESSION['tangobb_sess']) or isset($_COOKIE['tangobb_sess']) ) {
               $id = (isset($_SESSION['tangobb_sess']))? $_SESSION['tangobb_sess'] : $_COOKIE['tangobb_sess'];
-              $MYSQL->where('session_id', $id);
-              $query = $MYSQL->get('{prefix}sessions');
+              //$MYSQL->where('session_id', $id);
+              //$query = $MYSQL->get('{prefix}sessions');
+              $MYSQL->bind('session_id', $id);
+              $query = $MYSQL->query("SELECT * FROM {prefix}sessions WHERE session_id = :session_id");
               if( !empty($query) ) {
                   $this->session = $query['0'];
                   return true;
@@ -120,9 +127,11 @@
           $time = strtotime(TANGO_SESSION_TIMEOUT . ' seconds ago');
           $query = $MYSQL->query("SELECT * FROM {prefix}sessions");
           foreach( $query as $s ) {
-              if( $s['session_time'] < $time ) {
-			      $data = array($s['id']);
-                  $MYSQL->rawQuery("DELETE FROM {prefix}sessions WHERE id = ?", $data);
+              if( $s['session_time'] < $time && $s['session_type'] !== 2 ) {
+			          //$data = array($s['id']);
+                //$MYSQL->rawQuery("DELETE FROM {prefix}sessions WHERE id = ?", $data);
+                $MYSQL->bind('id', $s['id']);
+                $MYSQL->query("DELETE FROM {prefix}sessions WHERE id = :id");
               }
           }
       }
@@ -136,10 +145,14 @@
       public function assign($email, $remember = false, $facebook = false) {
           global $MYSQL;
 
-          $MYSQL->where('user_email', $email);
-          $a         = $MYSQL->get('{prefix}users');
-          $MYSQL->where('username', $email);
-          $b         = $MYSQL->get('{prefix}users');
+          //$MYSQL->where('user_email', $email);
+          //$a                    = $MYSQL->get('{prefix}users');
+          $MYSQL->bind('user_email', $email);
+          $a = $MYSQL->query("SELECT * FROM {prefix}users WHERE user_email = :user_email");
+          //$MYSQL->where('username', $email);
+          //$b                    = $MYSQL->get('{prefix}users');
+          $MYSQL->bind('username', $email);
+          $b = $MYSQL->query("SELECT * FROM {prefix}users WHERE username = :username");
 
           $query     = ( $a )? $a : $b;
 
@@ -152,7 +165,7 @@
 
           if( $remember ) {
 
-              $data = array(
+              /*$data = array(
                   'session_id' => $session_id,
                   'logged_user' => $query['0']['id'],
                   'session_type' => '2',
@@ -163,11 +176,21 @@
                   return setcookie('tangobb_sess', $session_id, time()+TANGO_SESSION_TIMEOUT, '/', NULL, isset($_SERVER['HTTPS']), true);
               } catch (mysqli_sql_exception $e) {
                   return false;
+              }*/
+              $MYSQL->bind('session_id', $session_id);
+              $MYSQL->bind('logged_user', $query['0']['id']);
+              $MYSQL->bind('session_type', 2);
+              $MYSQL->bind('session_time', $time);
+              $insert = $MYSQL->query("INSERT INTO {prefix}sessions (session_id, logged_user, session_type, session_time) VALUES (:session_id, :logged_user, :session_type, :session_time)");
+              if( $insert > 0 ) {
+                return setcookie('tangobb_sess', $session_id, time()+TANGO_SESSION_TIMEOUT, '/', NULL, isset($_SERVER['HTTPS']), true);
+              } else {
+                return false;
               }
 
           } else {
 
-              $data = array(
+              /*$data = array(
                   'session_id' => $session_id,
                   'logged_user' => $query['0']['id'],
                   'session_type' => '1',
@@ -179,6 +202,17 @@
                   return true;
               } catch (mysqli_sql_exception $e) {
                   return false;
+              }*/
+              $MYSQL->bind('session_id', $session_id);
+              $MYSQL->bind('logged_user', $query['0']['id']);
+              $MYSQL->bind('session_type', 1);
+              $MYSQL->bind('session_time', $time);
+              $insert = $MYSQL->query("INSERT INTO {prefix}sessions (session_id, logged_user, session_type, session_time) VALUES (:session_id, :logged_user, :session_type, :session_time)");
+              if( $insert > 0 ) {
+                $_SESSION['tangobb_sess'] = $session_id;
+                return true;
+              } else {
+                return false;
               }
 
           }
@@ -191,13 +225,17 @@
           global $MYSQL;
 
           if( isset($_SESSION['tangobb_sess']) ) {
-              $MYSQL->where('session_id', $_SESSION['tangobb_sess']);
-              $MYSQL->delete('{prefix}sessions');
-              session_destroy();
+            //$MYSQL->where('session_id', $_SESSION['tangobb_sess']);
+            //$MYSQL->delete('{prefix}sessions');
+            $MYSQL->bind('session_id', $_SESSION['tangobb_sess']);
+            $MYSQL->query("DELETE FROM {prefix}sessions WHERE session_id = :session_id");
+            session_destroy();
           } else {
-              $MYSQL->where('session_id', $_COOKIE['tangobb_sess']);
-              $MYSQL->delete('{prefix}sessions');
-              return setcookie('tangobb_sess', '', time()-3600, '/', NULL, isset($_SERVER['HTTPS']), true);
+            //$MYSQL->where('session_id', $_COOKIE['tangobb_sess']);
+            //$MYSQL->delete('{prefix}sessions');
+            $MYSQL->bind('session_id', $_COOKIE['tangobb_sess']);
+            $MYSQL->query("DELETE FROM {prefix}sessions WHERE session_id = :session_id");
+            return setcookie('tangobb_sess', '', time()-3600, '/', NULL, isset($_SERVER['HTTPS']), true);
           }
       }
 

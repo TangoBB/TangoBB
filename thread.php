@@ -18,16 +18,23 @@
       $node_id   = $get['id'];
       $node_name = $get['value'];
       
-      $MYSQL->where('id', $node_id);
-      $MYSQL->where('title_friendly', $node_name);
-      $MYSQL->where('post_type', 1);
-      $query = $MYSQL->get('{prefix}forum_posts');
+      //$MYSQL->where('id', $node_id);
+      //$MYSQL->where('title_friendly', $node_name);
+      //$MYSQL->where('post_type', 1);
+      //$query = $MYSQL->get('{prefix}forum_posts');
+      $MYSQL->bindMore(
+        array(
+          'id' => $node_id, 
+          'title_friendly' => $node_name
+        )
+      );
+      $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE id = :id and title_friendly = :title_friendly AND post_type = 1");
       if( !empty($query) ) {
           
           $user         = $TANGO->user($query['0']['post_user']);
           $node         = node($query['0']['origin_node']);
           $time_post    = simplify_time($query['0']['post_time'],@$TANGO->sess->data['location']);
-          $user_joined = simplify_time($user['date_joined'], @$TANGO->sess->data['location']);
+          $user_joined  = simplify_time($user['date_joined'], @$TANGO->sess->data['location']);
 
           /*$breadcrumbs = $TANGO->tpl->entity(
             'breadcrumbs_before',
@@ -47,6 +54,7 @@
           if( $node['node_type'] == 2 ) {
 
             $parent_node = node($node['parent_node']);
+            $ori_cat     = category($parent_node['in_category']);
 
             /*$breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_before',
@@ -59,6 +67,11 @@
                 $parent_node['node_name']
               )
             );*/
+            $TANGO->tpl->addBreadcrumb(
+              $ori_cat['category_title'],
+              '#'
+            );
+
             $TANGO->tpl->addBreadcrumb(
               $parent_node['node_name'],
               SITE_URL . '/node.php/' . $parent_node['name_friendly'] . '.' . $parent_node['id']
@@ -81,6 +94,7 @@
             );
 
           } elseif( $node['node_type'] == 1 ) {
+            $ori_cat = category($node['in_category']);
             /*$breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_before',
               array(
@@ -92,6 +106,11 @@
                 $node['node_name']
               )
             );*/
+            $TANGO->tpl->addBreadcrumb(
+              $ori_cat['category_title'],
+              '#'
+            );
+
             $TANGO->tpl->addBreadcrumb(
               $node['node_name'],
               SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id']
@@ -597,7 +616,7 @@
           {
             $icon_package[$category] = '';
             foreach($icons_cat as $code=>$html){
-                $icon_package[$category] .= '<span style="font-size: 30px;" title="'.$code.'">'.$html.'</span> ';
+                $icon_package[$category] .= '<a href="javascript:add_emoji(\'' . $code . '\');"><span style="font-size: 30px;" title="'.$code.'">'.$html.'</span></a> ';
             }
           }
           $content .= $TANGO->tpl->entity(

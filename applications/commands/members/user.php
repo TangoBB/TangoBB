@@ -10,13 +10,17 @@
   $page_title = '';
 
   if( $PGET->g('id') ) {
+      
+      $id    = clean($PGET->g('id'));
+      //$MYSQL->where('id', $id);
+      //$query = $MYSQL->get('{prefix}users');
+      $MYSQL->bind('id', $id);
+      $query = $MYSQL->query("SELECT * FROM {prefix}users WHERE id = :id");
 
-      $id      = clean($PGET->g('id'));
-      $MYSQL->where('id', $id);
-      $query   = $MYSQL->get('{prefix}users');
-
-      $MYSQL->where('username', $id);
-      $u_query = $MYSQL->get('{prefix}users');
+      //$MYSQL->where('username', $id);
+      //$u_query = $MYSQL->get('{prefix}users');
+      $MYSQL->bind('username', $id);
+      $u_query = $MYSQL->query("SELECT * FROM {prefix}users WHERE username = :username");
 
       $query   = (empty($query)) ? $u_query : $query;
 
@@ -58,8 +62,10 @@ if(isset($user) && isset($userg) && isset($page_title))
 {
           //Recent activity protocol
           $recent_activity = '';
-          $data  = array($query['0']['id']);
-          $query = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 15", $data);
+          //$data = array($query['0']['id']);
+          //$query           = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 15", $data);
+          $MYSQL->bind('post_user', $query['0']['id']);
+          $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = :post_user ORDER BY post_time DESC LIMIT 15");
           foreach( $query as $ac ) {
               //User created thread
               if( $ac['post_type'] == "1" ) {

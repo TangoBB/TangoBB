@@ -32,15 +32,19 @@
    */
   if( $PGET->g('toggle_lock') ) {
       $id = clean($PGET->g('toggle_lock'));
-      $MYSQL->where('id', $id);
-      $query = $MYSQL->get('{prefix}forum_node');
+      /*$MYSQL->where('id', $id);
+      $query = $MYSQL->get('{prefix}forum_node');*/
+      $MYSQL->bind('id', $id);
+      $query = $MYSQL->query('SELECT * FROM {prefix}forum_node WHERE id = :id');
       $lock  = ($query['0']['node_locked'] == 1)? '0' : '1';
-      $data  = array(
+      /*$data  = array(
           'node_locked' => $lock
-      );
-      $MYSQL->where('id', $id);
+      );*/
+      $MYSQL->bind('id', $id);
+      $MYSQL->bind('node_locked', $lock);
       try {
-          $MYSQL->update('{prefix}forum_node', $data);
+          //$MYSQL->update('{prefix}forum_node', $data);
+          $MYSQL->query('UPDATE {prefix}forum_node SET node_locked = :node_locked WHERE id = :id');
           $notice .= $ADMIN->alert(
               'Lock has successfully been toggled on node <strong>' . $query['0']['node_name'] . '</strong>.',
               'success'
@@ -58,14 +62,18 @@
    */
   if( $PGET->g('delete_node') ) {
       $d_node = clean($PGET->g('delete_node'));
-      $MYSQL->where('id', $d_node);
-      $query  = $MYSQL->get('{prefix}forum_node');
+      /*$MYSQL->where('id', $d_node);
+      $query  = $MYSQL->get('{prefix}forum_node');*/
+      $MYSQL->bind('id', $d_node);
+      $query  = $MYSQL->query('SELECT * FROM {prefix}forum_node WHERE id = :id');
 
       if( !empty($query) ) {
 
-          $MYSQL->where('id', $d_node);
+          //$MYSQL->where('id', $d_node);
+          $MYSQL->bind('id', $d_node);
           try {
-              $MYSQL->delete('{prefix}forum_node');
+              //$MYSQL->delete('{prefix}forum_node');
+              $MYSQL->delete('DELETE FROM {prefix}forum_node WHERE id = :id');
               $notice .= $ADMIN->alert(
                   'Node <strong>' . $query['0']['node_name'] . '</strong> has been deleted!',
                   'success'
@@ -103,12 +111,15 @@
           if( !$place or !$p_node ) {
               throw new Exception ('All fields are required!');
           } else {
-              $data = array(
+              /*$data = array(
                   'node_place' => $place
-              );
-              $MYSQL->where('id', $p_node);
+              );*/
+              //$MYSQL->where('id', $p_node);
+              $MYSQL->bind('id', $p_node);
+              $MYSQL->bind('node_place', $place);
               try {
-                  $MYSQL->update('{prefix}forum_node', $data);
+                  //$MYSQL->update('{prefix}forum_node', $data);
+                  $MYSQL->query('UPDATE {prefix}forum_node SET node_place = :place WHERE id = :id');
                   $notice .= $ADMIN->alert(
                       'Node place has been updated!',
                       'success'
@@ -130,7 +141,7 @@
 
   function list_manage_node($category) {
       global $MYSQL, $token;
-	    $data = array($category);
+      /*$data = array($category);
       $query = $MYSQL->rawQuery("SELECT * FROM
                               {prefix}forum_node
                               WHERE
@@ -138,13 +149,17 @@
                               AND
                               node_type = 1
                               ORDER BY
-                              node_place", $data);
+                              node_place", $data);*/
+      $MYSQL->bind('in_category', $category);
+      $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE in_category = :in_category AND node_type = 1 ORDER BY node_place");
       $return = '';
       foreach( $query as $n ) {
 
-          $MYSQL->where('parent_node', $n['id']);
+          /*$MYSQL->where('parent_node', $n['id']);
           $MYSQL->where('node_type', 2);
-          $s_q     = $MYSQL->get('{prefix}forum_node');
+          $s_q     = $MYSQL->get('{prefix}forum_node');*/
+          $MYSQL->bind('parent_node', $n['id']);
+          $s_q     = $MYSQL->query('SELECT * FROM {prefix}forum_node WHERE parent_node = :parent_node AND node_type = 2');
           $s_q_a   = array();
           foreach( $s_q as $s_f ) {
             $locked  = ($s_f['node_locked'] == 1)? ' class="text-danger" title="Node Locked"' : '';
@@ -191,20 +206,15 @@
 
   function list_inactive_nodes() {
     global $MYSQL, $token;
-      $query = $MYSQL->query("SELECT * FROM
-                              {prefix}forum_node
-                              WHERE
-                              in_category = 0
-                              AND
-                              node_type = 1
-                              ORDER BY
-                              node_place");
+      $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE in_category = 0 AND node_type = 1 ORDER BY node_place");
       $return = '';
       foreach( $query as $n ) {
 
-          $MYSQL->where('parent_node', $n['id']);
+          /*$MYSQL->where('parent_node', $n['id']);
           $MYSQL->where('node_type', 2);
-          $s_q     = $MYSQL->get('{prefix}forum_node');
+          $s_q     = $MYSQL->get('{prefix}forum_node');*/
+          $MYSQL->bind('parent_node', $n['id']);
+          $s_q     = $MYSQL->query('SELECT * FROM {prefix}forum_node WHERE parent_node = :parent_node AND node_type = 2');
           $s_q_a   = array();
           foreach( $s_q as $s_f ) {
             $locked  = ($s_f['node_locked'] == 1)? ' class="text-danger" title="Node Locked"' : '';

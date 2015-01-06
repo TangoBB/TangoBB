@@ -10,14 +10,16 @@
 
   if( $PGET->g('id') ) {
 
-      $MYSQL->where('id', $PGET->g('id'));
-      $query = $MYSQL->get('{prefix}reports');
+      /*$MYSQL->where('id', $PGET->g('id'));
+      $query = $MYSQL->get('{prefix}reports');*/
+      $MYSQL->bind('id', $PET->g('id'));
+      $query = $MYSQL->query("SELECT * FROM {prefix}reports WHERE id = :id");
 
       if( !empty($query) ) {
 
-        $MYSQL->where('id', $query['0']['id']);
+        //$MYSQL->where('id', $query['0']['id']);
 
-        if( $MYSQL->delete('{prefix}reports') ) {
+        /*if( $MYSQL->delete('{prefix}reports') ) {
           $notice   = str_replace(
             '%url%',
             SITE_URL . '/mod',
@@ -39,7 +41,14 @@
             'content',
             $notice
           );
-        }
+        }*/
+        $MYSQL->bind('id', $query['0']['id']);
+        $MYSQL->query("DELETE FROM {prefix}reports WHERE id = :id");
+        $content .= $TANGO->tpl->entity(
+          'success_notice',
+          'content',
+          $notice
+        );
 
       } else {
           redirect(SITE_URL);

@@ -14,8 +14,10 @@
       if( file_exists('../applications/extensions/' . $PGET->g('install') . '/') ) {
 
         $ext = clean($PGET->g('install'));
-        $MYSQL->where('extension_folder', $ext);
-        $query = $MYSQL->get('{prefix}extensions');
+        /*$MYSQL->where('extension_folder', $ext);
+        $query = $MYSQL->get('{prefix}extensions');*/
+        $MYSQL->bind('extension_folder', $ext);
+        $query = $MYSQL->query('SELECT * FROM {prefix}extensions WHERE extension_folder = :extension_folder');
 
         if( empty($query) ) {
 
@@ -31,13 +33,19 @@
           }
           $setup = new Extension_Setup();
 
-          $data  = array(
+          /*$data  = array(
             'extension_name' => $setup->extension_name,
             'extension_folder' => $ext
+          );*/
+          $MYSQL->bindMore(array(
+              'extension_name' => $setup->extension_name,
+              'extension_folder' => $ext
+              )
           );
 
           try {
-              $MYSQL->insert('{prefix}extensions', $data);
+              //$MYSQL->insert('{prefix}extensions', $data);
+              $MYSQL->query('INSERT INTO {prefix}extensions (extension_name, extension_folder) VALUES (:extension_name, :extension_folder)');
           } catch (mysqli_sql_exception $e) {
             $notice .= $ADMIN->alert(
               'Error installing extension.',
@@ -76,8 +84,10 @@
    * Uninstall Extension.
    */
   if( $PGET->g('uninstall') ) {
-      $MYSQL->where('extension_folder', $PGET->g('uninstall'));
-      $query = $MYSQL->get('{prefix}extensions');
+      /*$MYSQL->where('extension_folder', $PGET->g('uninstall'));
+      $query = $MYSQL->get('{prefix}extensions');*/
+      $MYSQL->bind('extension_folder', $PGET->g('uninstall'));
+      $query = $MYSQL->query('SELECT * FROM {prefix}extensions WHERE extension_folder = :extension_folder');
       if( !empty($query) ) {
 
         $ext = clean($PGET->g('uninstall'));
@@ -94,9 +104,11 @@
 
         $setup = new Extension_Setup();
 
-        $MYSQL->where('extension_folder', $ext);
+        //$MYSQL->where('extension_folder', $ext);
+          $MYSQL->bind('extension_folder', $ext);
         try {
-            $MYSQL->delete('{prefix}extensions');
+            //$MYSQL->delete('{prefix}extensions');
+            $MYSQL->query('DELETE FROM {prefix}extensions WHERE extension_folder = :extension_folder');
         } catch (mysqli_sql_exception $e) {
           $notice .= $ADMIN->alert(
             'Error installing extension.',
@@ -128,8 +140,10 @@
   foreach( glob('../applications/extensions/*', GLOB_ONLYDIR) as $dir ) {
       $dir         = str_replace('../applications/extensions/', '', $dir);
 
-      $MYSQL->where('extension_folder', $dir);
-      $query       = $MYSQL->get('{prefix}extensions');
+      /*$MYSQL->where('extension_folder', $dir);
+      $query       = $MYSQL->get('{prefix}extensions');*/
+      $MYSQL->bind('extension_folder', $dir);
+      $query       = $MYSQL->query('SELECT * FROM {prefix}extensions WHERE extension_folder = :extension_folder');
 
       $install     = (empty($query))? '<a href="' . SITE_URL . '/admin/extensions.php/install/' . $dir . '">Install</a>' : '<a href="' . SITE_URL . '/admin/extensions.php/uninstall/' . $dir . '">Uninstall</a>';
       $inst_helper = (empty($query))? '' : ' class="success"';

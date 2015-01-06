@@ -48,7 +48,7 @@ else {
     <div class="alert alert-danger">
         <strong>Oh snap!</strong>
         Iko can't be installed on your system.
-        <?php 
+        <?php
         if($check['php']===false) { echo '<br />Your current PHP version is lower than the recommended version.';}
         if($check['chmods']===false) { echo '<br />Please change the chmod of the \'<em>config.php</em>\' file in the \'<em>applications</em>\' folder to <em>777</em>.';}
         if($check['mysql']===false) { echo '<br />Please check if you have installed mysql.';}

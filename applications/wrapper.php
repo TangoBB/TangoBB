@@ -18,6 +18,11 @@
       define('PATH_A', '../../../applications/');
       define('TEMPLATE', '../../../');
       define('APPLICATION', '../../../applications/');
+  }elseif( BASEPATH == "Install" ) {
+      define('PATH', '../../');
+      define('PATH_A', '../../applications/');
+      define('TEMPLATE', '../../');
+      define('APPLICATION', '../../applications/');
   } else {
       define('PATH', '');
       define('PATH_A', '');
@@ -32,14 +37,22 @@
   define('CLA', 'classes/');
 
   //MySQLi Library
-  require_once(PATH_A . LIB . 'mysqli.php');
-  $MYSQL = new Mysqlidb(
+  //require_once(PATH_A . LIB . 'mysqli.php');
+  require_once(PATH_A . LIB . 'pdo.php');
+  /*$MYSQL = new Mysqlidb(
       MYSQL_HOST,
       MYSQL_USERNAME,
       MYSQL_PASSWORD,
       MYSQL_DATABASE,
       MYSQL_PREFIX
-  );
+  );*/
+  $MYSQL = new db();
+
+  /* Databse CRUDs */
+  require_once(PATH_A . 'dependencies/easyCRUD.class.php');
+  require_once(PATH_A . 'dependencies/db_crud/generic.php');
+
+
   $USERLINKS = array();
 
   if( !defined('Install') ) {
@@ -59,19 +72,21 @@
 
   //Using the language package.
   if( !defined('Install') ) {
-    $MYSQL->where('id', 1);
-    $query   = $MYSQL->get('{prefix}generic');
+    //$MYSQL->where('id', 1);
+    //$query   = $MYSQL->get('{prefix}generic');
+    $generic = new Crud_Generic();
+    $generic->Find(1);
     switch( BASEPATH ) {
       case "Staff":
-        $package = '../applications/languages/' . $query['0']['site_language'] . '.php';
+        $package = '../applications/languages/' . $generic->site_language . '.php';
         $default = '../applications/languages/english.php';
       break;
       case "Extension";
-        $package = '../../../applications/languages/' . $query['0']['site_language'] . '.php';
+        $package = '../../../applications/languages/' . $generic->site_language . '.php';
         $default = '../../../applications/languages/english.php';
       break;
       default:
-        $package = 'applications/languages/' . $query['0']['site_language'] . '.php';
+        $package = 'applications/languages/' . $generic->site_language . '.php';
         $default = 'applications/languages/english.php';
       break;
     }

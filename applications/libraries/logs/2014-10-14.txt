@@ -1,0 +1,7 @@
+Time : 01:17:59
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'origin_mode' in 'where clause'
+Raw SQL : SELECT * FROM iko_forum_posts WHERE post_type = 1 AND origin_mode = :origin_node ORDER BY post_title DESC LIMIT :start, :per_page
+
+Time : 01:11:38
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'iko.iko_' doesn't exist
+Raw SQL : SELECT * FROM iko_ WHERE username = :username

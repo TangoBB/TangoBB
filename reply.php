@@ -20,12 +20,19 @@
 
       //$thread = clean($PGET->g('thread'));
       $thread = $PGET->s(true);
-      $MYSQL->where('post_type', '1');
+      //$MYSQL->where('post_type', '1');
       //$MYSQL->where('id', $thread);
-      $MYSQL->where('id', $thread['id']);
+      //$MYSQL->where('id', $thread['id']);
       //$MYSQL->where('title_friendly', 'a_thread');
-      $MYSQL->where('title_friendly', $thread['value']);
-      $query = $MYSQL->get('{prefix}forum_posts');
+      //$MYSQL->where('title_friendly', $thread['value']);
+      //$query = $MYSQL->get('{prefix}forum_posts');
+      $MYSQL->bindMore(
+        array(
+          'id' => $thread['id'],
+          'title_friendly' => $thread['value']
+        )
+      );
+      $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_type = 1 and id = :id AND title_friendly = :title_friendly");
 
       if( !empty($query) ) {
           $node        = node($query['0']['origin_node']);
@@ -50,6 +57,19 @@
           if( $node['node_type'] == 2 ) {
 
             $parent_node = node($node['parent_node']);
+            $ori_cat     = category($parent_node['in_category']);
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+                'breadcrumbs_before',
+                array(
+                    'link',
+                    'name'
+                ),
+                array(
+                    '#',
+                    $ori_cat['category_title']
+                )
+            );
 
             $breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_before',
@@ -76,6 +96,21 @@
             );
 
           } elseif( $node['node_type'] == 1 ) {
+
+            $ori_cat      = category($node['in_category']);
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+                'breadcrumbs_before',
+                array(
+                    'link',
+                    'name'
+                ),
+                array(
+                    '#',
+                    $ori_cat['category_title']
+                )
+            );
+
             $breadcrumbs .= $TANGO->tpl->entity(
               'breadcrumbs_before',
               array(
@@ -134,8 +169,8 @@
                   $cont    = ( !empty($q_query) )? '[quote]' . $PGET->g('quote') . '[/quote]' . $cont : $cont;
                   $cont    = preg_replace('#\\[quote\\]Post ID: (.*?)\\[/quote\\]#uis', '[quote]\\1[/quote]', $cont);
 
-                  $data = array($TANGO->sess->data['id']);
-                  $c_query = $MYSQL->rawQuery(
+                  //$data = array($TANGO->sess->data['id']);
+                  /*$c_query = $MYSQL->rawQuery(
                     "SELECT * FROM
                     {prefix}forum_posts
                     WHERE
@@ -145,7 +180,9 @@
                     DESC LIMIT
                     1",
                     $data
-                  );
+                  );*/
+                  $MYSQL->bind('post_user', $TANGO->sess->data['id']);
+                  $c_query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = :post_user ORDER BY post_time DESC LIMIT 1");
 
                   if( !$cont ) {
                       throw new Exception ($LANG['global_form_process']['all_fields_required']);
@@ -255,16 +292,26 @@
                       } else {
 //die('second');
 
-                        $n_data = array(
+                        /*$n_data = array(
                           'post_content' => $cont,
                           'post_time' => $time,
                           'post_user' => $TANGO->sess->data['id'],
                           'origin_node' => $origin['origin_node'],
                           'origin_thread' => $thread['id'],
                           'post_type' => '2'
+                        );**/
+                        $MYSQL->bindMore(
+                          array(
+                            'post_content' => $cont,
+                            'post_time' => $time,
+                            'post_user' => $TANGO->sess->data['id'],
+                            'origin_node' => $origin['origin_node'],
+                            'origin_thread' => $thread['id'],
+                            'post_type' => '2'
+                          )
                         );
 
-                        try {
+                        /*try {
                           $MYSQL->insert('{prefix}forum_posts', $n_data);
                           $t_data = array(
                             'last_updated'=> $time
@@ -288,7 +335,21 @@
                           }
                         } catch (mysqli_sql_exception $e) {
                           throw new Exception ($LANG['global_form_process']['error_replying_thread']);
+                        }*/
+                        $MYSQL->query("INSERT INTO {prefix}forum_posts (post_content, post_time, post_user, origin_node, origin_thread, post_type) VALUES (:post_content, :post_time, :post_user, :origin_node, :origin_thread, :post_type)");
+                        $MYSQL->bindMore(
+                          array(
+                            'last_updated' => $time,
+                            'id' => $thread['id']
+                          )
+                        );
+
+                        $page = '';
+                        if( count($p_query)/POST_RESULTS_PER_PAGE > 1 ) {
+                          $page .= '/page/' . ceil(count($p_query)/POST_RESULTS_PER_PAGE);
                         }
+                        $MYSQL->query("UPDATE {prefix}forum_posts SET last_updated = :last_updated WHERE id = :id");
+                        redirect(SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id'] . $page);
 
                       }
 
@@ -352,7 +413,7 @@
           {
             $icon_package[$category] = '';
             foreach($icons_cat as $code=>$html){
-                $icon_package[$category] .= '<span style="font-size: 30px;" title="'.$code.'">'.$html.'</span> ';
+                $icon_package[$category] .= '<a href="javascript:add_emoji(\'' . $code . '\');"><span style="font-size: 30px;" title="'.$code.'">'.$html.'</span></a> ';
             }
           }
           $content .= $TANGO->tpl->entity(

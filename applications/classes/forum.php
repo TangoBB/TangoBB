@@ -46,8 +46,8 @@
           global $MYSQL, $TANGO;
 
           $return = '';
-      $data = array($category);
-          $query  = $MYSQL->rawQuery("SELECT * FROM
+          //$data = array($category);
+          /*$query  = $MYSQL->rawQuery("SELECT * FROM
                                    {prefix}forum_node
                                    WHERE
                                    in_category = ?
@@ -55,13 +55,17 @@
                                    node_type = 1
                                    ORDER BY
                                    node_place
-                                   ASC", $data);
+                                   ASC", $data);*/
+          $MYSQL->bind('in_category', $category);
+          $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE in_category = :in_category AND node_type = 1 ORDER BY node_place ASC");
           foreach( $query as $node ) {
               $allowed = explode(',', $node['allowed_usergroups']);
               if( in_array($TANGO->sess->data['user_group'], $allowed) ) {
-                $MYSQL->where('node_type', 2);
-                $MYSQL->where('parent_node', $node['id']);
-                $sub     = $MYSQL->get('{prefix}forum_node');
+                //$MYSQL->where('node_type', 2);
+                //$MYSQL->where('parent_node', $node['id']);
+                //$sub     = $MYSQL->get('{prefix}forum_node');
+                $MYSQL->bind('parent_node', $node['id']);
+                $sub = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE node_type = 2 AND parent_node = :parent_node");
                 $subs    = array();
                 foreach( $sub as $suf ) {
                   $allowed = explode(',', $suf['allowed_usergroups']);
@@ -72,15 +76,17 @@
                 $subs = (!empty($subs))? implode(', ', array_slice($subs, 0, 3)) : 'None';
                 
                 // New posts in node?
-                $data = array($node['id']);                
-                $posts = $MYSQL->rawQuery("SELECT id FROM
+                //$data = array($node['id']);                
+                /*$posts = $MYSQL->rawQuery("SELECT id FROM
                                   {prefix}forum_posts
                                   WHERE
                                   origin_node = ?
                                   AND post_type = 1
                                   ORDER BY
                                   post_time
-                                  DESC", $data);
+                                  DESC", $data);*/
+                $MYSQL->bind('origin_node', $node['id']);
+                $posts = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_node = :origin_node AND post_type = 1 ORDER BY post_time DESC");
                 $node_status = 'read';
                 if(!empty($posts)) {
                     foreach($posts as $post) {
@@ -122,8 +128,8 @@
         global $MYSQL, $TANGO;
 
         $return = '';
-        $data = array($parent_forum);
-        $query  = $MYSQL->rawQuery("SELECT * FROM
+        //$data = array($parent_forum);
+        /*$query  = $MYSQL->rawQuery("SELECT * FROM
                                    {prefix}forum_node
                                    WHERE
                                    parent_node = ?
@@ -131,7 +137,9 @@
                                    node_type = 2
                                    ORDER BY
                                    node_place
-                                   ASC", $data);
+                                   ASC", $data);*/
+        $MYSQL->bind('parent_node', $parent_forum);
+        $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE parent_node = :parent_node AND node_type = 2 ORDER BY node_place ASC");
         foreach( $query as $node ) {
           $allowed = explode(',', $node['allowed_usergroups']);
           if( in_array($TANGO->sess->data['user_group'], $allowed) ) {
@@ -165,30 +173,35 @@
       private function latestPost($forum) {
           global $MYSQL, $TANGO;
 
-          $MYSQL->where('node_type', 2);
-          $MYSQL->where('parent_node', $forum);
-          $query = $MYSQL->get('{prefix}forum_node');
+          //$MYSQL->where('node_type', 2);
+          //$MYSQL->where('parent_node', $forum);
+          //$query = $MYSQL->get('{prefix}forum_node');
+          $MYSQL->bind('parent_node', $forum);
+          $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE node_type = 2 AND parent_node = :parent_node");
           $where = 'NULL';
           $data = array();
           foreach( $query as $wh ) {
-            $where .= ',?';
-            $data[] = $wh['id'];
+            $where .= ',:' . $wh['id'];
+            //$data[] = $wh['id'];
+            $MYSQL->bind($wh['id'], $wh['id']);
           }
-          $where .= ',?';
-          $data[] = $forum;
+          $where .= ',:forum';
+          //$data[] = $forum;
+          $MYSQL->bind('forum', $forum);
 
           //die(var_dump($data));
 
           $return = '';
 
-          $query = $MYSQL->rawQuery("SELECT * FROM
+          /*$query = $MYSQL->rawQuery("SELECT * FROM
                                      {prefix}forum_posts
                                      WHERE
                                      origin_node
                                      IN (" . $where . ")
                                      ORDER BY
                                      post_time
-                                     DESC LIMIT 1", $data);
+                                     DESC LIMIT 1", $data);*/
+          $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_node IN (" . $where . ") ORDER BY post_time DESC LIMIT 1");
 
           if( !empty($query) ) {
 
@@ -198,8 +211,10 @@
                   if( $post['post_type'] == "1" ) {
                       $latest = (strlen($post['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id'] . '" title="' . $post['post_title'] . '">' . substr($post['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id'] . '">' . $post['post_title'] . '</a>';
                   } elseif( $post['post_type'] == "2" ) {
-                      $MYSQL->where('origin_thread', $post['origin_thread']);
-                      $q      = $MYSQL->get('{prefix}forum_posts');
+                      //$MYSQL->where('origin_thread', $post['origin_thread']);
+                      //$q      = $MYSQL->get('{prefix}forum_posts');
+                      $MYSQL->bind('origin_thread', $post['origin_thread']);
+                      $q = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_thread = :origin_thread");
 
                       $q      = (count($q) / POST_RESULTS_PER_PAGE);
                       $page   = ( $q > 1 )? '/page/' . ceil($q) . '/' : '';
@@ -258,14 +273,16 @@
 
           $return = '';
       $data = array($forum);
-          $query = $MYSQL->rawQuery("SELECT * FROM
+          /*$query = $MYSQL->rawQuery("SELECT * FROM
                                   {prefix}forum_posts
                                   WHERE
                                   origin_node = ?
                                   ORDER BY
                                   post_time
                                   DESC
-                                  LIMIT 1", $data);
+                                  LIMIT 1", $data);*/
+          $MYSQL->bind('origin_node', $forum);
+          $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_node = :origin_node ORDER BY post_time DESC LIMIT 1");
           if( !empty($query) ) {
 
               foreach( $query as $post ) {
@@ -274,8 +291,10 @@
                   if( $post['post_type'] == "1" ) {
                       $latest = (strlen($post['post_title']) > 24)? '<a href="' . SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id'] . '" title="' . $post['post_title'] . '">' . substr($post['post_title'], 0, 24) . '...' . '</a>' : '<a href="' . SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id'] . '">' . $post['post_title'] . '</a>';
                   } elseif( $post['post_type'] == "2" ) {
-                      $MYSQL->where('origin_thread', $post['origin_thread']);
-                      $q      = $MYSQL->get('{prefix}forum_posts');
+                      //$MYSQL->where('origin_thread', $post['origin_thread']);
+                      //$q      = $MYSQL->get('{prefix}forum_posts');
+                      $MYSQL->bind('origin_thread', $post['origin_thread']);
+                      $q      = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_thread = :origin_thread");
 
                       $q      = (count($q) / POST_RESULTS_PER_PAGE);
                       $page   = ( $q > 1 )? '/page/' . ceil($q) . '/' : '';

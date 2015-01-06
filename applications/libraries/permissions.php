@@ -32,17 +32,25 @@
       public function create($name) {
         global $MYSQL;
         $name = strtolower($name);
-        $MYSQL->where('permission_name', $name);
-        $query = $MYSQL->get('{prefix}permissions');
+        //$MYSQL->where('permission_name', $name);
+        //$query = $MYSQL->get('{prefix}permissions');
+        $MYSQL->bind('permission_name', $name);
+        $query = $MYSQL->query("SELECT * FROM {prefix}permissions WHERE permission_name = :permission_name");
 
         if( empty($query) ) {
-          $data = array(
+          /*$data = array(
             'permission_name' => $name
           );
           try {
               $MYSQL->insert('{prefix}permissions', $data);
             return true;
           } catch (mysqli_sql_exception $e) {
+            return false;
+          }*/
+          $MYSQL->bind('permission_name', $name);
+          if( $MYSQL->query("INSERT INTO {prefix}permissions (permission_name) VALUES (:permission_name)") > 0 ) {
+            return true;
+          } else {
             return false;
           }
         } else {
@@ -55,8 +63,10 @@
        */
       public function perm($perm_id) {
         global $MYSQL;
-        $MYSQL->where('id', $perm_id);
-        $query = $MYSQL->get("{prefix}permissions");
+        //$MYSQL->where('id', $perm_id);
+        //$query = $MYSQL->get("{prefix}permissions");
+        $MYSQL->bind('id', $perm_id);
+        $query = $MYSQL->query("SELECT * FROM {prefix}permissions WHERE id = :id");
         if( $query ) {
           return $query['0'];
         } else {

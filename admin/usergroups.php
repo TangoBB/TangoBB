@@ -32,14 +32,18 @@
    */
   if( $PGET->g('delete_usergroup') ) {
       $d_u   = clean($PGET->g('delete_usergroup'));
-      $MYSQL->where('id', $d_u);
-      $query = $MYSQL->get('{prefix}usergroups');
+      /*$MYSQL->where('id', $d_u);
+      $query = $MYSQL->get('{prefix}usergroups');*/
+      $MYSQL->bind('id', $d_u);
+      $query = $MYSQL->query('SELECT * FROM {prefix}usergroups WHERE id = :id');
 
       if( !empty($query) ) {
 
-          $MYSQL->where('id', $d_u);
+          //$MYSQL->where('id', $d_u);
+          $MYSQL->bind('id', $d_u);
           try {
-              $MYSQL->delete('{prefix}usergroups');
+              //$MYSQL->delete('{prefix}usergroups');
+              $MYSQL->query('DELETE FROM {prefix}usergroups WHERE id = :id');
               $notice .= $ADMIN->alert(
                   'Usergroup <strong>' . $query['0']['group_name'] . '</strong> has been deleted!',
                   'success'
@@ -59,8 +63,7 @@
       }
   }
 
-  $query = $MYSQL->query("SELECT * FROM
-                          {prefix}usergroups");
+  $query = $MYSQL->query("SELECT * FROM {prefix}usergroups");
 
   $token      = NoCSRF::generate('csrf_token');
   $groups     = '';

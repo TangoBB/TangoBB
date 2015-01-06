@@ -10,15 +10,17 @@
 
   if( $PGET->g('post') ) {
 
-      $MYSQL->where('id', $PGET->g('post'));
-      $query = $MYSQL->get('{prefix}forum_posts');
+      //$MYSQL->where('id', $PGET->g('post'));
+      //$query = $MYSQL->get('{prefix}forum_posts');
+    $MYSQL->bind('id', $PGET->g('post'));
+    $query = $MYSQL-query("SELECT * FROM {prefix}forum_posts WHERE id = :id");
 
       if( !empty($query) ) {
 
         // Check if the post is a starting post
         if( $query['0']['post_type'] == "1" ) {
         // If it is starting post delete the post and all its subposts
-            $MYSQL->where('id', $query['0']['id']);
+            /*$MYSQL->where('id', $query['0']['id']);
             if($MYSQL->delete('{prefix}forum_posts') ) {
                 $content .= $TANGO->tpl->entity(
                     'success_notice',
@@ -33,9 +35,16 @@
                     'content',
                     $LANG['mod']['delete']['error_deleting']
                 );
-            }
+            }*/
+            $MYSQL->bind('id', $query['0']['id']);
+            $MYSQL->query("DELETE FROM {prefix}forum_posts WHERE id = :id");
+            $content .= $TANGO->tpl->entity(
+              'success_notice',
+              'content',
+              $LANG['mod']['delete']['thread_deleted']
+            );
         // Checking if there are subposts
-            $MYSQL->where('origin_thread', $query['0']['id']);
+            /*$MYSQL->where('origin_thread', $query['0']['id']);
             $subs = $MYSQL->get('{prefix}forum_posts');
             foreach($subs as $sub) {
                 $MYSQL->where('id', $sub['id']);
@@ -55,12 +64,14 @@
                         $LANG['mod']['delete']['error_deleting']
                     );
                 }
-            }
+            }*/
+            $MYSQL->bind('origin_thread', $query['0']['id']);
+            $MYSQL->query("DELETE FROM {prefix}forum_posts WHERE origin_thread = :origin_thread");
             
         }
         else // if it is just a post
         {
-            $MYSQL->where('id', $query['0']['id']);
+            /*$MYSQL->where('id', $query['0']['id']);
             if( $MYSQL->delete('{prefix}forum_posts') ) {
               $content .= $TANGO->tpl->entity(
                 'success_notice',
@@ -73,7 +84,14 @@
                 'content',
                 $LANG['mod']['delete']['error_deleting']
               );
-            }   
+            }*/
+            $MYSQL->bind('id', $query['0']['id']);
+            $MYSQL->query("DELETE FROM {prefix}forum_posts WHERE id = :id");
+            $content .= $TANGO->tpl->entity(
+              'success_notice',
+              'content',
+              $LANG['mod']['delete']['post_deleted']
+            );
         }
          /* if( $query['0']['post_type'] == "1" ) {
             $MYSQL->where('origin_thread', $query['0']['id']);

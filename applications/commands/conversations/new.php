@@ -39,7 +39,7 @@
             );
           }
 
-          $MYSQL->where('username', $u);
+          /*$MYSQL->where('username', $u);
           $query = $MYSQL->get('{prefix}users');
           $data = array(
             'message_title' => $title,
@@ -62,6 +62,36 @@
               )
             );
           } catch (mysqli_sql_exception $e) {
+            throw new Exception (
+              str_replace(
+                '%username%',
+                $query['0']['username'],
+                $LANG['bb']['conversations']['error_sending']
+              )
+            );
+          }*/
+          $us = $TANGO->user($u);
+          $MYSQL->bindMore(
+            array(
+              'message_title' => $title,
+              'message_content' => $cont,
+              'message_time' => $time,
+              'message_sender' => $TANGO->sess->data['id'],
+              'message_receiver' => $us['username']
+            )
+          );
+
+          if( $MYSQL->query("INSERT INTO {prefix}messages (message_title, message_content, message_time, message_sender, message_receiver, message_type) VALUES (:message_title, :message_content, :message_time, :message_Sender, :message_receiver, 1)") > 0 ) {
+            $notice .= $TANGO->tpl->entity(
+              'success_notice',
+              'content',
+              str_replace(
+                '%username%',
+                $query['0']['username'],
+                $LANG['bb']['conversations']['message_sent']
+              )
+            );
+          } else {
             throw new Exception (
               str_replace(
                 '%username%',

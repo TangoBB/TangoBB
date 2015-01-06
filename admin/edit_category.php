@@ -10,7 +10,7 @@
   function allowed_usergroups($groups) {
     global $TANGO, $MYSQL;
     $groups = explode(',', $groups);
-    $query  = $MYSQL->get('{prefix}usergroups');
+    $query  = $MYSQL->query('SELECT * FROM {prefix}usergroups');
     $return = '<input type="checkbox" name="allowed_ug[]" value="0" CHECKED /> Guest<br />';
     foreach( $query as $u ) {
       if( in_array($u['id'], $groups) ) {
@@ -25,8 +25,10 @@
   if( $PGET->g('id') ) {
 
       $id    = clean($PGET->g('id'));
-      $MYSQL->where('id', $id);
-      $query = $MYSQL->get('{prefix}forum_category');
+      $MYSQL->bind('id', $id);
+      $query = $MYSQL->query('SELECT * FROM {prefix}forum_category WHERE id = :id');
+      /*$MYSQL->where('id', $id);
+      $query = $MYSQL->get('{prefix}forum_category');*/
 
       if( !empty($query) ) {
 
@@ -47,15 +49,20 @@
                       throw new Exception ('All fields are required!');
                   } else {
 
-                      $data = array(
+                      /*$data = array(
                           'category_title' => $title,
                           'category_desc' => $desc,
                           'allowed_usergroups' => $all_u
-                      );
-                      $MYSQL->where('id', $id);
+                      );*/
+                      $MYSQL->bind('category_title', $title);
+                      $MYSQL->bind('category_desc', $desc);
+                      $MYSQL->bind('allowed_usergroups', $all_u);
+                      $MYSQL->bind('id', $id);
+                      //$MYSQL->where('id', $id);
 
                       try {
-                          $MYSQL->update('{prefix}forum_category', $data);
+                          //$MYSQL->update('{prefix}forum_category', $data);
+                          $MYSQL->query('UPDATE {prefix}forum_category SET category_title = :category_title, category_desc = :category_desc, allowed_usergroups = :allowed_usergroups WHERE id = :id');
                           redirect(SITE_URL . '/admin/manage_category.php/notice/edit_success');
                       } catch (mysqli_sql_exception $e) {
                           throw new Exception ('Error updating category.');

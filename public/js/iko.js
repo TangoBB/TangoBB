@@ -34,3 +34,10 @@ var formsave1=new autosaveform({
 function quote(id) {
     $('#editor').execCommand('quote',{author: '',seltext:'Post ID: ' + id + ''});
 }
+
+//Inserting Smilies.
+function add_emoji(text) {
+    console.log(text);
+    var ori_val = $('#editor').val();
+    $('#editor').val(ori_val + text);
+}
