@@ -240,8 +240,8 @@
    */
   function usernameExists($username) {
       global $MYSQL;
-      $MYSQL->where('username', $username);
-      $query = $MYSQL->get('{prefix}users');
+      $MYSQL->bind('username', $username);
+      $query = $MYSQL->query('SELECT * FROM {prefix}users WHERE username = :username');
 
       if( !empty($query) ) {
           return true;
@@ -251,8 +251,8 @@
   }
   function emailTaken($email) {
       global $MYSQL;
-      $MYSQL->where('user_email', $email);
-      $query = $MYSQL->get('{prefix}users');
+      $MYSQL->bind('user_email', $email);
+      $query = $MYSQL->query('SELECT * FROM {prefix}users WHERE user_email = :user_email');
 
       if( !empty($query) ) {
           return true;
@@ -354,10 +354,10 @@
           }
 
           if ( $login_successful && $obsolete_hash ) {
-              $MYSQL
-                  ->where('id', $user_data['id'])
-                  ->update('{prefix}users', array('user_password' => encrypt($password)))
-              ;
+              $MYSQL->bind('id', $user_data['id']);
+              $MYSQL->bind('user_password', encrypt($password));
+              $MYSQL->query('UPDATE {prefix}users SET user_password = :user_password');
+
           }
       }
 
@@ -365,8 +365,8 @@
   }
   function usergroupExists($name) {
       global $MYSQL;
-      $MYSQL->where('group_name', $name);
-      $query = $MYSQL->get('{prefix}usergroups');
+      $MYSQL->bind('group_name', $name);
+      $query = $MYSQL->query('SELECT * FROM {prefix}usergroups WHERE group_name = :group_name');
       if( !empty($query) ) {
           return $query['0'];
       } else {
