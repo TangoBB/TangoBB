@@ -9,12 +9,15 @@
 
   function list_category() {
       global $MYSQL;
-      $query  = $MYSQL->get('{prefix}forum_category');
+      //$query  = $MYSQL->get('{prefix}forum_category');
+      $query  = $MYSQL->query('SELECT * FROM {prefix}forum_category');
       $return = '';
       foreach( $query as $s ) {
-          $MYSQL->where('node_type', 1);
+          /*$MYSQL->where('node_type', 1);
           $MYSQL->where('in_category', $s['id']);
-          $query = $MYSQL->get('{prefix}forum_node');
+          $query = $MYSQL->get('{prefix}forum_node');*/
+          $MYSQL->bind('in_category', $s['id']);
+          $query = $MYSQL->query('SELECT * FROM {prefix}forum_node WHERE in_category = :in_category AND node_type = 1');
           $return .= '<option value="' . $s['id'] . '">' . $s['category_title'] . '</option>';
           foreach( $query as $n ) {
             $return .= '<option value="&' . $n['id'] . '">&nbsp;&nbsp;&nbsp;&nbsp;-' . $n['node_name'] . '</option>';
@@ -25,7 +28,8 @@
 
   function allowed_usergroups() {
     global $TANGO, $MYSQL;
-    $query  = $MYSQL->get('{prefix}usergroups');
+    //$query  = $MYSQL->get('{prefix}usergroups');
+    $query  = $MYSQL->query('SELECT * FROM {prefix}usergroups');
     $return = '<input type="checkbox" name="allowed_ug[]" value="0" CHECKED /> Guest<br />';
     foreach( $query as $u ) {
       $return .= '<input type="checkbox" name="allowed_ug[]" value="' . $u['id'] . '" /> ' . $u['group_name'] . '<br />';
@@ -67,18 +71,27 @@
                   'allowed_usergroups' => $all_u
                 );
               } else {
-                $data = array(
+                /*$data = array(
                   'node_name' => $title,
                   'node_desc' => $desc,
                   'name_friendly' => title_friendly($title),
                   'in_category' => $_POST['node_parent'],
                   'node_type' => 1,
                   'allowed_usergroups' => $all_u
-                );
+                );*/
+                $MYSQL->bindMore(array(
+                    'node_name' => $title,
+                    'node_desc' => $desc,
+                    'name_friendly' => title_friendly($title),
+                    'in_category' => $_POST['node_parent'],
+                    'node_type' => 1,
+                    'allowed_usergroups' => $all_u
+                ));
               }
 
               try {
-                  $MYSQL->insert('{prefix}forum_node', $data);
+                  //$MYSQL->insert('{prefix}forum_node', $data);
+                  $MYSQL->query('INSERT INTO {prefix}forum_node (node_name, node_desc, name_friendly, in_category, node_type, allowed_usergroups) VALUES (:node_name, :node_desc, :name_friendly, :in_category, :node_type, :allowed_usergroups)');
                   redirect(SITE_URL . '/admin/manage_node.php/notice/create_success');
               } catch (mysqli_sql_exception $e) {
                   throw new Exception ('Error creating forum node.');
