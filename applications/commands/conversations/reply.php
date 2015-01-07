@@ -12,9 +12,6 @@
 
   if( $PGET->g('id') ) {
 
-    //$MYSQL->where('id', $PGET->g('id'));
-    //$MYSQL->where('message_type', 1);
-    //$query = $MYSQL->get('{prefix}messages');
     $MYSQL->bind('id', $PGET->g('id'));
     $query = $MYSQL->query("SELECT * FROM {prefix}messages WHERE id = :id AND message_type = 1");
 
@@ -40,22 +37,6 @@
                 else{
                     $receiver = $query['0']['message_sender'];
                 }
-      			/*$data = array(
-      				'message_title' => 'RE: ' . $query['0']['message_title'],
-      				'message_content' => $cont,
-      				'message_time' => $time,
-      				'origin_message' => $query['0']['id'],
-      				'message_sender' => $TANGO->sess->data['id'],
-      				'message_receiver' => $receiver,
-      				'message_type' => 2
-      			);
-
-      			try {
-                    $MYSQL->insert('{prefix}messages', $data);
-      				redirect(SITE_URL . '/conversations.php/cmd/view/v/' . $query['0']['id']);
-      			} catch (mysqli_sql_exception $e) {
-      				throw new Exception ($LANG['bb']['conversations']['error_sending_alt']);
-      			}*/
             $MYSQL->bindMore(
               array(
                 'message_title' => 'RE: ' . $query['0']['message_title'],

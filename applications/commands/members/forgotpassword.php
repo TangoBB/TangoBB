@@ -28,29 +28,15 @@
           } elseif( !emailTaken($email) ) {
               throw new Exception ($LANG['global_form_process']['email_not_exist']);
           } else {
-              //$MYSQL->where('user_email', $email);
-              //$query = $MYSQL->get('{prefix}users');
               $MYSQL->bind('user_email', $email);
               $query = $MYSQL->query("SELECT * FROM {prefix}users WHERE user_email = :user_email");
 
               // deactivate all previous reset requests
-              /*$data         = array(
-                  'user' => $query[0]['id'],
-                  'active' => 0,
-              );
-
-              $MYSQL->where('user', $query[0]['id']);
-              $MYSQL->update('{prefix}password_reset_requests', $data);*/
               $MYSQL->bind('user', $query['0']['id']);
               $MYSQL->query("UPDATE {prefix}password_reset_requests SET active = 0 WHERE user = :user");
 
               $reset_token = randomHexBytes(16);
               $token_hash = hash('sha256', $reset_token);
-              /*$data         = array(
-                  'user' => $query[0]['id'],
-                  'reset_token' => $token_hash,
-                  'request_time' => time(),
-              );*/
               $MYSQL->bindMore(
                 array(
                   'user' => $query[0]['id'],
@@ -60,31 +46,6 @@
               );
 
               $successful = false;
-              /*try {
-                  $MYSQL->insert('{prefix}password_reset_requests', $data);
-
-                  $successful = $MAIL->setTo($email, $query['0']['username'])
-                                     ->setSubject($LANG['email']['forgot_password']['subject'])
-                                     ->addGenericHeader('X-Mailer', 'PHP/' . phpversion())
-                                     ->addGenericHeader('Content-Type', 'text/html; charset="utf-8"')
-                                     ->setMessage(
-                                      str_replace(
-                                        array(
-                                          '%site_name%',
-                                          '%token_url%'
-                                        ),
-                                        array(
-                                          $TANGO->data['site_name'],
-                                          SITE_URL . '/members.php/cmd/resetpassword/token/' . urlencode($reset_token)
-                                        ),
-                                        $LANG['email']['forgot_password']['content']
-                                      )
-                                     )
-                                     ->setWrap(100)
-                                     ->send();
-              } catch (mysqli_sql_exception $e) {
-                  $successful = false;
-              }*/
               if( $MYSQL->query("INSERT INTO {prefix}password_reset_requests (user, reset_token, request_time) VALUES (:user, :reset_token, :request_time)") > 0 ) {
                 $successful = $MAIL->setTo($email, $query['0']['username'])
                                      ->setSubject($LANG['email']['forgot_password']['subject'])

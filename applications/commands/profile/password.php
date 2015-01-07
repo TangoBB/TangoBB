@@ -27,22 +27,6 @@
           }elseif( !userExists($TANGO->sess->data['user_email'], $con_password, false) ) {
               throw new Exception ($LANG['global_form_process']['invalid_password']);
           } else {
-
-              /*$data = array(
-                  'user_password' => encrypt($new_password)
-              );
-              $MYSQL->where('id', $TANGO->sess->data['id']);
-
-              try {
-                  $MYSQL->update('{prefix}users', $data);
-                  $notice .= $TANGO->tpl->entity(
-                      'success_notice',
-                      'content',
-                      $LANG['global_form_process']['save_success']
-                  );
-              } catch (mysqli_sql_exception $e) {
-                  throw new Exception ($LANG['bb']['profile']['error_updating_password']);
-              }*/
               $MYSQL->bindMore(
                 array(
                   'user_password' => encrypt($new_password),
@@ -73,17 +57,6 @@
   }
 
   define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
-  //define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
-
-  /*$content .= '<form id="tango_form" action="" method="POST">
-                 ' . CSRF_INPUT . '
-                 <label for="current_password">Current Password</label>
-                 <input type="password" name="current_password" id="current_password" />
-                 <label for="new_password">New Password</label>
-                 <input type="password" name="new_password" id="new_password" />
-                 <br /><br />
-                 <input type="submit" name="edit" value="Save Changes" />
-               // </form>';*/
   $content .= '<form id="tango_form" action="" method="POST">
                  ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                  ' . $FORM->build('password', $LANG['bb']['profile']['current_password'], 'current_password') . '

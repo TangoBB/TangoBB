@@ -34,26 +34,6 @@
               if( $email !== $TANGO->sess->data['user_email'] ) {
 
                   if( !emailTaken($email) ) {
-                      /*$data  = array(
-                          'user_email' => $email,
-                          'about_user' => $about,
-                          'set_timezone' => $tz,
-                          'user_birthday' => $birthday,
-                          'location' => $location,
-                          'gender' => $gender
-                      );
-                      $MYSQL->where('id', $TANGO->sess->data['id']);
-
-                      try {
-                          $MYSQL->update('{prefix}users', $data);
-                          $notice .= $TANGO->tpl->entity(
-                              'success_notice',
-                              'content',
-                              $LANG['global_form_process']['save_success']
-                          );
-                      } catch (mysqli_sql_exception $e) {
-                          throw new Exception ($LANG['global_form_process']['error_saving']);
-                      }*/
                       $MYSQL->bindMore(
                         array(
                           'user_email' => $email,
@@ -80,26 +60,6 @@
                   }
 
               } else {
-
-                  /*$data  = array(
-                    'set_timezone' => $tz,
-                    'location' => $location,
-                    'gender' => $gender,
-                    'user_birthday' => $birthday,
-                    'about_user' => $about
-                  );
-                  $MYSQL->where('id', $TANGO->sess->data['id']);
-
-                  try {
-                    $MYSQL->update('{prefix}users', $data);
-                    $notice .= $TANGO->tpl->entity(
-                      'success_notice',
-                      'content',
-                      $LANG['global_form_process']['save_success']
-                      );
-                  } catch (mysqli_sql_exception $e) {
-                    throw new Exception ($LANG['global_form_process']['error_saving']);
-                  }*/
                   $MYSQL->bindMore(
                     array(
                       'set_timezone' => $tz,
@@ -135,14 +95,6 @@
   }
 
   define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
-  //define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
-  /*$content .= '<form id="tango_form" action="" method="POST">
-                 ' . CSRF_INPUT . '
-                 <label for="email">Email</label>
-                 <input type="text" name="email" id="email" value="' . $TANGO->sess->data['user_email'] . '" />
-                 <br /><br />
-                 <input type="submit" name="edit" value="Save Changes" />
-               </form>';*/
 
   $timezones = '<select id="timezone" name="timezone">';
   foreach( timezones() as $timezone => $code ) {

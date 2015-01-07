@@ -24,22 +24,6 @@
           $gravatar = ( isset($_POST['gravatar']) )? '1' : '0';
 
          if( $gravatar == "1" ) {
-
-             /*$data = array(
-              'avatar_type' => '1'
-             );
-             $MYSQL->where('id', $TANGO->sess->data['id']);
-
-             try {
-                 $MYSQL->update('{prefix}users', $data);
-                 $notice .= $TANGO->tpl->entity(
-                    'success_notice',
-                    'content',
-                    $LANG['bb']['profile']['successful_adding_gravatar']
-                 );
-             } catch (mysqli_sql_exception $e) {
-                 throw new Exception ($LANG['bb']['profile']['error_adding_gravatar']);
-             }*/
              $MYSQL->bind('id', $TANGO->sess->data['id']);
              if( $MYSQL->query("UPDATE {prefix}users SET avatar_type = 1 WHERE id = :id") > 0 ) {
               $notice .= $TANGO->tpl->entity(
@@ -59,7 +43,6 @@
 
              $image   = $_FILES['avatar'];
              $bin_dir = 'public/img/bin/' . $TANGO->sess->data['id'] . '.png';
-             //touch($bin_dir);
              copy($image['tmp_name'], $bin_dir);
              list($width, $height, $type, $attr) = getimagesize($bin_dir);
 
@@ -70,27 +53,6 @@
                  unlink($bin_dir);
                  $avatar_dir = 'public/img/avatars/' . $TANGO->sess->data['id'] . '.png';
                  if( copy($image['tmp_name'], $avatar_dir) ) {
-
-                     /*$data = array(
-                         'user_avatar' => $TANGO->sess->data['id'] . '.png',
-                         'avatar_type' => '0'
-                     );
-                     $MYSQL->where('id', $TANGO->sess->data['id']);
-
-                     try {
-                         $MYSQL->update('{prefix}users', $data);
-                         $notice .= $TANGO->tpl->entity(
-                             'success_notice',
-                             'content',
-                             $LANG['bb']['profile']['successful_upload_avatar']
-                         );
-                     } catch (mysqli_sql_exception $e) {
-                         $notice .= $TANGO->tpl->entity(
-                             'success_notice',
-                             'content',
-                             $LANG['bb']['profile']['successful_upload_avatar']
-                         );
-                     }*/
                      $MYSQL->bind('user_avatar', $TANGO->sess->data['id'] . '.png');
                      $MYSQL->bind('id', $TANGO->sess->data['id']);
                      $MYSQL->query("UPDATE {prefix}users SET user_avatar = :user_avatar WHERE id = :id");

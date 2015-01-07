@@ -27,8 +27,6 @@
                 //Remembering Username and Email.
                 $_SESSION['register_form_username'] = $username;
                 $_SESSION['register_form_email']    = $email;
-
-                //preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $email)
                 $time       = time();
 
                 if( !$username or !$password or !$a_password or !$email ) {
@@ -70,11 +68,7 @@
                     try {
                         $MYSQL->query('INSERT INTO {prefix}users (username, user_password, user_email, date_joined, user_disabled) VALUES (:username, :user_password, :user_email, :date_joined, :user_disabled)');
 
-                        /*$email = 'You have registered on ' . $TANGO->data['site_name'] . '<br />
-                                  Click <a href="' . SITE_URL . '/members.php/activate/code/' . $time . '">here</a> to activate your account.';*/
-
                         if( $TANGO->data['register_email_activate'] == "1" ) {
-                            //$MAIL->send('Account Activation', $email, 'Account Activation', $email);
 
                             $send = $MAIL->setTo($email, $username)
                                      ->setSubject($LANG['email']['forgot_password']['subject'])
@@ -134,31 +128,6 @@
         }
 
         define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
-        //define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
-        /*$content = '<form action="" method="POST">
-                      ' . $notice . '
-                      ' . CSRF_INPUT . '
-                      <label for="username">Username</label>
-                      <input type="text" name="username" id="username" />
-                      <label for="password">Password</label>
-                      <input type="password" name="password" id="password" />
-                      <label for="a_password">Confirm Password</label>
-                      <input type="password" name="a_password" id="a_password" />
-                      <label for="email">Email</label>
-                      <input type="text" name="email" id="email" /><br /><br />
-                      <input type="submit" name="register" value="Register" />
-                    </form>';*/
-        /*$content = '<form action="" method="POST">
-                      ' . $notice . '
-                      ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
-                      ' . $FORM->build('text', $LANG['bb']['members']['form_username'], 'username') . '
-                      ' . $FORM->build('password', $LANG['bb']['members']['form_password'], 'password') . '
-                      ' . $FORM->build('password', $LANG['bb']['members']['form_confirm_password'], 'a_password') . '
-                      ' . $FORM->build('text', $LANG['bb']['members']['form_email'], 'email') . '
-                      <br /><br />
-                      ' . $FORM->build('submit', $LANG['bb']['members']['form_register'], 'register', array('value' => $LANG['bb']['members']['form_register'])) . '<br />
-                      ' . $LANG['bb']['members']['register_message'] . '
-                    </form>';*/
         //Breadcrumb
         $TANGO->tpl->addBreadcrumb(
           $LANG['bb']['forum'],

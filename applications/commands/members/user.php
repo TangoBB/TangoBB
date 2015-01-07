@@ -12,13 +12,9 @@
   if( $PGET->g('id') ) {
       
       $id    = clean($PGET->g('id'));
-      //$MYSQL->where('id', $id);
-      //$query = $MYSQL->get('{prefix}users');
       $MYSQL->bind('id', $id);
       $query = $MYSQL->query("SELECT * FROM {prefix}users WHERE id = :id");
 
-      //$MYSQL->where('username', $id);
-      //$u_query = $MYSQL->get('{prefix}users');
       $MYSQL->bind('username', $id);
       $u_query = $MYSQL->query("SELECT * FROM {prefix}users WHERE username = :username");
 
@@ -43,9 +39,6 @@
                       'visitor' => $TANGO->sess->data['id']
                   ));
                   try {
-                      /*
-                       * ToDo: Check if the user already visited the page -> update entry
-                       */
                       $MYSQL->query('INSERT INTO {prefix}user_visitors (profile_owner, visitor) VALUES (:profile_owner, :visitor)');
                   } catch (mysqli_sql_exception $e) {
                       throw new Exception ($LANG['global_form_process']['error_creating_thread']);
@@ -82,8 +75,6 @@ if(isset($user) && isset($userg) && isset($page_title))
 {
           //Recent activity protocol
           $recent_activity = '';
-          //$data = array($query['0']['id']);
-          //$query           = $MYSQL->rawQuery("SELECT * FROM {prefix}forum_posts WHERE post_user = ? ORDER BY post_time DESC LIMIT 15", $data);
           $MYSQL->bind('post_user', $query['0']['id']);
           $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = :post_user ORDER BY post_time DESC LIMIT 15");
           foreach( $query as $ac ) {

@@ -12,12 +12,6 @@
    $page_title = '';
    
    if($PGET->g('id')) {
-    /*$data_temp = array($PGET->g('id'));
-    $msg = $MYSQL->rawQuery("SELECT * FROM 
-                             {prefix}messages 
-                             WHERE 
-                             id = ?  
-                             LIMIT 1", $data_temp);*/
     $MYSQL->bind('id', $PGET->g('id'));
     $msg = $MYSQL->query("SELECT * FROM {prefix}messages WHERE id = :id LIMIT 1");
                              
@@ -36,14 +30,6 @@
             $receiver_deleted = 1;
         }
     }
-    
-    /*$data = array(
-    'receiver_deleted'  =>  $receiver_deleted,
-    'sender_deleted'    =>  $sender_deleted
-    ); 
-    
-    $MYSQL->where('id', $PGET->g('id'));
-    $MYSQL->update('{prefix}messages', $data);*/
     $MYSQL->bindMore(
       array(
         'receiver_deleted' => $receiver_deleted,
@@ -56,14 +42,10 @@
     
     if($receiver_deleted == 1 && $sender_deleted == 1) {
         // Deleting the main message
-        //$MYSQL->where('id',$PGET->g('id'));
-        //$MYSQL->delete('{prefix}messages');
         $MYSQL->bind('id', $PGET->g('id'));
         $MYSQL->query("DELETE FROM {prefix}messages WHERE id = :id");
     
         // Deleting the answers
-        //$MYSQL->where('origin_message',$PGET->g('id'));
-        //$MYSQL->delete('{prefix}messages');
         $MYSQL->bind('origin_message', $PGET->g('id'));
         $MYSQL->query("DELETE FROM {prefix}messages WHERE origin_message = :origin_message");
     }

@@ -37,26 +37,6 @@
     if( in_array($PGET->g('set'), $t_names) ) {
 
       $theme = ($PGET->g('set') == "default")? '0' : clean($PGET->g('set'));
-      /*$data  = array(
-        'chosen_theme' => $theme
-      );
-      $MYSQL->where('id', $TANGO->sess->data['id']);
-
-      try {
-        $MYSQL->update('{prefix}users', $data);
-        $content .= $TANGO->tpl->entity(
-          'success_notice',
-          'content',
-          $LANG['bb']['profile']['theme_set']
-          );
-        header('refresh:3;url=' . SITE_URL . '/forum.php');
-      } catch (mysqli_sql_exception $e) {
-        $content .= $TANGO->tpl->entity(
-          'danger_notice',
-          'content',
-          $LANG['bb']['profile']['theme_error']
-          );
-      }*/
       $MYSQL->bindMore(
         array(
           'chosen_theme' => $theme,

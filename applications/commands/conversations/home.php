@@ -8,17 +8,8 @@
   $content    = '';
   $page_title = $LANG['bb']['conversations']['page_conversations'];
 
-  if( !$TANGO->sess->isLogged ){ redirect(SITE_URL); } //If user is not logged in.
-  /*$data = array($TANGO->sess->data['id'], $TANGO->sess->data['id']);
-  $query = $MYSQL->rawQuery("SELECT * FROM
-                          {prefix}messages
-                          WHERE
-                          (message_sender = ? OR message_receiver = ?)
-                          AND
-                          message_type = 1
-                          ORDER BY
-                          message_time
-                          DESC", $data);*/
+  if( !$TANGO->sess->isLogged ){ redirect(SITE_URL); }
+  //If user is not logged in.
   $MYSQL->bindMore(
     array(
       'message_sender' => $TANGO->sess->data['id'],
@@ -46,27 +37,14 @@
       foreach( $query as $msg ) {
           $badge      = '';
           // Getting the latest reply
-          /*$data_latest_reply  =array($msg['id']);
-          $last_reply = $MYSQL->rawQuery("SELECT * FROM 
-                                                {prefix}messages 
-                                                WHERE 
-                                                origin_message = ? 
-                                                ORDER BY 
-                                                message_time 
-                                                DESC 
-                                                LIMIT 1", $data_latest_reply);*/
           $MYSQL->bind('origin_message', $msg['id']);
           $last_reply = $MYSQL->query("SELECT * FROM {prefix}messages WHERE origin_message = :origin_message ORDER BY message_time DESC LIMIT 1");
-          //var_dump ($query_last_reply);
           
           $sender   = $TANGO->user($msg['message_sender']);
           $receiver = $TANGO->user($msg['message_receiver']);
 
           $message_time = simplify_time($msg['message_time']);
-          
-          /** Added by N8boy:
-          *   TODO: - Creating a delete function
-          */
+
           if($sender['id'] == $TANGO->sess->data['id'] && $msg['sender_deleted'] == 0) {
             $check = true;
             
@@ -117,15 +95,9 @@
          $table .= $TANGO->tpl->entity('conversation_delete', 'link', SITE_URL . '/conversations.php/cmd/delete/id/' . $msg['id']);
          $table .=    '</td>
                        </tr>';
-         /* $content .= '<div style="border-bottom:1px solid #ccc;padding-bottom:10px;overflow:auto;">
-                         <h4><a href="' . SITE_URL . '/conversations.php/cmd/view/v/' . $msg['id'] . '">' . $msg['message_title'] . '</a></h4>
-                         ' . $LANG['bb']['conversations']['by'] . ' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $sender['id'] . '">' . $sender['username_style'] . '</a> on ' . date('F j, Y', $msg['message_time']) . '<br />
-                         ' . $LANG['bb']['conversations']['for'] . ' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $receiver['id'] . '">' . $receiver['username_style'] . '</a>
-                       </div>';
-                       */
       }
       }
-      $table .= '</table>'; // N8boy
+      $table .= '</table>';
       
       if ($counter == 0) {
         $table .= $TANGO->tpl->entity(

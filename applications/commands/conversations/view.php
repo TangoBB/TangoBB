@@ -12,10 +12,7 @@
   if( $PGET->g('v') ) {
       
       $get = clean($PGET->g('v'));
-      
-      /*$MYSQL->where('id', $get);
-      $MYSQL->where('message_type', 1);
-      $query = $MYSQL->get('{prefix}messages');*/
+
       $MYSQL->bind('id', $get);
       $query = $MYSQL->query("SELECT * FROM {prefix}messages WHERE id = :id AND message_type = 1");
       if( !empty($query) ) {
@@ -24,9 +21,6 @@
             $query['0']['message_receiver']
           );
           if( !in_array($TANGO->sess->data['id'], $auth) ) {
-            /*if( $query['0']['message_receiver'] !== $TANGO->sess->data['id'] ) {
-              redirect(SITE_URL . '/404.php');
-            }*/
             redirect(SITE_URL . '/404.php');
           }
 
@@ -112,10 +106,7 @@
           );
 
           $content = $starter;
-          
-          //$MYSQL->where('origin_message', $get);
-          //$MYSQL->where('message_type', 2);
-          //$rep = $MYSQL->get('{prefix}messages');
+
           $MYSQL->bind('origin_message', $get);
           $rep = $MYSQL->query("SELECT * FROM {prefix}messages WHERE origin_message = :origin_message AND message_type = 2");
           foreach( $rep as $post ) {
@@ -129,47 +120,7 @@
               }
 
               $ur = $TANGO->user($post['message_sender']);
-              
-              //die($quote_template);
-              //$post['post_content'] = $TANGO->lib_parse->parseQuote($post['post_content']);
-              //die($post['post_content']);
-              //die($quote_template);
-             // $die = sscanf('<blockquote id="post_quote"><p>qweqdasdasfds</p><small class="quote_username">awidas_sdai83</small></blockquote>asdasfdsas', $quote_template);
-              //die(var_dump($die));
-              /*$post['post_content'] = str_replace(
-                  array(
-                      '&lt;blockquote&gt;',
-                      '&lt;/blockquote&gt;',
-                      '&lt;small&gt;',
-                      '&lt;/small&gt;',
-                      '&lt;p&gt;',
-                      '&lt;/p&gt;'
-                  ), 
-                  array(
-                      '<blockquote>',
-                      '</blockquote>',
-                      '<small>',
-                      '</small>'
-                  ), 
-                  
-              );*/
-              //$post['message_content'] = $TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($post['message_content']));
-              //die($post['post_content']);
-              //$die = sscanf($post['post_content'], '<$blockquote$>%s </$blockquote$>');
-              /*preg_match_all('/<blockquote>(.*?)<\/blockquote>/', $post['post_content'], $die);
-              die(var_dump($die));
-              $post['post_content'] = $TANGO->tpl->entity(
-                  'quote_post',
-                  array(
-                      'quoted_post_content',
-                      'quoted_post_user'
-                  ),
-                  array(
-                      '%s',
-                      '%s'
-                  )
-              );*/
-              
+
               $content .= $TANGO->tpl->entity(
                   'thread_reply',
                   array(
