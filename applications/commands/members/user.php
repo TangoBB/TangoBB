@@ -178,7 +178,7 @@ if(isset($user) && isset($userg) && isset($page_title))
           $query = $MYSQL->query("SELECT visitor FROM {prefix}user_visitors WHERE profile_owner = :profile_owner ORDER BY timestamp DESC LIMIT 10");
           foreach( $query as $entry ) {
               $visitor   = $TANGO->user($entry['visitor']);
-              $visitors .= '<li><a href="'.SITE_URL.'/members.php/cmd/user/id/'.$visitor['id'].'"><img src="' . $visitor['user_avatar'] . '" class="img-thumbnail" style="width:45px;height:45px;" /></a></li>';
+              $visitors .= '<li><a href="'.SITE_URL.'/members.php/cmd/user/id/'.$visitor['id'].'" title="' . $visitor['username'] . '"><img src="' . $visitor['user_avatar'] . '" class="img-thumbnail" style="width:45px;height:45px;" /></a></li>';
           }
           $visitors .= '</ul></div>';
 

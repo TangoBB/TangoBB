@@ -16,3 +16,14 @@ div.savestatus {
     position:absolute;
     top:-10px;
 }
+
+ul.visitors_framed {
+    list-style: none;
+    overflow: auto;
+}
+
+ul.visitors_framed > li {
+    float: left;
+    /* Margin */
+    margin: 5px;
+}

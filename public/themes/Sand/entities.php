@@ -311,11 +311,15 @@
     </p>
 </div>
 <ul class="nav nav-tabs">
-    <li class="active"><a href="#profile_info" data-toggle="tab">Information</a></li>
+    <li class="active"><a href="#profile_comments" data-toggle="tab">Profile Comments</a></li>
+    <li><a href="#profile_info" data-toggle="tab">Information</a></li>
     <li><a href="#profile_activity" data-toggle="tab">Recent Activity</a></li>
 </ul>
 <div class="tab-content">
-    <div class="tab-pane active" id="profile_info">
+    <div class="tab-pane active" id="profile_comments">
+        %comments%
+    </div>
+    <div class="tab-pane" id="profile_info">
         <strong>About User:</strong><br />
         <div class="well">
             %about_user%
@@ -323,6 +327,10 @@
         <strong>Signature:</strong><br />
         <div class="well">
             %user_signature%
+        </div>
+        <strong>Recent Visitors:</strong><br />
+        <div class="well">
+            %visitors%
         </div>
         %mod_tools%
     </div>
@@ -332,6 +340,13 @@
     </div>
 </div>
 <!--- tpl:user_profile_page:end -->
+<!--- tpl:user_profile_comments:start -->
+<div>
+    <strong>WORK IN PROGRESS</strong><br />
+    %writer% - %date%<br />
+    %comment%
+</div>
+<!--- tpl:user_profile_comments:end -->
 <!--- tpl:search_page:start -->
 <ul class="nav nav-tabs">
     <li class="active"><a href="#search_threads" data-toggle="tab">Threads</a></li>

@@ -32,12 +32,12 @@
 
           $this->addParam(
               'editor_settings',
-              '<link rel="stylesheet" href="' . SITE_URL . '/public/css/iko.css" />
+              '<link rel="stylesheet" href="' . SITE_URL . '/public/css/tangobb.css" />
                <script type="text/javascript" src="' . SITE_URL . '/public/js/jquery.min.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/autosaveform.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/wysibb/jquery.wysibb.min.js"></script>
                <script type="text/javascript" src="' . SITE_URL . '/public/js/jquery.tagsinput.min.js"></script>
-               <script type="text/javascript" src="' . SITE_URL . '/public/js/iko.js"></script>
+               <script type="text/javascript" src="' . SITE_URL . '/public/js/tangobb.js"></script>
                <link type="text/css" rel="Stylesheet" href="' . SITE_URL . '/public/js/highlighter/styles/shThemeDefault.css"/>
                <link type="text/css" rel="Stylesheet" href="' . SITE_URL . '/public/js/highlighter/styles/shCore.css"/>
                '
