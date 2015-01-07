@@ -37,15 +37,7 @@
   define('CLA', 'classes/');
 
   //MySQLi Library
-  //require_once(PATH_A . LIB . 'mysqli.php');
   require_once(PATH_A . LIB . 'pdo.php');
-  /*$MYSQL = new Mysqlidb(
-      MYSQL_HOST,
-      MYSQL_USERNAME,
-      MYSQL_PASSWORD,
-      MYSQL_DATABASE,
-      MYSQL_PREFIX
-  );*/
   $MYSQL = new db();
 
   /* Databse CRUDs */
@@ -72,8 +64,6 @@
 
   //Using the language package.
   if( !defined('Install') ) {
-    //$MYSQL->where('id', 1);
-    //$query   = $MYSQL->get('{prefix}generic');
     $generic = new Crud_Generic();
     $generic->Find(1);
     switch( BASEPATH ) {
@@ -90,13 +80,11 @@
         $default = 'applications/languages/english.php';
       break;
     }
-    //die(file_get_contents($package));
     if( file_exists($package) ) {
       require_once($package);
     } else {
       require_once($default);
     }
-    //die(var_dump($LANG));
   }
   
   //Smiles for the posts
@@ -135,8 +123,6 @@
   $TANGO->lib_parse  = new Library_Parse();
 
   //Mail Library
-  //require_once(PATH_A . CLA . 'mail.php');
-  //$MAIL = new SimpleMail();
   require_once(PATH_A . LIB . 'mail.php');
   $MAIL = new Library_Mail();
 

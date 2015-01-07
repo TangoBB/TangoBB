@@ -99,14 +99,12 @@
         }
       }
     }
-    //die(var_dump($users));
 
     $total = array();
     foreach( $users as $u ) {
       $us = $TANGO->user($u);
       $total[] = '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $us['id'] . '">' . $us['username_style'] . '</a>';
     }
-    //die(var_dump($total));
     if( !empty($total) ) {
       return implode(', ', $total);
     } else {
@@ -146,9 +144,7 @@
    * Does not escape with MySQL because the MySQL Library already does that.
    */
   function clean($string) {
-      //die($string);
       $string = htmlentities($string);
-      //die($string);
       $string = str_replace(
         array(
           '&amp;#65279;',
@@ -161,7 +157,6 @@
         $string
       );
       $string = str_replace('`', '\`', $string);
-      //$string = $MYSQL->escape($string);
       return $string;
   }
 
@@ -229,7 +224,6 @@
    */
   function modReportInteger() {
       global $MYSQL;
-      //$query = $MYSQL->get('{prefix}reports');
       $query = $MYSQL->query("SELECT * FROM {prefix}reports");
 
       return count($query);
@@ -269,12 +263,8 @@
   }
   function userBanned($email) {
       global $MYSQL;
-      //$MYSQL->where('user_email', $email);
-      //$a                    = $MYSQL->get('{prefix}users');
       $MYSQL->bind('user_email', $email);
       $a = $MYSQL->query("SELECT * FROM {prefix}users WHERE user_email = :user_email");
-      //$MYSQL->where('username', $email);
-      //$b                    = $MYSQL->get('{prefix}users');
       $MYSQL->bind('username', $email);
       $b = $MYSQL->query("SELECT * FROM {prefix}users WHERE username = :username");
 
@@ -291,12 +281,8 @@
   }
   function userActivated($email) {
       global $MYSQL;
-      //$MYSQL->where('user_email', $email);
-      //$a                    = $MYSQL->get('{prefix}users');
       $MYSQL->bind('user_email', $email);
       $a = $MYSQL->query("SELECT * FROM {prefix}users WHERE user_email = :user_email");
-      //$MYSQL->where('username', $email);
-      //$b                    = $MYSQL->get('{prefix}users');
       $MYSQL->bind('username', $email);
       $b = $MYSQL->query("SELECT * FROM {prefix}users WHERE username = :username");
 
@@ -312,14 +298,9 @@
       global $MYSQL;
 
       $login_successful = false;
-
-      //$MYSQL->where('user_email', $email);
-      //$a = $MYSQL->get('{prefix}users');
       $MYSQL->bind('user_email', $email);
       $a = $MYSQL->query("SELECT * FROM {prefix}users WHERE user_email = :user_email");
 
-      //$MYSQL->where('username', $email);
-      //$b = $MYSQL->get('{prefix}users');
       $MYSQL->bind('username', $email);
       $b = $MYSQL->query("SELECT * FROM {prefix}users WHERE username = :username");
       if( $a or $b ) {
@@ -379,8 +360,6 @@
    */
   function thread($id, $callback = null) {
       global $MYSQL;
-      //$MYSQL->where('id', $id);
-      //$query = $MYSQL->get('{prefix}forum_posts');
       $MYSQL->bind('id', $id);
       $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE id = :id");
 
@@ -392,8 +371,6 @@
   }
   function node($id, $callback = null) {
       global $MYSQL;
-      //$MYSQL->where('id', $id);
-      //$query = $MYSQL->get('{prefix}forum_node');
       $MYSQL->bind('id', $id);
       $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE id = :id");
 
@@ -429,7 +406,6 @@
    */
   function include_extensions() {
     global $MYSQL;
-    //$query = $MYSQL->get('{prefix}extensions');
     $query = $MYSQL->query("SELECT * FROM {prefix}extensions");
     foreach( $query as $extension ) {
       require_once('extensions/' . $extension['extension_folder'] . '/manifest.php');
@@ -442,7 +418,6 @@
   function list_forums() {
       global $MYSQL;
       $return = array();
-      //$query  = $MYSQL->get('{prefix}forum_node');
       $query = $MYSQL->query("SELECT * FROM {prefix}forum_node");
       foreach( $query as $node ) {
         $return[] = array(
@@ -466,7 +441,6 @@
       $post_time         = date('l h:i A', $timestamp); // Sunday 12:00 AM 
       $post_time_tooltip = localized_date($timestamp, $location); // January 1st, 2014
     } elseif( (time()-$timestamp) > 3600 && (time()-$timestamp) < 86400 ) {
-      //$post_time         = round((time()-$timestamp)/3600).' hours ago.';
       $post_time         = str_replace(
         '%time%',
         round((time()-$timestamp)/3600),
@@ -474,7 +448,6 @@
       );
       $post_time_tooltip = localized_date($timestamp, $location);
     } elseif( (time()-$timestamp) > 60 && (time()-$timestamp) < 3600 ) {
-      //$post_time         = round((time()-$timestamp)/60).' minutes ago.';
       $time              = round((time()-$timestamp)/60);
       $post_time         = str_replace(
         '%time%',
@@ -483,7 +456,6 @@
       );
       $post_time_tooltip = localized_date($timestamp, $location);
     } elseif( (time()-$timestamp) < 60 ) {
-      //$post_time         = 'Just now.';
       $post_time         = $LANG['time']['just_now'];
       $post_time_tooltip = localized_date($timestamp, $location);
     } else {
@@ -504,10 +476,6 @@
   function amount_replies($origin_massage_id){
     global $MYSQL;
     if(is_numeric($origin_massage_id)){
-      /*$query = $MYSQL->query("SELECT * FROM
-                              {prefix}messages
-                              WHERE
-                              origin_message = " . $origin_massage_id);*/
       $MYSQL->bind('origin_message', $origin_massage_id);
       $query = $MYSQL->query("SELECT * FROM {prefix}messages WHERE origin_message = :origin_message");  
       return number_format(count($query));

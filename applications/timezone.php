@@ -6,8 +6,8 @@
   if( !defined('BASEPATH') ){ die(); }
 
   function timezones() {
-  	return array (
-  		'(UTC-11:00) Midway Island' => 'Pacific/Midway',
+    return array (
+    '(UTC-11:00) Midway Island' => 'Pacific/Midway',
     '(UTC-11:00) Samoa' => 'Pacific/Samoa',
     '(UTC-10:00) Hawaii' => 'Pacific/Honolulu',
     '(UTC-09:00) Alaska' => 'US/Alaska',

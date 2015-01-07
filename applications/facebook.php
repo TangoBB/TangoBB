@@ -37,12 +37,9 @@
               }
                   
           }
-          //setcookie('tangobb_sess', $query['0']['id'], time()+31536000, '/', NULL, isset($_SERVER['HTTPS']), true);
           if( !$TANGO->sess->isLogged ) {
             $TANGO->sess->assign($FB_PROFILE['email'], true, true);
           }
-		  //$_SESSION['User']=$user_profile;
-		  //$_SESSION['logout']=$logout;*/
           
       }catch(FacebookApiException $e){
           error_log($e);
@@ -50,7 +47,6 @@
       }
   }
   if ($FB_USER) {
-      //die(var_dump($FB_PROFILE));
       $FB_LOGOUT = $FACEBOOK->getLogoutUrl(array(
           'next' => SITE_URL . '/members.php/cmd/logout',  // Logout URL full path
       ));
@@ -64,7 +60,7 @@
           ));
       } else {
           $FB_LOGIN = $FACEBOOK->getLoginUrl(array(
-              'scope'		=> 'email', // Permissions to request from the user
+              'scope' => 'email', // Permissions to request from the user
           ));
           $TANGO->tpl->addParam('facebook_login_url', $FB_LOGIN);
       }
