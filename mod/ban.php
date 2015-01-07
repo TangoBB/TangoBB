@@ -9,39 +9,12 @@
   $content    = '';
 
   if( $PGET->g('id') ) {
-
-      //$MYSQL->where('id', $PGET->g('id'));
-      //$query = $MYSQL->get('{prefix}users');
       $MYSQL->bind('id', $PGET->g('id'));
       $query = $MYSQL->query("SELECT * FROM {prefix}users WHERE id = :id");
 
       if( !empty($query) ) {
 
           if( $query['0']['is_banned'] == "0" ) {
-
-              /*$data = array(
-                  'is_banned' => '1',
-                  'user_group' => BAN_ID
-              );
-              $MYSQL->where('id', $PGET->g('id'));
-              try {
-                  $MYSQL->update('{prefix}users', $data);
-                  $content .= $TANGO->tpl->entity(
-                      'success_notice',
-                      'content',
-                      str_replace(
-                        '%url%',
-                        SITE_URL . '/members.php/cmd/user/id/' . $query['0']['id'],
-                        $LANG['mod']['ban']['ban_success']
-                      )
-                  );
-              } catch (mysqli_sql_exception $e) {
-                  $content .= $TANGO->tpl->entity(
-                      'danger_notice',
-                      'content',
-                      $LANG['mod']['ban']['ban_error']
-                  );
-              }*/
               $MYSQL->bindMore(
                 array(
                   'user_group' => BAN_ID,
