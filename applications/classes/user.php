@@ -139,7 +139,7 @@
           if( !empty($current_perms) ) {
             $new_perms = array();
             foreach( $current_perms as $parent => $child ) {
-              $MYSQL->bind('permission_name', $id_perms); //$id_perms not defined?
+              $MYSQL->bind('permission_name', $child); //$id_perms not defined?
               $p_query     = $MYSQL->query('SELECT * FROM {prefix}permissions WHERE permission_name = :permission_name');
               $new_perms[] = $p_query['id'];
             }
