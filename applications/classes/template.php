@@ -249,7 +249,7 @@
              //die(var_dump($return));
              eval(' ?>' . $result . '<?php ');
              $result = ob_get_clean();
-             if( ob_get_clean() ) {
+             if( ob_get_contents() ) {
                ob_end_clean();
              }
           }
