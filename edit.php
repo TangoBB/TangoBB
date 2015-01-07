@@ -9,8 +9,6 @@
   if( $PGET->g('post') ) {
 
       $post_id = clean($PGET->g('post'));
-      //$MYSQL->where('id', $post_id);
-      //$query = $MYSQL->get('{prefix}forum_posts');
       $MYSQL->bind('id', $post_id);
       $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE id = :id");
 
@@ -140,7 +138,6 @@
           $breadcrumb = $TANGO->tpl->entity(
               'breadcrumbs',
               'bread',
-              //'<li><a href="' . SITE_URL . '">Forum</a></li><li><a href="' . SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'] . '">' . $node['node_name'] . '</a></li><li class="active">' . $query['0']['post_title'] . '</a>'
               $breadcrumbs
           );
 
@@ -163,8 +160,6 @@
 
                   NoCSRF::check( 'csrf_token', $_POST );
 
-                  //$con = $MYSQL->escape($_POST['content']);
-                  //die($con);
                   $con = emoji_to_text($_POST['content']);
                   $thread_title = clean($_POST['title']);
                   
@@ -177,11 +172,7 @@
                       $origin_thread .= $friendly_url . '.' . $thread_id;
                       
                       if( $query['0']['post_type'] == "1" ) {
-                        /*$data = array(
-                            'post_title' => $thread_title,
-                            'title_friendly' => $friendly_url,
-                            'post_content' => $con
-                        );*/
+
                         $MYSQL->bindMore(
                           array(
                             'post_title' => $thread_title,
@@ -193,9 +184,6 @@
                         $u_query = $MYSQL->query("UPDATE {prefix}forum_posts SET post_title = :post_title, title_friendly = :title_friendly, post_content = :post_content WHERE id = :id");
                       }
                       else {
-                        /*$data = array(
-                            'post_content' => $con
-                        );*/
                         $MYSQL->bindMore(
                           array(
                             'post_content' => $con,
@@ -204,14 +192,6 @@
                         );
                         $u_query = $MYSQL->query("UPDATE {prefix}forum_posts SET post_content = :post_content WHERE id = :id");
                       }
-                      //$MYSQL->where('id', $post_id);
-
-                      /*try {
-                          $MYSQL->update('{prefix}forum_posts', $data);
-                          redirect(SITE_URL . '/thread.php/' . $origin_thread);
-                      } catch (mysqli_sql_exception $e) {
-                          throw new Exception ($LANG['global_form_process']['error_updating_post']);
-                      }*/
                       if( $u_query > 0 ) {
                         redirect(SITE_URL . '/thread.php/' . $origin_thread);
                       } else {
@@ -230,15 +210,6 @@
           }
 
           define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
-          //define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
-
-          /*$content = '<form id="tango_form" action="" method="POST">
-                        ' . CSRF_INPUT . '
-                        <textarea id="editor" name="content" style="width:100%;height:300px;max-width:100%;min-width:100%;">' . $query['0']['post_content'] . '</textarea>
-                        <br />
-                        <input type="submit" name="edit" value="Edit Post" />
-                      </form>';*/
-          //$FORM->build('textarea', '', 'content', array('id' => 'editor', 'style' => 'width:100%;height:300px;max-width:100%;min-width:100%;', 'value' => $query['0']['post_content']))
           $content = $breadcrumb .
                      '<form id="tango_form" action="" method="POST">
                         ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '

@@ -25,9 +25,6 @@
               $searched_threads = '';
               $searched_users   = '';
               $key              = explode(' ', strtolower($search_query));
-              
-              //$MYSQL->where('post_type', '1');
-              //$query   = $MYSQL->get('{prefix}forum_posts');
               $query   = $MYSQL->query("SELECT * FROM
                                         {prefix}forum_posts
                                         WHERE

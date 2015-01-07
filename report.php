@@ -32,23 +32,6 @@
                   } else {
 
                       $time = time();
-                      /*$data = array(
-                          'report_reason' => $reason,
-                          'reported_by' => $TANGO->sess->data['id'],
-                          'reported_post' => $post,
-                          'reported_time' => $time
-                      );
-
-                      try {
-                          $MYSQL->insert('{prefix}reports', $data);
-                          $notice .= $TANGO->tpl->entity(
-                              'success_notice',
-                              'content',
-                              $LANG['global_form_process']['report_create_success']
-                          );
-                      } catch (mysqli_sql_exception $e) {
-                          throw new Exception ($LANG['global_form_process']['error_submitting_report']);
-                      }*/
                       $MYSQL->bindMore(
                         array(
                           'report_reason' => $reason,
@@ -80,15 +63,6 @@
           }
 
           define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
-          //define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
-
-          /*$content .= '<form action="" id="tango_form" method="POST">
-                         ' . CSRF_INPUT . '
-                         <label for="reason">Reason</label>
-                         <textarea name="reason" id="reason" style="height:150px;width:100%;min-width:100%;max-width:100%;"></textarea>
-                         <br /><br />
-                         <input type="submit" name="report" value="Report" />
-                       </form>';*/
           $content .= '<form action="" id="tango_form" method="POST">
                          ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
                          ' . $FORM->build('textarea', $LANG['bb']['form']['report_reason'], 'reason', array('style' => 'height:150px;width:100%;min-width:100%;max-width:100%;')) . '

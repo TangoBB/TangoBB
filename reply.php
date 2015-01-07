@@ -14,18 +14,9 @@
       $_SESSION['tango_alt_csrf'] = $return;
       return $return;
   }
-  //die(var_dump($PGET->s(true)));
-  //$PGET->g('thread')
   if( $PGET->s(true) ) {
 
-      //$thread = clean($PGET->g('thread'));
       $thread = $PGET->s(true);
-      //$MYSQL->where('post_type', '1');
-      //$MYSQL->where('id', $thread);
-      //$MYSQL->where('id', $thread['id']);
-      //$MYSQL->where('title_friendly', 'a_thread');
-      //$MYSQL->where('title_friendly', $thread['value']);
-      //$query = $MYSQL->get('{prefix}forum_posts');
       $MYSQL->bindMore(
         array(
           'id' => $thread['id'],
@@ -143,7 +134,6 @@
           $breadcrumbs = $TANGO->tpl->entity(
               'breadcrumbs',
               'bread',
-              //'<li><a href="' . SITE_URL . '">Forum</a></li><li><a href="' . SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'] . '">' . $node['node_name'] . '</a></li><li class="active">' . $query['0']['post_title'] . '</a>'
               $breadcrumbs
           );
 
@@ -155,7 +145,6 @@
 
           if( isset($_POST['reply']) ) {
               try {
-                  //echo $_POST['csrf_token'] . '<br />' . $_SESSION['csrf_csrf_token'];
 
                   if( !empty($q_query) ) {
                       if( $_POST['csrf_token'] !== $_SESSION['tango_alt_csrf'] ) {
@@ -169,18 +158,6 @@
                   $cont    = ( !empty($q_query) )? '[quote]' . $PGET->g('quote') . '[/quote]' . $cont : $cont;
                   $cont    = preg_replace('#\\[quote\\]Post ID: (.*?)\\[/quote\\]#uis', '[quote]\\1[/quote]', $cont);
 
-                  //$data = array($TANGO->sess->data['id']);
-                  /*$c_query = $MYSQL->rawQuery(
-                    "SELECT * FROM
-                    {prefix}forum_posts
-                    WHERE
-                    post_user = ?
-                    ORDER BY
-                    post_time
-                    DESC LIMIT
-                    1",
-                    $data
-                  );*/
                   $MYSQL->bind('post_user', $TANGO->sess->data['id']);
                   $c_query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = :post_user ORDER BY post_time DESC LIMIT 1");
 
@@ -190,12 +167,10 @@
                       throw new Exception ($LANG['global_form_process']['different_message_previous']);
                   } else {
                     $origin  = thread($thread['id']);
-//die(var_dump($thread));
                     /*
                          * Notify the watchers of the thread.
                           */
                         $watchers = array_filter(explode(',', $query['0']['watchers']));
-                        //die(var_dump($watchers));
                         if( !empty($watchers) ) {
                           foreach( $watchers as $watcher ) {
                             $user = $TANGO->user($watcher);
@@ -233,37 +208,13 @@
                             );
                           }
                         }
-                      //die(var_dump($query));
                       $time    = time();
 
                       //Double Posting
                       $o_data  = '1';
-                      /*$o_query = $MYSQL->rawQuery(
-                        "SELECT * FROM
-                         {prefix}forum_posts
-                         WHERE
-                         origin_thread = ?
-                         ORDER BY
-                         post_time
-                         DESC LIMIT 1",
-                        $o_data
-                      );
-                      $p_query = $MYSQL->rawQuery(
-                        "SELECT * FROM
-                         {prefix}forum_posts
-                         WHERE
-                         origin_thread = ?
-                         ORDER BY
-                         post_time
-                         DESC",
-                        $o_data
-                      );*/
                       $o_query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_thread = {$thread['id']} ORDER BY post_time DESC LIMIT 1");
                       $p_query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_thread = {$thread['id']} ORDER BY post_time DESC");
-                      //die(var_dump($thread));
-                      //die(var_dump($o_query));
                       if( $o_query && $o_query['0']['post_user'] == $TANGO->sess->data['id'] && $TANGO->data['post_merge'] == 1) {
-                        //die('First');
                         $t_cont = $o_query['0']['post_content'] . '
                                     ' . $LANG['flat']['merge_post'] . '
                                     ' . $cont;
@@ -287,16 +238,6 @@
                         }
 
                       } else {
-//die('second');
-
-                        /*$n_data = array(
-                          'post_content' => $cont,
-                          'post_time' => $time,
-                          'post_user' => $TANGO->sess->data['id'],
-                          'origin_node' => $origin['origin_node'],
-                          'origin_thread' => $thread['id'],
-                          'post_type' => '2'
-                        );**/
                         $MYSQL->bindMore(
                           array(
                             'post_content' => $cont,
@@ -307,32 +248,6 @@
                             'post_type' => '2'
                           )
                         );
-
-                        /*try {
-                          $MYSQL->insert('{prefix}forum_posts', $n_data);
-                          $t_data = array(
-                            'last_updated'=> $time
-                          );
-                          $MYSQL->where('id', $thread['id']);
-                          try {
-
-                            $page = '';
-                            if( (count($p_query)/POST_RESULTS_PER_PAGE) > 1 ) {
-                              $page .= '/page/' . ceil(count($p_query)/POST_RESULTS_PER_PAGE);
-                            }
-
-                            $MYSQL->update('{prefix}forum_posts', $t_data);
-                            redirect(SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id'] . $page);
-                          } catch (mysqli_sql_exception $e) {
-                            $page = '';
-                            if( (count($o_query)/POST_RESULTS_PER_PAGE) > 1 ) {
-                              $page .= '/page/' . ceil(count($o_query)/POST_RESULTS_PER_PAGE);
-                            }
-                            redirect(SITE_URL . '/thread.php/' . $origin['title_friendly'] . '.' . $origin['id'] . $page);
-                          }
-                        } catch (mysqli_sql_exception $e) {
-                          throw new Exception ($LANG['global_form_process']['error_replying_thread']);
-                        }*/
                         $MYSQL->query("INSERT INTO {prefix}forum_posts (post_content, post_time, post_user, origin_node, origin_thread, post_type) VALUES (:post_content, :post_time, :post_user, :origin_node, :origin_thread, :post_type)");
                         $MYSQL->bindMore(
                           array(

@@ -5,23 +5,12 @@
 
   $TANGO->tpl->getTpl('page');
 
-  //$PGET->g('v');
   if( $PGET->s(true) ) {
-      
-      //$get = clean($PGET->g('v'));
-      //$get = explode('.', $get);
       $get = $PGET->s(true);
       
       //Node
-      //$node_id   = $get['1'];
-      //$node_name = $get['0'];
       $node_id   = $get['id'];
       $node_name = $get['value'];
-      
-      //$MYSQL->where('id', $node_id);
-      //$MYSQL->where('title_friendly', $node_name);
-      //$MYSQL->where('post_type', 1);
-      //$query = $MYSQL->get('{prefix}forum_posts');
       $MYSQL->bindMore(
         array(
           'id' => $node_id, 
@@ -36,17 +25,6 @@
           $time_post    = simplify_time($query['0']['post_time'],@$TANGO->sess->data['location']);
           $user_joined  = simplify_time($user['date_joined'], @$TANGO->sess->data['location']);
 
-          /*$breadcrumbs = $TANGO->tpl->entity(
-            'breadcrumbs_before',
-            array(
-              'link',
-              'name'
-            ),
-            array(
-              SITE_URL . '/forum.php',
-              $LANG['bb']['forum']
-            )
-          );*/
           $TANGO->tpl->addBreadcrumb(
             $LANG['bb']['forum'],
             SITE_URL . '/forum.php'
@@ -56,17 +34,6 @@
             $parent_node = node($node['parent_node']);
             $ori_cat     = category($parent_node['in_category']);
 
-            /*$breadcrumbs .= $TANGO->tpl->entity(
-              'breadcrumbs_before',
-              array(
-                'link',
-                'name'
-              ),
-              array(
-                SITE_URL . '/node.php/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
-                $parent_node['node_name']
-              )
-            );*/
             $TANGO->tpl->addBreadcrumb(
               $ori_cat['category_title'],
               '#'
@@ -77,17 +44,6 @@
               SITE_URL . '/node.php/' . $parent_node['name_friendly'] . '.' . $parent_node['id']
             );
 
-            /*$breadcrumbs .= $TANGO->tpl->entity(
-              'breadcrumbs_before',
-              array(
-                'link',
-                'name'
-              ),
-              array(
-                SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'],
-                $node['node_name']
-              )
-            );*/
             $TANGO->tpl->addBreadcrumb(
               $node['node_name'],
               SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id']
@@ -95,17 +51,7 @@
 
           } elseif( $node['node_type'] == 1 ) {
             $ori_cat = category($node['in_category']);
-            /*$breadcrumbs .= $TANGO->tpl->entity(
-              'breadcrumbs_before',
-              array(
-                'link',
-                'name'
-              ),
-              array(
-                SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'],
-                $node['node_name']
-              )
-            );*/
+
             $TANGO->tpl->addBreadcrumb(
               $ori_cat['category_title'],
               '#'
@@ -116,18 +62,7 @@
               SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id']
             );
           }
-          /*$breadcrumbs .= $TANGO->tpl->entity(
-            'breadcrumbs_current',
-            'name',
-            $query['0']['post_title']
-          );
 
-          $breadcrumb = $TANGO->tpl->entity(
-              'breadcrumbs',
-              'bread',
-              //'<li><a href="' . SITE_URL . '">Forum</a></li><li><a href="' . SITE_URL . '/node.php/v/' . $node['name_friendly'] . '.' . $node['id'] . '">' . $node['node_name'] . '</a></li><li class="active">' . $query['0']['post_title'] . '</a>'
-              $breadcrumbs
-          );*/
           $TANGO->tpl->addBreadcrumb(
             $query['0']['post_title'],
             '#',
@@ -154,12 +89,6 @@
                       SITE_URL . '/report.php/post/' . $node_id,
                       'buttons'
                   );
-              /*$quote_thread  .= $TANGO->tpl->entity(
-                  'quote_post',
-                  'url',
-                  SITE_URL . '/reply.php/' . $node_name . '.' . $node_id . '/quote/' . $node_id,
-                  'buttons'
-              );*/
               $quote_thread .= $TANGO->tpl->entity(
                 'quote_post',
                 'url',
@@ -377,10 +306,7 @@
                 $user['username_style'],
                 $user_joined['time'],
                 $user['post_count'],
-                //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])),
-                //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($query['0']['post_content'])->get_html()),
                 $TANGO->lib_parse->parse($query['0']['post_content']),
-                //html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($user['user_signature'])))),
                 $TANGO->lib_parse->parse($user['user_signature']),
                 $time_post['time'],
                 $thread_mod_tools,
@@ -420,16 +346,9 @@
               $time_reply  = simplify_time($post['post_time'], @$TANGO->sess->data['location']);
               $user_joined = simplify_time($ur['date_joined'], @$TANGO->sess->data['location']);
               if( $TANGO->perm->check('reply_thread') && ($query['0']['post_locked'] == "0") ) {
-                  /*$quote_p .= $TANGO->tpl->entity(
-                      'quote_post',
-                      'url',
-                      SITE_URL . '/reply.php/' . $node_name . '.' . $node_id . '/quote/' . $post['id'],
-                      'buttons'
-                  );*/
                   $quote_p  .= $TANGO->tpl->entity(
                     'quote_post',
                     'url',
-                    //'javascript:$(\'#editor\').execCommand(\'quote\',{author: \'\',seltext:\'Post ID: ' . $post['id'] . '\'});',
                     'javascript:quote(\'' . $post['id'] . '\');',
                     'buttons'
                   );
@@ -448,47 +367,6 @@
                       );
                   }
               }
-              
-              //die($quote_template);
-              //$post['post_content'] = $TANGO->lib_parse->parseQuote($post['post_content']);
-              //die($post['post_content']);
-              //die($quote_template);
-             // $die = sscanf('<blockquote id="post_quote"><p>qweqdasdasfds</p><small class="quote_username">awidas_sdai83</small></blockquote>asdasfdsas', $quote_template);
-              //die(var_dump($die));
-              /*$post['post_content'] = str_replace(
-                  array(
-                      '&lt;blockquote&gt;',
-                      '&lt;/blockquote&gt;',
-                      '&lt;small&gt;',
-                      '&lt;/small&gt;',
-                      '&lt;p&gt;',
-                      '&lt;/p&gt;'
-                  ), 
-                  array(
-                      '<blockquote>',
-                      '</blockquote>',
-                      '<small>',
-                      '</small>'
-                  ), 
-                  
-              );*/
-              //$post['post_content'] = $TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($post['post_content'])->get_html());
-              //die($post['post_content']);
-              //$die = sscanf($post['post_content'], '<$blockquote$>%s </$blockquote$>');
-              /*preg_match_all('/<blockquote>(.*?)<\/blockquote>/', $post['post_content'], $die);
-              die(var_dump($die));
-              $post['post_content'] = $TANGO->tpl->entity(
-                  'quote_post',
-                  array(
-                      'quoted_post_content',
-                      'quoted_post_user'
-                  ),
-                  array(
-                      '%s',
-                      '%s'
-                  )
-              );*/
-              
               $post_mod_tools = '';
               if( $TANGO->perm->check('access_moderation') ) {
                   $post_mod_tools = $TANGO->tpl->entity(
@@ -536,9 +414,6 @@
                       $user_joined['time'],
                       $ur['post_count'],
                       $TANGO->lib_parse->parse($post['post_content']),
-                      //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($post['post_content'])->get_html()),
-                      //html_entity_decode(html_entity_decode($TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($ur['user_signature'])))),
-                      //$TANGO->lib_parse->parseQuote($TANGO->bb->parser->parse($ur['user_signature'])->get_html()),
                       $TANGO->lib_parse->parse($ur['user_signature']),
                       $time_reply['time'],
                       $post_mod_tools,
@@ -550,33 +425,16 @@
           }
           
           $total_pages = ceil(fetchTotalPost($node_id) / POST_RESULTS_PER_PAGE);
-          //$pag         = '';
           if( $total_pages > 1 ) {
               $i   = '';
               for( $i = 1; $i <= $total_pages; ++$i ) {
                   if( $i == $page ) {
-                      /*$pag .= $TANGO->tpl->entity(
-                          'pagination_link_current',
-                          'page',
-                          $i
-                      );*/
                       $TANGO->tpl->addPagination(
                         $i,
                         '#',
                         true
                       );
                   } else {
-                      /*$pag .= $TANGO->tpl->entity(
-                          'pagination_links',
-                          array(
-                              'url',
-                              'page'
-                          ),
-                          array(
-                              SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/page/' . $i,
-                              $i
-                          )
-                      );*/
                       $TANGO->tpl->addPagination(
                         $i,
                         SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/page/' . $i
@@ -605,7 +463,6 @@
                       'tango_form',
                       CSRF_INPUT,
                       'content',
-                      //SITE_URL . '/reply.php/thread/' . $node_id,
                       SITE_URL . '/reply.php/' . $node_name . '.' . $node_id,
                       'editor',
                       'reply'
@@ -635,13 +492,6 @@
               )
           );
           }
-          
-          
-          /*$content .= $TANGO->tpl->entity(
-              'pagination',
-              'pages',
-              $pag
-          );*/
           $content .= $TANGO->tpl->pagination();
           
           $TANGO->tpl->addParam(

@@ -4,23 +4,15 @@
   require_once('applications/wrapper.php');
 
   $TANGO->tpl->getTpl('page');
-  //$PGET->g('v')
 
   if( $PGET->s(true) ) {
-      
-      //$get = clean($PGET->g('v'));
-      //$get = explode('.', $get);
+
       $get = $PGET->s(true);
       
       //Node
-      //$node_id   = $get['1'];
-      //$node_name = $get['0'];
       $node_id   = $get['id'];
       $node_name = $get['value'];
-      
-      //$MYSQL->where('id', $node_id);
-      //$MYSQL->where('name_friendly', $node_name);
-      //$query = $MYSQL->get('{prefix}forum_node');
+
       $MYSQL->bind('id', $node_id);
       $MYSQL->bind('name_friendly', $node_name);
       $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE id = :id AND name_friendly = :name_friendly");

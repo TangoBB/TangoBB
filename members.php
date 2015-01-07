@@ -4,7 +4,6 @@
   require_once('applications/wrapper.php');
 
   $TANGO->tpl->getTpl('members');
-  //$PGET->g('cmd')
   switch( $PGET->g('cmd') ) {
 
       case "register":
