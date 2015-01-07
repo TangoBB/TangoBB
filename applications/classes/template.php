@@ -18,7 +18,6 @@
           global $TANGO;
 
           $this->elapsed_time = microtime(true);
-          //$this->theme        = $TANGO->data['site_theme'];
 
           $this->addParam('site_url', SITE_URL);
           $this->addParam('site_name', $TANGO->data['site_name']);
@@ -30,33 +29,7 @@
           $this->addParam('users_online', users_online());
 
           //Globally adding parameters for captcha.
-          //$this->addParam('tangobb_captcha', $TANGO->captcha->display());
-          
-          /*$this->addParam(
-              'editor_settings',
-              '<link rel="stylesheet" href="' . SITE_URL . '/public/css/tangobb.css" />
-               <link rel="stylesheet" href="' . SITE_URL . '/public/js/sceditor/themes/modern.min.css" type="text/css" media="all" />
-               <script src="' . SITE_URL . '/public/js/jquery.min.js"></script>
-               <script>var SITE_URL = \'' . SITE_URL . '\';</script>
-               <script type="text/javascript" src="' . SITE_URL . '/public/js/autosaveform.js"></script>
-               <script type="text/javascript" src="' . SITE_URL . '/public/js/tangobb.js"></script>
-               <script type="text/javascript" src="' . SITE_URL . '/public/js/typeahead.min.js"></script>
-               <script type="text/javascript" src="' . SITE_URL . '/public/js/sceditor/jquery.sceditor.bbcode.min.js"></script>
-               <script>
-                 $(function() {
-                   $(\'#editor\').sceditor({
-                     plugins: "bbcode",
-                     toolbar: "bold,italic,underline,strike|left,center,right|size,color|bulletlist,orderedlist|code|image|link,unlink|source",
-                     style: "' . SITE_URL . '/public/js/sceditor/jquery.sceditor.default.min.css"
-                   });
-                   var emo = $(\'textarea\').sceditor(\'instance\').emoticons(false);
-                 });
-                 var formsave1=new autosaveform({
-                   formid: \'tango_form\',
-                   pause: 1000 //<--no comma following last option!
-                 });
-               </script>'
-          );*/
+
           $this->addParam(
               'editor_settings',
               '<link rel="stylesheet" href="' . SITE_URL . '/public/css/iko.css" />
@@ -105,35 +78,9 @@
       public function addParam($param, $value) {
           if( is_array($param) or is_array($value) ) {
               foreach( array_combine($param, $value) as $p => $v  ) {
-                  /*$v                            = str_replace(
-                    array(
-                      '{',
-                      '}',
-                      '@'
-                    ),
-                    array(
-                      '&#123;',
-                      '&#125;',
-                      '&#64;'
-                    ),
-                    $v
-                  );*/
                   $this->params['%' . $p . '%'] = $v;
               }
           } else {
-              /*$value = str_replace(
-                    array(
-                      '{',
-                      '}',
-                      '@'
-                    ),
-                    array(
-                      '&#123;',
-                      '&#125;',
-                      '&#64;'
-                    ),
-                    $value
-              );*/
               $this->params['%' . $param . '%'] = $value;
           }
       }
@@ -246,7 +193,6 @@
           if( $blade ) {
              ob_start();
              $result = $this->bladeSyntax($result);
-             //die(var_dump($return));
              eval(' ?>' . $result . '<?php ');
              $result = ob_get_clean();
              if( ob_get_contents() ) {
@@ -310,8 +256,6 @@
               eval(' ?>' . $return . '<?php ');
               $return = ob_get_clean();
               ob_end_clean();
-              
-              //$return = str_replace('$', '', $return);
               
               if( !$ret ) {
                   $this->output .= $return;

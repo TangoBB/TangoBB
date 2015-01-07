@@ -44,18 +44,13 @@
   		$this->items = $items;
   		foreach( $items as $item => $value ) {
   			if( in_array($item, array_keys($rules)) ) {
-  				/*$this->validate([
-  					'field' => $item,
-  					'value' => $value,
-  					'rules' => $rules[$item]
-  				]);*/
-          $this->validate(
-            array(
-              'field' => $item,
-              'value' => $value,
-              'rules' => $rules[$item]
-            )
-          );
+                  $this->validate(
+                    array(
+                      'field' => $item,
+                      'value' => $value,
+                      'rules' => $rules[$item]
+                    )
+                  );
   			}
   		}
   		return $this;

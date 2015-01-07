@@ -13,8 +13,6 @@
       public function __construct() {
           global $MYSQL;
           //Forum generic details.
-          //$MYSQL->where('id', 1);
-          //$query = $MYSQL->get('{prefix}generic');
           $MYSQL->bind('id', 1);
           $query = $MYSQL->query("SELECT * FROM {prefix}generic WHERE id = :id");
           $this->data = $query['0'];
@@ -26,13 +24,9 @@
       public function user($id, $callback = null) {
           global $MYSQL;
 
-          //$MYSQL->where('id', $id);
-          //$query   = $MYSQL->get('{prefix}users');
           $MYSQL->bind('id', $id);
           $query = $MYSQL->query("SELECT * FROM {prefix}users WHERE id = :id");
 
-          //$MYSQL->where('username', $id);
-          //$u_query = $MYSQL->get('{prefix}users');
           $MYSQL->bind('username', $id);
           $u_query = $MYSQL->query("SELECT * FROM {prefix}users WHERE username = :username");
 
@@ -42,9 +36,7 @@
             return array();
           }
 
-          //$MYSQL->where('post_user', $query['0']['id']);
           $MYSQL->bind('post_user', $query['0']['id']);
-          //$query['0']['post_count']     = count($MYSQL->get('{prefix}forum_posts'));
           $query['0']['post_count']     = count($MYSQL->query("SELECT * FROM {prefix}forum_posts"));
           $query['0']['username_style'] = $this->usergroup($query['0']['user_group'], 'username_style', $query['0']['username']);
 
@@ -86,15 +78,12 @@
        */
       public function usergroup($group, $result = NULL, $extra_data = NULL) {
           global $MYSQL;
-          //$MYSQL->where('id', $group);
-          //$query = $MYSQL->get('{prefix}usergroups');
           $MYSQL->bind('id', $group);
           $query = $MYSQL->query("SELECT * FROM {prefix}usergroups WHERE id = :id");
           
           switch( $result ) {
               case "permissions":
                 if( $query['0']['group_permissions'] == "*" ) {
-                    //$p_query = $MYSQL->get('{prefix}permissions');
                     $p_query = $MYSQL->query("SELECT * FROM {prefix}permissions");
                     foreach( $p_query as $p ) {
                         $perms[] = $p['permission_name'];

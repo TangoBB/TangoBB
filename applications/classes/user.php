@@ -24,12 +24,8 @@
        */
       public function changeUserGroup($user, $group) {
         global $MYSQL;
-        //$MYSQL->where('id', $user);
-        //$user  = $MYSQL->get('{prefix}users');
         $MYSQL->bind('id', $user);
         $user  = $MYSQL->query("SELECT * FROM {prefix}users WHERE id = :id");
-        //$MYSQL->where('id', $group);
-        //$group = $MYSQL->get('{prefix}usergroups');
         $MYSQL->bind('id', $group);
         $group = $MYSQL->query("SELECT * FROM {prefix}usergroups WHERE id = :id");
 
@@ -44,6 +40,9 @@
           } else {
             return false;
           }
+
+
+            // PDO here or shall this be like this?
 
           /*$data = array(
             'user_group' => $group
@@ -187,9 +186,6 @@
       public function userMessages() {
           global $MYSQL, $TANGO;
           $return = array();
-          //$MYSQL->where('message_receiver', $TANGO->sess->data['id']);
-          //$MYSQL->where('receiver_viewed', 0);
-          //$query = $MYSQL->get('{prefix}messages');
           $MYSQL->bind('message_receiver', $TANGO->sess->data['id']);
           $MYSQL->bind('receiver_viewed', 0);
           $query = $MYSQL->query("SELECT * FROM {prefix}messages WHERE message_receiver = :message_receiver AND receiver_viewed = :receiver_viewed");
@@ -238,8 +234,6 @@
         $update = array(
           'viewed' => '1'
         );
-        //$MYSQL->where('user', $TANGO->sess->data['id']);
-        //$MYSQL->update('{prefix}notifications', $update);
         $MYSQL->bind('user', $TANGO->sess->data['id']);
         $MYSQL->query("UPDATE {prefix}notifications SET viewed = 1 WHERE user = :user");
       }
@@ -256,12 +250,7 @@
               $extra['username'],
               $LANG['notification']['mention']
             );
-            /*$insert  = array(
-              'notice_content' => $notice,
-              'notice_link' => $extra['link'],
-              'user' => $user,
-              'time_received' => $time
-            );*/
+
             $MYSQL->bindMore(
               array(
                 'notice_content' => $notice,
@@ -285,12 +274,7 @@
               ),
               $LANG['notification']['reply']
             );
-            /*$insert  = array(
-              'notice_content' => $notice,
-              'notice_link' => $extra['link'],
-              'user' => $user,
-              'time_received' => $time
-            );*/
+
             $MYSQL->bindMore(
               array(
                 'notice_content' => $notice,
@@ -314,12 +298,7 @@
               ),
               $LANG['notification']['quoted']
             );
-            /*$insert  = array(
-              'notice_content' => $notice,
-              'notice_link' => $extra['link'],
-              'user' => $user,
-              'time_received' => $time
-            );*/
+
             $MYSQL->bindMore(
               array(
                 'notice_content' => $notice,
@@ -335,12 +314,7 @@
           $link          = (isset($extra['link']))? $extra['link'] : '';
           $extra['link'] = $link;
           $notice       .= $type;
-          /*$insert        = array(
-            'notice_content' => $notice,
-            'notice_link' => $link,
-            'user' => $user,
-            'time_received' => $time
-          );*/
+
           $MYSQL->bindMore(
             array(
               'notice_content' => $notice,
@@ -350,7 +324,6 @@
             )
           );
         }
-        //$MYSQL->insert('{prefix}notifications', $insert)
         if( $MYSQL->query("INSERT INTO {prefix}notifications (notice_content, notice_link, user, time_received) VALUES (:notice_content, :notice_link, :user, :time_received)") > 0 ) {
           $info = str_replace(
             '%url%',
@@ -360,13 +333,6 @@
           if( $email ) {
             $user = $TANGO->user($user);
             //Setting up email
-            /*$send = $MAIL->setTo($user['user_email'], $user['username'])
-                         ->setFrom($TANGO->data['site_email'], $TANGO->data['site_name'])
-                         ->setSubject($notice)
-                         ->addGenericHeader('X-Mailer', 'PHP/' . phpversion())
-                         ->addGenericHeader('Content-Type', 'text/html; charset="utf-8"')
-                         ->setMessage($notice . $info)
-                         ->send();*/
             $MAIL->to($user['user_email']);
             $MAIL->from($TANGO->data['site_email']);
             $MAIL->subject($notice);
