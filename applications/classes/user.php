@@ -139,21 +139,18 @@
           if( !empty($current_perms) ) {
             $new_perms = array();
             foreach( $current_perms as $parent => $child ) {
-              $MYSQL->where('permission_name', $id_perms);
-              $p_query     = $MYSQL->get('{prefix}permissions');
+              $MYSQL->bind('permission_name', $id_perms); //$id_perms not defined?
+              $p_query     = $MYSQL->query('SELECT * FROM {prefix}permissions WHERE permission_name = :permission_name');
               $new_perms[] = $p_query['id'];
             }
             $new_perms = implode(',', $new_perms);
-            $update    = array(
-              'additional_permissions' => $new_perms
-            );
+            $MYSQL->bind('additional_permissions', $new_perms);
           } else {
-            $update = array(
-              'additional_permissions' => '0'
-            );
+            $MYSQL->bind('additional_permissions', '0');
           }
-          $MYSQL->where('id', $user['id']);
-          if( $MYSQL->update('{prefix}users', $update) ) {
+
+          $MYSQL->bind('id', $user['id']);
+          if( $MYSQL->query('UPDATE {prefix}users SET additional_permissions = :additional_permissions WHERE id = :id') ) {
             return true;
           } else {
             return false;
@@ -231,9 +228,6 @@
 
       public function clearNotification() {
         global $MYSQL, $TANGO;
-        $update = array(
-          'viewed' => '1'
-        );
         $MYSQL->bind('user', $TANGO->sess->data['id']);
         $MYSQL->query("UPDATE {prefix}notifications SET viewed = 1 WHERE user = :user");
       }
