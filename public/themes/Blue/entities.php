@@ -318,50 +318,58 @@
 </form>
 <!--- tpl:reply_thread_page:end -->
 <!--- tpl:user_profile_page:start -->
-<div class="well col-md-4" style="overflow:auto;">
-    <p style="text-align: center;">
-        <img src="%user_avatar%" class="img-thumbnail" style="width: 100px; height: 100px;" />
-    </p>
-    <p class="pull-left">
-        <span class="lead">%username% | %gender%</span><br />
-        %usergroup%<br />
-        <b>Registered On:</b> %registered_date% <br />
-        <b>Location:</b> %flag% %location%<br />
-        <b>Age:</b> %age%
-    </p>
-    <p>
-        %visitors%
-    </p>
+<div class="col-lg-9">
+    <div class="well" style="overflow:auto;">
+        <p class="pull-left">
+            <span class="lead">%username% | %gender%</span><br />
+            %usergroup%<br />
+            <b>Joined:</b> %registered_date% <br />
+            <b>Location:</b> %flag% %location%<br />
+            <b>Age:</b> %age%
+
+        </p>
+        <p class="pull-right">
+            <img src="%user_avatar%" class="img-thumbnail" style="width:75px;height:75px;" />
+        </p>
+    </div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#profile_info" data-toggle="tab">Information</a></li>
+        <li><a href="#profile_activity" data-toggle="tab">Recent Activity</a></li>
+        <li><a href="#profile_comments" data-toggle="tab">Comments</a></li>
+        <li><a href="#profile_visitors" data-toggle="tab">Visitors</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="profile_info">
+            <strong>About User:</strong><br />
+            <div class="well">
+                %about_user%
+            </div>
+            <strong>Signature:</strong><br />
+            <div class="well">
+                %user_signature%
+            </div>
+            %mod_tools%
+        </div>
+        <div class="tab-pane" id="profile_activity">
+            <br />
+            %recent_activity%
+        </div>
+        <div class="tab-pane" id="profile_comments">
+            <br />
+            %comments%
+        </div>
+    </div>
 </div>
 
-<div class="col-md-8">
-
-<ul class="nav nav-tabs">
-    <li class="active"><a href="#profile_info" data-toggle="tab">Information</a></li>
-    <li><a href="#profile_activity" data-toggle="tab">Recent Activity</a></li>
-    <li><a href="#profile_comments" data-toggle="tab">Comments</a></li>
-</ul>
-<div class="tab-content">
-    <div class="tab-pane active" id="profile_info">
-        <strong>About User:</strong><br />
-        <div class="well">
-            %about_user%
+<div class="col-lg-3">
+    <div class="panel panel-content">
+        <div class="panel-heading">
+            <b>Visitors</b>
         </div>
-        <strong>Signature:</strong><br />
-        <div class="well">
-            %user_signature%
+        <div class="panel-body">
+            %visitors%
         </div>
-        %mod_tools%
     </div>
-    <div class="tab-pane" id="profile_activity">
-        <br />
-        %recent_activity%
-    </div>
-    <div class="tab-pane" id="profile_comments">
-        <br />
-        %comments%
-    </div>
-</div>
 </div>
 <!--- tpl:user_profile_page:end -->
 <!--- tpl:user_profile_comments:start -->
