@@ -1,74 +1,76 @@
 <?php
 
-  define('BASEPATH', 'Staff');
-  require_once('../applications/wrapper.php');
+define('BASEPATH', 'Staff');
+require_once('../applications/wrapper.php');
 
-  if( !$TANGO->perm->check('access_administration') ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
-  require_once('template/top.php');
-  $notice = '';
+if (!$TANGO->perm->check('access_administration')) {
+    redirect(SITE_URL);
+}//Checks if user has permission to create a thread.
+require_once('template/top.php');
+$notice = '';
 
-  /*
-   * Additional notice.
-   */
-  if( $PGET->g('notice') ) {
-      switch( $PGET->g('notice') ) {
-          case "create_success":
+/*
+ * Additional notice.
+ */
+if ($PGET->g('notice')) {
+    switch ($PGET->g('notice')) {
+        case "create_success":
             $notice .= $ADMIN->alert(
                 'Usergroup has been created!',
                 'success'
             );
-          break;
-          case "edit_success":
+            break;
+        case "edit_success":
             $notice .= $ADMIN->alert(
                 'Usergroup has been successfully edited!',
                 'success'
             );
-          break;
-      }
-  }
+            break;
+    }
+}
 
-  /*
-   * Delete Usergroup.
-   */
-  if( $PGET->g('delete_usergroup') ) {
-      $d_u   = clean($PGET->g('delete_usergroup'));
-      /*$MYSQL->where('id', $d_u);
-      $query = $MYSQL->get('{prefix}usergroups');*/
-      $MYSQL->bind('id', $d_u);
-      $query = $MYSQL->query('SELECT * FROM {prefix}usergroups WHERE id = :id');
+/*
+ * Delete Usergroup.
+ */
+if ($PGET->g('delete_usergroup')) {
+    $d_u = clean($PGET->g('delete_usergroup'));
+    /*$MYSQL->where('id', $d_u);
+    $query = $MYSQL->get('{prefix}usergroups');*/
+    $MYSQL->bind('id', $d_u);
+    $query = $MYSQL->query('SELECT * FROM {prefix}usergroups WHERE id = :id');
 
-      if( !empty($query) ) {
+    if (!empty($query)) {
 
-          //$MYSQL->where('id', $d_u);
-          $MYSQL->bind('id', $d_u);
-          try {
-              //$MYSQL->delete('{prefix}usergroups');
-              $MYSQL->query('DELETE FROM {prefix}usergroups WHERE id = :id');
-              $notice .= $ADMIN->alert(
-                  'Usergroup <strong>' . $query['0']['group_name'] . '</strong> has been deleted!',
-                  'success'
-              );
-          } catch (mysqli_sql_exception $e) {
-              $notice .= $ADMIN->alert(
-                  'Error deleting usergroup.',
-                  'danger'
-              );
-          }
+        //$MYSQL->where('id', $d_u);
+        $MYSQL->bind('id', $d_u);
+        try {
+            //$MYSQL->delete('{prefix}usergroups');
+            $MYSQL->query('DELETE FROM {prefix}usergroups WHERE id = :id');
+            $notice .= $ADMIN->alert(
+                'Usergroup <strong>' . $query['0']['group_name'] . '</strong> has been deleted!',
+                'success'
+            );
+        } catch (mysqli_sql_exception $e) {
+            $notice .= $ADMIN->alert(
+                'Error deleting usergroup.',
+                'danger'
+            );
+        }
 
-      } else {
-          $notice .= $ADMIN->alert(
-              'Usergroup does not exist!',
-              'danger'
-          );
-      }
-  }
+    } else {
+        $notice .= $ADMIN->alert(
+            'Usergroup does not exist!',
+            'danger'
+        );
+    }
+}
 
-  $query = $MYSQL->query("SELECT * FROM {prefix}usergroups");
+$query = $MYSQL->query("SELECT * FROM {prefix}usergroups");
 
-  $token      = NoCSRF::generate('csrf_token');
-  $groups     = '';
-  foreach( $query as $g ) {
-      $groups     .= '<tr>
+$token = NoCSRF::generate('csrf_token');
+$groups = '';
+foreach ($query as $g) {
+    $groups .= '<tr>
                         <td>
                           <strong>' . $g['group_name'] . '</strong>
                         </td>
@@ -85,13 +87,13 @@
                           </div>
                         </td>
                       </tr>';
-  }
+}
 
-  echo $ADMIN->box(
-      'Usergroups  <p class="pull-right"><a href="' . SITE_URL . '/admin/new_usergroup.php" class="btn btn-default btn-xs">New Usergroup</a></p>',
-      $notice .
-      'You can manage the user groups here.',
-      '<table class="table table-hover">
+echo $ADMIN->box(
+    'Usergroups  <p class="pull-right"><a href="' . SITE_URL . '/admin/new_usergroup.php" class="btn btn-default btn-xs">New Usergroup</a></p>',
+    $notice .
+    'You can manage the user groups here.',
+    '<table class="table table-hover">
          <thead>
            <tr>
               <th style="width:80%">Group</th>
@@ -102,8 +104,8 @@
            ' . $groups . '
         </tbody>
        </table>',
-      '12'
-  );
+    '12'
+);
 
-  require_once('template/bot.php');
+require_once('template/bot.php');
 ?>

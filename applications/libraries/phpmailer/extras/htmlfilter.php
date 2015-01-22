@@ -95,7 +95,7 @@ function tln_skipspace($body, $offset)
  * really just a glorified "strpos", except it catches the failures
  * nicely.
  *
- * @param string $body   The string to look for needle in.
+ * @param string $body The string to look for needle in.
  * @param int $offset Start looking from this position.
  * @param string $needle The character/string to look for.
  * @return int           location of the next occurrence of the needle, or
@@ -114,9 +114,9 @@ function tln_findnxstr($body, $offset, $needle)
  * This function takes a PCRE-style regexp and tries to match it
  * within the string.
  *
- * @param string $body   The string to look for needle in.
+ * @param string $body The string to look for needle in.
  * @param int $offset Start looking from here.
- * @param string $reg       A PCRE-style regex to match.
+ * @param string $reg A PCRE-style regex to match.
  * @return array|boolean  Returns a false if no matches found, or an array
  *                   with the following members:
  *                   - integer with the location of the match within $body
@@ -142,7 +142,7 @@ function tln_findnxreg($body, $offset, $reg)
 /**
  * This function looks for the next tag.
  *
- * @param string $body   String where to look for the next tag.
+ * @param string $body String where to look for the next tag.
  * @param int $offset Start looking from here.
  * @return array|boolean false if no more tags exist in the body, or
  *                   an array with the following members:
@@ -244,7 +244,7 @@ function tln_getnxtag($body, $offset)
                 $retary = array(false, false, false, $lt, $gt);
                 return $retary;
             }
-            //intentional fall-through
+        //intentional fall-through
         case '>':
             return array($tagname, false, $tagtype, $lt, $pos);
             break;
@@ -346,7 +346,7 @@ function tln_getnxtag($body, $offset)
                     $retary = array(false, false, false, $lt, $gt);
                     return $retary;
                 }
-                //intentional fall-through
+            //intentional fall-through
             case '>':
                 $attary{$attname} = '"yes"';
                 return array($tagname, $attary, $tagtype, $lt, $pos);
@@ -435,8 +435,8 @@ function tln_getnxtag($body, $offset)
  * Translates entities into literal values so they can be checked.
  *
  * @param string $attvalue the by-ref value to check.
- * @param string $regex    the regular expression to check against.
- * @param bool $hex        whether the entites are hexadecimal.
+ * @param string $regex the regular expression to check against.
+ * @param bool $hex whether the entites are hexadecimal.
  * @return bool            True or False depending on whether there were matches.
  */
 function tln_deent(&$attvalue, $regex, $hex = false)
@@ -490,7 +490,7 @@ function tln_defang(&$attvalue)
  * makers of the browser with 95% market value decided that it'd
  * be funny to make "java[tab]script" be just as good as "javascript".
  *
- * @param string $attvalue     The attribute value before extraneous spaces removed.
+ * @param string $attvalue The attribute value before extraneous spaces removed.
  * @return     Void, modifies a reference value.
  */
 function tln_unspace(&$attvalue)
@@ -507,10 +507,10 @@ function tln_unspace(&$attvalue)
 /**
  * This function runs various checks against the attributes.
  *
- * @param string $tagname            String with the name of the tag.
- * @param array $attary            Array with all tag attributes.
- * @param array $rm_attnames        See description for tln_sanitize
- * @param array $bad_attvals        See description for tln_sanitize
+ * @param string $tagname String with the name of the tag.
+ * @param array $attary Array with all tag attributes.
+ * @param array $rm_attnames See description for tln_sanitize
+ * @param array $bad_attvals See description for tln_sanitize
  * @param array $add_attr_to_tag See description for tln_sanitize
  * @return                    Array with modified attributes.
  */
@@ -520,7 +520,8 @@ function tln_fixatts(
     $rm_attnames,
     $bad_attvals,
     $add_attr_to_tag
-) {
+)
+{
     while (list($attname, $attvalue) = each($attary)) {
         /**
          * See if this attribute should be removed.
@@ -579,14 +580,14 @@ function tln_fixatts(
 
 /**
  *
- * @param string $body                    The HTML you wish to filter
- * @param array $tag_list                see description above
+ * @param string $body The HTML you wish to filter
+ * @param array $tag_list see description above
  * @param array $rm_tags_with_content see description above
- * @param array $self_closing_tags    see description above
- * @param bool $force_tag_closing    see description above
- * @param array $rm_attnames            see description above
- * @param array $bad_attvals            see description above
- * @param array $add_attr_to_tag        see description above
+ * @param array $self_closing_tags see description above
+ * @param bool $force_tag_closing see description above
+ * @param array $rm_attnames see description above
+ * @param array $bad_attvals see description above
+ * @param array $add_attr_to_tag see description above
  * @return string                       Sanitized html safe to show on your pages.
  */
 function tln_sanitize(
@@ -598,7 +599,8 @@ function tln_sanitize(
     $rm_attnames,
     $bad_attvals,
     $add_attr_to_tag
-) {
+)
+{
     /**
      * Normalize rm_tags and rm_tags_with_content.
      */

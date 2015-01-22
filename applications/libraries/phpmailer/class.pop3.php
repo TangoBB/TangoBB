@@ -155,7 +155,8 @@ class POP3
         $username = '',
         $password = '',
         $debug_level = 0
-    ) {
+    )
+    {
         $pop = new POP3;
         return $pop->authorise($host, $port, $tval, $username, $password, $debug_level);
     }

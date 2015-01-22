@@ -1,103 +1,105 @@
 <?php
 
-  /*
-   * Register Module for TangoBB.
-   * Everything that you want to display MUST be in the $content variable.
-   */
-  if( !defined('BASEPATH') ){ die(); }
+/*
+ * Register Module for TangoBB.
+ * Everything that you want to display MUST be in the $content variable.
+ */
+if (!defined('BASEPATH')) {
+    die();
+}
 
-  $page = (!$page)? '1' : clean($PGET->g('page'));
-  $sort = clean($PGET->g('sort'));
+$page = (!$page) ? '1' : clean($PGET->g('page'));
+$sort = clean($PGET->g('sort'));
 
-  $content = '';
-  $m_cont  = '';
+$content = '';
+$m_cont = '';
 
-  //Breadcrumb
-  $TANGO->tpl->addBreadcrumb(
+//Breadcrumb
+$TANGO->tpl->addBreadcrumb(
     $LANG['bb']['forum'],
     SITE_URL . '/forum.php'
-  );
-  $TANGO->tpl->addBreadcrumb(
+);
+$TANGO->tpl->addBreadcrumb(
     $LANG['bb']['members']['home'],
     '#',
     true
-  );
-  $content .= $TANGO->tpl->breadcrumbs();
+);
+$content .= $TANGO->tpl->breadcrumbs();
 
-  foreach(getMembers($page, $sort) as $user) {
-      $p_count   = $TANGO->user($user['id']);
-      $m_cont   .= $TANGO->tpl->entity(
-          'members_page',
-          array(
-              'avatar',
-              'username',
-              'profile_url',
-              'date_joined',
-              'postcount'
-          ),
-          array(
-              $p_count['user_avatar'],
-              $p_count['username_style'],
-              SITE_URL . '/members.php/cmd/user/id/' . $user['id'],
-              date('M jS, Y', $user['date_joined']),
-              $p_count['post_count']
-          )
-      );
-  }
+foreach (getMembers($page, $sort) as $user) {
+    $p_count = $TANGO->user($user['id']);
+    $m_cont .= $TANGO->tpl->entity(
+        'members_page',
+        array(
+            'avatar',
+            'username',
+            'profile_url',
+            'date_joined',
+            'postcount'
+        ),
+        array(
+            $p_count['user_avatar'],
+            $p_count['username_style'],
+            SITE_URL . '/members.php/cmd/user/id/' . $user['id'],
+            date('M jS, Y', $user['date_joined']),
+            $p_count['post_count']
+        )
+    );
+}
 
-  $content .= $TANGO->tpl->entity(
+$content .= $TANGO->tpl->entity(
     'members_page_head',
     array(
-      'members',
-      //Sorting
-      'sort_date_joined_asc',
-      'sort_date_joined_desc',
-      'sort_name_asc',
-      'sort_name_desc'
+        'members',
+        //Sorting
+        'sort_date_joined_asc',
+        'sort_date_joined_desc',
+        'sort_name_asc',
+        'sort_name_desc'
     ),
     array(
-      $m_cont,
-      //Sorting
-      SITE_URL . '/members.php/sort/date_joined_asc',
-      SITE_URL . '/members.php/sort/date_joined_desc',
-      SITE_URL . '/members.php/sort/username_asc',
-      SITE_URL . '/members.php/sort/username_desc'
+        $m_cont,
+        //Sorting
+        SITE_URL . '/members.php/sort/date_joined_asc',
+        SITE_URL . '/members.php/sort/date_joined_desc',
+        SITE_URL . '/members.php/sort/username_asc',
+        SITE_URL . '/members.php/sort/username_desc'
     )
-  );
+);
 
-  $total_pages = ceil(fetchTotalMembers() / 20);
+$total_pages = ceil(fetchTotalMembers() / 20);
 
-  $pag = '';
-  if( $total_pages > 1 ) {
-      $i    = '';
-      for( $i = 1; $i <= $total_pages; ++$i ) {
-          $link = ($sort)? SITE_URL . '/members.php/sort/' . $sort . '/page/' . $i : SITE_URL . '/members.php/page/' . $i;
-          if( $i == $page ) {
-              $pag .= $TANGO->tpl->entity(
-                  'pagination_link_current',
-                  'page',
-                  $i
-              );
-          } else {
-              $pag .= $TANGO->tpl->entity(
-                  'pagination_links',
-                  array(
-                      'url',
-                      'page'
-                  ),
-                  array(
-                      $link,
-                      $i
-                  )
-              );
-          }
-      }
-  }
+$pag = '';
+if ($total_pages > 1) {
+    $i = '';
+    for ($i = 1; $i <= $total_pages; ++$i) {
+        $link = ($sort) ? SITE_URL . '/members.php/sort/' . $sort . '/page/' . $i : SITE_URL . '/members.php/page/' . $i;
+        if ($i == $page) {
+            $pag .= $TANGO->tpl->entity(
+                'pagination_link_current',
+                'page',
+                $i
+            );
+        } else {
+            $pag .= $TANGO->tpl->entity(
+                'pagination_links',
+                array(
+                    'url',
+                    'page'
+                ),
+                array(
+                    $link,
+                    $i
+                )
+            );
+        }
+    }
+}
 
-  $content .= $TANGO->tpl->entity(
-      'pagination',
-      'pages',
-      $pag
-  );
+$content .= $TANGO->tpl->entity(
+    'pagination',
+    'pages',
+    $pag
+);
 
 ?>

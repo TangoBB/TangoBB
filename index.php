@@ -1,8 +1,8 @@
 <?php
 
-  define('BASEPATH', 'Forum');
-  require_once('applications/wrapper.php');
+define('BASEPATH', 'Forum');
+require_once('applications/wrapper.php');
 
-  redirect('forum.php');
+redirect('forum.php');
 
 ?>

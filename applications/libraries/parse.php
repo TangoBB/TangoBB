@@ -5,28 +5,33 @@
  * Rewritten by Jaques1 (https://github.com/TangoBB/TangoBB/pull/6)
  */
 
-if( !defined('BASEPATH') ){ die(); }
+if (!defined('BASEPATH')) {
+    die();
+}
 
-class Library_Parse {
+class Library_Parse
+{
 
     private $custom_codes = array();
 
     /*
      * Adding a BBCode
      */
-    public function addCode($search, $replace) {
-      $this->custom_codes[$search] = $replace;
+    public function addCode($search, $replace)
+    {
+        $this->custom_codes[$search] = $replace;
     }
 
     /*
      * Parsing BBCode into HTML.
      */
-    public function parse($string) {
+    public function parse($string)
+    {
         global $ICONS, $SYNONYM;
         // closures can't access $this directly until PHP 5.4
         $this_object = $this;
 
-        $string      = str_replace(
+        $string = str_replace(
             array(
                 '<',
                 '>'
@@ -101,11 +106,11 @@ class Library_Parse {
             },
             // unordered list
             '#\\[ul\\](.*?)\[/ul\\]#uis' => function ($matches) use ($this_object) {
-            return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
+                return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
             },
             // unordered list (alternative syntax)
             '#\\[list\\](.*?)\[/list\\]#uis' => function ($matches) use ($this_object) {
-            return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
+                return '<ul>' . trim($this_object->parseListElements($matches[1])) . '</ul>';
             },
             // ordered list
             '#\\[ol\\](.*?)\[/ol\\]#uis' => function ($matches) use ($this_object) {
@@ -120,16 +125,14 @@ class Library_Parse {
                 return $this_object->parseQuote($matches[1]);
             },
             // media like YouTube, Vimeo and so on
-            '#\\[media=([^\\]]*?)\\](.*?)\\[/media\\]#uis' => function($matches) {
+            '#\\[media=([^\\]]*?)\\](.*?)\\[/media\\]#uis' => function ($matches) {
                 $output = "";
-                if(strtolower($matches[1])=='youtube') {
-                    $output = '<iframe width="560" height="315" src="//www.youtube.com/embed/'.$matches[2].'?rel=0" frameborder="0" allowfullscreen></iframe>';
-                }
-                elseif(strtolower($matches[1])=='vimeo') {
-                    $output = '<iframe src="//player.vimeo.com/video/'.$matches[2].'?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;color=ffffff" width="560" height="240" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-                }
-                elseif(strtolower($matches[1])=='twitch') {
-                    $output = '<object type="application/x-shockwave-flash" width="620" height="378" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel='.$matches[2].'" bgcolor="#000000"><param name="allowFullScreen" value="true" /><param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" /><param name="flashvars" value="hostname=www.twitch.tv&channel='.$matches[2].'&auto_play=true&start_volume=100" /></object>';
+                if (strtolower($matches[1]) == 'youtube') {
+                    $output = '<iframe width="560" height="315" src="//www.youtube.com/embed/' . $matches[2] . '?rel=0" frameborder="0" allowfullscreen></iframe>';
+                } elseif (strtolower($matches[1]) == 'vimeo') {
+                    $output = '<iframe src="//player.vimeo.com/video/' . $matches[2] . '?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;color=ffffff" width="560" height="240" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+                } elseif (strtolower($matches[1]) == 'twitch') {
+                    $output = '<object type="application/x-shockwave-flash" width="620" height="378" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel=' . $matches[2] . '" bgcolor="#000000"><param name="allowFullScreen" value="true" /><param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" /><param name="flashvars" value="hostname=www.twitch.tv&channel=' . $matches[2] . '&auto_play=true&start_volume=100" /></object>';
                 }
                 return $output;
             }
@@ -144,18 +147,18 @@ class Library_Parse {
         foreach ($tags as $pattern => $replacement) {
             if (is_callable($replacement)) {
                 $result = preg_replace_callback($pattern, $replacement, $result);
-            } else {                
+            } else {
                 $result = preg_replace($pattern, $replacement, $result);
             }
         }
-        
-        foreach($SYNONYM as $code => $translation) {
+
+        foreach ($SYNONYM as $code => $translation) {
             $result = str_replace($code, $translation, $result);
         }
-        
-        foreach($ICONS as $var1 => $var2) {
+
+        foreach ($ICONS as $var1 => $var2) {
             foreach ($var2 as $code => $translation) {
-                $result = str_replace($code, '<span style="font-size: 18px">'.$translation.'</span>', $result);
+                $result = str_replace($code, '<span style="font-size: 18px">' . $translation . '</span>', $result);
             }
         }
         $result = preg_replace(array_keys($this->custom_codes), array_values($this->custom_codes), $result);
@@ -175,9 +178,9 @@ class Library_Parse {
             ),
             $result
         );
-        
+
         $result = nl2brPre($result);
-        
+
         return $result;
     }
 
@@ -187,19 +190,20 @@ class Library_Parse {
      * It's very important to not accept other schemes like `javascript:` or
      * `data:`, because they can be used for cross-site scripting.
      */
-    public function checkSafeUrl($url) {
+    public function checkSafeUrl($url)
+    {
         $valid_url = false;
 
-        if (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED))
-        {
+        if (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)) {
             $parsed_url = parse_url($url);
-            $valid_url = (boolean) preg_match('#\\Ahttps?\\z#ui', $parsed_url['scheme']);
+            $valid_url = (boolean)preg_match('#\\Ahttps?\\z#ui', $parsed_url['scheme']);
         }
 
         return $valid_url;
     }
 
-    public function parseListElements($list_content) {
+    public function parseListElements($list_content)
+    {
         /*
          * Iko uses both the [li] tag and the [*] tag for list elements.
          * Allowing both variants at the same time would be confusing, though.
@@ -224,16 +228,17 @@ class Library_Parse {
     /*
      * Additional parsing on forum content.
      */
-    private function parseQuote($raw_id) {
+    private function parseQuote($raw_id)
+    {
         global $MYSQL, $TANGO;
 
         $id = preg_replace('#\\s+#u', '', $raw_id);
         $MYSQL->where('id', $id);
         $query = $MYSQL->get('{prefix}forum_posts');
-        $user  = (!empty($query))? $TANGO->user($query['0']['post_user']) : array(
-          'username' => ''
+        $user = (!empty($query)) ? $TANGO->user($query['0']['post_user']) : array(
+            'username' => ''
         );
-        $q_c   = (!empty($query))? $query['0']['post_content'] : $raw_id;
+        $q_c = (!empty($query)) ? $query['0']['post_content'] : $raw_id;
         $quote = $TANGO->tpl->entity(
             'quote_post',
             array(
@@ -249,7 +254,8 @@ class Library_Parse {
         return $quote;
     }
 
-    private function removeQuote($string) {
+    private function removeQuote($string)
+    {
         return preg_replace('#\\[quote\\](.*?)\\[/quote\\]#uis', '', $string);
     }
 

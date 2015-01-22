@@ -1,14 +1,16 @@
 <?php
 
-  define('BASEPATH', 'Forum');
-  require_once('applications/wrapper.php');
-  if( !$TANGO->sess->isLogged ) { redirect(SITE_URL . '/404.php'); }//Check if user is logged in.
+define('BASEPATH', 'Forum');
+require_once('applications/wrapper.php');
+if (!$TANGO->sess->isLogged) {
+    redirect(SITE_URL . '/404.php');
+}//Check if user is logged in.
 
-  $TANGO->tpl->getTpl('members');
+$TANGO->tpl->getTpl('members');
 
-  switch( $PGET->g('cmd') ) {
-      
-      case "edit":
+switch ($PGET->g('cmd')) {
+
+    case "edit":
         require_once('applications/commands/profile/edit.php');
         $TANGO->tpl->addParam(
             array(
@@ -20,9 +22,9 @@
                 $content
             )
         );
-      break;
-      
-      case "avatar":
+        break;
+
+    case "avatar":
         require_once('applications/commands/profile/avatar.php');
         $TANGO->tpl->addParam(
             array(
@@ -34,9 +36,9 @@
                 $content
             )
         );
-      break;
-      
-      case "signature":
+        break;
+
+    case "signature":
         require_once('applications/commands/profile/signature.php');
         $TANGO->tpl->addParam(
             array(
@@ -48,9 +50,9 @@
                 $content
             )
         );
-      break;
-      
-      case "password":
+        break;
+
+    case "password":
         require_once('applications/commands/profile/password.php');
         $TANGO->tpl->addParam(
             array(
@@ -62,9 +64,9 @@
                 $content
             )
         );
-      break;
+        break;
 
-      case "theme":
+    case "theme":
         require_once('applications/commands/profile/theme.php');
         $TANGO->tpl->addParam(
             array(
@@ -76,14 +78,14 @@
                 $content
             )
         );
-      break;
-      
-      default:
-        redirect(SITE_URL . '/404.php');
-      break;
-      
-  }
+        break;
 
-  echo $TANGO->tpl->output();
+    default:
+        redirect(SITE_URL . '/404.php');
+        break;
+
+}
+
+echo $TANGO->tpl->output();
 
 ?>

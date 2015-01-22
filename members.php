@@ -1,12 +1,12 @@
 <?php
 
-  define('BASEPATH', 'Forum');
-  require_once('applications/wrapper.php');
+define('BASEPATH', 'Forum');
+require_once('applications/wrapper.php');
 
-  $TANGO->tpl->getTpl('members');
-  switch( $PGET->g('cmd') ) {
+$TANGO->tpl->getTpl('members');
+switch ($PGET->g('cmd')) {
 
-      case "register":
+    case "register":
         require_once('applications/commands/members/register.php');
         $TANGO->tpl->addParam(
             array(
@@ -18,9 +18,9 @@
                 $content
             )
         );
-      break;
+        break;
 
-      case "signin":
+    case "signin":
         require_once('applications/commands/members/signin.php');
         $TANGO->tpl->addParam(
             array(
@@ -32,13 +32,13 @@
                 $content
             )
         );
-      break;
+        break;
 
-      case "logout":
+    case "logout":
         require_once('applications/commands/members/logout.php');
-      break;
+        break;
 
-      case "user":
+    case "user":
         require_once('applications/commands/members/user.php');
         $TANGO->tpl->addParam(
             array(
@@ -50,9 +50,9 @@
                 $content
             )
         );
-      break;
+        break;
 
-      case "activate":
+    case "activate":
         require_once('applications/commands/members/activate.php');
         $TANGO->tpl->addParam(
             array(
@@ -64,9 +64,9 @@
                 $content
             )
         );
-      break;
+        break;
 
-      case "forgotpassword":
+    case "forgotpassword":
         require_once('applications/commands/members/forgotpassword.php');
         $TANGO->tpl->addParam(
             array(
@@ -78,9 +78,9 @@
                 $content
             )
         );
-      break;
+        break;
 
-      case "resetpassword":
+    case "resetpassword":
         require_once('applications/commands/members/resetpassword.php');
         $TANGO->tpl->addParam(
             array(
@@ -92,9 +92,9 @@
                 $content
             )
         );
-      break;
+        break;
 
-      case "rules":
+    case "rules":
         require_once('applications/commands/members/rules.php');
         $TANGO->tpl->addParam(
             array(
@@ -106,9 +106,9 @@
                 $content
             )
         );
-      break;
+        break;
 
-      default:
+    default:
         require_once('applications/commands/members/home.php');
         $TANGO->tpl->addParam(
             array(
@@ -120,10 +120,10 @@
                 $content
             )
         );
-      break;
+        break;
 
-  }
+}
 
-  echo $TANGO->tpl->output();
+echo $TANGO->tpl->output();
 
 ?>

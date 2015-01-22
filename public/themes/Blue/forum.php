@@ -1,5 +1,7 @@
 <?php
-  if( !defined("BASEPATH") ) { die(); }
+if (!defined("BASEPATH")) {
+    die();
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -8,11 +10,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="%description%">
 
-    <meta property="og:title" content="%site_name%" />
-    <meta property="og:url" content="%site_url%" />
+    <meta property="og:title" content="%site_name%"/>
+    <meta property="og:url" content="%site_url%"/>
     <meta property="og:site_name" content="%site_name%"/>
-    <meta property="og:description" content="%description%" />
-    <meta property="og:image" content="" />
+    <meta property="og:description" content="%description%"/>
+    <meta property="og:image" content=""/>
 
     <!-- Not supported tags:
     <meta property="fb:admins" content="" />
@@ -39,13 +41,17 @@
 </head>
 <body>
 <div class="container">
-    <a href="#"><div class="logo pull-left"></div></a>
+    <a href="#">
+        <div class="logo pull-left"></div>
+    </a>
+
     <div class="search_box pull-right">
         <form action="%site_url%/search.php" method="POST">
             <div class="left-inner-addon">
                 <i class="glyphicon glyphicon-search"></i>
-                <input name="search_query" type="text" class="form-control tooltip_toggle" placeholder="Search..." data-toggle="tooltip" data-placement="left" title="Press Enter">
-                <input type="submit" name="search_submit" style="visibility:hidden;display:none;" value="Search" />
+                <input name="search_query" type="text" class="form-control tooltip_toggle" placeholder="Search..."
+                       data-toggle="tooltip" data-placement="left" title="Press Enter">
+                <input type="submit" name="search_submit" style="visibility:hidden;display:none;" value="Search"/>
             </div>
         </form>
     </div>
@@ -54,7 +60,8 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -70,7 +77,8 @@
             <ul class="nav navbar-nav navbar-right">
                 @if ($TANGO->sess->isLogged)
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> %username%</a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i>
+                        %username%</a>
                     <ul class="dropdown-menu">
                         @foreach ($TANGO->user->userLinks() as $name => $link)
                         <li>
@@ -97,7 +105,8 @@
                                     {{ $msg['message_title'] }}
                                 </h4>
                                 <small>By {{ $msg['message_sender'] }} at
-                                    {{ date('F j, Y', $msg['message_time']) }}</small>
+                                    {{ date('F j, Y', $msg['message_time']) }}
+                                </small>
                             </a>
                         </li>
                         @endforeach
@@ -119,7 +128,8 @@
                     </a>
                     <ul class="dropdown-menu">
                         @if (count($TANGO->user->notifications()) < 1)
-                        <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">No new notifications yet.</a></li>
+                        <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">No new
+                                notifications yet.</a></li>
                         @else
                         @foreach ($TANGO->user->notifications() as $note)
                         <li>
@@ -141,154 +151,172 @@
     </div>
 </nav>
 
-    <div id="wrap" class="container">
-      <div class="row">
+<div id="wrap" class="container">
+    <div class="row">
 
         <div class="col-md-9">
-          <h1>%site_name%</h1>
-          %forum_listings%
+            <h1>%site_name%</h1>
+            %forum_listings%
         </div>
 
         <div class="col-md-3">
-          @if ($TANGO->perm->check('access_moderation'))
-          <div style="margin-bottom:10px;">
-            <a href="%site_url%/mod" class="btn btn-warning btn-lg btn-block">Reports <span class="label label-warning">%mod_report_integer%</span></a>
-              @if ($TANGO->perm->check('access_administration'))
-              <a href="%site_url%/admin" class="btn btn-danger btn-lg btn-block">Admin CP</a>
-              @endif
-          </div>
-          @endif
-          <div class="panel panel-content">
-            <div class="panel-body">
-              @if ($TANGO->sess->isLogged)
-              <div class="row" style="width:100%;overflow:auto;margin:0 auto;">
-                <div class="col-md-5">
-                  <img src="%user_avatar%" class="img-thumbnail pull-left" style="max-width:100x;max-height:100px;">
-                </div>
-                <div class="col-md-7">
-                  <a href="%site_url%/members.php/cmd/user">%username_style%</a>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <small>Messages:</small>
-                    </div>
-                    <div class="col-md-6" style="text-align:right;">
-                      %user_post_count%
-                    </div>
-                  </div>
-                </div>
-              </div>
-              @else
-              <a href="%site_url%/members.php/cmd/register" class="btn btn-success btn-lg btn-block">Register</a>
-              @endif
+            @if ($TANGO->perm->check('access_moderation'))
+            <div style="margin-bottom:10px;">
+                <a href="%site_url%/mod" class="btn btn-warning btn-lg btn-block">Reports <span
+                        class="label label-warning">%mod_report_integer%</span></a>
+                @if ($TANGO->perm->check('access_administration'))
+                <a href="%site_url%/admin" class="btn btn-danger btn-lg btn-block">Admin CP</a>
+                @endif
             </div>
-          </div>
-          <div class="panel panel-content">
-                    <div class="panel-heading">
-                        <b><i class="glyphicon glyphicon-stats"></i> Forum Statistics</b>
+            @endif
+            <div class="panel panel-content">
+                <div class="panel-body">
+                    @if ($TANGO->sess->isLogged)
+                    <div class="row" style="width:100%;overflow:auto;margin:0 auto;">
+                        <div class="col-md-5">
+                            <img src="%user_avatar%" class="img-thumbnail pull-left"
+                                 style="max-width:100x;max-height:100px;">
+                        </div>
+                        <div class="col-md-7">
+                            <a href="%site_url%/members.php/cmd/user">%username_style%</a>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <small>Messages:</small>
+                                </div>
+                                <div class="col-md-6" style="text-align:right;">
+                                    %user_post_count%
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        <div class="row">
-                          <div class="col-md-6 text-muted"><small>Threads:</small></div>
-                          <div class="col-md-6" style="text-align:right;"><small>%bb_stat_threads%</small></div>
-                          <div class="col-md-6 text-muted"><small>Replies:</small></div>
-                          <div class="col-md-6" style="text-align:right;"><small>%bb_stat_posts%</small></div>
-                          <div class="col-md-6 text-muted"><small>Users:</small></div>
-                          <div class="col-md-6" style="text-align:right;"><small>%bb_stat_users%</small></div>
-                          </div>
+                    @else
+                    <a href="%site_url%/members.php/cmd/register" class="btn btn-success btn-lg btn-block">Register</a>
+                    @endif
+                </div>
+            </div>
+            <div class="panel panel-content">
+                <div class="panel-heading">
+                    <b><i class="glyphicon glyphicon-stats"></i> Forum Statistics</b>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6 text-muted">
+                            <small>Threads:</small>
+                        </div>
+                        <div class="col-md-6" style="text-align:right;">
+                            <small>%bb_stat_threads%</small>
+                        </div>
+                        <div class="col-md-6 text-muted">
+                            <small>Replies:</small>
+                        </div>
+                        <div class="col-md-6" style="text-align:right;">
+                            <small>%bb_stat_posts%</small>
+                        </div>
+                        <div class="col-md-6 text-muted">
+                            <small>Users:</small>
+                        </div>
+                        <div class="col-md-6" style="text-align:right;">
+                            <small>%bb_stat_users%</small>
+                        </div>
                     </div>
                 </div>
-                <div class="panel panel-content">
-                    <div class="panel-heading">
-                        <b><i class="glyphicon glyphicon-user"></i> Users Online</b>
-                    </div>
-                    <div class="panel-body">
-                        %users_online%
-                    </div>
+            </div>
+            <div class="panel panel-content">
+                <div class="panel-heading">
+                    <b><i class="glyphicon glyphicon-user"></i> Users Online</b>
                 </div>
+                <div class="panel-body">
+                    %users_online%
+                </div>
+            </div>
         </div>
 
-      </div>
-      <footer>
-          <small class="pull-left">
+    </div>
+    <footer>
+        <small class="pull-left">
             Powered by <a href="http://tangobb.com/" target="_blank">TangoBB</a>
-          </small>
-          @if ($TANGO->sess->isLogged)
-          <small class="pull-right">
+        </small>
+        @if ($TANGO->sess->isLogged)
+        <small class="pull-right">
             <span data-toggle="tooltip" title="Choose Themes" class="tooltip_toggle">
               <a href="#" data-toggle="modal" data-target="#theme_modal">Change Theme</a>
             </span>
-          </small>
-          @endif
-      </footer>
-    </div>
+        </small>
+        @endif
+    </footer>
+</div>
 
-    <div class="container statistics">
-      <small class="text-muted">
+<div class="container statistics">
+    <small class="text-muted">
         Load Time: %elapsed_time% seconds |
         Memory: %memory_usage%
-      </small>
-    </div>
+    </small>
+</div>
 
-    @if (!$TANGO->sess->isLogged)
-    <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="login_modal" aria-hidden="true">
-      <div class="modal-dialog">
+@if (!$TANGO->sess->isLogged)
+<div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="login_modal" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Sign In</h4>
-          </div>
-          <div class="modal-body">
-            <form action="%site_url%/members.php/cmd/signin" method="POST">
-              <input type="text" name="email" class="form-control" id="inputEmail3" placeholder="Username or Email">
-              <br />
-              <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">
-              <label>
-                <input type="checkbox" name="remember"> Remember me
-              </label>
-              <br />
-              <input type="submit" class="btn btn-primary" name="signin" value="Sign in" />
-              @if ($TANGO->data['facebook_authenticate'] == "1")
-              <a href="%facebook_login_url%" class="btn btn-info btn-sm"><i class="fa fa-facebook"></i> Sign In with Facebook</a>
-              @endif
-              <br />
-              <a href="%site_url%/members.php/cmd/forgotpassword">Forgot Password</a>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    @endif
-    
-    @if ($TANGO->sess->isLogged) 
-    <div class="modal fade" id="theme_modal" tabindex="-1" role="dialog" aria-labelledby="theme_modal" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Choose Themes</h4>
-          </div>
-          <div class="modal-body">
-            <div class="list-group">
-              @foreach (listThemes() as $theme)
-              @if ($theme['theme_name'] == $TANGO->sess->data['chosen_theme'])
-              <a class="list-group-item active" href="{{ $theme['change_link'] }}">
-                <h4 class="list-group-item-heading">{{ $theme['theme_name'] }}</h4>
-              </a>
-              @else
-              <a class="list-group-item" href="{{ $theme['change_link'] }}">
-                <h4>{{ $theme['theme_name'] }}</h4>
-              </a>
-              @endif
-              @endforeach
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Sign In</h4>
             </div>
-          </div>
+            <div class="modal-body">
+                <form action="%site_url%/members.php/cmd/signin" method="POST">
+                    <input type="text" name="email" class="form-control" id="inputEmail3"
+                           placeholder="Username or Email">
+                    <br/>
+                    <input type="password" name="password" class="form-control" id="inputPassword3"
+                           placeholder="Password">
+                    <label>
+                        <input type="checkbox" name="remember"> Remember me
+                    </label>
+                    <br/>
+                    <input type="submit" class="btn btn-primary" name="signin" value="Sign in"/>
+                    @if ($TANGO->data['facebook_authenticate'] == "1")
+                    <a href="%facebook_login_url%" class="btn btn-info btn-sm"><i class="fa fa-facebook"></i> Sign In
+                        with Facebook</a>
+                    @endif
+                    <br/>
+                    <a href="%site_url%/members.php/cmd/forgotpassword">Forgot Password</a>
+                </form>
+            </div>
         </div>
-      </div>
     </div>
-    @endif
-    %highlighter_footer%
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-     <script src="%site_url%/public/themes/Blue/assets/js/bootstrap.min.js"></script>
-     <script src="%site_url%/public/themes/Blue/assets/js/blue.js"></script>
-  </body>
+</div>
+@endif
+
+@if ($TANGO->sess->isLogged)
+<div class="modal fade" id="theme_modal" tabindex="-1" role="dialog" aria-labelledby="theme_modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Choose Themes</h4>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    @foreach (listThemes() as $theme)
+                    @if ($theme['theme_name'] == $TANGO->sess->data['chosen_theme'])
+                    <a class="list-group-item active" href="{{ $theme['change_link'] }}">
+                        <h4 class="list-group-item-heading">{{ $theme['theme_name'] }}</h4>
+                    </a>
+                    @else
+                    <a class="list-group-item" href="{{ $theme['change_link'] }}">
+                        <h4>{{ $theme['theme_name'] }}</h4>
+                    </a>
+                    @endif
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+%highlighter_footer%
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="%site_url%/public/themes/Blue/assets/js/bootstrap.min.js"></script>
+<script src="%site_url%/public/themes/Blue/assets/js/blue.js"></script>
+</body>
 </html>

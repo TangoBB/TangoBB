@@ -1,52 +1,54 @@
 <?php
 
-  define('BASEPATH', 'Forum');
-  require_once('applications/wrapper.php');
+define('BASEPATH', 'Forum');
+require_once('applications/wrapper.php');
 
-  if( !$TANGO->perm->check('reply_thread') ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
-  $TANGO->tpl->getTpl('page');
+if (!$TANGO->perm->check('reply_thread')) {
+    redirect(SITE_URL);
+}//Checks if user has permission to create a thread.
+$TANGO->tpl->getTpl('page');
 
-  if( $PGET->g('post') ) {
+if ($PGET->g('post')) {
 
-      $post_id = clean($PGET->g('post'));
-      $MYSQL->bind('id', $post_id);
-      $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE id = :id");
+    $post_id = clean($PGET->g('post'));
+    $MYSQL->bind('id', $post_id);
+    $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE id = :id");
 
-      if( !empty($query) ) {
+    if (!empty($query)) {
 
-          if( $TANGO->perm->check('access_moderation') ) {
-          } elseif(  $query['0']['post_user'] !== $TANGO->sess->data['id'] ) {
-              redirect(SITE_URL);
-          }
+        if ($TANGO->perm->check('access_moderation')) {
+        } elseif ($query['0']['post_user'] !== $TANGO->sess->data['id']) {
+            redirect(SITE_URL);
+        }
 
-          $node        = node($query['0']['origin_node']);
+        $node = node($query['0']['origin_node']);
 
-          $breadcrumbs = $TANGO->tpl->entity(
+        $breadcrumbs = $TANGO->tpl->entity(
             'breadcrumbs_before',
             array(
-              'link',
-              'name'
-            ),
-            array(
-              SITE_URL . '/forum.php',
-              $LANG['bb']['forum']
-            )
-          );
-          if( $node['node_type'] == 2 ) {
-
-            $parent_node = node($node['parent_node']);
-            $ori_cat     = category($parent_node['in_category']);
-
-            $breadcrumbs .= $TANGO->tpl->entity(
-              'breadcrumbs_before',
-              array(
                 'link',
                 'name'
-              ),
-              array(
-                SITE_URL . '/node.php/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
-                $parent_node['node_name']
-              )
+            ),
+            array(
+                SITE_URL . '/forum.php',
+                $LANG['bb']['forum']
+            )
+        );
+        if ($node['node_type'] == 2) {
+
+            $parent_node = node($node['parent_node']);
+            $ori_cat = category($parent_node['in_category']);
+
+            $breadcrumbs .= $TANGO->tpl->entity(
+                'breadcrumbs_before',
+                array(
+                    'link',
+                    'name'
+                ),
+                array(
+                    SITE_URL . '/node.php/' . $parent_node['name_friendly'] . '.' . $parent_node['id'],
+                    $parent_node['node_name']
+                )
             );
 
             $breadcrumbs .= $TANGO->tpl->entity(
@@ -62,20 +64,20 @@
             );
 
             $breadcrumbs .= $TANGO->tpl->entity(
-              'breadcrumbs_before',
-              array(
-                'link',
-                'name'
-              ),
-              array(
-                SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'],
-                $node['node_name']
-              )
+                'breadcrumbs_before',
+                array(
+                    'link',
+                    'name'
+                ),
+                array(
+                    SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'],
+                    $node['node_name']
+                )
             );
 
-          } elseif( $node['node_type'] == 1 ) {
+        } elseif ($node['node_type'] == 1) {
 
-            $ori_cat      = category($node['in_category']);
+            $ori_cat = category($node['in_category']);
 
             $breadcrumbs .= $TANGO->tpl->entity(
                 'breadcrumbs_before',
@@ -90,177 +92,175 @@
             );
 
             $breadcrumbs .= $TANGO->tpl->entity(
-              'breadcrumbs_before',
-              array(
-                'link',
-                'name'
-              ),
-              array(
-                SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'],
-                $node['node_name']
-              )
+                'breadcrumbs_before',
+                array(
+                    'link',
+                    'name'
+                ),
+                array(
+                    SITE_URL . '/node.php/' . $node['name_friendly'] . '.' . $node['id'],
+                    $node['node_name']
+                )
             );
-          }
+        }
 
-          if( $query['0']['post_type'] == 1 ) {
+        if ($query['0']['post_type'] == 1) {
             $breadcrumbs .= $TANGO->tpl->entity(
-              'breadcrumbs_before',
-              array(
-                'link',
-                'name'
-              ),
-              array(
-                SITE_URL . '/thread.php/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
-                $query['0']['post_title']
-              )
+                'breadcrumbs_before',
+                array(
+                    'link',
+                    'name'
+                ),
+                array(
+                    SITE_URL . '/thread.php/' . $query['0']['title_friendly'] . '.' . $query['0']['id'],
+                    $query['0']['post_title']
+                )
             );
-          } elseif( $query['0']['post_type'] == 2 ) {
+        } elseif ($query['0']['post_type'] == 2) {
             $t = thread($query['0']['origin_thread']);
             $breadcrumbs .= $TANGO->tpl->entity(
-              'breadcrumbs_before',
-              array(
-                'link',
-                'name'
-              ),
-              array(
-                SITE_URL . '/thread.php/' . $t['title_friendly'] . '.' . $t['id'],
-                $t['post_title']
-              )
+                'breadcrumbs_before',
+                array(
+                    'link',
+                    'name'
+                ),
+                array(
+                    SITE_URL . '/thread.php/' . $t['title_friendly'] . '.' . $t['id'],
+                    $t['post_title']
+                )
             );
-          }
+        }
 
-          $breadcrumbs .= $TANGO->tpl->entity(
+        $breadcrumbs .= $TANGO->tpl->entity(
             'breadcrumbs_current',
             'name',
             $LANG['bb']['edit_post_breadcrumb']
-          );
+        );
 
-          $breadcrumb = $TANGO->tpl->entity(
-              'breadcrumbs',
-              'bread',
-              $breadcrumbs
-          );
+        $breadcrumb = $TANGO->tpl->entity(
+            'breadcrumbs',
+            'bread',
+            $breadcrumbs
+        );
 
-          $notice        = '';
-          $origin_thread = '';
-          $friendly_url  = '';
-          if( $query['0']['post_type'] == "1" ) {
-              $page_title     = $query['0']['post_title'];
-              $thread_id      = $query['0']['id'];
-              $input_type     = 'text'; 
-          } else {
-              $thread         = thread($query['0']['origin_thread']);
-              $page_title     = $thread['post_title'];
-              $thread_id      = $thread['id'];
-              $input_type     = 'hidden'; 
-          }
+        $notice = '';
+        $origin_thread = '';
+        $friendly_url = '';
+        if ($query['0']['post_type'] == "1") {
+            $page_title = $query['0']['post_title'];
+            $thread_id = $query['0']['id'];
+            $input_type = 'text';
+        } else {
+            $thread = thread($query['0']['origin_thread']);
+            $page_title = $thread['post_title'];
+            $thread_id = $thread['id'];
+            $input_type = 'hidden';
+        }
 
-          if( isset($_POST['edit']) ) {
-              try {
+        if (isset($_POST['edit'])) {
+            try {
 
-                  NoCSRF::check( 'csrf_token', $_POST );
+                NoCSRF::check('csrf_token', $_POST);
 
-                  $con = emoji_to_text($_POST['content']);
-                  $thread_title = clean($_POST['title']);
-                  
+                $con = emoji_to_text($_POST['content']);
+                $thread_title = clean($_POST['title']);
 
-                  if( !$con ) {
-                      throw new Exception ($LANG['global_form_process']['all_fields_required']);
-                  } else {
-                    
-                      $friendly_url = title_friendly($thread_title);                      
-                      $origin_thread .= $friendly_url . '.' . $thread_id;
-                      
-                      if( $query['0']['post_type'] == "1" ) {
+
+                if (!$con) {
+                    throw new Exception ($LANG['global_form_process']['all_fields_required']);
+                } else {
+
+                    $friendly_url = title_friendly($thread_title);
+                    $origin_thread .= $friendly_url . '.' . $thread_id;
+
+                    if ($query['0']['post_type'] == "1") {
 
                         $MYSQL->bindMore(
-                          array(
-                            'post_title' => $thread_title,
-                            'title_friendly' => $friendly_url,
-                            'post_content' => $con,
-                            'id' => $post_id
-                          )
+                            array(
+                                'post_title' => $thread_title,
+                                'title_friendly' => $friendly_url,
+                                'post_content' => $con,
+                                'id' => $post_id
+                            )
                         );
                         $u_query = $MYSQL->query("UPDATE {prefix}forum_posts SET post_title = :post_title, title_friendly = :title_friendly, post_content = :post_content WHERE id = :id");
-                      }
-                      else {
+                    } else {
                         $MYSQL->bindMore(
-                          array(
-                            'post_content' => $con,
-                            'id' => $post_id
-                          )
+                            array(
+                                'post_content' => $con,
+                                'id' => $post_id
+                            )
                         );
                         $u_query = $MYSQL->query("UPDATE {prefix}forum_posts SET post_content = :post_content WHERE id = :id");
-                      }
-                      if( $u_query > 0 ) {
+                    }
+                    if ($u_query > 0) {
                         redirect(SITE_URL . '/thread.php/' . $origin_thread);
-                      } else {
+                    } else {
                         throw new Exception ($LANG['global_form_process']['error_updating_post']);
-                      }
+                    }
 
-                  }
+                }
 
-              } catch( Exception $e ) {
-                  $notice .= $TANGO->tpl->entity(
-                      'danger_notice',
-                      'content',
-                      $e->getMessage()
-                  );
-              }
-          }
+            } catch (Exception $e) {
+                $notice .= $TANGO->tpl->entity(
+                    'danger_notice',
+                    'content',
+                    $e->getMessage()
+                );
+            }
+        }
 
-          define('CSRF_TOKEN', NoCSRF::generate( 'csrf_token' ));
-          $content = $breadcrumb .
-                     '<form id="tango_form" action="" method="POST">
+        define('CSRF_TOKEN', NoCSRF::generate('csrf_token'));
+        $content = $breadcrumb .
+            '<form id="tango_form" action="" method="POST">
                         ' . $FORM->build('hidden', '', 'csrf_token', array('value' => CSRF_TOKEN)) . '
-                        <input id="title" name="title" type="' . $input_type . '" value="' . $page_title  . '" /><br />
+                        <input id="title" name="title" type="' . $input_type . '" value="' . $page_title . '" /><br />
                         <textarea id="editor" name="content" style="width:100%;height:300px;max-width:100%;min-width:100%;">' . $query['0']['post_content'] . '</textarea>
                         <br />
                         ' . $FORM->build('submit', '', 'edit', array('value' => $LANG['bb']['form']['edit_post'])) . '
                       </form>';
-                      
-        foreach($ICONS as $category=>$icons_cat)
-          {
+
+        foreach ($ICONS as $category => $icons_cat) {
             $icon_package[$category] = '';
-            foreach($icons_cat as $code=>$html){
-                $icon_package[$category] .= '<a href="javascript:add_emoji(\'' . $code . '\');"><span style="font-size: 30px;" title="'.$code.'">'.$html.'</span></a> ';
+            foreach ($icons_cat as $code => $html) {
+                $icon_package[$category] .= '<a href="javascript:add_emoji(\'' . $code . '\');"><span style="font-size: 30px;" title="' . $code . '">' . $html . '</span></a> ';
             }
-          }
-          $content .= $TANGO->tpl->entity(
-              'smiley_list',
-              array(
-                  'smilies',
-                  'misc',
-                  'food',
-                  'animals'
-              ),
-              array(
-                  $icon_package['smilies'],
-                  $icon_package['misc'],
-                  $icon_package['food'],
-                  $icon_package['animals']
-              )
-          );
+        }
+        $content .= $TANGO->tpl->entity(
+            'smiley_list',
+            array(
+                'smilies',
+                'misc',
+                'food',
+                'animals'
+            ),
+            array(
+                $icon_package['smilies'],
+                $icon_package['misc'],
+                $icon_package['food'],
+                $icon_package['animals']
+            )
+        );
 
-          $TANGO->tpl->addParam(
-              array(
-                  'page_title',
-                  'content'
-              ),
-              array(
-                  $LANG['bb']['edit_post_in'] . ' ' . $page_title,
-                  $notice . $content
-              )
-          );
+        $TANGO->tpl->addParam(
+            array(
+                'page_title',
+                'content'
+            ),
+            array(
+                $LANG['bb']['edit_post_in'] . ' ' . $page_title,
+                $notice . $content
+            )
+        );
 
-      } else {
-          redirect(SITE_URL);
-      }
+    } else {
+        redirect(SITE_URL);
+    }
 
-  } else {
-      redirect(SITE_URL);
-  }
+} else {
+    redirect(SITE_URL);
+}
 
-  echo $TANGO->tpl->output();
+echo $TANGO->tpl->output();
 
 ?>

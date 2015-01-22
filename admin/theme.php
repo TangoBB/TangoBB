@@ -1,79 +1,82 @@
 <?php
 
-  define('BASEPATH', 'Staff');
-  require_once('../applications/wrapper.php');
+define('BASEPATH', 'Staff');
+require_once('../applications/wrapper.php');
 
-  if( !$TANGO->perm->check('access_administration') ) { redirect(SITE_URL); }//Checks if user has permission to create a thread.
-  require_once('template/top.php');
-  $notice = '';
+if (!$TANGO->perm->check('access_administration')) {
+    redirect(SITE_URL);
+}//Checks if user has permission to create a thread.
+require_once('template/top.php');
+$notice = '';
 
-  $directory = scandir('../public/themes');
-  unset($directory['0']); unset($directory['1']); //unset($directory['2']);//Remove ".", ".." and "index.html"
+$directory = scandir('../public/themes');
+unset($directory['0']);
+unset($directory['1']); //unset($directory['2']);//Remove ".", ".." and "index.html"
 
-  if( $PGET->g('set_default') ) {
-      $default = clean($PGET->g('set_default'));
-      if( in_array($default, $directory) ) {
+if ($PGET->g('set_default')) {
+    $default = clean($PGET->g('set_default'));
+    if (in_array($default, $directory)) {
 
-          /*$data = array(
-              'site_theme' => $default
-          );
-          $MYSQL->where('id', 1);*/
-          $MYSQL->bind('site_theme', $default);
+        /*$data = array(
+            'site_theme' => $default
+        );
+        $MYSQL->where('id', 1);*/
+        $MYSQL->bind('site_theme', $default);
 
-          try {
-              //$MYSQL->update('{prefix}generic', $data);
-              $MYSQL->query('UPDATE {prefix}generic SET site_theme = :site_theme WHERE id = 1');
-              $notice .= $ADMIN->alert(
-                  'Theme <strong>' . $default . '</strong> has been set as default!',
-                  'success'
-              );
-          } catch (mysqli_sql_exception $e) {
-              $notice .= $ADMIN->alert(
-                  'Error setting theme as default.',
-                  'danger'
-              );
-          }
+        try {
+            //$MYSQL->update('{prefix}generic', $data);
+            $MYSQL->query('UPDATE {prefix}generic SET site_theme = :site_theme WHERE id = 1');
+            $notice .= $ADMIN->alert(
+                'Theme <strong>' . $default . '</strong> has been set as default!',
+                'success'
+            );
+        } catch (mysqli_sql_exception $e) {
+            $notice .= $ADMIN->alert(
+                'Error setting theme as default.',
+                'danger'
+            );
+        }
 
-      } else {
-          $notice .= $ADMIN->alert(
-              'Theme does not exist.',
-              'danger'
-          );
-      }
-  }
+    } else {
+        $notice .= $ADMIN->alert(
+            'Theme does not exist.',
+            'danger'
+        );
+    }
+}
 
-  if( $PGET->g('delete_theme') ) {
-      $theme = clean($PGET->g('delete_theme'));
-      if( in_array($theme, $directory) ) {
+if ($PGET->g('delete_theme')) {
+    $theme = clean($PGET->g('delete_theme'));
+    if (in_array($theme, $directory)) {
 
-          if( rrmdir('../public/themes/' . $theme) ) {
-              $notice .= $ADMIN->alert(
-                  'Theme <strong>' . $theme . '</strong> has been deleted!',
-                  'success'
-              );
-          } else {
-              $notice .= $ADMIN->alert(
-                  'Error deleting theme.',
-                  'danger'
-              );
-          }
+        if (rrmdir('../public/themes/' . $theme)) {
+            $notice .= $ADMIN->alert(
+                'Theme <strong>' . $theme . '</strong> has been deleted!',
+                'success'
+            );
+        } else {
+            $notice .= $ADMIN->alert(
+                'Error deleting theme.',
+                'danger'
+            );
+        }
 
-      } else {
-          $notice .= $ADMIN->alert(
-              'Theme does not exist.',
-              'danger'
-          );
-      }
-  }
+    } else {
+        $notice .= $ADMIN->alert(
+            'Theme does not exist.',
+            'danger'
+        );
+    }
+}
 
-  /*
-   * List a theme.
-   */
-  $themes = '';
-  foreach( $directory as $t ) {
-      if( is_dir('../public/themes/' . $t) ) {
-          $set     = ($TANGO->data['site_theme'] == $t)? ' class="success" title="Theme is currently set to default."' : '';
-          $themes .= '<tr' . $set . '>
+/*
+ * List a theme.
+ */
+$themes = '';
+foreach ($directory as $t) {
+    if (is_dir('../public/themes/' . $t)) {
+        $set = ($TANGO->data['site_theme'] == $t) ? ' class="success" title="Theme is currently set to default."' : '';
+        $themes .= '<tr' . $set . '>
                         <td>' . $t . '</td>
                         <td>
                           <div class="btn-group">
@@ -88,14 +91,14 @@
                           </div>
                         </td>
                       </tr>';
-      }
-  }
+    }
+}
 
-  echo $ADMIN->box(
-      'Themes',
-      $notice .
-      'You can manage the theme for your forum here. You can customize the template files for the theme in <code>public/themes/&lt;theme&gt;</code>.',
-      '<table class="table table-hover">
+echo $ADMIN->box(
+    'Themes',
+    $notice .
+    'You can manage the theme for your forum here. You can customize the template files for the theme in <code>public/themes/&lt;theme&gt;</code>.',
+    '<table class="table table-hover">
          <thead>
            <tr>
               <th style="width:80%;">Theme</th>
@@ -106,8 +109,8 @@
            ' . $themes . '
         </tbody>
        </table>',
-      '12'
-  );
+    '12'
+);
 
-  require_once('template/bot.php');
+require_once('template/bot.php');
 ?>

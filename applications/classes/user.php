@@ -1,348 +1,362 @@
 <?php
 
-  /*
-   * User class of TangoBB
-   */
-  if( !defined('BASEPATH') ){ die(); }
+/*
+ * User class of TangoBB
+ */
+if (!defined('BASEPATH')) {
+    die();
+}
 
-  class Tango_User {
+class Tango_User
+{
 
-      private $user_links = array();
-      private $notice_type;
+    private $user_links = array();
+    private $notice_type;
 
-      public function __construct() {
+    public function __construct()
+    {
         global $LANG;
         $this->notice_type = array(
-          'mention',
-          'reply',
-          'quote'
+            'mention',
+            'reply',
+            'quote'
         );
-      }
+    }
 
-      /*
-       * Change user's usergroup.
-       */
-      public function changeUserGroup($user, $group) {
+    /*
+     * Change user's usergroup.
+     */
+    public function changeUserGroup($user, $group)
+    {
         global $MYSQL;
         $MYSQL->bind('id', $user);
-        $user  = $MYSQL->query("SELECT * FROM {prefix}users WHERE id = :id");
+        $user = $MYSQL->query("SELECT * FROM {prefix}users WHERE id = :id");
         $MYSQL->bind('id', $group);
         $group = $MYSQL->query("SELECT * FROM {prefix}usergroups WHERE id = :id");
 
-        if( !empty($user) && !empty($group) ) {
+        if (!empty($user) && !empty($group)) {
 
-          $MYSQL->bind('user_group', $group['0']['id']);
-          $MYSQL->bind('id', $user);
-          $query = $MYSQL->query("INSERT INTO {prefix}users SET user_group :user_group WHERE id = :id");
+            $MYSQL->bind('user_group', $group['0']['id']);
+            $MYSQL->bind('id', $user);
+            $query = $MYSQL->query("INSERT INTO {prefix}users SET user_group :user_group WHERE id = :id");
 
-          if( $query > 0 ) {
-            return true;
-          } else {
-            return false;
-          }
+            if ($query > 0) {
+                return true;
+            } else {
+                return false;
+            }
 
 
             // PDO here or shall this be like this?
 
-          /*$data = array(
-            'user_group' => $group
-          );*/
+            /*$data = array(
+              'user_group' => $group
+            );*/
 
-          //$MYSQL->where('id', $user);
+            //$MYSQL->where('id', $user);
 
-          /*try {
-            $MYSQL->update('{prefix}users', $data);
-            return true;
-          } catch (mysqli_sql_exception $e) {
-            return false;
-          }*/
+            /*try {
+              $MYSQL->update('{prefix}users', $data);
+              return true;
+            } catch (mysqli_sql_exception $e) {
+              return false;
+            }*/
 
         } else {
-          return false;
+            return false;
         }
-      }
+    }
 
-      /*
-       * Change Username
-       */
-      public function changeUsername($user, $username) {
+    /*
+     * Change Username
+     */
+    public function changeUsername($user, $username)
+    {
         global $MYSQL;
         $MYSQL->where('id', $user);
         $query = $MYSQL->get('{prefix}users');
-        if( !empty($query) ) {
+        if (!empty($query)) {
 
-          $data = array(
-            'username' => $username
-          );
-          $MYSQL->where('id', $user);
-          try {
-            $MYSQL->update('{prefix}users', $data);
-            return true;
-          } catch (mysqli_sql_exception $e) {
-            return false;
-          }
+            $data = array(
+                'username' => $username
+            );
+            $MYSQL->where('id', $user);
+            try {
+                $MYSQL->update('{prefix}users', $data);
+                return true;
+            } catch (mysqli_sql_exception $e) {
+                return false;
+            }
 
         } else {
-          return false;
-        }
-      }
-
-      /*
-       * Add permission to a user.
-       */
-      public function givePermission($user, $permission) {
-        global $MYSQL, $TANGO;
-        $user   = $TANGO->user($user);
-        if( !empty($user) ) {
-          $perm   = $TANGO->perm->perm($permission);
-          if( $user['additional_permissions'] == "0" ) {
-            $update = array(
-              'additional_permissions' => $perm['permission_name']
-            );
-          } else {
-            $ap_array = array();
-            foreach( $user['additional_permissions'] as $ap ) {
-              $MYSQL->where('permission_name', $ap);
-              $ap_query = $MYSQL->get('{prefix}permissions');
-              if( $ap_query ) {
-                $ap_array[] = $ap_query['0']['id'];
-              }
-            }
-            $additional_permissions = implode(',', $ap_array);
-            $update                 = array(
-              'additional_permissions' => $additional_permissions . ',' . $perm['permission_name']
-            );
-          }
-          $MYSQL->where('id', $user['id']);
-          if( $MYSQL->update('{prefix}users', $update) ) {
-            return true;
-          } else {
             return false;
-          }
-        } else { 
-          return false;
         }
-      }
+    }
 
-      /*
-       * Remove additional permission from a user.
-       */
-      public function removeAddPermission($user, $permission) {
+    /*
+     * Add permission to a user.
+     */
+    public function givePermission($user, $permission)
+    {
         global $MYSQL, $TANGO;
         $user = $TANGO->user($user);
-        if( !empty($user) ) {
-          $current_perms = array();
-          foreach( $user['additional_permissions'] as $ap ) {
-            $current_perms[$ap] = $ap;
-          }
-          unset($current_perms[$permission]);
-          if( !empty($current_perms) ) {
-            $new_perms = array();
-            foreach( $current_perms as $parent => $child ) {
-              $MYSQL->bind('permission_name', $child); //$id_perms not defined?
-              $p_query     = $MYSQL->query('SELECT * FROM {prefix}permissions WHERE permission_name = :permission_name');
-              $new_perms[] = $p_query['id'];
+        if (!empty($user)) {
+            $perm = $TANGO->perm->perm($permission);
+            if ($user['additional_permissions'] == "0") {
+                $update = array(
+                    'additional_permissions' => $perm['permission_name']
+                );
+            } else {
+                $ap_array = array();
+                foreach ($user['additional_permissions'] as $ap) {
+                    $MYSQL->where('permission_name', $ap);
+                    $ap_query = $MYSQL->get('{prefix}permissions');
+                    if ($ap_query) {
+                        $ap_array[] = $ap_query['0']['id'];
+                    }
+                }
+                $additional_permissions = implode(',', $ap_array);
+                $update = array(
+                    'additional_permissions' => $additional_permissions . ',' . $perm['permission_name']
+                );
             }
-            $new_perms = implode(',', $new_perms);
-            $MYSQL->bind('additional_permissions', $new_perms);
-          } else {
-            $MYSQL->bind('additional_permissions', '0');
-          }
-
-          $MYSQL->bind('id', $user['id']);
-          if( $MYSQL->query('UPDATE {prefix}users SET additional_permissions = :additional_permissions WHERE id = :id') ) {
-            return true;
-          } else {
-            return false;
-          }
+            $MYSQL->where('id', $user['id']);
+            if ($MYSQL->update('{prefix}users', $update)) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-          return false;
+            return false;
         }
-      }
+    }
 
-      /*
-       * Return user links as an array.
-       * For template use.
-       */
-      function userLinks() {
-          return $this->user_links;
-      }
+    /*
+     * Remove additional permission from a user.
+     */
+    public function removeAddPermission($user, $permission)
+    {
+        global $MYSQL, $TANGO;
+        $user = $TANGO->user($user);
+        if (!empty($user)) {
+            $current_perms = array();
+            foreach ($user['additional_permissions'] as $ap) {
+                $current_perms[$ap] = $ap;
+            }
+            unset($current_perms[$permission]);
+            if (!empty($current_perms)) {
+                $new_perms = array();
+                foreach ($current_perms as $parent => $child) {
+                    $MYSQL->bind('permission_name', $child); //$id_perms not defined?
+                    $p_query = $MYSQL->query('SELECT * FROM {prefix}permissions WHERE permission_name = :permission_name');
+                    $new_perms[] = $p_query['id'];
+                }
+                $new_perms = implode(',', $new_perms);
+                $MYSQL->bind('additional_permissions', $new_perms);
+            } else {
+                $MYSQL->bind('additional_permissions', '0');
+            }
 
-      /*
-       * Add link to the user links.
-       */
-      public function addUserLink($link = array()) {
-          foreach( $link as $name => $href ) {
-              $this->user_links[$name] = $href;
-          }
-      }
+            $MYSQL->bind('id', $user['id']);
+            if ($MYSQL->query('UPDATE {prefix}users SET additional_permissions = :additional_permissions WHERE id = :id')) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 
-      /*
-       * User messages.
-       */
-      public function userMessages() {
-          global $MYSQL, $TANGO;
-          $return = array();
-          $MYSQL->bind('message_receiver', $TANGO->sess->data['id']);
-          $MYSQL->bind('receiver_viewed', 0);
-          $query = $MYSQL->query("SELECT * FROM {prefix}messages WHERE message_receiver = :message_receiver AND receiver_viewed = :receiver_viewed");
-          foreach( $query as $msg ) {
-              if( $msg['message_type'] == 1 ) {
+    /*
+     * Return user links as an array.
+     * For template use.
+     */
+    function userLinks()
+    {
+        return $this->user_links;
+    }
+
+    /*
+     * Add link to the user links.
+     */
+    public function addUserLink($link = array())
+    {
+        foreach ($link as $name => $href) {
+            $this->user_links[$name] = $href;
+        }
+    }
+
+    /*
+     * User messages.
+     */
+    public function userMessages()
+    {
+        global $MYSQL, $TANGO;
+        $return = array();
+        $MYSQL->bind('message_receiver', $TANGO->sess->data['id']);
+        $MYSQL->bind('receiver_viewed', 0);
+        $query = $MYSQL->query("SELECT * FROM {prefix}messages WHERE message_receiver = :message_receiver AND receiver_viewed = :receiver_viewed");
+        foreach ($query as $msg) {
+            if ($msg['message_type'] == 1) {
                 $receiver = $TANGO->user($msg['message_receiver']);
-                $sender   = $TANGO->user($msg['message_sender']);
+                $sender = $TANGO->user($msg['message_sender']);
                 $msg['message_receiver'] = $receiver['username'];
-                $msg['message_sender']   = $sender['username'];
-                $msg['view_url']         = SITE_URL . '/conversations.php/cmd/view/v/' . $msg['id'];
+                $msg['message_sender'] = $sender['username'];
+                $msg['view_url'] = SITE_URL . '/conversations.php/cmd/view/v/' . $msg['id'];
                 $return[] = $msg;
-              } else {
+            } else {
                 $MYSQL->where('id', $msg['origin_message']);
                 $origin = $MYSQL->get('{prefix}messages');
                 $receiver = $TANGO->user($msg['message_receiver']);
-                $sender   = $TANGO->user($msg['message_sender']);
+                $sender = $TANGO->user($msg['message_sender']);
                 $msg['message_receiver'] = $receiver['username'];
-                $msg['message_sender']   = $sender['username'];
-                $msg['view_url']         = SITE_URL . '/conversations.php/cmd/view/v/' . $origin['0']['id'];
+                $msg['message_sender'] = $sender['username'];
+                $msg['view_url'] = SITE_URL . '/conversations.php/cmd/view/v/' . $origin['0']['id'];
                 $return[] = $msg;
-              }
-          }
-          return $return;
-      }
-
-      /*
-       * Notification 
-       */
-      public function notifications() {
-        global $MYSQL, $TANGO;
-        $return = array();
-        if( $TANGO->sess->isLogged ) {
-          $query = $MYSQL->query("SELECT * FROM {prefix}notifications WHERE user = {$TANGO->sess->data['id']} AND viewed = 0 ORDER BY time_received ASC");
-          foreach( $query as $note ) {
-              $note['notice_link'] = ($query['0']['notice_link'] == "0")? '#' : $query['0']['notice_link'];
-              $return[] = $note;
             }
-        } else {
-          unset($return);
         }
         return $return;
-      }
+    }
 
-      public function clearNotification() {
+    /*
+     * Notification
+     */
+    public function notifications()
+    {
+        global $MYSQL, $TANGO;
+        $return = array();
+        if ($TANGO->sess->isLogged) {
+            $query = $MYSQL->query("SELECT * FROM {prefix}notifications WHERE user = {$TANGO->sess->data['id']} AND viewed = 0 ORDER BY time_received ASC");
+            foreach ($query as $note) {
+                $note['notice_link'] = ($query['0']['notice_link'] == "0") ? '#' : $query['0']['notice_link'];
+                $return[] = $note;
+            }
+        } else {
+            unset($return);
+        }
+        return $return;
+    }
+
+    public function clearNotification()
+    {
         global $MYSQL, $TANGO;
         $MYSQL->bind('user', $TANGO->sess->data['id']);
         $MYSQL->query("UPDATE {prefix}notifications SET viewed = 1 WHERE user = :user");
-      }
+    }
 
-      public function notifyUser($type, $user, $email = false, $extra = array()) {
+    public function notifyUser($type, $user, $email = false, $extra = array())
+    {
         global $MYSQL, $TANGO, $LANG, $MAIL;
         $time = time();
-        if( in_array($type, $this->notice_type) ) {
-          switch($type) {
-            //Mention notification.
-            case "mention":
-            $notice = str_replace(
-              '%username%',
-              $extra['username'],
-              $LANG['notification']['mention']
-            );
+        if (in_array($type, $this->notice_type)) {
+            switch ($type) {
+                //Mention notification.
+                case "mention":
+                    $notice = str_replace(
+                        '%username%',
+                        $extra['username'],
+                        $LANG['notification']['mention']
+                    );
 
-            $MYSQL->bindMore(
-              array(
-                'notice_content' => $notice,
-                'notice_link' => $extra['link'],
-                'user' => $user,
-                'time_received' => $time
-              )
-            );
-            break;
+                    $MYSQL->bindMore(
+                        array(
+                            'notice_content' => $notice,
+                            'notice_link' => $extra['link'],
+                            'user' => $user,
+                            'time_received' => $time
+                        )
+                    );
+                    break;
 
-            //Reply notification
-            case "reply":
-            $notice = str_replace(
-              array(
-                '%username%',
-                '%thread_title%'
-              ),
-              array(
-                $extra['username'],
-                $extra['thread_title']
-              ),
-              $LANG['notification']['reply']
-            );
+                //Reply notification
+                case "reply":
+                    $notice = str_replace(
+                        array(
+                            '%username%',
+                            '%thread_title%'
+                        ),
+                        array(
+                            $extra['username'],
+                            $extra['thread_title']
+                        ),
+                        $LANG['notification']['reply']
+                    );
 
-            $MYSQL->bindMore(
-              array(
-                'notice_content' => $notice,
-                'notice_link' => $extra['link'],
-                'user' => $user,
-                'time_received' => $time
-              )
-            );
-            break;
+                    $MYSQL->bindMore(
+                        array(
+                            'notice_content' => $notice,
+                            'notice_link' => $extra['link'],
+                            'user' => $user,
+                            'time_received' => $time
+                        )
+                    );
+                    break;
 
-            //Quote notification.
-            case "quote":
-            $notice = str_replace(
-              array(
-                '%username%',
-                '%thread_title%'
-              ),
-              array(
-                $extra['username'],
-                $extra['thread_title']
-              ),
-              $LANG['notification']['quoted']
-            );
+                //Quote notification.
+                case "quote":
+                    $notice = str_replace(
+                        array(
+                            '%username%',
+                            '%thread_title%'
+                        ),
+                        array(
+                            $extra['username'],
+                            $extra['thread_title']
+                        ),
+                        $LANG['notification']['quoted']
+                    );
 
-            $MYSQL->bindMore(
-              array(
-                'notice_content' => $notice,
-                'notice_link' => $extra['link'],
-                'user' => $user,
-                'time_received' => $time
-              )
-            );
-            break;
-          }
-        } else {
-          //Uncategorized notification.
-          $link          = (isset($extra['link']))? $extra['link'] : '';
-          $extra['link'] = $link;
-          $notice       .= $type;
-
-          $MYSQL->bindMore(
-            array(
-              'notice_content' => $notice,
-              'notice_link' => $link,
-              'user' => $user,
-              'time_received' => $time 
-            )
-          );
-        }
-        if( $MYSQL->query("INSERT INTO {prefix}notifications (notice_content, notice_link, user, time_received) VALUES (:notice_content, :notice_link, :user, :time_received)") > 0 ) {
-          $info = str_replace(
-            '%url%',
-            $extra['link'],
-            $LANG['email']['notify']['more_info']
-          );
-          if( $email ) {
-            $user = $TANGO->user($user);
-            //Setting up email
-            $MAIL->to($user['user_email']);
-            $MAIL->from($TANGO->data['site_email']);
-            $MAIL->subject($notice);
-            $MAIL->body($notice . $info);
-            if( $MAIL->send() ) {
-              return true;
-            } else {
-              return false;
+                    $MYSQL->bindMore(
+                        array(
+                            'notice_content' => $notice,
+                            'notice_link' => $extra['link'],
+                            'user' => $user,
+                            'time_received' => $time
+                        )
+                    );
+                    break;
             }
-          } else {
-            return true;
-          }
+        } else {
+            //Uncategorized notification.
+            $link = (isset($extra['link'])) ? $extra['link'] : '';
+            $extra['link'] = $link;
+            $notice .= $type;
+
+            $MYSQL->bindMore(
+                array(
+                    'notice_content' => $notice,
+                    'notice_link' => $link,
+                    'user' => $user,
+                    'time_received' => $time
+                )
+            );
         }
-      }
+        if ($MYSQL->query("INSERT INTO {prefix}notifications (notice_content, notice_link, user, time_received) VALUES (:notice_content, :notice_link, :user, :time_received)") > 0) {
+            $info = str_replace(
+                '%url%',
+                $extra['link'],
+                $LANG['email']['notify']['more_info']
+            );
+            if ($email) {
+                $user = $TANGO->user($user);
+                //Setting up email
+                $MAIL->to($user['user_email']);
+                $MAIL->from($TANGO->data['site_email']);
+                $MAIL->subject($notice);
+                $MAIL->body($notice . $info);
+                if ($MAIL->send()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        }
+    }
 
 
-  }
+}
 
 ?>

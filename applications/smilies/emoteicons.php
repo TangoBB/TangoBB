@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Iko emoteicons entries 
+ * Iko emoteicons entries
  *
  */
 
@@ -16,7 +16,7 @@ $ICONS = array(
         ':laughingclosedeyes:' => '&#128518;',
         ':angel:' => '&#128519;',
         ':devil:' => '&#128520;',
-        ':wink:' => '&#128521;', 
+        ':wink:' => '&#128521;',
         ':happy:' => '&#128522;',
         ':facewithtongue:' => '&#128523;',
         ':relieved:' => '&#128524;',
@@ -64,12 +64,12 @@ $ICONS = array(
         ':melon:' => '&#127816;',
         ':watermelon:' => '&#127817;',
         ':tangerine:' => '&#127818;',
-      //':lemon:' => '&#127819;', not available atm
+        //':lemon:' => '&#127819;', not available atm
         ':banana:' => '&#127820;',
         ':pineapple:' => '&#127821;',
         ':redapple:' => '&#127822;',
         ':greenapple:' => '&#127823;',
-      //':pear:' => '&#127824;',
+        //':pear:' => '&#127824;',
         ':peach:' => '&#127825;',
         ':cherries:' => '&#127826;',
         ':strawberry:' => '&#127827;',
