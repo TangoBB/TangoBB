@@ -12,7 +12,6 @@ $content = '';
 $page_title = '';
 
 if ($PGET->g('id')) {
-
     $id = clean($PGET->g('id'));
     $MYSQL->bind('id', $id);
     $query = $MYSQL->query("SELECT * FROM {prefix}users WHERE id = :id");
@@ -41,7 +40,7 @@ if ($PGET->g('id')) {
                     'visitor' => $TANGO->sess->data['id']
                 ));
                 try {
-                    $MYSQL->query('INSERT INTO {prefix}user_visitors (profile_owner, visitor) VALUES (:profile_owner, :visitor)');
+                    $MYSQL->query('INSERT INTO {prefix}user_visitors (profile_owner, visitor, timestamp) VALUES (:profile_owner, :visitor, UNIX_TIMESTAMP(NOW()))');
                 } catch (mysqli_sql_exception $e) {
                     throw new Exception ($LANG['global_form_process']['error_creating_thread']);
                 }
@@ -51,7 +50,7 @@ if ($PGET->g('id')) {
                     'visitor' => $TANGO->sess->data['id']
                 ));
                 try {
-                    $MYSQL->query('UPDATE {prefix}user_visitors SET timestamp = CURRENT_TIMESTAMP WHERE profile_owner = :profile_owner AND visitor = :visitor');
+                    $MYSQL->query('UPDATE {prefix}user_visitors SET timestamp = UNIX_TIMESTAMP(NOW()) WHERE profile_owner = :profile_owner AND visitor = :visitor');
                 } catch (mysqli_sql_exception $e) {
                     throw new Exception ($LANG['global_form_process']['error_creating_thread']);
                 }
@@ -71,9 +70,18 @@ if ($PGET->g('id')) {
 }
 
 if (isset($user) && isset($userg) && isset($page_title)) {
+
+    if (isset($_POST['comment_submit'])) {
+        $comment_insert = clean($_POST['comment']);
+        $MYSQL->bind('comment', $comment_insert);
+        $MYSQL->bind('writer', $TANGO->sess->data['id']);
+        $MYSQL->bind('profile_owner', $user['id']);
+        $MYSQL->query("INSERT INTO {prefix}user_comments (comment, writer, profile_owner, timestamp) VALUES (:comment, :writer, :profile_owner, UNIX_TIMESTAMP(NOW()))");
+    }
+
     //Recent activity protocol
     $recent_activity = '';
-    $MYSQL->bind('post_user', $query['0']['id']);
+    $MYSQL->bind('post_user', $id);
     $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = :post_user ORDER BY post_time DESC LIMIT 15");
     foreach ($query as $ac) {
         //User created thread
@@ -153,8 +161,8 @@ if (isset($user) && isset($userg) && isset($page_title)) {
          */
         $writer = $TANGO->user($entry['writer']);
         $comment = $TANGO->lib_parse->parse($entry['comment']);
-        $date = $entry['timestamp'];
-
+        $date_temp = simplify_time($entry['timestamp']);
+        $date = $date_temp['time'];
         $comments .= $TANGO->tpl->entity(
             'user_profile_comments',
             array(
@@ -214,7 +222,8 @@ if (isset($user) && isset($userg) && isset($page_title)) {
             'recent_activity',
             'mod_tools',
             'visitors',
-            'comments'
+            'comments',
+            'comments_action'
         ),
         array(
             $user['username_style'],
@@ -230,7 +239,8 @@ if (isset($user) && isset($userg) && isset($page_title)) {
             $recent_activity,
             $mod_tools,
             $visitors,
-            $comments
+            $comments,
+            ''
         )
     );
 

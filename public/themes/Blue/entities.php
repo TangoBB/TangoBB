@@ -401,6 +401,12 @@ if (!defined("BASEPATH")) {
         <div class="tab-pane" id="profile_comments">
             <br/>
             %comments%
+            <form action="%comments_action%" method="POST">
+                <textarea id="" style="width:100%;height:300px;max-width:100%;" name="comment"></textarea>
+                <div class="center-block" style="margin-top:5px;">
+                    <input type="submit" name="comment_submit" value="Reply Thread"/>
+                </div>
+            </form>
         </div>
     </div>
 </div>
