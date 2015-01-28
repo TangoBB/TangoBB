@@ -117,8 +117,9 @@ class Tango_Session
         $time_session = strtotime('1 day ago');
         $time_cookie = strtotime(TANGO_SESSION_TIMEOUT . ' seconds ago');
         $query = $MYSQL->query("SELECT * FROM {prefix}sessions");
+        $time_now = time();
         foreach ($query as $s) {
-            if (($s['session_time'] < $time_session && $s['session_type'] == 1) || ($s['session_type'] !== 1 && $s['session_type'] !== 2) || ($s['session_time'] < $time_cookie && $s['session_type'] == 2)) {
+            if (($s['session_time'] < $time_session && (int)$s['session_type'] == 1) || ((int)$s['session_type'] !== 1 && (int)$s['session_type'] !== 2) || ($s['session_time'] < $time_cookie && (int)$s['session_type'] == 2)) {
                 $MYSQL->bind('id', $s['id']);
                 $MYSQL->query("DELETE FROM {prefix}sessions WHERE id = :id");
             }
