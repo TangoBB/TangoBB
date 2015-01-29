@@ -357,7 +357,15 @@ if (!defined("BASEPATH")) {
 </ul>
 <div class="tab-content">
     <div class="tab-pane active" id="profile_comments">
+        <br/>
         %comments%
+        <form action="%comments_action%" method="POST">
+            <textarea id="" style="width:100%;height:300px;max-width:100%;" name="comment"></textarea>
+
+            <div class="center-block" style="margin-top:5px;">
+                <input type="submit" name="comment_submit" value="Post Comment"/>
+            </div>
+        </form>
     </div>
     <div class="tab-pane" id="profile_info">
         <strong>About User:</strong><br/>
@@ -385,9 +393,9 @@ if (!defined("BASEPATH")) {
 <!--- tpl:user_profile_page:end -->
 <!--- tpl:user_profile_comments:start -->
 <div>
-    <strong>WORK IN PROGRESS</strong><br/>
     %writer% - %date%<br/>
     %comment%
+    <hr/>
 </div>
 <!--- tpl:user_profile_comments:end -->
 <!--- tpl:search_page:start -->
