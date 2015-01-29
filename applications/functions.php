@@ -558,7 +558,7 @@ function birthday_to_age($date)
 function localized_date($date, $location = 'EN')
 {
     global $LANG;
-    if (is_int($date) === false)
+    if (is_numeric($date) === false)
         $date = strtotime($date);
 
     $day = date("j", $date);
