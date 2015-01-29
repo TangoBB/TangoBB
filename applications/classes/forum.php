@@ -68,15 +68,28 @@ class Tango_Forum
                 $subs = (!empty($subs)) ? implode(', ', array_slice($subs, 0, 3)) : 'None';
 
                 // New posts in node?
-                $MYSQL->bind('origin_node', $node['id']);
-                $posts = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_node = :origin_node AND post_type = 1 ORDER BY post_time DESC");
-                $node_status = 'read';
-                if (!empty($posts)) {
-                    foreach ($posts as $post) {
-                        $status = $TANGO->node->thread_new_posts($post['id']);
-                        if ($status == 'unread') {
-                            $node_status = 'unread';
-                            break;
+                $MYSQL->bind('parent_node', $node['id']);
+                $sub_nodes = $MYSQL->query("SELECT id FROM {prefix}forum_node WHERE node_type = 2 AND parent_node = :parent_node");
+                $nodes = array();
+                array_push($nodes, $node['id']);
+                if (!empty($sub_nodes)) {
+                    foreach ($sub_nodes as $sub_node) {
+                        array_push($nodes, $sub_node['id']);
+                    }
+                }
+
+                foreach ($nodes as $node_id) {
+                    $MYSQL->bind('origin_node', $node_id);
+                    $posts = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_node = :origin_node AND post_type = 1 ORDER BY post_time DESC");
+                    $node_status = 'read';
+                    if (!empty($posts)) {
+                        foreach ($posts as $post) {
+                            $status = $TANGO->node->thread_new_posts($post['id']);
+                            if ($status == 'unread') {
+                                $node_status = 'unread';
+                                break;
+                            }
+
                         }
                     }
                 }
