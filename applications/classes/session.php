@@ -114,7 +114,7 @@ class Tango_Session
     public function clear()
     {
         global $MYSQL;
-        $time_session = strtotime('1 day ago');
+        $time_session = strtotime(session_cache_expire() . ' minutes ago');
         $time_cookie = strtotime(TANGO_SESSION_TIMEOUT . ' seconds ago');
         $query = $MYSQL->query("SELECT * FROM {prefix}sessions");
         $time_now = time();
