@@ -77,7 +77,7 @@ if ($PGET->g('id')) {
                 $desc = (!$_POST['node_desc']) ? '' : clean($_POST['node_desc']);
                 $locked = (isset($_POST['lock_node'])) ? '1' : '0';
 
-                $all_u = (isset($_POST['allowed_ug'])) ? implode(',', clean($_POST['allowed_ug'])) : '0';
+                $all_u = (isset($_POST['allowed_ug'])) ? implode(',', $_POST['allowed_ug']) : '0';
 
                 if (!$title) {
                     throw new Exception ('All fields are required!');
