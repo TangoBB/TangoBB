@@ -500,11 +500,16 @@ function simplify_time($timestamp, $location = 'EN')
         $post_time = str_replace(
             '%time%',
             $time,
-            $LANG['time']['minute_ago']
+            $LANG['time']['minutes_ago']
         );
         $post_time_tooltip = localized_date($timestamp, $location);
     } elseif ((time() - $timestamp) >= 60 && (time() - $timestamp) < 120) {
-        $post_time = $LANG['time']['just_now'];
+        $time = round((time() - $timestamp) / 60);
+        $post_time = str_replace(
+            '%time%',
+            $time,
+            $LANG['time']['minute_ago']
+        );
         $post_time_tooltip = localized_date($timestamp, $location);
     } elseif ((time() - $timestamp) < 60) {
         $post_time = $LANG['time']['just_now'];
