@@ -478,23 +478,33 @@ function list_forums()
 function simplify_time($timestamp, $location = 'EN')
 {
     global $LANG;
-    if ((time() - $timestamp) > 86400 && (time() - $timestamp) < 604800) {
+    if ((time() - $timestamp) >= 86400 && (time() - $timestamp) < 604800) {
         $post_time = date('l h:i A', $timestamp); // Sunday 12:00 AM
         $post_time_tooltip = localized_date($timestamp, $location); // January 1st, 2014
-    } elseif ((time() - $timestamp) > 3600 && (time() - $timestamp) < 86400) {
+    } elseif ((time() - $timestamp) >= 7200 && (time() - $timestamp) < 86400) {
         $post_time = str_replace(
             '%time%',
             round((time() - $timestamp) / 3600),
             $LANG['time']['hours_ago']
         );
         $post_time_tooltip = localized_date($timestamp, $location);
-    } elseif ((time() - $timestamp) > 60 && (time() - $timestamp) < 3600) {
+    } elseif ((time() - $timestamp) > 3600 && (time() - $timestamp) < 7200) {
+        $post_time = str_replace(
+            '%time%',
+            round((time() - $timestamp) / 3600),
+            $LANG['time']['hour_ago']
+        );
+        $post_time_tooltip = localized_date($timestamp, $location);
+    } elseif ((time() - $timestamp) >= 120 && (time() - $timestamp) < 3600) {
         $time = round((time() - $timestamp) / 60);
         $post_time = str_replace(
             '%time%',
             $time,
-            $LANG['time']['minutes_ago']
+            $LANG['time']['minute_ago']
         );
+        $post_time_tooltip = localized_date($timestamp, $location);
+    } elseif ((time() - $timestamp) >= 60 && (time() - $timestamp) < 120) {
+        $post_time = $LANG['time']['just_now'];
         $post_time_tooltip = localized_date($timestamp, $location);
     } elseif ((time() - $timestamp) < 60) {
         $post_time = $LANG['time']['just_now'];

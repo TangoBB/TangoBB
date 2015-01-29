@@ -235,7 +235,9 @@ $LANG = array(
     ),
     'time' => array(
         'hours_ago' => 'il y a %time% heures',
+        'hour_ago' => '%time% hour ago',
         'minutes_ago' => 'il y a %time% minutes',
+        'minute_ago' => '%time% minutes ago',
         'just_now' => 'A l\'instant'
     ),
     // ISO 3166-1 Country codes
