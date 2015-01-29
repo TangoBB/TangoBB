@@ -19,19 +19,31 @@ if (extension_loaded('pdo_mysql')) {
     $check['pdo'] = 'Not Installed';
     $check['pdo_css'] = 'danger';
 }
-
-//$config_chmods = substr(decoct(fileperms("../applications/config.php")), -3);
 $config_chmods = substr(decoct(fileperms("../../applications/config.php")), -3);
-
-if ($config_chmods < '777') {
-    $check['chmods'] = false;
-    $check['chmods_value'] = $config_chmods;
-    $check['chmods_css'] = 'danger';
+$check['OS'] = php_uname('s');
+$check['OS_css'] = 'success';
+if (strtoupper(substr(php_uname('s'), 0, 3)) === 'WIN') {
+    if ($config_chmods < '666') {
+        $check['chmods'] = false;
+        $check['chmods_value'] = $config_chmods;
+        $check['chmods_css'] = 'danger';
+    } else {
+        $check['chmods'] = true;
+        $check['chmods_value'] = $config_chmods;
+        $check['chmods_css'] = 'success';
+    }
 } else {
-    $check['chmods'] = true;
-    $check['chmods_value'] = $config_chmods;
-    $check['chmods_css'] = 'success';
+    if ($config_chmods < '777') {
+        $check['chmods'] = false;
+        $check['chmods_value'] = $config_chmods;
+        $check['chmods_css'] = 'danger';
+    } else {
+        $check['chmods'] = true;
+        $check['chmods_value'] = $config_chmods;
+        $check['chmods_css'] = 'success';
+    }
 }
+
 
 if ($check['php'] === true && $check['chmods'] === true) {
     $_SESSION['tangobb_install_step1'] = true;
@@ -71,6 +83,11 @@ if ($check['php'] === true && $check['chmods'] === true) {
     </tr>
     </thead>
     <tr>
+        <td>Operating system</td>
+        <td><span class="label label-default"></span></td>
+        <td><span class="label label-<?php echo $check['OS_css']; ?>"><?php echo $check['OS']; ?></span></td>
+    </tr>
+    <tr>
         <td>PHP Version</td>
         <td><span class="label label-default">5.3.3 +</span></td>
         <td><span class="label label-<?php echo $check['php_css']; ?>"><?php echo $check['php_version']; ?></span></td>
@@ -82,7 +99,9 @@ if ($check['php'] === true && $check['chmods'] === true) {
     </tr>
     <tr>
         <td>chmod '<em>applications/config.php</em>'</td>
-        <td><span class="label label-default">777</span></td>
+        <td><span
+                class="label label-default"><?php echo (strtoupper(substr(php_uname('s'), 0, 3)) === 'WIN') ? ('666') : ('777') ?> </span>
+        </td>
         <td><span class="label label-<?php echo $check['chmods_css']; ?>"><?php echo $check['chmods_value']; ?></span>
         </td>
     </tr>
