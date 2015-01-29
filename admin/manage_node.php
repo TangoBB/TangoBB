@@ -121,7 +121,7 @@ if (isset($_POST['change_place'])) {
             $MYSQL->bind('node_place', $place);
             try {
                 //$MYSQL->update('{prefix}forum_node', $data);
-                $MYSQL->query('UPDATE {prefix}forum_node SET node_place = :place WHERE id = :id');
+                $MYSQL->query('UPDATE {prefix}forum_node SET node_place = :node_place WHERE id = :id');
                 $notice .= $ADMIN->alert(
                     'Node place has been updated!',
                     'success'
