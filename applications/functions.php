@@ -102,8 +102,7 @@ function users_online()
     $users = array();
     foreach ($query as $u) {
         $session_time = strtotime("+1 day", $u['session_time']);
-        if ($time >= $session_time) {
-        } else {
+        if ($time <= $session_time) {
             if (!in_array($u['logged_user'], $users)) {
                 $users[] = $u['logged_user'];
             }
