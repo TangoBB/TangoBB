@@ -359,6 +359,7 @@ if (!defined("BASEPATH")) {
     <div class="tab-pane active" id="profile_comments">
         <br/>
         %comments%
+        %form%
         <form action="%comments_action%" method="POST">
             <textarea id="" style="width:100%;height:300px;max-width:100%;" name="comment"></textarea>
 
@@ -398,6 +399,15 @@ if (!defined("BASEPATH")) {
     <hr/>
 </div>
 <!--- tpl:user_profile_comments:end -->
+<!--- tpl:user_profile_comments_form:start -->
+<form action="%comments_action%" method="POST">
+    <textarea id="" style="width:100%;height:300px;max-width:100%;" name="comment"></textarea>
+
+    <div class="center-block" style="margin-top:5px;">
+        <input type="submit" name="comment_submit" value="Post Comment"/>
+    </div>
+</form>
+<!--- tpl:user_profile_comments_form:end -->
 <!--- tpl:search_page:start -->
 <ul class="nav nav-tabs">
     <li class="active"><a href="#search_threads" data-toggle="tab">Threads</a></li>

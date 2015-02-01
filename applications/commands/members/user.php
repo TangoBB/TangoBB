@@ -156,9 +156,6 @@ if (isset($user) && isset($userg) && isset($page_title)) {
     $query = $MYSQL->query("SELECT writer,comment,timestamp FROM {prefix}user_comments WHERE profile_owner = :profile_owner ORDER BY timestamp DESC LIMIT 10");
     foreach ($query as $entry) {
 
-        /*
-         * ToDo: - date[format]
-         */
         $writer = $TANGO->user($entry['writer']);
         $comment = $TANGO->lib_parse->parse($entry['comment']);
         $date_temp = simplify_time($entry['timestamp']);
@@ -176,6 +173,11 @@ if (isset($user) && isset($userg) && isset($page_title)) {
                 $date
             )
         );
+    }
+    if ($TANGO->sess->isLogged) {
+        $form = $TANGO->tpl->entity('user_profile_comments_form', 'comments_action', '');
+    } else {
+        $form = '';
     }
 
     //profile visitors
@@ -223,7 +225,7 @@ if (isset($user) && isset($userg) && isset($page_title)) {
             'mod_tools',
             'visitors',
             'comments',
-            'comments_action'
+            'form'
         ),
         array(
             $user['username_style'],
@@ -240,7 +242,7 @@ if (isset($user) && isset($userg) && isset($page_title)) {
             $mod_tools,
             $visitors,
             $comments,
-            ''
+            $form
         )
     );
 
