@@ -24,8 +24,15 @@ require_once('../../applications/functions.php');
             if (!$username or !$email or !$password) {
                 throw new Exception('All fields are required!');
             } else {
+                $MYSQL->bindMore(array(
+                    'username' => $username,
+                    'user_password' => $password,
+                    'user_email' => $email,
+                    'date_joined' => $date,
+                    'user_group' => ADMIN_ID
+                ));
 
-                $MYSQL->query("INSERT INTO `{prefix}users` (`id`, `username`, `user_password`, `user_email`, `date_joined`, `user_group`) VALUES (NULL, '$username', '$password', '$email', '$date', '" . ADMIN_ID . "');");
+                $MYSQL->query("INSERT INTO `{prefix}users` (`username`, `user_password`, `user_email`, `date_joined`, `user_group`) VALUES (':username', ':user_password', ':user_email', ':date_joined', ':user_group');");
                 echo '<div class="alert alert-success">TangoBB has been successfully installed! Please delete the installation folder.</div>';
 
             }
@@ -34,7 +41,7 @@ require_once('../../applications/functions.php');
         }
     }
     ?>
-    <form action="javascript:return false;" onsubmit="javascript:ajaxForm('pages/user.php')" class="ajaxForm"
+    <form onsubmit="javascript:ajaxForm('pages/user.php')" action="javascript:return false;" class="ajaxForm"
           method="POST">
         <input type="text" name="username" class="form-control input-lg" placeholder="Username"/>
         <input type="password" name="password" class="form-control input-lg" placeholder="Password"/>
