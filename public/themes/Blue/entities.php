@@ -566,5 +566,5 @@ if (!defined("BASEPATH")) {
         %animals%
     </div>
 </div>
-<!--- tpl:smiliy_list:end -->
+<!--- tpl:smiley_list:end -->
 <!--- parent:theme_entity_file:end -->
