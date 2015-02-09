@@ -32,7 +32,7 @@ class Tango_Session
                 $this->data['permissions'] = $TANGO->usergroup($this->data['user_group'], 'permissions');
             }
 
-            if ($this->session['session_time'] >= strtotime('24 hours ago')) {
+            if (($this->session['session_time'] >= strtotime('24 hours ago') && $this->session['session_type'] == 1) || ($this->session['session_time'] >= strtotime('365 days ago') && $this->session['session_type'] == 2)) {
                 $time = time();
                 $MYSQL->bind('session_id', $this->session['session_id']);
                 $MYSQL->bind('session_time', $time);
