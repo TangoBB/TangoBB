@@ -233,8 +233,8 @@ class Library_Parse
         global $MYSQL, $TANGO;
 
         $id = preg_replace('#\\s+#u', '', $raw_id);
-        $MYSQL->where('id', $id);
-        $query = $MYSQL->get('{prefix}forum_posts');
+        $MYSQL->bind('id', $id);
+        $query = $MYSQL->query('SELECT * FROM {prefix}forum_posts WHERE id = :id');
         $user = (!empty($query)) ? $TANGO->user($query['0']['post_user']) : array(
             'username' => ''
         );
