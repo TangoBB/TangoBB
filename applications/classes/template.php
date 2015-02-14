@@ -118,9 +118,9 @@ class Tango_Template
      */
     public function entity($entity, $param = "", $value = "", $parent = "theme_entity_file", $blade = true)
     {
-        global $TANGO;
+        global $TANGO, $MYSQL;
 
-        switch ($parent) {
+        /*switch ($parent) {
             case "theme_entity_file":
                 $tpl = file_get_contents(TEMPLATE . 'public/themes/' . $this->theme . '/entities.php');
                 break;
@@ -132,9 +132,32 @@ class Tango_Template
             default:
                 $tpl = file_get_contents(TEMPLATE . 'public/themes/' . $this->theme . '/entities.php');
                 break;
+        }*/
+
+        $MYSQL->bind('theme_name', $TANGO->data['site_theme']);
+        $query = $MYSQL->query("SELECT * FROM
+                                {prefix}themes
+                                WHERE
+                                theme_name = :theme_name
+                                LIMIT 1");
+        $result = json_decode($query['0']['theme_json_data'], true);
+
+        switch ($parent) {
+            case "theme_entity_file":
+              $tpl = $result['entities'];
+            break;
+
+            case "buttons":
+              $tpl = $result['buttons'];
+            break;
+
+            default:
+            break;
         }
 
-        $start = $TANGO->getBetween(
+        $result = $tpl[$entity];
+
+        /*$start = $TANGO->getBetween(
             $tpl,
             '<!--- parent:' . $parent . ':start -->',
             '<!--- tpl:' . $entity . ':start -->'
@@ -148,7 +171,7 @@ class Tango_Template
             $tpl,
             '<!--- parent:' . $parent . ':start -->' . $start . '<!--- tpl:' . $entity . ':start -->',
             '<!--- tpl:' . $entity . ':end -->' . $end . '<!--- parent:' . $parent . ':end -->'
-        );
+        );*/
 
         $params = array();
         $values = array();

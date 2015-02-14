@@ -1,5 +1,6 @@
 /* Importing CSS Files */
-@import url('../js/wysibb/theme/default/wbbtheme.css');
+@import url('../js/wysibb/theme/flat/wbbtheme.css');
+/*@Import url('http://cdn.wysibb.com/css/default/wbbtheme.css');*/
 @import url('jquery.tagsinput.css');
 
 div.savestatus {
