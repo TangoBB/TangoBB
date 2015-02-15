@@ -49,7 +49,10 @@ if ($PGET->g('delete_theme')) {
     $theme = clean($PGET->g('delete_theme'));
     if (in_array($theme, $directory)) {
 
-        if (rrmdir('../public/themes/' . $theme)) {
+        $MYSQL->bind('theme_name', $theme);
+        $query = $MYSQL->query("DELETE FROM {prefix}themes WHERE theme_name = :theme_name");
+
+        if ( rrmdir('../public/themes/' . $theme) && $query ) {
             $notice .= $ADMIN->alert(
                 'Theme <strong>' . $theme . '</strong> has been deleted!',
                 'success'
@@ -95,7 +98,7 @@ foreach ($directory as $t) {
 }
 
 echo $ADMIN->box(
-    'Themes',
+    'Themes <span class="pull-right"><a href="' . SITE_URL . '/admin/new_theme.php" class="btn btn-default btn-xs">New Theme</a></span>',
     $notice .
     'You can manage the theme for your forum here. You can customize the template files for the theme in <code>public/themes/&lt;theme&gt;</code>.',
     '<table class="table table-hover">

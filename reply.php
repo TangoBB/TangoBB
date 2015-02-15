@@ -27,7 +27,14 @@ if ($PGET->s(true)) {
             'title_friendly' => $thread['value']
         )
     );
-    $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_type = 1 and id = :id AND title_friendly = :title_friendly");
+    $query = $MYSQL->query("SELECT * FROM
+                            {prefix}forum_posts
+                            WHERE
+                            post_type = 1
+                            and
+                            id = :id
+                            AND
+                            title_friendly = :title_friendly");
 
     if (!empty($query)) {
         $node = node($query['0']['origin_node']);

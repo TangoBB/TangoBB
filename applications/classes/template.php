@@ -16,10 +16,11 @@ class Tango_Template
     private $elapsed_time;
     private $pagination = array();
     private $breadcrumb = array();
+    private $json_data;
 
     function __construct()
     {
-        global $TANGO;
+        global $TANGO, $MYSQL;
 
         $this->elapsed_time = microtime(true);
 
@@ -67,6 +68,14 @@ class Tango_Template
             SyntaxHighlighter.all();
             </script>'
         );
+
+        $MYSQL->bind('theme_name', $TANGO->data['site_theme']);
+        $query = $MYSQL->query("SELECT * FROM
+                                {prefix}themes
+                                WHERE
+                                theme_name = :theme_name
+                                LIMIT 1");
+        $this->json_data = json_decode($query['0']['theme_json_data'], true);
     }
 
     /*
@@ -120,27 +129,7 @@ class Tango_Template
     {
         global $TANGO, $MYSQL;
 
-        /*switch ($parent) {
-            case "theme_entity_file":
-                $tpl = file_get_contents(TEMPLATE . 'public/themes/' . $this->theme . '/entities.php');
-                break;
-
-            case "buttons":
-                $tpl = file_get_contents(TEMPLATE . 'public/themes/' . $this->theme . '/buttons.php');
-                break;
-
-            default:
-                $tpl = file_get_contents(TEMPLATE . 'public/themes/' . $this->theme . '/entities.php');
-                break;
-        }*/
-
-        $MYSQL->bind('theme_name', $TANGO->data['site_theme']);
-        $query = $MYSQL->query("SELECT * FROM
-                                {prefix}themes
-                                WHERE
-                                theme_name = :theme_name
-                                LIMIT 1");
-        $result = json_decode($query['0']['theme_json_data'], true);
+        $result = $this->json_data;
 
         switch ($parent) {
             case "theme_entity_file":
@@ -156,22 +145,6 @@ class Tango_Template
         }
 
         $result = $tpl[$entity];
-
-        /*$start = $TANGO->getBetween(
-            $tpl,
-            '<!--- parent:' . $parent . ':start -->',
-            '<!--- tpl:' . $entity . ':start -->'
-        );
-        $end = $TANGO->getBetween(
-            $tpl,
-            '<!--- tpl:' . $entity . ':end -->',
-            '<!--- parent:' . $parent . ':end -->'
-        );
-        $result = $TANGO->getBetween(
-            $tpl,
-            '<!--- parent:' . $parent . ':start -->' . $start . '<!--- tpl:' . $entity . ':start -->',
-            '<!--- tpl:' . $entity . ':end -->' . $end . '<!--- parent:' . $parent . ':end -->'
-        );*/
 
         $params = array();
         $values = array();
@@ -276,29 +249,24 @@ class Tango_Template
     public function getTpl($template, $ret = false)
     {
         global $TANGO;
-        $dir = TEMPLATE . 'public/themes/' . $this->theme . '/' . $template . '.php';
-        if (file_exists($dir)) {
-            $return = '';
-            ob_start();
-            include($dir);
-            $return .= ob_get_contents();
-            ob_end_clean();
 
+        if( isset($this->json_data['templates'][$template]) ) {
+            $return = $this->bladeSyntax($this->json_data['templates'][$template]);
             ob_start();
-            $return = $this->bladeSyntax($return);
-            //die(var_dump($return));
-            eval(' ?>' . $return . '<?php ');
+            eval('?>' . $return . '<?php');
             $return = ob_get_clean();
             ob_end_clean();
 
-            if (!$ret) {
+            if( !$ret ) {
                 $this->output .= $return;
             } else {
                 return $return;
             }
+
         } else {
-            die('Template file doesn\'t exist! (' . $template . ')');
+            die('Template doesn\'t exist');
         }
+
     }
 
     /*

@@ -47,5 +47,18 @@
         "conversation_delete": "<a href=\"%link%\"><i class=\"glyphicon glyphicon-trash\"><\/i><\/a>",
         "conversation_overview": "<div class=\"panel panel-default\">    <div class=\"panel-heading\"><strong>%overview_header%<\/strong><\/div>    <div class=\"panel-body\">        %conversations%    <\/div><\/div>",
         "smiley_list": "<br\/><ul class=\"nav nav-tabs\">    <li class=\"active\"><a href=\"#smilies\" data-toggle=\"tab\">Smilies<\/a><\/li>    <li><a href=\"#misc\" data-toggle=\"tab\">Misc<\/a><\/li>    <li><a href=\"#food\" data-toggle=\"tab\">Food<\/a><\/li>    <li><a href=\"#animals\" data-toggle=\"tab\">Animals<\/a><\/li><\/ul><div class=\"tab-content\">    <div class=\"tab-pane active\" id=\"smilies\">        %smilies%    <\/div>    <div class=\"tab-pane\" id=\"misc\">        %misc%    <\/div>    <div class=\"tab-pane\" id=\"food\">        %food%    <\/div>    <div class=\"tab-pane\" id=\"animals\">        %animals%    <\/div><\/div>"
+    },
+    "buttons": {
+        "custom_button": "<a href=\"%url%\" class=\"btn btn-primary\">%name%<\/a>",
+        "create_thread": "<a href=\"%url%\" class=\"btn btn-primary\"><i class=\"fa fa-pencil\"><\/i> New Thread<\/a>",
+        "reply_thread": "<a href=\"#reply\" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-reply\"><\/i> Reply<\/a>",
+        "watch_thread": "<small><a href=\"%url%\">Watch Thread<\/a><\/small>",
+        "unwatch_thread": "<small><a href=\"%url%\">Unwatch Thread<\/a><\/small>",
+        "quote_post": "<a href=\"%url%\" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-quote-left\"><\/i> Quote<\/a>",
+        "edit_post": "<a href=\"%url%\" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-pencil-square-o\"><\/i> Edit<\/a>",
+        "report_post": "<a href=\"%url%\" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-exclamation-circle\"><\/i> Report<\/a>",
+        "mod_tools": "<a href=\"%stick_thread_url%\">%stick_thread%<\/a> | <a href=\"%close_thread_url%\">%close_thread%<\/a> | <a    href=\"%edit_post_url%\">Edit Post<\/a> | <a href=\"%delete_post_url%\">Delete Thread<\/a><br\/>%move_thread_form%",
+        "mod_tools_posts": "<a href=\"%edit_post_url%\">Edit Post<\/a> | <a href=\"%delete_post_url%\">Delete Post<\/a>",
+        "mod_tools_profile": "<a href=\"%ban_user_url%\" class=\"btn btn-primary\">%ban_user%<\/a>"
     }
 }
