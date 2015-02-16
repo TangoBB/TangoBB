@@ -39,7 +39,7 @@ if( $PGET->g('theme') ) {
                     array(
                         'templates' => $tpl,
                         'entities' => $ent,
-                        'btn' => $btn
+                        'buttons' => $btn
                     )
                 );
 
