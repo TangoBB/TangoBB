@@ -89,6 +89,7 @@ foreach ($directory as $t) {
                             <span class="dropdown-arrow dropdown-arrow-inverse"></span>
                             <ul class="dropdown-menu dropdown-inverse" role="menu">
                               <li><a href="' . SITE_URL . '/admin/theme.php/set_default/' . $t . '">Set as Default</a></li>
+                              <li><a href="' . SITE_URL . '/admin/edit_theme.php/theme/' . $t . '">Edit Theme</a>
                               <li><a href="' . SITE_URL . '/admin/theme.php/delete_theme/' . $t . '">Delete Theme</a></li>
                             </ul>
                           </div>
