@@ -7,7 +7,7 @@ if (!defined('BASEPATH')) {
     die();
 }
 
-abstract class Iko_Extensions_Setup
+abstract class TangoBB_Extensions_Setup
 {
     public $extension_name = 'Iko Extension';
 

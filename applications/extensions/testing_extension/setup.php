@@ -1,6 +1,6 @@
 <?php
 
-class Extension_Setup extends Iko_Extensions_Setup
+class Extension_Setup extends TangoBB_Extensions_Setup
 {
 
     public function __construct()

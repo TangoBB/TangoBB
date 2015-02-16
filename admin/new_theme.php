@@ -70,7 +70,7 @@ if( isset($_POST['upload']) ) {
 echo $ADMIN->box(
     'New Theme',
     $notice . '<form action="" method="POST" enctype="multipart/form-data">
-       <label for="entity">Entity File</label> <input type="file" name="entity" id="entity" /><br />
+       <label for="entity">Entity File</label> <input type="file" name="entity" id="entity" class="form-control" /><br />
        <input type="submit" name="upload" value="Upload" class="btn btn-default" />
      </form>',
     '',
