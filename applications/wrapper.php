@@ -101,15 +101,15 @@ if (!defined('Install')) {
     require_once(PATH_A . LIB . 'captcha.php');
     $TANGO->captcha = new TangoBB_Captcha();
 
-    require_once(PATH_A . CLA . 'template.php');
-    $TANGO->tpl = new Tango_Template();
-    $TANGO->tpl->setTheme($TANGO->data['site_theme']);
-
     require_once(PATH_A . CLA . 'user.php');
     $TANGO->user = new Tango_User();
 
     require_once(PATH_A . CLA . 'session.php');
     $TANGO->sess = new Tango_Session();
+
+    require_once(PATH_A . CLA . 'template.php');
+    $TANGO->tpl = new Tango_Template();
+    $TANGO->tpl->setTheme($TANGO->data['site_theme']);
 
     require_once(PATH_A . CLA . 'forum.php');
     $TANGO->bb = new Tango_Forum();

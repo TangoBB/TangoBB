@@ -49,13 +49,13 @@ class Tango_Session
             ));
 
             //Getting user's total post/messages.
-            $MYSQL->bind('post_user', $this->data['id']);
+            /*$MYSQL->bind('post_user', $this->data['id']);
             $user_post_count = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = :post_user");
             $user_post_count = number_format(count($user_post_count));
 
-            $mod_report_integer = modReportInteger();
+            $mod_report_integer = modReportInteger();*/
 
-            $TANGO->tpl->addParam(
+            /*$TANGO->tpl->addParam(
                 array(
                     'username',
                     'username_style',
@@ -70,19 +70,19 @@ class Tango_Session
                     $user_post_count,
                     $mod_report_integer
                 )
-            );
+            );*/
 
             date_default_timezone_set($this->data['set_timezone']);
-            if ($this->data['chosen_theme'] == "0") {
+            /*if ($this->data['chosen_theme'] == "0") {
                 $TANGO->tpl->setTheme($TANGO->data['site_theme']);
             } else {
                 $TANGO->tpl->setTheme($this->data['chosen_theme']);
-            }
+            }*/
         } else {
             $this->data['permissions'] = array();
             $this->data['user_group'] = '0';
             date_default_timezone_set('US/Central');
-            $TANGO->tpl->setTheme($TANGO->data['site_theme']);
+            //$TANGO->tpl->setTheme($TANGO->data['site_theme']);
         }
     }
 

@@ -69,13 +69,62 @@ class Tango_Template
             </script>'
         );
 
-        $MYSQL->bind('theme_name', $TANGO->data['site_theme']);
+        if( $this->theme = $TANGO->data['site_theme'] ) {
+           $MYSQL->bind('theme_name', $TANGO->data['site_theme']);
+        } else {
+
+        }
         $query = $MYSQL->query("SELECT * FROM
-                                {prefix}themes
-                                WHERE
-                                theme_name = :theme_name
-                                LIMIT 1");
-        $this->json_data = json_decode($query['0']['theme_json_data'], true);
+                                {prefix}themes");
+        $theme = array();
+        foreach( $query as $t ) {
+            $theme[$t['theme_name']] = $t;
+        }
+        //die($this->theme);
+        $chosen_theme = null;
+        if( $TANGO->sess->isLogged ) {
+            if( $TANGO->sess->data['chosen_theme'] == "0" ) {
+                $chosen_theme = $TANGO->data['site_theme'];
+            } else {
+                $chosen_theme = $TANGO->sess->data['chosen_theme'];
+            }
+
+            $MYSQL->bind('post_user', $TANGO->sess->data['id']);
+            $user_post_count = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = :post_user");
+            $user_post_count = number_format(count($user_post_count));
+
+            $mod_report_integer = modReportInteger();
+
+            $this->addParam(
+                array(
+                    'username',
+                    'username_style',
+                    'user_avatar',
+                    'user_post_count',
+                    'mod_report_integer'
+                ),
+                array(
+                    $TANGO->sess->data['username'],
+                    $TANGO->sess->data['username_style'],
+                    $TANGO->sess->data['user_avatar'],
+                    $user_post_count,
+                    $mod_report_integer
+                )
+            );
+
+        } else {
+            $chosen_theme = $TANGO->data['site_theme'];
+        }
+
+        if( !isset($theme[$this->theme]) ) {
+            $this->json_data = json_decode($theme[$TANGO->data['site_theme']]['theme_json_data'], true);
+        } elseif( $chosen_theme !== $TANGO->data['site_theme'] ) {
+            $this->json_data = json_decode($theme[$chosen_theme]['theme_json_data'], true);
+        } elseif( $chosen_theme == $TANGO->data['site_theme'] ) {
+            $this->json_data = json_decode($theme[$TANGO->data['site_theme']]['theme_json_data'], true);
+        }
+
+        //$this->json_data = json_decode($query['0']['theme_json_data'], true);
     }
 
     /*
