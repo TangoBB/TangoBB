@@ -40,7 +40,7 @@
               <h4>Welcome to TangoBB</h4>
 
               <p>Press the button below to install TangoBB on this system.</p>
-              <a href="/install" class="btn btn-success btn-block">Install</a>
+              <a href="install" class="btn btn-success btn-block">Install</a>
             </div>
 
           </div>
