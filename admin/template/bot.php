@@ -6,9 +6,9 @@
 
 <hr size="1"/>
 <div style="text-align:center;">
-    Codetana 2014<br/>
-    <a href="https://github.com/Codetana/TangoBB">GitHub</a> | <a href="https://github.com/Codetana/TangoBB/wiki">Documentation</a>
-    | <a href="http://tangobb.com/">Website</a>
+  Codetana 2014<br/>
+  <a href="https://github.com/Codetana/TangoBB">GitHub</a> | <a href="https://github.com/Codetana/TangoBB/wiki">Documentation</a>
+  | <a href="http://tangobb.com/">Website</a>
 </div>
 
 </div>
@@ -25,6 +25,14 @@
 <script src="<?php echo SITE_URL; ?>/public/js/flatui-radio.js"></script>
 <script src="<?php echo SITE_URL; ?>/public/js/jquery.tagsinput.js"></script>
 <script src="<?php echo SITE_URL; ?>/public/js/jquery.placeholder.js"></script>
+<script src="<?php echo SITE_URL; ?>/public/codemirror/lib/codemirror.js"></script>
+<script src="<?php echo SITE_URL; ?>/public/codemirror/mode/xml/xml.js"></script>
+<script src="<?php echo SITE_URL; ?>/public/codemirror/addon/display/fullscreen.js"></script>
+<script src="<?php echo SITE_URL; ?>/public/codemirror/addon/selection/active-line.js"></script>
+<script src="<?php echo SITE_URL; ?>/public/codemirror/addon/edit/closetag.js"></script>
+<script src="<?php echo SITE_URL; ?>/public/codemirror/addon/edit/matchbrackets.js"></script>
+<script src="<?php echo SITE_URL; ?>/public/codemirror/addon/scroll/simplescrollbars.js"></script>
 <script src="<?php echo SITE_URL; ?>/public/js/admin_app.js"></script>
 </body>
+
 </html>
