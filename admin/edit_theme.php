@@ -78,7 +78,8 @@ if( $PGET->g('theme') ) {
                        </div>
                        <div id="' . $name . '-tpl-acc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                        <div class="panel-body">
-                         <textarea name="tpl[' . $name . ']" class="form-control highlight" style="min-height:200px;">' . $value . '</textarea>
+                         <textarea name="tpl[' . $name . ']" class="form-control highlight" style="min-height:200px;">
+' . $value . '</textarea>
                        </div>
                      </div>
                    </div>';
@@ -97,7 +98,8 @@ if( $PGET->g('theme') ) {
                        </div>
                        <div id="' . $name . '-ent-acc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                        <div class="panel-body">
-                         <textarea name="ent[' . $name . ']" class="form-control highlight" style="min-height:200px;">' . $value . '</textarea>
+                         <textarea name="ent[' . $name . ']" class="form-control highlight" style="min-height:200px;">
+' . $value . '</textarea>
                        </div>
                      </div>
                    </div>';
@@ -116,7 +118,8 @@ if( $PGET->g('theme') ) {
                        </div>
                        <div id="' . $name . '-btn-acc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                        <div class="panel-body">
-                         <textarea name="btn[' . $name . ']" class="form-control highlight" style="min-height:200px;">' . $value . '</textarea>
+                         <textarea name="btn[' . $name . ']" class="form-control highlight" style="min-height:200px;">
+' . $value . '</textarea>
                        </div>
                      </div>
                    </div>';
