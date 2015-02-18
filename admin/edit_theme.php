@@ -11,7 +11,7 @@ require_once('template/top.php');
 if( $PGET->g('theme') ) {
 
     $MYSQL->bind('theme_name', $PGET->g('theme'));
-    $query = $MYSQL->query("SELECT * FROM {prefix}themes WHERE theme_name = :theme_name");
+    $query = $MYSQL->query("SELECT * FROM {prefix}themes WHERE id = :theme_name");
 
     if( !empty($query) ) {
 
@@ -78,7 +78,8 @@ if( $PGET->g('theme') ) {
                        </div>
                        <div id="' . $name . '-tpl-acc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                        <div class="panel-body">
-                         <textarea name="tpl[' . $name . ']" class="form-control highlight" style="min-height:200px;">' . $value . '</textarea>
+                         <textarea name="tpl[' . $name . ']" class="form-control highlight" style="min-height:200px;">
+' . $value . '</textarea>
                        </div>
                      </div>
                    </div>';
@@ -97,7 +98,8 @@ if( $PGET->g('theme') ) {
                        </div>
                        <div id="' . $name . '-ent-acc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                        <div class="panel-body">
-                         <textarea name="ent[' . $name . ']" class="form-control highlight" style="min-height:200px;">' . $value . '</textarea>
+                         <textarea name="ent[' . $name . ']" class="form-control highlight" style="min-height:200px;">
+' . $value . '</textarea>
                        </div>
                      </div>
                    </div>';
@@ -116,7 +118,8 @@ if( $PGET->g('theme') ) {
                        </div>
                        <div id="' . $name . '-btn-acc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                        <div class="panel-body">
-                         <textarea name="btn[' . $name . ']" class="form-control highlight" style="min-height:200px;">' . $value . '</textarea>
+                         <textarea name="btn[' . $name . ']" class="form-control highlight" style="min-height:200px;">
+' . $value . '</textarea>
                        </div>
                      </div>
                    </div>';

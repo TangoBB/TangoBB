@@ -80,7 +80,16 @@ if (isset($_POST['submit'])) {
             $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "notifications` (`id` int(11) NOT NULL AUTO_INCREMENT, `notice_content` varchar(255) NOT NULL, `notice_link` varchar(255) NOT NULL DEFAULT '0', `user` int(11) NOT NULL DEFAULT '0', `time_received` int(11) NOT NULL DEFAULT '0', `viewed` int(11) NOT NULL DEFAULT '0', PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
             $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "thread_tracking` (`user_id` INT(11) NOT NULL, `thread_id` INT(11) NOT NULL, `last_visit` INT(11) NOT NULL, PRIMARY KEY (`user_id`, `thread_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
             $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "countries` (`id` int(11) NOT NULL AUTO_INCREMENT, `iso` varchar(2) NOT NULL, `language` varchar(255) NOT NULL DEFAULT 'english', PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
-            $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "themes` (`id` int(11) NOT NULL, `theme_name` varchar(255) NOT NULL, `theme_version` varchar(255) NOT NULL DEFAULT '1', `theme_json_data` text NOT NULL) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ;");
+            $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "themes` (`id` int(11) NOT NULL, `theme_name` varchar(255) NOT NULL, `theme_version` varchar(255) NOT NULL DEFAULT '1', `theme_json_data` text NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=latin1;");
+
+            $sand = file_get_contents('../assets/theme-json/sand.json');
+            $blue = file_get_contents('../assets/theme-json/blue.json');
+
+            $stmt = $MYSQL->prepare("INSERT INTO " . $mysql_prefix . "themes (`theme_name`, `theme_version`, `theme_json_data`) VALUES ('Sand', '1.0', :sand), ('Blue', '1.0', :blue);");
+            $stmt->bindParam(':sand', $sand);
+            $stmt->bindParam(':blue', $blue);
+            $stmt->execute();
+
             $MYSQL->query("INSERT INTO `" . $mysql_prefix . "countries` (`iso`, `language`) VALUES ('AD', 'english'),
                                                                                                      ('AE', 'english'),
                                                                                                      ('AF', 'english'),

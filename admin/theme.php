@@ -9,10 +9,6 @@ if (!$TANGO->perm->check('access_administration')) {
 require_once('template/top.php');
 $notice = '';
 
-$directory = scandir('../public/themes');
-unset($directory['0']);
-unset($directory['1']); //unset($directory['2']);//Remove ".", ".." and "index.html"
-
 if ($PGET->g('set_default')) {
     $default = clean($PGET->g('set_default'));
     if (in_array($default, $directory)) {
@@ -47,26 +43,17 @@ if ($PGET->g('set_default')) {
 
 if ($PGET->g('delete_theme')) {
     $theme = clean($PGET->g('delete_theme'));
-    if (in_array($theme, $directory)) {
+    $MYSQL->bind('theme_name', $theme);
+    $query = $MYSQL->query("DELETE FROM {prefix}themes WHERE id = :theme_name");
 
-        $MYSQL->bind('theme_name', $theme);
-        $query = $MYSQL->query("DELETE FROM {prefix}themes WHERE theme_name = :theme_name");
-
-        if ( rrmdir('../public/themes/' . $theme) && $query ) {
-            $notice .= $ADMIN->alert(
-                'Theme <strong>' . $theme . '</strong> has been deleted!',
-                'success'
-            );
-        } else {
-            $notice .= $ADMIN->alert(
-                'Error deleting theme.',
-                'danger'
-            );
-        }
-
+    if ( $query ) {
+        $notice .= $ADMIN->alert(
+            'Theme <strong>' . $theme . '</strong> has been deleted!',
+            'success'
+        );
     } else {
         $notice .= $ADMIN->alert(
-            'Theme does not exist.',
+            'Error deleting theme.',
             'danger'
         );
     }
@@ -74,7 +61,7 @@ if ($PGET->g('delete_theme')) {
 
 /*
  * List a theme.
- */
+ *
 $themes = '';
 foreach ($directory as $t) {
     if (is_dir('../public/themes/' . $t)) {
@@ -96,6 +83,29 @@ foreach ($directory as $t) {
                         </td>
                       </tr>';
     }
+}*/
+
+$query = $MYSQL->query("SELECT * FROM {prefix}themes");
+
+$themes = '';
+foreach( $query as $t ) {
+    $set = ($TANGO->data['site_theme'] == $t['theme_name']) ? ' class="success" title="Theme is currently set to default."' : '';
+    $themes .= '<tr' . $set . '>
+                  <td>' . $t['theme_name'] . '</td>
+                    <td>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                          Options <span class="caret"></span>
+                        </button>
+                        <span class="dropdown-arrow dropdown-arrow-inverse"></span>
+                          <ul class="dropdown-menu dropdown-inverse" role="menu">
+                            <li><a href="' . SITE_URL . '/admin/theme.php/set_default/' . $t['theme_name'] . '">Set as Default</a></li>
+                            <li><a href="' . SITE_URL . '/admin/edit_theme.php/theme/' . $t['id'] . '">Edit Theme</a>
+                            <li><a href="' . SITE_URL . '/admin/theme.php/delete_theme/' . $t['id'] . '">Delete Theme</a></li>
+                          </ul>
+                        </div>
+                      </td>
+                  </tr>';
 }
 
 echo $ADMIN->box(
