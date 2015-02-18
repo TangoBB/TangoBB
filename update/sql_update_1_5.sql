@@ -2,22 +2,21 @@
     Change the tan_ prefix to your prefix!!!!
  */
 
-CREATE TABLE `tan_user_comments` (
+CREATE TABLE IF NOT EXISTS `tan_user_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `profile_owner` int(11) NOT NULL,
   `writer` int(11) NOT NULL,
   `comment` text NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-);
+  `timestamp` int(11) NOT NULL,
+  PRIMARY KEY (`id`)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-CREATE TABLE `tan_user_visitors` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `profile_owner` int(11) NOT NULL,
-  `visitor` int(11) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-);
+CREATE TABLE IF NOT EXISTS `tan_user_visitors` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`profile_owner` int(11) NOT NULL,
+`visitor` int(11) NOT NULL,
+`timestamp` int(11) NOT NULL,
+PRIMARY KEY (`id`)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
+
 
 CREATE TABLE IF NOT EXISTS `tan_themes` (
   `id` int(11) NOT NULL,

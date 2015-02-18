@@ -7,6 +7,10 @@
     <link href="<?php echo SITE_URL; ?>/public/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="<?php echo SITE_URL; ?>/public/css/flat-ui.css" rel="stylesheet" media="screen">
     <link href="<?php echo SITE_URL; ?>/public/css/admin.css" rel="stylesheet" media="screen">
+    <link href="<?php echo SITE_URL; ?>/public/codemirror/lib/codemirror.css" rel="stylesheet" media="screen">
+    <link href="<?php echo SITE_URL; ?>/public/codemirror/addon/display/fullscreen.css" rel="stylesheet" media="screen">
+    <link href="<?php echo SITE_URL; ?>/public/codemirror/addon/scroll/simplescrollbars.css" rel="stylesheet" media="screen">
+    <link href="<?php echo SITE_URL; ?>/public/codemirror/theme/neo.css" rel="stylesheet" media="screen">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>

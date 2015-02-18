@@ -1,5 +1,5 @@
-<?php
-
-  die('TangoBB not yet installed.');
+-<?php 
+-  require_once('install/pages/initialise.php');
+-  die(); 
 
 ?>

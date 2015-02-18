@@ -78,7 +78,7 @@ if( $PGET->g('theme') ) {
                        </div>
                        <div id="' . $name . '-tpl-acc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                        <div class="panel-body">
-                         <textarea name="tpl[' . $name . ']" class="form-control" style="min-height:200px;">' . $value . '</textarea>
+                         <textarea name="tpl[' . $name . ']" class="form-control highlight" style="min-height:200px;">' . $value . '</textarea>
                        </div>
                      </div>
                    </div>';
@@ -97,7 +97,7 @@ if( $PGET->g('theme') ) {
                        </div>
                        <div id="' . $name . '-ent-acc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                        <div class="panel-body">
-                         <textarea name="ent[' . $name . ']" class="form-control" style="min-height:200px;">' . $value . '</textarea>
+                         <textarea name="ent[' . $name . ']" class="form-control highlight" style="min-height:200px;">' . $value . '</textarea>
                        </div>
                      </div>
                    </div>';
@@ -116,7 +116,7 @@ if( $PGET->g('theme') ) {
                        </div>
                        <div id="' . $name . '-btn-acc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                        <div class="panel-body">
-                         <textarea name="btn[' . $name . ']" class="form-control" style="min-height:200px;">' . $value . '</textarea>
+                         <textarea name="btn[' . $name . ']" class="form-control highlight" style="min-height:200px;">' . $value . '</textarea>
                        </div>
                      </div>
                    </div>';
@@ -126,8 +126,11 @@ if( $PGET->g('theme') ) {
 
         echo $ADMIN->box(
             'Edit Theme (' . $query['0']['theme_name'] . ')<span class="pull-right"><a href="' . SITE_URL . '/admin/theme.php" class="btn btn-default btn-xs">Back</a> <input type="submit" name="edit" value="Edit Theme" class="btn btn-primary btn-xs" /></span>',
-            $notice,
-            '',
+            '<div class="panel-body">
+            <b>Tips</b> <br>
+              Press <code>F11</code> inside an editor for fullscreen editing and <code>ESC</code> to exit.
+            </div>',
+            '<div class="panel-body">' . $notice . '</div>',
             '12'
         );
 
