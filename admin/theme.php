@@ -87,6 +87,7 @@ foreach ($directory as $t) {
 
 $query = $MYSQL->query("SELECT * FROM {prefix}themes");
 
+$themes = '';
 foreach( $query as $t ) {
     $set = ($TANGO->data['site_theme'] == $t['theme_name']) ? ' class="success" title="Theme is currently set to default."' : '';
     $themes .= '<tr' . $set . '>
