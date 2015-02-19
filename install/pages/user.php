@@ -32,7 +32,7 @@ require_once('../../applications/functions.php');
                     'user_group' => ADMIN_ID
                 ));
 
-                $MYSQL->query("INSERT INTO `{prefix}users` (`username`, `user_password`, `user_email`, `date_joined`, `user_group`) VALUES (':username', ':user_password', ':user_email', ':date_joined', ':user_group');");
+                $MYSQL->query("INSERT INTO `{prefix}users` (`username`, `user_password`, `user_email`, `date_joined`, `user_group`) VALUES (:username, :user_password, :user_email, :date_joined, :user_group);");
                 echo '<div class="alert alert-success">TangoBB has been successfully installed! Please delete the installation folder.</div>';
 
             }
