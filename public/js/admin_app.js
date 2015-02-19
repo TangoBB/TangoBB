@@ -1,14 +1,6 @@
 $(function() {
   $('#tooltip').tooltip();
   $('select').selectpicker({style: 'btn-hg btn-primary', menuStyle: 'dropdown-inverse'});
-  //$(':checkbox').checkbox();
-  //$(':radio').radio();
-});
-
-$(function() {
-
-  var code_type = '';
-
   $('.highlight').each(function(index) {
     $(this).attr('id', 'code-' + index);
     CodeMirror.fromTextArea(document.getElementById('code-' + index), {
