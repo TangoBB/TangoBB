@@ -25,12 +25,12 @@ if( isset($_POST['upload']) ) {
 
             $name = $json['theme_name'];
             $ver  = $json['theme_version'];
-            $tem  = $json['templates'];
+            $tpl  = $json['templates'];
             $ent  = $json['entities'];
             $btn  = $json['buttons'];
 
             $sql_ent = array(
-                'templates' => $tem,
+                'templates' => $tpl,
                 'entities' => $ent,
                 'buttons' => $btn
             );
