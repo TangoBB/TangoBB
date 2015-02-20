@@ -42,7 +42,7 @@ class Tango_Core
         }
 
         $MYSQL->bind('post_user', $query['0']['id']);
-        $query['0']['post_count'] = count($MYSQL->query("SELECT * FROM {prefix}forum_posts"));
+        $query['0']['post_count'] = count($MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = :post_user"));
         $query['0']['username_style'] = $this->usergroup($query['0']['user_group'], 'username_style', $query['0']['username']);
 
         if ($query['0']['avatar_type'] == "0") {
