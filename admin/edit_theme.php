@@ -10,8 +10,8 @@ require_once('template/top.php');
 
 if( $PGET->g('theme') ) {
 
-    $MYSQL->bind('theme_name', $PGET->g('theme'));
-    $query = $MYSQL->query("SELECT * FROM {prefix}themes WHERE id = :theme_name");
+    $MYSQL->bind('id', $PGET->g('theme'));
+    $query = $MYSQL->query("SELECT * FROM {prefix}themes WHERE id = :id");
 
     if( !empty($query) ) {
 
