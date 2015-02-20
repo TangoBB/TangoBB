@@ -174,7 +174,7 @@ if (isset($user) && isset($userg) && isset($page_title)) {
                 $comment,
                 $date,
                 $writer['user_avatar'],
-                SITE_URL . '/members.php/cmd/user/id/' . $user['id'],
+                SITE_URL . '/members.php/cmd/user/id/' . $user['id']
             )
         );
     }
