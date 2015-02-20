@@ -170,7 +170,7 @@ if (isset($user) && isset($userg) && isset($page_title)) {
                 'profile_url'
             ),
             array(
-                $writer['username_style'],
+                '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $writer['id'] . '">' . $writer['username_style'] . '</a>',
                 $comment,
                 $date,
                 $writer['user_avatar'],

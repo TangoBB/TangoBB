@@ -111,7 +111,7 @@ foreach( $query as $t ) {
 echo $ADMIN->box(
     'Themes <span class="pull-right"><a href="' . SITE_URL . '/admin/new_theme.php" class="btn btn-default btn-xs">New Theme</a></span>',
     $notice .
-    'You can manage the theme for your forum here. You can customize the template files for the theme in <code>public/themes/&lt;theme&gt;</code>.',
+    'You can manage the theme for your forum here.',
     '<table class="table table-hover">
          <thead>
            <tr>
