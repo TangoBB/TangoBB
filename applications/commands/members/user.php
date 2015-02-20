@@ -174,10 +174,9 @@ if (isset($user) && isset($userg) && isset($page_title)) {
             )
         );
     }
+    $form = '';
     if ($TANGO->sess->isLogged) {
         $form = $TANGO->tpl->entity('user_profile_comments_form', 'comments_action', '');
-    } else {
-        $form = '';
     }
 
     //profile visitors
