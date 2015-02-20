@@ -165,12 +165,16 @@ if (isset($user) && isset($userg) && isset($page_title)) {
             array(
                 'writer',
                 'comment',
-                'date'
+                'date',
+                'avatar',
+                'profile_url'
             ),
             array(
                 $writer['username_style'],
                 $comment,
-                $date
+                $date,
+                $writer['user_avatar'],
+                SITE_URL . '/members.php/cmd/user/id/' . $user['id'],
             )
         );
     }
