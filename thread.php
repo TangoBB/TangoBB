@@ -425,19 +425,26 @@ if ($PGET->s(true)) {
         }
 
         $total_pages = ceil(fetchTotalPost($node_id) / POST_RESULTS_PER_PAGE);
-        if ($total_pages > 1) {
+        if ($total_pages >= 6) {
             $i = '';
             for ($i = 1; $i <= $total_pages; ++$i) {
-                if ($i == $page) {
+                if ($i <= 2 || ($i == ($page - 1) && $page > 1) || $i == $page || $i == ($page + 1) || $i >= ($total_pages - 1)) {
+                    if ($i == $page) {
+                        $TANGO->tpl->addPagination(
+                            $i,
+                            '#',
+                            true
+                        );
+                    } else {
+                        $TANGO->tpl->addPagination(
+                            $i,
+                            SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/page/' . $i
+                        );
+                    }
+                } elseif (($i == 3 || $i == ($total_pages - 2))) {
                     $TANGO->tpl->addPagination(
-                        $i,
-                        '#',
-                        true
-                    );
-                } else {
-                    $TANGO->tpl->addPagination(
-                        $i,
-                        SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/page/' . $i
+                        '...',
+                        '#'
                     );
                 }
             }
