@@ -176,7 +176,7 @@ if ($PGET->s(true)) {
         if ($page != 1 && $total_pages > 1) {
             $TANGO->tpl->addPagination(
                 '<<',
-                SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/page/' . intval($page - 1)
+                ($sort) ? SITE_URL . '/node.php/' . $node_name . '.' . $node_id . '/sort/' . $sort . '/page/' . $i : SITE_URL . '/node.php/' . $node_name . '.' . $node_id . '/page/' . intval($page - 1)
             );
         }
         if ($total_pages > 1) {
@@ -214,7 +214,7 @@ if ($PGET->s(true)) {
         if ($page != $total_pages && $total_pages > 1) {
             $TANGO->tpl->addPagination(
                 '>>',
-                SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/page/' . intval($page + 1)
+                ($sort) ? SITE_URL . '/node.php/' . $node_name . '.' . $node_id . '/sort/' . $sort . '/page/' . $i : SITE_URL . '/node.php/' . $node_name . '.' . $node_id . '/page/' . intval($page + 1)
             );
         }
 
