@@ -431,7 +431,7 @@ if ($PGET->s(true)) {
                 SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/page/' . intval($page - 1)
             );
         }
-        if ($total_pages >= 6 && $total_pages > 1) {
+        if ($total_pages > 1) {
             $i = '';
             for ($i = 1; $i <= $total_pages; ++$i) {
                 if ($i <= 2 || ($i == ($page - 1) && $page > 1) || $i == $page || $i == ($page + 1) || $i >= ($total_pages - 1)) {
