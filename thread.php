@@ -423,7 +423,12 @@ if ($PGET->s(true)) {
                 )
             );
         }
-
+        if ($page != 1) {
+            $TANGO->tpl->addPagination(
+                '<<',
+                SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/page/' . intval($page - 1)
+            );
+        }
         $total_pages = ceil(fetchTotalPost($node_id) / POST_RESULTS_PER_PAGE);
         if ($total_pages >= 6) {
             $i = '';
@@ -441,7 +446,7 @@ if ($PGET->s(true)) {
                             SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/page/' . $i
                         );
                     }
-                } elseif (($i == 3 || $i == ($total_pages - 2))) {
+                } elseif (($i == 3 && $page != 1) || ($i == ($total_pages - 2) && $page != $total_pages)) {
                     $TANGO->tpl->addPagination(
                         '...',
                         '#'
@@ -449,7 +454,12 @@ if ($PGET->s(true)) {
                 }
             }
         }
-
+        if ($page != $total_pages) {
+            $TANGO->tpl->addPagination(
+                '>>',
+                SITE_URL . '/thread.php/' . $node_name . '.' . $node_id . '/page/' . intval($page + 1)
+            );
+        }
         define('CSRF_TOKEN', NoCSRF::generate('csrf_token'));
         define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
         //Reply textarea.
