@@ -63,7 +63,7 @@ if ($PGET->g('toggle_lock')) {
  * Delete Node
  */
 if ($PGET->g('delete_node')) {
-    $d_node = clean($PGET->g('delete_node'));
+    $d_node = $PGET->g('delete_node');
     /*$MYSQL->where('id', $d_node);
     $query  = $MYSQL->get('{prefix}forum_node');*/
     $MYSQL->bind('id', $d_node);
@@ -83,6 +83,45 @@ if ($PGET->g('delete_node')) {
         } catch (mysqli_sql_exception $e) {
             $notice .= $ADMIN->alert(
                 'Error deleting node.',
+                'danger'
+            );
+        }
+
+    } else {
+        $notice .= $ADMIN->alert(
+            'Node does not exist!',
+            'danger'
+        );
+    }
+}
+
+/*
+ * Increase sub-node order.
+ */
+if( $PGET->g('increase_order') ) {
+    $MYSQL->bind('id', $PGET->g('increase_order'));
+    $query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE id = :id");
+
+    if( !empty($query) ) {
+
+        $place = $query['0']['node_place'] - 1;
+
+        $MYSQL->bind('place', $query['0']['node_place']);
+        $MYSQL->bind('old_place', $place);
+        $u_1 = $MYSQL->query("UPDATE {prefix}forum_node SET node_place = :place WHERE node_place = :old_place");
+
+        $MYSQL->bind('new_place', $place);
+        $MYSQL->bind('node', $query['0']['id']);
+        $u_2 = $MYSQL->query("UPDATE {prefix}forum_node SET node_place = :new_place WHERE id = :node");
+
+        if( $u_1 && $u_2 ) {
+            $notice .= $ADMIN->alert(
+                'Node place has been updated.',
+                'success'
+            );
+        } else {
+            $notice .= $ADMIN->alert(
+                'Error updating the place of node!',
                 'danger'
             );
         }
@@ -162,7 +201,7 @@ function list_manage_node($category)
         $MYSQL->where('node_type', 2);
         $s_q     = $MYSQL->get('{prefix}forum_node');*/
         $MYSQL->bind('parent_node', $n['id']);
-        $s_q = $MYSQL->query('SELECT * FROM {prefix}forum_node WHERE parent_node = :parent_node AND node_type = 2');
+        $s_q = $MYSQL->query('SELECT * FROM {prefix}forum_node WHERE parent_node = :parent_node AND node_type = 2 ORDER BY node_place ASC');
         $s_q_a = array();
         foreach ($s_q as $s_f) {
             $locked = ($s_f['node_locked'] == 1) ? ' class="text-danger" title="Node Locked"' : '';
@@ -171,7 +210,8 @@ function list_manage_node($category)
                           (<a href="' . SITE_URL . '/admin/edit_node.php/id/' . $s_f['id'] . '" title="Edit (' . $s_f['node_name'] . ')"><i class="glyphicon glyphicon-edit"></i></a>)
                           (<a href="' . SITE_URL . '/admin/manage_node.php/delete_node/' . $s_f['id'] . '" title="Delete (' . $s_f['node_name'] . ')"><i class="glyphicon glyphicon-trash"></i></a>)
                           (<a href="' . SITE_URL . '/admin/manage_node.php/toggle_lock/' . $s_f['id'] . '" title="Toggle Lock (' . $s_f['node_name'] . ')"><i class="glyphicon glyphicon-warning-sign"></i></a>)
-                        </a>';
+                        </a>
+                        (<a href="' . SITE_URL . '/admin/manage_node.php/increase_order/' . $s_f['id'] . '" title="Increase Sub-Node Order (' . $s_f['node_name'] . ')"><i class="fa fa-level-up"></i></a>)';
         }
 
         $locked = ($n['node_locked'] == "1") ? ' style="border-left:2px solid #e84040;" title="Node is locked."' : '';

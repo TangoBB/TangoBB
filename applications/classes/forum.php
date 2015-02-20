@@ -57,7 +57,7 @@ class Tango_Forum
             $allowed = explode(',', $node['allowed_usergroups']);
             if (in_array($TANGO->sess->data['user_group'], $allowed)) {
                 $MYSQL->bind('parent_node', $node['id']);
-                $sub = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE node_type = 2 AND parent_node = :parent_node");
+                $sub = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE node_type = 2 AND parent_node = :parent_node ORDER BY node_place asc");
                 $subs = array();
                 foreach ($sub as $suf) {
                     $allowed = explode(',', $suf['allowed_usergroups']);
