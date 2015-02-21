@@ -185,7 +185,7 @@ if ($PGET->s(true)) {
                     if (!empty($watchers)) {
                         foreach ($watchers as $watcher) {
                             $user = $TANGO->user($watcher);
-                            if (!empty($user)) {
+                            if (!empty($user) && $user['id'] !== $query['0']['post_user']) {
                                 $TANGO->user->notifyUser(
                                     'reply',
                                     $user['id'],
