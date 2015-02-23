@@ -20,6 +20,13 @@ if ($PGET->s(true)) {
     $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE id = :id and title_friendly = :title_friendly AND post_type = 1");
     if (!empty($query)) {
 
+        $MYSQL->bind('id', $query['0']['origin_node']);
+        $p_query = $MYSQL->query("SELECT * FROM {prefix}forum_node WHERE id = :id");
+        $allowed = explode(',', $p_query['0']['allowed_usergroups']);
+        if (!in_array($TANGO->sess->data['user_group'], $allowed)) {
+            redirect(SITE_URL . '/404.php');
+        }
+
         $user = $TANGO->user($query['0']['post_user']);
         $node = node($query['0']['origin_node']);
         $time_post = simplify_time($query['0']['post_time'], @$TANGO->sess->data['location']);

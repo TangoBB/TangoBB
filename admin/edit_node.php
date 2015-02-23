@@ -78,6 +78,7 @@ if ($PGET->g('id')) {
                 $locked = (isset($_POST['lock_node'])) ? '1' : '0';
 
                 $all_u = (isset($_POST['allowed_ug'])) ? implode(',', $_POST['allowed_ug']) : '0';
+                //die($all_u);
 
                 if (!$title) {
                     throw new Exception ('All fields are required!');
@@ -86,7 +87,7 @@ if ($PGET->g('id')) {
                     if (substr_count($_POST['node_parent'], '&') > 0) {
                         $explode = explode('&', clean($_POST['node_parent']));
                         $parent = node($explode['1']);
-                        $data = array(
+                        /*$data = array(
                             'node_name' => $title,
                             'node_desc' => $desc,
                             'name_friendly' => title_friendly($title),
@@ -94,7 +95,27 @@ if ($PGET->g('id')) {
                             'node_type' => 2,
                             'parent_node' => $parent['id'],
                             'allowed_usergroups' => $all_u
-                        );
+                        );*/
+                        $MYSQL->bind('node_name', $title);
+                        $MYSQL->bind('name_friendly', title_friendly($title));
+                        $MYSQL->bind('node_desc', $desc);
+                        $MYSQL->bind('node_locked', $locked);
+                        $MYSQL->bind('in_category', $parent['in_category']);
+                        $MYSQL->bind('node_type', 2);
+                        $MYSQL->bind('parent_node', $parent['id']);
+                        $MYSQL->bind('allowed_usergroups', $all_u);
+
+                        $MYSQL->bind('id', $id);
+
+                        $u_query = $MYSQL->query('UPDATE {prefix}forum_node SET node_name = :node_name,
+                                                                       name_friendly = :name_friendly,
+                                                                       node_desc = :node_desc,
+                                                                       node_locked = :node_locked,
+                                                                       in_category = :in_category,
+                                                                       node_type = :node_type,
+                                                                       parent_node = :parent_node,
+                                                                       allowed_usergroups = :allowed_usergroups
+                                                                       WHERE id = :id');
                     } else {
                         /*$data = array(
                           'node_name' => $title,
@@ -112,22 +133,22 @@ if ($PGET->g('id')) {
                         $MYSQL->bind('in_category', $_POST['node_parent']);
                         $MYSQL->bind('node_type', 1);
                         $MYSQL->bind('allowed_usergroups', $all_u);
-                    }
 
-                    //$MYSQL->where('id', $id);
-                    $MYSQL->bind('id', $id);
+                        $MYSQL->bind('id', $id);
 
-                    try {
-                        //$MYSQL->update('{prefix}forum_node', $data);
-                        $MYSQL->query('UPDATE {prefix}forum_node SET node_name = :node_name,
+                        $u_query = $MYSQL->query('UPDATE {prefix}forum_node SET node_name = :node_name,
                                                                        name_friendly = :name_friendly,
                                                                        node_desc = :node_desc,
                                                                        node_locked = :node_locked,
                                                                        in_category = :in_category,
                                                                        node_type = :node_type,
-                                                                       allowed_usergroups = :allowed_usergroups WHERE id = :id');
+                                                                       allowed_usergroups = :allowed_usergroups
+                                                                       WHERE id = :id');
+                    }
+
+                    if( $u_query ) {
                         redirect(SITE_URL . '/admin/manage_node.php/notice/edit_success');
-                    } catch (mysqli_sql_exception $e) {
+                    } else {
                         throw new Exception ('Error updating node.');
                     }
 
