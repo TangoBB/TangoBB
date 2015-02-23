@@ -24,26 +24,30 @@ if (isset($_POST['search_submit'])) {
 
             $searched_threads = '';
             $searched_users = '';
-            $key = explode(' ', strtolower($search_query));
-            $query = $MYSQL->query("SELECT * FROM
+            //$key = explode(' ', strtolower($search_query));
+            $search_query_threads = "'" . $search_query . "'";
+            $MYSQL->bind('search_query_one', $search_query_threads);
+            $MYSQL->bind('search_query_two', $search_query_threads);
+            $query = $MYSQL->query("SELECT *, MATCH (post_title, post_content) AGAINST (:search_query_one IN NATURAL LANGUAGE MODE) AS score
+                                        FROM
                                         {prefix}forum_posts
                                         WHERE
-                                        post_type = 1
-                                        ORDER BY
-                                        post_time
-                                        DESC");
+                                        MATCH (post_title, post_content) AGAINST (:search_query_two IN NATURAL LANGUAGE MODE);");
             $threads = array();
 
             foreach ($query as $re) {
-                $tags = explode(',', $re['post_tags']);
                 $user = $TANGO->user($re['post_user']);
-                foreach ($tags as $tag) {
-                    if (in_array(strtolower($tag), $key)) {
-                        $threads[] .= '<a href="' . SITE_URL . '/thread.php/' . $re['title_friendly'] . '.' . $re['id'] . '">' . $re['post_title'] . '</a> <small>By <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a> (' . date('F j, Y', $re['post_time']) . ')</small><hr size="1" />';;
-                    }
+                if ($re['post_type'] == 2) {
+                    $origin = $re['origin_thread'];
+                    $MYSQL->bind('origin', $origin);
+                    $qry = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE id = :origin");
+                    $title = 'Answer on thread ' . $qry['0']['post_title'];
+                    $threads[] .= '<a href="' . SITE_URL . '/thread.php/' . $qry['0']['title_friendly'] . '.' . $qry['0']['id'] . '">' . $title . '</a> <small>By <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a> (' . date('F j, Y', $re['post_time']) . ')</small><hr size="1" />';
+                } else {
+                    $threads[] .= '<a href="' . SITE_URL . '/thread.php/' . $re['title_friendly'] . '.' . $re['id'] . '">' . $re['post_title'] . '</a> <small>By <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a> (' . date('F j, Y', $re['post_time']) . ')</small><hr size="1" />';
                 }
-            }
 
+            }
             if (!empty($threads)) {
                 foreach ($threads as $thread) {
                     $searched_threads .= $thread;
@@ -51,18 +55,14 @@ if (isset($_POST['search_submit'])) {
             } else {
                 $searched_threads .= $LANG['global_form_process']['search_no_result'];
             }
-
+            $MYSQL->bind('search_query', $search_query);
             $query = $MYSQL->query("SELECT * FROM
                                         {prefix}users
-                                        ORDER BY
-                                        date_joined
-                                        DESC");
+                                        WHERE
+                                        username LIKE CONCAT('%',:search_query,'%');");
             $users = array();
-
             foreach ($query as $re) {
-                if (in_array(strtolower($re['username']), $key)) {
                     $users[] .= '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $re['id'] . '">' . $re['username'] . '</a><hr size="1" />';;
-                }
             }
 
             if (!empty($users)) {

@@ -24,3 +24,5 @@ CREATE TABLE IF NOT EXISTS `tan_themes` (
   `theme_version` varchar(255) NOT NULL DEFAULT '1',
   `theme_json_data` text NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+ALTER TABLE `tan_forum_posts` ADD FULLTEXT search(post_title, post_content);
