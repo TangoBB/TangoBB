@@ -101,6 +101,7 @@ foreach( $query as $t ) {
                           <ul class="dropdown-menu dropdown-inverse" role="menu">
                             <li><a href="' . SITE_URL . '/admin/theme.php/set_default/' . $t['theme_name'] . '">Set as Default</a></li>
                             <li><a href="' . SITE_URL . '/admin/edit_theme.php/theme/' . $t['id'] . '">Edit Theme</a>
+                            <li><a href="' . SITE_URL . '/admin/export_theme.php/theme/' . $t['id'] . '" target="_blank">Export Theme</a>
                             <li><a href="' . SITE_URL . '/admin/theme.php/delete_theme/' . $t['id'] . '">Delete Theme</a></li>
                           </ul>
                         </div>
