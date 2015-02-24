@@ -97,7 +97,11 @@ class Tango_Session
             $id = (isset($_SESSION['tangobb_sess'])) ? $_SESSION['tangobb_sess'] : $_COOKIE['tangobb_sess'];
             $MYSQL->bind('session_id', $id);
             $query = $MYSQL->query("SELECT * FROM {prefix}sessions WHERE session_id = :session_id");
-            if (!empty($query)) {
+
+            $MYSQL->bind('id', $query['0']['logged_user']);
+            $user  = $MYSQL->query("SELECT * FROM {prefix}users WHERE id = :id");
+
+            if ( !empty($query) && !empty($user) ) {
                 $this->session = $query['0'];
                 return true;
             } else {
