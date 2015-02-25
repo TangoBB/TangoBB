@@ -527,7 +527,7 @@ if ($PGET->s(true)) {
             array(
                 $query['0']['post_title'],
                 $content,
-                substr($query['0']['post_content'], 0, 200) . '...'
+                htmlentities(substr($query['0']['post_content'], 0, 200), ENT_QUOTES) . '...'
             )
         );
     } else {
