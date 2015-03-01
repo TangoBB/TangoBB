@@ -25,7 +25,7 @@ function getThreads($id, $page, $sort, $per_page = THREAD_RESULTS_PER_PAGE)
             break;
 
         case "name_desc":
-            $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_type = 1 AND origin_mode = :origin_node ORDER BY post_title DESC LIMIT :start, :per_page");
+            $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_type = 1 AND origin_node = :origin_node ORDER BY post_title DESC LIMIT :start, :per_page");
             break;
 
         case "name_asc":
