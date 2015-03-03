@@ -167,11 +167,10 @@ if ($PGET->s(true)) {
                         $watcher = $watchers;
                         $watcher[] = $TANGO->sess->data['id'];
                         $watcher = implode(',', $watcher);
-                        $update = array(
-                            'watchers' => $watcher
-                        );
-                        $MYSQL->where('id', $node_id);
-                        if ($MYSQL->update('{prefix}forum_posts', $update)) {
+
+                        $MYSQL->bind('watchers', $watcher);
+                        $MYSQL->bind('id', $node_id);
+                        if ($MYSQL->query('UPDATE {prefix}forum_posts SET watchers = :watchers WHERE id = :id')) {
                             $thread_notice = $TANGO->tpl->entity(
                                 'success_notice',
                                 array(
@@ -208,11 +207,9 @@ if ($PGET->s(true)) {
                     if (in_array($TANGO->sess->data['id'], $watchers)) {
                         $watcher = array_diff($watchers, array($TANGO->sess->data['id']));
                         $watcher = implode(',', $watcher);
-                        $update = array(
-                            'watchers' => $watcher
-                        );
-                        $MYSQL->where('id', $node_id);
-                        if ($MYSQL->update('{prefix}forum_posts', $update)) {
+                        $MYSQL->bind('watchers', $watcher);
+                        $MYSQL->bind('id', $node_id);
+                        if ($MYSQL->query('UPDATE {prefix}forum_posts SET watchers = :watchers WHERE id = :id')) {
                             $thread_notice = $TANGO->tpl->entity(
                                 'success_notice',
                                 array(
