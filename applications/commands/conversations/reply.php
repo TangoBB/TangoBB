@@ -41,10 +41,10 @@ if ($PGET->g('id')) {
                     $MYSQL->bindMore(
                         array(
                             'message_title' => 'RE: ' . $query['0']['message_title'],
-                            'mssage_content' => $cont,
+                            'message_content' => $cont,
                             'message_time' => $time,
                             'origin_message' => $query['0']['id'],
-                            'message_sender' => $TANGP->sess->data['id'],
+                            'message_sender' => $TANGO->sess->data['id'],
                             'message_receiver' => $receiver
                         )
                     );
