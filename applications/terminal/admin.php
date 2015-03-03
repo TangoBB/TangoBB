@@ -13,12 +13,10 @@ function terminal_cugroup($username, $usergroup)
     if (!$g = usergroupExists($usergroup)) {
         throw new Exception ('Usergroup does not exist.');
     } else {
-        $data = array(
-            'user_group' => $g['id']
-        );
-        $MYSQL->where('username', $username);
+        $MYSQL->bind('user_group', $g['id']);
+        $MYSQL->bind('username', $username);
         try {
-            $MYSQL->update('{prefix}users', $data);
+            $MYSQL->query('UPDATE {prefix}users SET user_group = :user_group WHERE username = :username');
             return $ADMIN->alert(
                 'User\'s usergroup has been changed!',
                 'success'
@@ -32,13 +30,10 @@ function terminal_cugroup($username, $usergroup)
 function terminal_ban($username)
 {
     global $MYSQL, $ADMIN;
-    $data = array(
-        'is_banned' => 1,
-        'user_group' => BAN_ID
-    );
-    $MYSQL->where('username', $username);
+    $MYSQL->bind('user_group', BAN_ID);
+    $MYSQL->bind('username', $username);
     try {
-        $MYSQL->update('{prefix}users', $data);
+        $MYSQL->query('UPDATE {prefix}users SET is_banned = 1, user_group = :user_group WHERE username = :username');
         return $ADMIN->alert(
             'User has been banned!',
             'success'
@@ -51,13 +46,9 @@ function terminal_ban($username)
 function terminal_unban($username)
 {
     global $MYSQL, $ADMIN;
-    $data = array(
-        'is_banned' => 0,
-        'user_group' => 1
-    );
-    $MYSQL->where('username', $username);
+    $MYSQL->bind('username', $username);
     try {
-        $MYSQL->update('{prefix}users', $data);
+        $MYSQL->query('UPDATE {prefix}users SET is_banned = 0, user_group = 1 WHERE username = :username');
         return $ADMIN->alert(
             'User has been unbanned!',
             'success'
