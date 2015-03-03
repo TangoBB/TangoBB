@@ -26,3 +26,6 @@ CREATE TABLE IF NOT EXISTS `tan_themes` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 ALTER TABLE `tan_forum_posts` ADD FULLTEXT search(post_title, post_content);
+
+ALTER TABLE `tan_generic`
+  ADD COLUMN `number_subs` INT(3) DEFAULT 3  NOT NULL AFTER `post_merge`;

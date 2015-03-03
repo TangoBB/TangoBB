@@ -41,6 +41,7 @@ if (isset($_POST['update'])) {
         $site_rules = $_POST['board_rules'];
         $enable_reg = (isset($_POST['register_enable'])) ? '1' : '0';
         $post_merge = (isset($_POST['post_merge'])) ? '1' : '0';
+        $number_subs = $_POST['number_subs'];
 
         $fb_app_id = $_POST['fb_app_id'];
         $fb_app_sec = $_POST['fb_app_secret'];
@@ -86,6 +87,7 @@ if (isset($_POST['update'])) {
                 'site_language' => $site_lang,
                 'register_enable' => $enable_reg,
                 'post_merge' => $post_merge,
+                'number_subs' => $number_subs,
                 'facebook_app_id' => $fb_app_id,
                 'facebook_app_secret' => $fb_app_sec,
                 'facebook_authenticate' => $enable_fb,
@@ -107,6 +109,7 @@ if (isset($_POST['update'])) {
                                                             site_language = :site_language,
                                                             register_enable = :register_enable,
                                                             post_merge = :post_merge,
+                                                            number_subs = :number_subs,
                                                             facebook_app_id = :facebook_app_id,
                                                             facebook_app_secret = :facebook_app_secret,
                                                             facebook_authenticate = :facebook_authenticate,
@@ -151,6 +154,8 @@ echo $ADMIN->box(
        <input type="text" class="form-control" name="site_name" id="site_name" value="' . $TANGO->data['site_name'] . '" />
        <label for="board_email">Board Email</label>
        <input type="text" class="form-control" name="board_email" id="board_email" value="' . $TANGO->data['site_email'] . '" />
+       <label for="number_subs">Number of shown subforums</label>
+       <input type="text" class="form-control" name="number_subs" id="number_subs" value="' . $TANGO->data['number_subs'] . '" />
        <input type="checkbox" name="register_enable" value="1" id="reg_enable" ' . $reg_check . ' /> <label for="reg_enable">Enable Register</label><br />
        <input type="checkbox" name="post_merge" value="1" id="post_merge" ' . $merge_check . ' /> <label for="post_merge">Merge Posts (<a href="#" title="Merge consecutive posts by the same user." id="tooltip">?</a>)</label>
        <br />

@@ -65,7 +65,7 @@ class Tango_Forum
                         $subs[] = '<a href="' . SITE_URL . '/node.php/' . $suf['name_friendly'] . '.' . $suf['id'] . '">' . $suf['node_name'] . '</a>';
                     }
                 }
-                $subs = (!empty($subs)) ? implode(', ', array_slice($subs, 0, 3)) : 'None';
+                $subs = (!empty($subs)) ? implode(', ', array_slice($subs, 0, $TANGO->data['number_subs'])) : 'None';
 
                 // New posts in node?
                 $MYSQL->bind('parent_node', $node['id']);
