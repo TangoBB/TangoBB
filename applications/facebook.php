@@ -15,25 +15,23 @@ if ($FB_USER) {
         $FB_PROFILE = $FACEBOOK->api('/me');
         $params = array('next' => SITE_URL . '/members.php/cmd/logout');
         $logout = $FACEBOOK->getLogoutUrl($params);
-        $MYSQL->where('facebook_id', $FB_PROFILE['id']);
-        $query = $MYSQL->get('{prefix}users');
+        $MYSQL->bind('facebook_id', $FB_PROFILE['id']);
+        $query = $MYSQL->query('SELECT * FROM {prefix}users WHERE facebook_id =:facebook_id');
         if (empty($query)) {
             $time = time();
             if (emailTaken($FB_PROFILE['email'])) {
-                $data = array(
-                    'facebook_id' => $FB_PROFILE['id']
-                );
-                $MYSQL->where('user_email', $FB_PROFILE['email']);
-                $MYSQL->update('{prefix}users', $data);
+                $MYSQL->bind('facebook_id', $FB_PROFILE['id']);
+                $MYSQL->bind('user_email', $FB_PROFILE['email']);
+                $MYSQL->query('UPDATE {prefix}users SET facebook_id = :facebook_id WHERE user_email = :user_email');
             } else {
                 $username = (isset($FB_PROFILE['username']) && !empty($FB_PROFILE['username'])) ? $FB_PROFILE['username'] : str_replace(' ', '_', $FB_PROFILE['name']);
-                $data = array(
+                $MYSQL->bindMore(array(
                     'username' => $username,
                     'user_email' => $FB_PROFILE['email'],
                     'date_joined' => $time,
                     'facebook_id' => $FB_PROFILE['id']
-                );
-                $MYSQL->insert('{prefix}users', $data);
+                ));
+                $MYSQL->query('INSERT INTO {prefix}users (username, user_email, date_joined, facebook_id) VALUES (:username, :user_email, :date_joined, :facebook_id)');
             }
 
         }
