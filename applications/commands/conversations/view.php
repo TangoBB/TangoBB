@@ -114,11 +114,8 @@ if ($PGET->g('v')) {
         foreach ($rep as $post) {
 
             if ($post['receiver_viewed'] == 0 && $TANGO->sess->data['id'] == $post['message_receiver']) {
-                $data = array(
-                    'receiver_viewed' => 1
-                );
-                $MYSQL->where('id', $post['id']);
-                $MYSQL->update('{prefix}messages', $data);
+                $MYSQL->bind('id', $post['id']);
+                $MYSQL->query('UPDATE {prefix}messages SET receiver_viewed = 1 WHERE id = :id');
             }
 
             $ur = $TANGO->user($post['message_sender']);
