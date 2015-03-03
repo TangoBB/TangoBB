@@ -75,7 +75,7 @@ if ($PGET->g('delete_node')) {
         $MYSQL->bind('id', $d_node);
         try {
             //$MYSQL->delete('{prefix}forum_node');
-            $MYSQL->delete('DELETE FROM {prefix}forum_node WHERE id = :id');
+            $MYSQL->query('DELETE FROM {prefix}forum_node WHERE id = :id');
             $notice .= $ADMIN->alert(
                 'Node <strong>' . $query['0']['node_name'] . '</strong> has been deleted!',
                 'success'
