@@ -11,8 +11,8 @@ $TANGO->tpl->getTpl('page');
 if ($PGET->g('post')) {
 
     $post = clean($PGET->g('post'));
-    $MYSQL->where('id', $post);
-    $query = $MYSQL->get('{prefix}forum_posts');
+    $MYSQL->bind('id', $post);
+    $query = $MYSQL->query('SELECT * FROM {prefix}forum_posts WHERE id = :id');
 
     if (!empty($query)) {
 
