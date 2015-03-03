@@ -73,16 +73,14 @@ class Tango_User
     public function changeUsername($user, $username)
     {
         global $MYSQL;
-        $MYSQL->where('id', $user);
-        $query = $MYSQL->get('{prefix}users');
+        $MYSQL->bind('id', $user);
+        $query = $MYSQL->query('SELECT * FROM {prefix}users WHERE id = :id');
         if (!empty($query)) {
 
-            $data = array(
-                'username' => $username
-            );
-            $MYSQL->where('id', $user);
+            $MYSQL->bind('username', $username);
+            $MYSQL->bind('id', $user);
             try {
-                $MYSQL->update('{prefix}users', $data);
+                $MYSQL->query('UPDATE {prefix}users SET username = :username WHERE id = :id');
                 return true;
             } catch (mysqli_sql_exception $e) {
                 return false;
@@ -103,25 +101,21 @@ class Tango_User
         if (!empty($user)) {
             $perm = $TANGO->perm->perm($permission);
             if ($user['additional_permissions'] == "0") {
-                $update = array(
-                    'additional_permissions' => $perm['permission_name']
-                );
+                $MYSQL->bind('additional_permissions', $perm['permission_name']);
             } else {
                 $ap_array = array();
                 foreach ($user['additional_permissions'] as $ap) {
-                    $MYSQL->where('permission_name', $ap);
-                    $ap_query = $MYSQL->get('{prefix}permissions');
+                    $MYSQL->bind('permission_name', $ap);
+                    $ap_query = $MYSQL->query('SELECT * FROM {prefix}permissions WHERE permission_name = :permission_name');
                     if ($ap_query) {
                         $ap_array[] = $ap_query['0']['id'];
                     }
                 }
                 $additional_permissions = implode(',', $ap_array);
-                $update = array(
-                    'additional_permissions' => $additional_permissions . ',' . $perm['permission_name']
-                );
+                $MYSQL->bind('additional_permissions', $additional_permissions . ',' . $perm['permission_name']);
             }
-            $MYSQL->where('id', $user['id']);
-            if ($MYSQL->update('{prefix}users', $update)) {
+            $MYSQL->bind('id', $user['id']);
+            if ($MYSQL->query('UPDATE {prefix}users SET additional_permissions = :additional_permissions WHERE id = :id')) {
                 return true;
             } else {
                 return false;
@@ -206,8 +200,8 @@ class Tango_User
                 $msg['view_url'] = SITE_URL . '/conversations.php/cmd/view/v/' . $msg['id'];
                 $return[] = $msg;
             } else {
-                $MYSQL->where('id', $msg['origin_message']);
-                $origin = $MYSQL->get('{prefix}messages');
+                $MYSQL->bind('id', $msg['origin_message']);
+                $origin = $MYSQL->query('SELECT * FROM {prefix}messages WHERE id = :id');
                 $receiver = $TANGO->user($msg['message_receiver']);
                 $sender = $TANGO->user($msg['message_sender']);
                 $msg['message_receiver'] = $receiver['username'];
