@@ -126,23 +126,22 @@ function users_online()
  */
 function listThemes()
 {
-    if (BASEPATH == "Staff") {
+    global $MYSQL;
+    /*if (BASEPATH == "Staff") {
         $directory = scandir('../public/themes');
     } else {
         $directory = scandir('public/themes');
     }
     unset($directory['0']);
     unset($directory['1']); //unset($directory['2']);//Remove ".", ".." and "index.html"
+    */
+    $query = $MYSQL->query("SELECT * FROM {prefix}themes");
     $return = array();
-    foreach ($directory as $t) {
-        if (is_dir('public/themes/' . $t)) {
-
-            $return[] = array(
-                'change_link' => SITE_URL . '/profile.php/cmd/theme/set/' . $t,
-                'theme_name' => $t
-            );
-
-        }
+    foreach ($query as $t) {
+        $return[] = array(
+            'change_link' => SITE_URL . '/profile.php/cmd/theme/set/' . $t['id'],
+            'theme_name' => $t['theme_name']
+        );
     }
     $return[] = array(
         'change_link' => SITE_URL . '/profile.php/cmd/theme/set/default',

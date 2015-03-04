@@ -78,12 +78,14 @@ class Tango_Template
                                 {prefix}themes");
         $theme = array();
         foreach( $query as $t ) {
-            $theme[$t['theme_name']] = $t;
+            $theme[$t['id']] = $t;
         }
         //die($this->theme);
         $chosen_theme = null;
         if( $TANGO->sess->isLogged ) {
             if( $TANGO->sess->data['chosen_theme'] == "0" ) {
+                //$MYSQL->bind('id', $TANGO->data['site_theme']);
+                //$t_query      = $MYSQL->query("SELECT * FROM {prefix}themes WHERE id = :id");
                 $chosen_theme = $TANGO->data['site_theme'];
             } else {
                 $chosen_theme = $TANGO->sess->data['chosen_theme'];
@@ -115,7 +117,7 @@ class Tango_Template
         } else {
             $chosen_theme = $TANGO->data['site_theme'];
         }
-
+        //die(var_dump($theme['3']));
         if( !isset($theme[$this->theme]) ) {
             $this->json_data = json_decode($theme[$TANGO->data['site_theme']]['theme_json_data'], true);
         } elseif( $chosen_theme !== $TANGO->data['site_theme'] ) {

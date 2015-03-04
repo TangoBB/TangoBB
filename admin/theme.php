@@ -11,7 +11,11 @@ $notice = '';
 
 if ($PGET->g('set_default')) {
     $default = clean($PGET->g('set_default'));
-    if (in_array($default, $directory)) {
+
+    $MYSQL->bind('id', $default);
+    $query = $MYSQL->query("SELECT * FROM {prefix}themes WHERE id = :id");
+
+    if ( $query ) {
 
         /*$data = array(
             'site_theme' => $default
@@ -23,7 +27,7 @@ if ($PGET->g('set_default')) {
             //$MYSQL->update('{prefix}generic', $data);
             $MYSQL->query('UPDATE {prefix}generic SET site_theme = :site_theme WHERE id = 1');
             $notice .= $ADMIN->alert(
-                'Theme <strong>' . $default . '</strong> has been set as default!',
+                'Theme <strong>' . $query['0']['theme_name'] . '</strong> has been set as default!',
                 'success'
             );
         } catch (mysqli_sql_exception $e) {
@@ -89,7 +93,7 @@ $query = $MYSQL->query("SELECT * FROM {prefix}themes");
 
 $themes = '';
 foreach( $query as $t ) {
-    $set = ($TANGO->data['site_theme'] == $t['theme_name']) ? ' class="success" title="Theme is currently set to default."' : '';
+    $set = ($TANGO->data['site_theme'] == $t['id']) ? ' class="success" title="Theme is currently set to default."' : '';
     $themes .= '<tr' . $set . '>
                   <td>' . $t['theme_name'] . '</td>
                     <td>
@@ -99,7 +103,7 @@ foreach( $query as $t ) {
                         </button>
                         <span class="dropdown-arrow dropdown-arrow-inverse"></span>
                           <ul class="dropdown-menu dropdown-inverse" role="menu">
-                            <li><a href="' . SITE_URL . '/admin/theme.php/set_default/' . $t['theme_name'] . '">Set as Default</a></li>
+                            <li><a href="' . SITE_URL . '/admin/theme.php/set_default/' . $t['id'] . '">Set as Default</a></li>
                             <li><a href="' . SITE_URL . '/admin/edit_theme.php/theme/' . $t['id'] . '">Edit Theme</a>
                             <li><a href="' . SITE_URL . '/admin/export_theme.php/theme/' . $t['id'] . '" target="_blank">Export Theme</a>
                             <li><a href="' . SITE_URL . '/admin/theme.php/delete_theme/' . $t['id'] . '">Delete Theme</a></li>

@@ -30,20 +30,22 @@ if ($PGET->g('set')) {
     );
     $content = $TANGO->tpl->breadcrumbs();
 
-    $themes = listThemes();
+
+    $get     = ($PGET->g('set') == "default")? '0' : $PGET->g('set');
+
+    $query   = $MYSQL->query("SELECT * FROM {prefix}themes");
     $t_names = array();
-
-    foreach ($themes as $name) {
-        $t_names[] = $name['theme_name'];
+    foreach( $query as $t ) {
+        $t_names[] = $t['id'];
     }
-    $t_names[] = 'default';
+    $t_names[] = 0;
 
-    if (in_array($PGET->g('set'), $t_names)) {
+    //die(var_dump($get));
 
-        $theme = ($PGET->g('set') == "default") ? '0' : clean($PGET->g('set'));
+    if (in_array($get, $t_names)) {
         $MYSQL->bindMore(
             array(
-                'chosen_theme' => $theme,
+                'chosen_theme' => $get,
                 'id' => $TANGO->sess->data['id']
             )
         );

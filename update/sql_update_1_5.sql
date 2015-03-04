@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `tan_user_visitors` (
 `profile_owner` int(11) NOT NULL,
 `visitor` int(11) NOT NULL,
 `timestamp` int(11) NOT NULL,
-PRIMARY KEY (`id`)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
+PRIMARY KEY (`id`)) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
 CREATE TABLE IF NOT EXISTS `tan_themes` (
@@ -29,3 +29,7 @@ ALTER TABLE `tan_forum_posts` ADD FULLTEXT search(post_title, post_content);
 
 ALTER TABLE `tan_generic`
   ADD COLUMN `number_subs` INT(3) DEFAULT 3  NOT NULL AFTER `post_merge`;
+
+ALTER TABLE `tan_themes` CHANGE `theme_json_data` `theme_json_data` LONGTEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+ALTER TABLE `tan_users` CHANGE `chosen_theme` `chosen_theme` INT NOT NULL DEFAULT '0';
