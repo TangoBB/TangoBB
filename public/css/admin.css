@@ -1,19 +1,157 @@
 /*
- * Admin Theme.
+ * TangoBB ACP Style Sheet
  */
- body {
- 	font-size: 15px;
- }
- .container {
- 	margin-top: 10px;
- }
-.options {
-	margin-top: 10px;
+
+@import url('bootstrap.min.css');
+@import url('acp_buttons.css');
+
+@import url('http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css');
+@import url('http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700,300');
+
+html, body {
+    height: 100%;
 }
- /* Logo */
- .logo {
- 	background-image: url('../img/tango_logo.png');
- 	height: 100px;
- 	width: 80px;
- 	margin: 0 auto;
- }
+
+body {
+    /* Font */
+    font-family: 'Open Sans', sans-serif;
+    color: #212121;
+}
+
+.row {
+    width: 100%;
+    height: 100%;
+    /* Position */
+    position: relative;
+}
+
+/* Logo */
+.logo {
+    background: url('../img/TangoBB-light.svg');
+    background-size: 100% 40px;
+    height: 40px;
+    width: 100%;
+    /* Margin */
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #8BC34A;
+    min-height: 100%;
+    height: 100%;
+    overflow-y: auto;
+    /* Font */
+    color: #fafafa;
+    /* Padding */
+    padding: 0;
+    /* Position */
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.sidebar > .container {
+    width: 100%;
+    /* Padding */
+    padding: 10px 0 10px 20px;
+}
+
+.main-box {
+    /* Position */
+    position: absolute;
+    top: 0;
+    right: -15px;
+    /* Margin */
+    margin: 0;
+}
+
+/* Sidebar Navigation */
+.sidebar > .container > .nav-pills {
+    width: 100%;
+}
+
+.sidebar > .container > .nav-pills > li > a {
+    background-color: #689F38;
+    /* Font */
+    color: #fff;
+    /* Padding */
+    padding: 10px 20px 10px 20px;
+    /* Border Radius */
+    -moz-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px;
+}
+
+.sidebar > .container > .nav-pills > li.active > a {
+    background-color: #8BC34A;
+}
+
+.sidebar > .container > .nav-pills > li.active > a:hover {
+    background-color: #33691E;
+    /* Transition */
+	-webkit-transition: background-color ease-in-out 0.15s;
+	        transition: background-color ease-in-out 0.15s;
+}
+
+.sidebar > .container > .nav-pills > li > a:hover {
+    background-color: #558B2F;
+    /* Transition */
+	-webkit-transition: background-color ease-in-out 0.15s;
+	        transition: background-color ease-in-out 0.15s;
+}
+
+.sidebar > .container > .sidebar-links {
+    /* Font */
+    text-align: center;
+    /* Margin */
+    margin: 10px 0 10px 0;
+}
+
+/* Main Content */
+.main-content {
+    /* Padding */
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    background-color: #fafafa;
+    min-width: 100%;
+    /* Border */
+    border: 1px solid #f5f5f5;
+    /* Border Radius */
+    -moz-border-radius: 0 5px 0 5px;
+    border-radius: 0 0 5px 5px;
+}
+
+/* Panel */
+.panel {
+    /* Border Radius */
+    -moz-border-radius: 2px;
+         border-radius: 2px;
+}
+
+/* Scrollbar */
+.sidebar::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+    /* Margin */
+    margin: 10px 0 10px 0;
+    / *Border Radius */
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar {
+    background-color: rgba(0, 0, 0, 0);
+	width: 5px;
+    /* Margin */
+    margin: 10px 0 10px 0;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.1);
+    opacity: 0.2;
+    /* Border Radius */
+    border-radius: 10px;
+}
