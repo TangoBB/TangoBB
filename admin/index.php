@@ -8,6 +8,12 @@ if (!$TANGO->perm->check('access_administration')) {
 }//Checks if user has permission to create a thread.
 require_once('template/top.php');
 
+echo '<div class="col-md-12">
+        <div class="page-header">
+          <h1>Administration Panel</h1>
+        </div>
+      </div>';
+
 $versions = @file_get_contents('http://api.codetana.com/iko/version_list.php'); //@jtPox insert the real IP here
 if ($versions != '') {
     $versionList = explode("|", $versions);

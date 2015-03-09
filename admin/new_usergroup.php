@@ -37,15 +37,16 @@ if (isset($_POST['new'])) {
     try {
 
         NoCSRF::check('csrf_token', $_POST);
-        $name = clean($_POST['g_name']);
+        $name  = clean($_POST['g_name']);
         $style = clean($_POST['g_style']);
+        $perms = (!empty($_POST['permissions']))? $_POST['permissions'] : '';
 
-        if (list_permissions() == $_POST['permissions']) {
+        if (list_permissions() == $perms) {
             $permissions = '*';
-        } elseif (empty($_POST['permissions'])) {
+        } elseif (empty($perms)) {
             $permissions = '0';
         } else {
-            $permissions = implode(',', $_POST['permissions']);
+            $permissions = implode(',', $perms);
         }
 
         $permissions = clean($permissions);
