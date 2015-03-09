@@ -9,7 +9,7 @@ if (!defined('BASEPATH')) {
 
 abstract class TangoBB_Extensions_Setup
 {
-    public $extension_name = 'Iko Extension';
+    public $extension_name = 'TangoBB Extension';
 
     /* Required methods in order to get extension installed. */
     abstract public function __construct();

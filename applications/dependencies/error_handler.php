@@ -7,7 +7,7 @@ if (!defined('BASEPATH')) {
     die();
 }
 
-class Iko_ErrorHandler
+class TangoBB_ErrorHandler
 {
 
     protected $errors = array();

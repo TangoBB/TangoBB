@@ -8,7 +8,7 @@ if (!defined('BASEPATH')) {
     die();
 }
 
-class Iko_Validator
+class TangoBB_Validator
 {
 
     protected $errorHandler;
