@@ -11,7 +11,7 @@ $TANGO->tpl->getTpl('page');
 $content = '';
 
 if ($PGET->g('id')) {
-    $MYSQL->bind('id', $PET->g('id'));
+    $MYSQL->bind('id', $PGET->g('id'));
     $query = $MYSQL->query("SELECT * FROM {prefix}reports WHERE id = :id");
 
     if (!empty($query)) {
@@ -20,7 +20,7 @@ if ($PGET->g('id')) {
         $content .= $TANGO->tpl->entity(
             'success_notice',
             'content',
-            $notice
+            $LANG['mod']['reports']['delete']
         );
 
     } else {

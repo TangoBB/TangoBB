@@ -208,7 +208,8 @@ $LANG = array(
             'user' => 'Benutzer:',
             'reason' => 'Grund:',
             'reported_time' => 'Zeitpunkt:',
-            'no_reports' => 'Im Moment gibt es keine Meldungen.'
+            'no_reports' => 'Im Moment gibt es keine Meldungen.',
+            'delete' => 'Meldung wurde erfolgreich gelöscht.'
         ),
         'delete' => array(
             'delete' => 'Nachricht l&ouml;schen',

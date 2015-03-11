@@ -208,7 +208,8 @@ $LANG = array(
             'user' => 'User:',
             'reason' => 'Reason:',
             'reported_time' => 'Reported Time:',
-            'no_reports' => 'There are no reports at the moment.'
+            'no_reports' => 'There are no reports at the moment.',
+            'delete' => 'Report has been deleted.'
         ),
         'delete' => array(
             'delete' => 'Delete Post',

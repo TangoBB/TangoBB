@@ -207,7 +207,8 @@ $LANG = array(
             'user' => 'Utilisateur:',
             'reason' => 'Raison:',
             'reported_time' => 'Heure du signalement:',
-            'no_reports' => 'Il n\'y pas de signalement actuellement.'
+            'no_reports' => 'Il n\'y pas de signalement actuellement.',
+            'deleted' => 'Report has been deleted.' //please translate me
         ),
         'delete' => array(
             'delete' => 'Supprimer le message',
