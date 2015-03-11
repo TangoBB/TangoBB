@@ -140,12 +140,14 @@ function listThemes()
     foreach ($query as $t) {
         $return[] = array(
             'change_link' => SITE_URL . '/profile.php/cmd/theme/set/' . $t['id'],
-            'theme_name' => $t['theme_name']
+            'theme_name' => $t['theme_name'],
+            'id' => $t['id']
         );
     }
     $return[] = array(
         'change_link' => SITE_URL . '/profile.php/cmd/theme/set/default',
-        'theme_name' => 'Default'
+        'theme_name' => 'Default',
+        'id' => 0
     );
     return $return;
 }
