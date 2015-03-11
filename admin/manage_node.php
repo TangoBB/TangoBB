@@ -64,18 +64,36 @@ if ($PGET->g('toggle_lock')) {
  */
 if ($PGET->g('delete_node')) {
     $d_node = $PGET->g('delete_node');
-    /*$MYSQL->where('id', $d_node);
-    $query  = $MYSQL->get('{prefix}forum_node');*/
     $MYSQL->bind('id', $d_node);
     $query = $MYSQL->query('SELECT * FROM {prefix}forum_node WHERE id = :id');
 
     if (!empty($query)) {
 
-        //$MYSQL->where('id', $d_node);
         $MYSQL->bind('id', $d_node);
         try {
-            //$MYSQL->delete('{prefix}forum_node');
             $MYSQL->query('DELETE FROM {prefix}forum_node WHERE id = :id');
+            $MYSQL->bind('id', $d_node);
+            $qry_posts = $MYSQL->query('SELECT * FROM {prefix}forum_posts WHERE origin_node = :id');
+            foreach ($qry_posts as $post) {
+                $MYSQL->bind('id', $post['id']);
+                $MYSQL->query("DELETE FROM {prefix}forum_posts WHERE id = :id");
+                $MYSQL->bind('origin_thread', $post['id']);
+                $MYSQL->query("DELETE FROM {prefix}forum_posts WHERE origin_thread = :origin_thread");
+            }
+            $MYSQL->bind('parent_node', $d_node);
+            $qry_subs = $MYSQL->query('SELECT * FROM {prefix}forum_node WHERE parent_node = :parent_node');
+            foreach ($qry_subs as $sub) {
+                $MYSQL->bind('id', $sub['id']);
+                $MYSQL->query('DELETE FROM {prefix}forum_node WHERE id = :id');
+                $MYSQL->bind('id', $sub['id']);
+                $qry_posts = $MYSQL->query('SELECT * FROM {prefix}forum_posts WHERE origin_node = :id');
+                foreach ($qry_posts as $post) {
+                    $MYSQL->bind('id', $post['id']);
+                    $MYSQL->query("DELETE FROM {prefix}forum_posts WHERE id = :id");
+                    $MYSQL->bind('origin_thread', $post['id']);
+                    $MYSQL->query("DELETE FROM {prefix}forum_posts WHERE origin_thread = :origin_thread");
+                }
+            }
             $notice .= $ADMIN->alert(
                 'Node <strong>' . $query['0']['node_name'] . '</strong> has been deleted!',
                 'success'
