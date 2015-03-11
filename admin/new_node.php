@@ -44,7 +44,8 @@ if (isset($_POST['create'])) {
         $title = clean($_POST['node_title']);
         $desc = (!$_POST['node_desc']) ? '' : clean($_POST['node_desc']);
         $locked = (isset($_POST['lock_node'])) ? '1' : '0';
-        $labels = explode(PHP_EOL, $_POST['labels']);
+        $labels = trim($_POST['labels']);
+        $labels = explode(PHP_EOL, $labels);
         foreach ($_POST['allowed_ug'] as $ug) {
             $_POST['allowed_ug'][] = clean($ug);
         }
