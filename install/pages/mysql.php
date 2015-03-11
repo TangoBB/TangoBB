@@ -70,6 +70,9 @@ if (isset($_POST['submit'])) {
                            DROP TABLE IF EXISTS `" . $mysql_prefix . "thread_tracking`;
                            DROP TABLE IF EXISTS `" . $mysql_prefix . "countries`;
                            DROP TABLE IF EXISTS `" . $mysql_prefix . "themes`;
+                           DROP TABLE IF EXISTS `" . $mysql_prefix . "poll`;
+                           DROP TABLE IF EXISTS `" . $mysql_prefix . "poll_answers`;
+                           DROP TABLE IF EXISTS `" . $mysql_prefix . "poll_votes`;
                            ");
             $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "extensions` (`id` int(11) NOT NULL AUTO_INCREMENT,`extension_name` varchar(255) NOT NULL,`extension_folder` varchar(255) NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
@@ -111,6 +114,9 @@ if (isset($_POST['submit'])) {
             $stmt->bindParam(':sand', $sand);
             $stmt->bindParam(':blue', $blue);
             $stmt->execute();
+            $MYSQL->query("CREATE TABLE NOT EXISTS `" . $mysql_prefix . "poll` (`id` int(11) NOT NULL AUTO_INCREMENT, `question` varchar(255) NOT NULL, `thread_id` int(11) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
+            $MYSQL->query("CREATE TABLE NOT EXISTS `" . $mysql_prefix . "poll_answers` (`id` int(11) NOT NULL AUTO_INCREMENT, `poll_id` int(11) NOT NULL, `answer` varchar(255) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
+            $MYSQL->query("CREATE TABLE NOT EXISTS `" . $mysql_prefix . "poll_votes` (`id` int(11) NOT NULL AUTO_INCREMENT, `poll_id` int(11) NOT NULL, `answer_id` int(11) NOT NULL, `user_id` int(11) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
             $MYSQL->query("INSERT INTO `" . $mysql_prefix . "countries` (`iso`, `language`) VALUES ('AD', 'english'),
                                                                                                      ('AE', 'english'),

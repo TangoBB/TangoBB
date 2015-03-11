@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `tan_themes` (
   `theme_name` varchar(255) NOT NULL,
   `theme_version` varchar(255) NOT NULL DEFAULT '1',
   `theme_json_data` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 ALTER TABLE `tan_forum_posts` ADD FULLTEXT search(post_title, post_content);
 
@@ -42,3 +42,26 @@ CREATE TABLE `tan_labels`(
 
 ALTER TABLE `tan_forum_posts`
   ADD COLUMN `label` INT(11) NOT NULL AFTER `watchers`;
+
+CREATE TABLE `tan_poll` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `question` varchar(255) NOT NULL,
+  `thread_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tan_poll_answers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `poll_id` int(11) NOT NULL,
+  `answer` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tan_poll_votes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `poll_id` int(11) NOT NULL,
+  `answer_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+

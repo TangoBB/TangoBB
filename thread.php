@@ -32,6 +32,86 @@ if ($PGET->s(true)) {
         $time_post = simplify_time($query['0']['post_time'], @$TANGO->sess->data['location']);
         $user_joined = simplify_time($user['date_joined'], @$TANGO->sess->data['location']);
 
+        // Poll
+        $MYSQL->bind('thread_id', $node_id);
+        $qry_poll = $MYSQL->query("SELECT * FROM {prefix}poll WHERE thread_id = :thread_id LIMIT 1");
+        $poll_question = $qry_poll['0']['question'];
+        $poll_id = $qry_poll['0']['id'];
+        $MYSQL->bind('poll_id', $poll_id);
+        $user_voted = $MYSQL->query("SELECT user_id FROM {prefix}poll_votes WHERE poll_id = :poll_id");
+        foreach ($user_voted as $u) {
+            $users[] = $u['user_id'];
+        }
+        if (isset($_POST['submit_form']) && isset($_POST['vote']) && !in_array($TANGO->sess->data['id'], $users)) {
+            $MYSQL->bind('user_id', $TANGO->sess->data['id']);
+            $MYSQL->bind('answer_id', $_POST['vote']);
+            $MYSQL->bind('poll_id', $poll_id);
+            $MYSQL->query("INSERT INTO {prefix}poll_votes (user_id, answer_id, poll_id) VALUES (:user_id, :answer_id, :poll_id)");
+        }
+        $answers = array();
+        $poll_list = '';
+
+        $MYSQL->bind('poll_id', $poll_id);
+        $qry_answers = $MYSQL->query("SELECT * FROM {prefix}poll_answers WHERE poll_id = :poll_id");
+        foreach ($qry_answers as $answer) {
+            $answers[$answer['id']] = $answer['answer'];
+            $MYSQL->bind('answer_id', $answer['id']);
+            $qry_quan = $MYSQL->query("SELECT COUNT(answer_id) AS quan FROM {prefix}poll_votes WHERE answer_id = :answer_id");
+            $number[$answer['id']] = $qry_quan['0']['quan'];
+        }
+
+        if ($TANGO->sess->isLogged && !in_array($TANGO->sess->data['id'], $users)) {
+            foreach ($answers as $id => $answer) {
+                $form_answers .= '<input type="radio" name="vote" value="' . $id . '" id="a_' . $id . '" /> <label style="font-weight: normal;" for="a_' . $id . '">' . $answer . '</label><br />';
+            }
+            $poll_list = $TANGO->tpl->entity(
+                'poll_form',
+                array(
+                    'answers'
+                ),
+                array(
+                    $form_answers
+                )
+            );
+        } else {
+            $MYSQL->bind('poll_id', $poll_id);
+            $total_qnt = $MYSQL->query("SELECT COUNT(poll_id) AS qnt FROM {prefix}poll_votes WHERE poll_id = :poll_id");
+            $total_qnt = $total_qnt['0']['qnt'];
+            foreach ($answers as $id => $answer) {
+
+                $percentage = $number[$id] / $total_qnt * 100;
+                $poll_list .= $TANGO->tpl->entity(
+                    'poll_list',
+                    array(
+                        'answer',
+                        'now',
+                        'total',
+                        'percentage'
+                    ),
+                    array(
+                        $answer,
+                        $number[$id],
+                        $total_qnt,
+                        $percentage
+                    )
+                );
+
+            }
+        }
+        $poll = $TANGO->tpl->entity(
+            'poll_overview',
+            array(
+                'question',
+                'poll_list'
+            ),
+            array(
+                $poll_question,
+                $poll_list
+            )
+        );
+
+
+        // Breadcrumbs
         $TANGO->tpl->addBreadcrumb(
             $LANG['bb']['forum'],
             SITE_URL . '/forum.php'
@@ -310,7 +390,7 @@ if ($PGET->s(true)) {
                     $user['username_style'],
                     $user_joined['time'],
                     $user['post_count'],
-                    $TANGO->lib_parse->parse($query['0']['post_content']),
+                    $poll . $TANGO->lib_parse->parse($query['0']['post_content']),
                     $TANGO->lib_parse->parse($user['user_signature']),
                     $time_post['time'],
                     $thread_mod_tools,
