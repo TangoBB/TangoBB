@@ -33,3 +33,12 @@ ALTER TABLE `tan_generic`
 ALTER TABLE `tan_themes` CHANGE `theme_json_data` `theme_json_data` LONGTEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 
 ALTER TABLE `tan_users` CHANGE `chosen_theme` `chosen_theme` INT NOT NULL DEFAULT '0';
+
+CREATE TABLE `tan_labels`(
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `node_id` INT(11) NOT NULL,
+  `label` VARCHAR(1000) NOT NULL,
+  PRIMARY KEY (`id`))ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+ALTER TABLE `tan_forum_posts`
+  ADD COLUMN `label` INT(11) NOT NULL AFTER `watchers`;

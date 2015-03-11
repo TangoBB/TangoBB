@@ -28,7 +28,10 @@ class Tango_Node
             $closed = ($post['post_locked'] == "1") ? $TANGO->tpl->entity('thread_closed') : '';
             $stickied = ($post['post_sticky'] == "1") ? $TANGO->tpl->entity('thread_stickied') : '';
             $post_time = simplify_time($post['post_time'], @$TANGO->sess->data['location']);
-
+            if ($post['label'] != 0 || empty($post['label'])) {
+                $MYSQL->bind('id', $post['label']);
+                $label_qry = $MYSQL->query("SELECT label FROM {prefix}labels WHERE id = :id");
+            }
             $return .= $TANGO->tpl->entity(
                 'forum_listings_node_threads_posts',
                 array(
@@ -37,7 +40,8 @@ class Tango_Node
                     'user_avatar',
                     'post_time',
                     'latest_post',
-                    'status'
+                    'status',
+                    'label'
                 ),
                 array(
                     '<a href="' . SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id'] . '">' . $post['post_title'] . '</a>' . $closed . $stickied,
@@ -45,7 +49,8 @@ class Tango_Node
                     $user['user_avatar'],
                     '<span title="' . $post_time['tooltip'] . '">' . $post_time['time'] . '</span>',
                     $this->latestReply($post['id'], SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id']),
-                    $status
+                    $status,
+                    (empty($label_qry['0']['label'])) ? ('') : ($label_qry['0']['label'])
                 )
             );
         }

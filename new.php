@@ -126,10 +126,10 @@ if ($PGET->g('node')) {
 
         if (isset($_POST['create'])) {
             try {
-
                 NoCSRF::check('csrf_token', $_POST);
                 $thread_title = clean($_POST['title']);
                 $thread_cont = emoji_to_text($_POST['content']);
+                $label_id = $_POST['label'];
                 $MYSQL->bind('post_user', $TANGO->sess->data['id']);
                 $c_query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = :post_user ORDER BY post_time DESC LIMIT 1");
                 $c_query = (empty($c_query)) ? array(array('post_content' => '')) : $c_query;
@@ -155,7 +155,8 @@ if ($PGET->g('node')) {
                         'origin_node' => $node,
                         'post_type' => '1',
                         'last_updated' => $time,
-                        'watchers' => $TANGO->sess->data['id']
+                        'watchers' => $TANGO->sess->data['id'],
+                        'label' => $label_id
                     ));
 
                     /*
@@ -181,9 +182,9 @@ if ($PGET->g('node')) {
                     }
 
                     try {
-                        $MYSQL->query("INSERT INTO {prefix}forum_posts (post_title, title_friendly, post_content, post_tags, post_time, post_user, origin_node, post_type, last_updated, watchers)
+                        $MYSQL->query("INSERT INTO {prefix}forum_posts (post_title, title_friendly, post_content, post_tags, post_time, post_user, origin_node, post_type, last_updated, watchers, label)
                                          VALUES
-                                         (:post_title, :title_friendly, :post_content, :post_tags, :post_time, :post_user, :origin_node, :post_type, :last_updated, :watchers)");
+                                         (:post_title, :title_friendly, :post_content, :post_tags, :post_time, :post_user, :origin_node, :post_type, :last_updated, :watchers, :label)");
 
                         $MYSQL->bind('post_time', $time);
                         $tid = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_time = :post_time");
@@ -217,6 +218,18 @@ if ($PGET->g('node')) {
         define('CSRF_TOKEN', NoCSRF::generate('csrf_token'));
         define('CSRF_INPUT', '<input type="hidden" name="csrf_token" value="' . CSRF_TOKEN . '">');
 
+        $MYSQL->bind('node_id', $node);
+        $label_qry = $MYSQL->query("SELECT id,label FROM {prefix}labels WHERE node_id = :node_id");
+        $width = 100;
+        if (!empty($label_qry)) {
+            $width_labels = 15;
+            $width = $width - $width_labels;
+            $labels = '<select name="label" size="1" style="width: ' . $width_labels . '%; float: left;">';
+            foreach ($label_qry as $label) {
+                $labels .= '<option value="' . $label['id'] . '">' . $label['label'] . '</option>';
+            }
+            $labels .= '</select>';
+        }
         $content .= $TANGO->tpl->entity(
             'create_thread',
             array(
@@ -227,7 +240,9 @@ if ($PGET->g('node')) {
                 'title_name',
                 'editor_id',
                 'textarea_name',
-                'submit_name'
+                'submit_name',
+                'labels',
+                'width'
             ),
             array(
                 $breadcrumbs,
@@ -237,7 +252,9 @@ if ($PGET->g('node')) {
                 'title',
                 'editor',
                 'content',
-                'create'
+                'create',
+                $labels,
+                $width
             )
         );
         $icon_package = array();
