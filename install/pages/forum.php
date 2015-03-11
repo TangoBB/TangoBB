@@ -36,7 +36,7 @@ require_once('../../applications/config.php');
 - No racist comments.
 - Do not start a political discussion unless permitted.
 - No illegal stuff are to be posted on anywhere in the forum.';
-                $MYSQL->query("INSERT INTO `" . MYSQL_PREFIX . "generic` (`id`, `site_rules`, `site_name`, `site_theme`, `site_language`, `site_email`) VALUES ('1', '$rules', '$name', 'Sand', 'english', '$email');");
+                $MYSQL->query("INSERT INTO `" . MYSQL_PREFIX . "generic` (`id`, `site_rules`, `site_name`, `site_theme`, `site_language`, `site_email`) VALUES ('1', '$rules', '$name', '1', 'english', '$email');");
                 echo '<div class="alert alert-success">Success! <a href="javascript:return false;" onclick="javascript:ajaxLoad(\'pages/user.php\')">Continue</a>.</div>';
 
             }
