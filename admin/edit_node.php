@@ -91,29 +91,27 @@ if ($PGET->g('id')) {
                     $MYSQL->bind('parent_node', $parent_node);
                     $MYSQL->bind('allowed_usergroups', $all_u);
                     $MYSQL->bind('id', $id);
-
-                    $u_query = $MYSQL->query('UPDATE {prefix}forum_node SET node_name = :node_name,
-                                                                       name_friendly = :name_friendly,
-                                                                       node_desc = :node_desc,
-                                                                       node_locked = :node_locked,
-                                                                       in_category = :in_category,
-                                                                       node_type = :node_type,
-                                                                       parent_node = :parent_node,
-                                                                       allowed_usergroups = :allowed_usergroups
-                                                                       WHERE id = :id');
-                    $MYSQL->bind('node_id', $id);
-                    $MYSQL->query("DELETE FROM {prefix}labels WHERE node_id = :node_id");
-                    if (!empty($labels) && $labels[0] != "") {
-                        foreach ($labels as $label) {
-                            $MYSQL->bind('node_id', $id);
-                            $MYSQL->bind('label', $label);
-                            $MYSQL->query("INSERT INTO {prefix}labels (node_id, label) VALUES (:node_id, :label)");
+                    try {
+                        $u_query = $MYSQL->query('UPDATE {prefix}forum_node SET node_name = :node_name,
+                                                                           name_friendly = :name_friendly,
+                                                                           node_desc = :node_desc,
+                                                                           node_locked = :node_locked,
+                                                                           in_category = :in_category,
+                                                                           node_type = :node_type,
+                                                                           parent_node = :parent_node,
+                                                                           allowed_usergroups = :allowed_usergroups
+                                                                           WHERE id = :id');
+                        $MYSQL->bind('node_id', $id);
+                        $MYSQL->query("DELETE FROM {prefix}labels WHERE node_id = :node_id");
+                        if (!empty($labels) && $labels[0] != "") {
+                            foreach ($labels as $label) {
+                                $MYSQL->bind('node_id', $id);
+                                $MYSQL->bind('label', $label);
+                                $MYSQL->query("INSERT INTO {prefix}labels (node_id, label) VALUES (:node_id, :label)");
+                            }
                         }
-                    }
-
-                    if ($u_query) {
                         redirect(SITE_URL . '/admin/manage_node.php/notice/edit_success');
-                    } else {
+                    } catch (mysqli_sql_exception $e) {
                         throw new Exception ('Error updating node.');
                     }
 
