@@ -82,17 +82,17 @@ if ($PGET->g('id')) {
                         $node_type = 1;
                         $parent_node = 0;
                     }
-                        $MYSQL->bind('node_name', $title);
-                        $MYSQL->bind('name_friendly', title_friendly($title));
-                        $MYSQL->bind('node_desc', $desc);
-                        $MYSQL->bind('node_locked', $locked);
+                    $MYSQL->bind('node_name', $title);
+                    $MYSQL->bind('name_friendly', title_friendly($title));
+                    $MYSQL->bind('node_desc', $desc);
+                    $MYSQL->bind('node_locked', $locked);
                     $MYSQL->bind('in_category', $in_category);
                     $MYSQL->bind('node_type', $node_type);
                     $MYSQL->bind('parent_node', $parent_node);
-                        $MYSQL->bind('allowed_usergroups', $all_u);
-                        $MYSQL->bind('id', $id);
+                    $MYSQL->bind('allowed_usergroups', $all_u);
+                    $MYSQL->bind('id', $id);
 
-                        $u_query = $MYSQL->query('UPDATE {prefix}forum_node SET node_name = :node_name,
+                    $u_query = $MYSQL->query('UPDATE {prefix}forum_node SET node_name = :node_name,
                                                                        name_friendly = :name_friendly,
                                                                        node_desc = :node_desc,
                                                                        node_locked = :node_locked,
@@ -111,7 +111,7 @@ if ($PGET->g('id')) {
                         }
                     }
 
-                    if( $u_query ) {
+                    if ($u_query) {
                         redirect(SITE_URL . '/admin/manage_node.php/notice/edit_success');
                     } else {
                         throw new Exception ('Error updating node.');
