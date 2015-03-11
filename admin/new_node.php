@@ -78,12 +78,14 @@ if (isset($_POST['create'])) {
 
                 try {
                     $MYSQL->query('INSERT INTO {prefix}forum_node (node_name, node_desc, name_friendly, in_category, node_type, parent_node, allowed_usergroups) VALUES (:node_name, :node_desc, :name_friendly, :in_category, :node_type, :parent_node, :allowed_usergroups)', $data);
-                    $query = $MYSQL->query("SELECT LAST_INSERT_ID(id) AS LAST_ID FROM {prefix}forum_node ORDER BY id DESC LIMIT 1");
-                    $node_id = $query['0']['LAST_ID'];
-                    foreach ($labels as $label) {
-                        $MYSQL->bind('node_id', $node_id);
-                        $MYSQL->bind('label', $label);
-                        $MYSQL->query("INSERT INTO {prefix}labels (node_id, label) VALUES (:node_id, :label)");
+                    if (!empty($labels) && $labels[0] != "") {
+                        $query = $MYSQL->query("SELECT LAST_INSERT_ID(id) AS LAST_ID FROM {prefix}forum_node ORDER BY id DESC LIMIT 1");
+                        $node_id = $query['0']['LAST_ID'];
+                        foreach ($labels as $label) {
+                            $MYSQL->bind('node_id', $node_id);
+                            $MYSQL->bind('label', $label);
+                            $MYSQL->query("INSERT INTO {prefix}labels (node_id, label) VALUES (:node_id, :label)");
+                        }
                     }
                     redirect(SITE_URL . '/admin/manage_node.php/notice/create_success');
                 } catch (mysqli_sql_exception $e) {
