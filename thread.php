@@ -203,9 +203,11 @@ if ($PGET->s(true)) {
             $move_thread .= '<option value="' . $query['0']['origin_node'] . '">--' . $LANG['mod']['move']['move'] . '--</option>';
             foreach (list_forums() as $list_f) {
                 if ($list_f['id'] == $query['0']['id']) {
-                    $move_thread .= '<option value="' . $list_f['id'] . '" checked>' . $list_f['name'] . '</option>';
+                    $name         = ( $list_f['parent_node'] == 0 )? $list_f['name'] : '> ' . $list_f['name'];
+                    $move_thread .= '<option value="' . $list_f['id'] . '" SELECTED>' . $name . '</option>';
                 } else {
-                    $move_thread .= '<option value="' . $list_f['id'] . '">' . $list_f['name'] . '</option>';
+                    $name         = ( $list_f['parent_node'] == 0 )? $list_f['name'] : '> ' . $list_f['name'];
+                    $move_thread .= '<option value="' . $list_f['id'] . '">' . $name . '</option>';
                 }
             }
             $move_thread .= '</select></form>';

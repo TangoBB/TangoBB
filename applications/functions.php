@@ -462,7 +462,8 @@ function list_forums()
     foreach ($query as $node) {
         $return[] = array(
             'id' => $node['id'],
-            'name' => $node['node_name']
+            'name' => $node['node_name'],
+            'parent_node' => $node['parent_node']
         );
     }
     return $return;
