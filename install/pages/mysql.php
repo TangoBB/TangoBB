@@ -114,9 +114,9 @@ if (isset($_POST['submit'])) {
             $stmt->bindParam(':sand', $sand);
             $stmt->bindParam(':blue', $blue);
             $stmt->execute();
-            $MYSQL->query("CREATE TABLE NOT EXISTS `" . $mysql_prefix . "poll` (`id` int(11) NOT NULL AUTO_INCREMENT, `question` varchar(255) NOT NULL, `thread_id` int(11) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
-            $MYSQL->query("CREATE TABLE NOT EXISTS `" . $mysql_prefix . "poll_answers` (`id` int(11) NOT NULL AUTO_INCREMENT, `poll_id` int(11) NOT NULL, `answer` varchar(255) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
-            $MYSQL->query("CREATE TABLE NOT EXISTS `" . $mysql_prefix . "poll_votes` (`id` int(11) NOT NULL AUTO_INCREMENT, `poll_id` int(11) NOT NULL, `answer_id` int(11) NOT NULL, `user_id` int(11) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
+            $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "poll` (`id` int(11) NOT NULL AUTO_INCREMENT, `question` varchar(255) NOT NULL, `thread_id` int(11) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
+            $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "poll_answers` (`id` int(11) NOT NULL AUTO_INCREMENT, `poll_id` int(11) NOT NULL, `answer` varchar(255) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
+            $MYSQL->query("CREATE TABLE IF NOT EXISTS `" . $mysql_prefix . "poll_votes` (`id` int(11) NOT NULL AUTO_INCREMENT, `poll_id` int(11) NOT NULL, `answer_id` int(11) NOT NULL, `user_id` int(11) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
             $MYSQL->query("INSERT INTO `" . $mysql_prefix . "countries` (`iso`, `language`) VALUES ('AD', 'english'),
                                                                                                      ('AE', 'english'),
