@@ -66,7 +66,11 @@ if (isset($_POST['signin'])) {
 
             $remember = (isset($_POST['remember'])) ? true : false;
             $TANGO->sess->assign($email, $remember);
-            header('refresh:3;url=' . SITE_URL . '/forum.php');
+            if (isset($_POST['current_url']) && !empty($_POST['current_url'])) {
+                header('refresh:3;url=http://' . $_POST['current_url']);
+            } else {
+                header('refresh:3;url=' . SITE_URL . '/forum.php');
+            }
 
             $content .= $TANGO->tpl->entity(
                 'success_notice',

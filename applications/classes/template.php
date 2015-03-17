@@ -32,6 +32,7 @@ class Tango_Template
         $this->addParam('bb_stat_users', stat_users());
         $this->addParam('bb_software_version', TANGOBB_VERSION);
         $this->addParam('users_online', users_online());
+        $this->addParam('current_url', $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
 
         //Globally adding parameters for captcha.
 
