@@ -585,13 +585,15 @@ if ($PGET->s(true)) {
                     'smilies',
                     'misc',
                     'food',
-                    'animals'
+                    'animals',
+                    'plants'
                 ),
                 array(
                     $icon_package['smilies'],
                     $icon_package['misc'],
                     $icon_package['food'],
-                    $icon_package['animals']
+                    $icon_package['animals'],
+                    $icon_package['plants']
                 )
             );
         }
