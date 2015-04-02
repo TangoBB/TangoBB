@@ -223,11 +223,8 @@ class Tango_Node
             $MYSQL->bind('id', $thread_id);
             $query = $MYSQL->query("SELECT post_time FROM {prefix}forum_posts WHERE origin_thread = :origin_thread OR id = :id ORDER BY post_time DESC");
             if (isset($tracker['last_visit'])) {
-                foreach ($query as $post) {
-                    if ($post['post_time'] > $tracker['last_visit']) {
-                        $return = 'unread';
-                        break;
-                    }
+                if ($query['0']['post_time'] > $tracker['last_visit']) {
+                    $return = 'unread';
                 }
             }
 
