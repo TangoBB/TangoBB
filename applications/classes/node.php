@@ -68,10 +68,8 @@ class Tango_Node
         $MYSQL->bind('origin_thread', $id);
         $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_thread = :origin_thread AND post_type = 2 ORDER BY post_time DESC");
         if (!empty($query)) {
-            $MYSQL->bind('origin_thread', $query['0']['origin_thread']);
-            $q = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_thread = :origin_thread");
 
-            $q = (count($q) / POST_RESULTS_PER_PAGE);
+            $q = (count($query) / POST_RESULTS_PER_PAGE);
             $page = ($q > 1) ? '/page/' . ceil($q) . '/' : '';
 
             $user = $TANGO->user($query['0']['post_user']);
@@ -110,7 +108,7 @@ class Tango_Node
 
             $MYSQL->bind('user_id', $user);
             $MYSQL->bind('thread_id', $thread_id);
-            $tracker = $MYSQL->query("SELECT * FROM {prefix}thread_tracking WHERE user_id = :user_id AND thread_id = :thread_id");
+            $tracker = $MYSQL->query("SELECT last_visit FROM {prefix}thread_tracking WHERE user_id = :user_id AND thread_id = :thread_id");
 
             if (!empty($tracker)) {
                 $return = array(
@@ -223,7 +221,7 @@ class Tango_Node
 
             $MYSQL->bind('origin_thread', $thread_id);
             $MYSQL->bind('id', $thread_id);
-            $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE origin_thread = :origin_thread OR id = :id ORDER BY post_time DESC");
+            $query = $MYSQL->query("SELECT post_time FROM {prefix}forum_posts WHERE origin_thread = :origin_thread OR id = :id ORDER BY post_time DESC");
             if (isset($tracker['last_visit'])) {
                 foreach ($query as $post) {
                     if ($post['post_time'] > $tracker['last_visit']) {
