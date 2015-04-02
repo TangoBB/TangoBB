@@ -117,9 +117,10 @@ if ($PGET->s(true)) {
 
         $results = '';
         $t = '';
-        foreach (getThreads($node_id, $page, $PGET->g('sort')) as $thread) {
+        /*foreach (getThreads($node_id, $page, $PGET->g('sort')) as $thread) {
             $t .= $TANGO->node->threads($thread['id']);
-        }
+        }*/
+        $t .= getThreads($node_id, $page, $PGET->g('sort'));
 
         $new_thread = '';
         if ($query['0']['node_locked'] == "0") {

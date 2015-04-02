@@ -11,6 +11,7 @@ if (!defined('BASEPATH')) {
 function getThreads($id, $page, $sort, $per_page = THREAD_RESULTS_PER_PAGE)
 {
     global $MYSQL;
+    global $TANGO;
 
     $start = (int)($page - 1) * $per_page;
     $per_page = (int)$per_page;
@@ -38,8 +39,41 @@ function getThreads($id, $page, $sort, $per_page = THREAD_RESULTS_PER_PAGE)
             break;
             break;
     }
+    $return = '';
+    foreach ($query as $post) {
+        $user = $TANGO->user($post['post_user']);
+        $closed = ($post['post_locked'] == "1") ? $TANGO->tpl->entity('thread_closed') : '';
+        $stickied = ($post['post_sticky'] == "1") ? $TANGO->tpl->entity('thread_stickied') : '';
+        $post_time = simplify_time($post['post_time'], @$TANGO->sess->data['location']);
+        $status = $TANGO->node->thread_new_posts($post['id']);
+        if ($post['label'] != 0 || empty($post['label'])) {
+            $MYSQL->bind('id', $post['label']);
+            $label_qry = $MYSQL->query("SELECT label FROM {prefix}labels WHERE id = :id");
+        }
+        $return .= $TANGO->tpl->entity(
+            'forum_listings_node_threads_posts',
+            array(
+                'thread_name',
+                'user',
+                'user_avatar',
+                'post_time',
+                'latest_post',
+                'status',
+                'label'
+            ),
+            array(
+                '<a href="' . SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id'] . '">' . $post['post_title'] . '</a>' . $closed . $stickied,
+                '<a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a>',
+                $user['user_avatar'],
+                '<span title="' . $post_time['tooltip'] . '">' . $post_time['time'] . '</span>',
+                $TANGO->node->latestReply($post['id'], SITE_URL . '/thread.php/' . $post['title_friendly'] . '.' . $post['id']),
+                $status,
+                (empty($label_qry['0']['label'])) ? ('') : ($label_qry['0']['label'])
+            )
+        );
+    }
 
-    return $query;
+    return $return;
 }
 
 function fetchTotalThread($id)

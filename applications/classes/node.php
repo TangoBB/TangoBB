@@ -14,7 +14,7 @@ class Tango_Node
      * Putting the forum node together.
      * Breadcrumbs feature is to be postponed.
      */
-    public function threads($id)
+    /*public function threads($id)
     {
         global $MYSQL, $TANGO;
 
@@ -55,7 +55,7 @@ class Tango_Node
             );
         }
         return $return;
-    }
+    }*/
 
     /*
      * Adding latest reply to the thread.
