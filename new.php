@@ -209,7 +209,7 @@ if ($PGET->g('node')) {
                             'content',
                             $LANG['global_form_process']['thread_create_success']
                         );
-                        $community = $MYSQL->query("SELECT * FROM {prefix}users");
+                        $community = $MYSQL->query("SELECT id FROM {prefix}users");
                         foreach ($community as $user) {
                             $TANGO->node->thread_mark_unread($tid['0']['id'], $user['id'], '0');
                         }

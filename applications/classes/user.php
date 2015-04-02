@@ -243,6 +243,7 @@ class Tango_User
     {
         global $MYSQL, $TANGO, $LANG, $MAIL;
         $time = time();
+        $notice = '';
         if (in_array($type, $this->notice_type)) {
             switch ($type) {
                 //Mention notification.
@@ -326,7 +327,9 @@ class Tango_User
                 )
             );
         }
-        if ($MYSQL->query("INSERT INTO {prefix}notifications (notice_content, notice_link, user, time_received) VALUES (:notice_content, :notice_link, :user, :time_received)") > 0) {
+
+        try {
+            $MYSQL->query("INSERT INTO {prefix}notifications (notice_content, notice_link, user, time_received) VALUES (:notice_content, :notice_link, :user, :time_received)");
             $info = str_replace(
                 '%url%',
                 $extra['link'],
@@ -347,7 +350,14 @@ class Tango_User
             } else {
                 return true;
             }
+        } catch (mysqli_sql_exception $e) {
+            throw new Exception ('FAIL: ' . $e);
         }
+        $notice .= $TANGO->tpl->entity(
+            'danger_notice',
+            'content',
+            $e->getMessage()
+        );
     }
 
 

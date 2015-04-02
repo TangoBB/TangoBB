@@ -179,13 +179,13 @@ if ($PGET->s(true)) {
                 } else {
                     $origin = thread($thread['id']);
                     /*
-                         * Notify the watchers of the thread.
-                          */
+                     * Notify the watchers of the thread.
+                     */
                     $watchers = array_filter(explode(',', $query['0']['watchers']));
                     if (!empty($watchers)) {
                         foreach ($watchers as $watcher) {
                             $user = $TANGO->user($watcher);
-                            if (!empty($user) && $user['id'] !== $query['0']['post_user']) {
+                            if (!empty($user) && $user['id'] !== $TANGO->sess->data['id']) {
                                 $TANGO->user->notifyUser(
                                     'reply',
                                     $user['id'],
@@ -205,8 +205,8 @@ if ($PGET->s(true)) {
                      */
                     preg_match_all('/@(\w+)/', $cont, $mentions);
                     $mentions = array_filter(array_unique($mentions['1']));
-                    if (!empty($mentions['1'])) {
-                        foreach ($mentions['1'] as $mention) {
+                    if (!empty($mentions)) {
+                        foreach ($mentions as $mention) {
                             $user = $TANGO->user($mention);
                             $TANGO->user->notifyUser(
                                 'mention',
