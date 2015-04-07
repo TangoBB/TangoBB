@@ -145,6 +145,7 @@ $LANG = array(
         'report_create_success' => 'Ihre Meldung wurde efolgreich &uuml;bermittelt!',
         'search_no_result' => 'Keine Suchergebnisse gefunden.',
         'search_no_user' => 'Du hast nicht nach Benutzern gesucht.',
+        'search_by' => 'von',
         'different_message_previous' => 'Bitte schreiben Sie eine Nachricht, die sich von der vorherigen unterscheidet.',
         'email_not_exist' => 'Die E-Mail Adresse exisitiert nicht.',
         'email_used' => 'E-Mail wird bereits verwendet, nutzen Sie bitte eine andere.',

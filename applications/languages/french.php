@@ -144,6 +144,7 @@ $LANG = array(
         'report_create_success' => 'Le signalement à été envoyez!',
         'search_no_result' => 'Aucun résultat ne correspond à votre recherche.',
         'search_no_user' => 'You did not searched for users.',          // Translate me
+        'search_by' => 'By',          // Translate me
         'different_message_previous' => 'Merci de ne pas ecrire 2 fois le même message.',
         'email_not_exist' => 'Adresse e-mail introuvable dans notre base!',
         'email_used' => 'Adresse e-mail déjà utilisée. Merci d\'en fournir une nouvelle',
