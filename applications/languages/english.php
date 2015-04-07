@@ -145,6 +145,7 @@ $LANG = array(
         'report_create_success' => 'Report has been successfully submitted!',
         'search_no_result' => 'No results.',
         'search_no_user' => 'You did not search for a user.',
+        'search_by' => 'By',
         'different_message_previous' => 'Please write a different message from your previous post.',
         'email_not_exist' => 'Email does not exist in our records!',
         'email_used' => 'Email is used, please use a new one.',

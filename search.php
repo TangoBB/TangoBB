@@ -60,9 +60,9 @@ if (isset($_POST['search_submit'])) {
                     $MYSQL->bind('origin', $origin);
                     $qry = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE id = :origin");
                     $title = 'Answer on thread ' . $qry['0']['post_title'];
-                    $threads[] .= '<a href="' . SITE_URL . '/thread.php/' . $qry['0']['title_friendly'] . '.' . $qry['0']['id'] . '">' . $title . '</a> <small>By <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a> (' . date('F j, Y', $re['post_time']) . ')</small><hr size="1" />';
+                    $threads[] .= '<a href="' . SITE_URL . '/thread.php/' . $qry['0']['title_friendly'] . '.' . $qry['0']['id'] . '">' . $title . '</a> <small>' . $LANG['global_form_process']['search_by'] . ' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a> (' . date('F j, Y', $re['post_time']) . ')</small><hr size="1" />';
                 } else {
-                    $threads[] .= '<a href="' . SITE_URL . '/thread.php/' . $re['title_friendly'] . '.' . $re['id'] . '">' . $re['post_title'] . '</a> <small>By <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a> (' . date('F j, Y', $re['post_time']) . ')</small><hr size="1" />';
+                    $threads[] .= '<a href="' . SITE_URL . '/thread.php/' . $re['title_friendly'] . '.' . $re['id'] . '">' . $re['post_title'] . '</a> <small>' . $LANG['global_form_process']['search_by'] . ' <a href="' . SITE_URL . '/members.php/cmd/user/id/' . $user['id'] . '">' . $user['username'] . '</a> (' . date('F j, Y', $re['post_time']) . ')</small><hr size="1" />';
                 }
 
             }
