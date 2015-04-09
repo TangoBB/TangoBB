@@ -98,6 +98,7 @@ if ($PGET->s(true)) {
 
             }
         }
+        $poll = '';
         if (!empty($poll_list) && !empty($poll_question)) {
             $poll = $TANGO->tpl->entity(
                 'poll_overview',
