@@ -98,17 +98,19 @@ if ($PGET->s(true)) {
 
             }
         }
-        $poll = $TANGO->tpl->entity(
-            'poll_overview',
-            array(
-                'question',
-                'poll_list'
-            ),
-            array(
-                $poll_question,
-                $poll_list
-            )
-        );
+        if (!empty($poll_list) && !empty($poll_question)) {
+            $poll = $TANGO->tpl->entity(
+                'poll_overview',
+                array(
+                    'question',
+                    'poll_list'
+                ),
+                array(
+                    $poll_question,
+                    $poll_list
+                )
+            );
+        }
 
 
         // Breadcrumbs
@@ -371,6 +373,7 @@ if ($PGET->s(true)) {
                     'username',
                     'date_joined',
                     'postcount',
+                    'poll',
                     'thread_content',
                     'user_signature',
                     'post_time',
@@ -392,7 +395,8 @@ if ($PGET->s(true)) {
                     $user['username_style'],
                     $user_joined['time'],
                     $user['post_count'],
-                    $poll . $TANGO->lib_parse->parse($query['0']['post_content']),
+                    $poll,
+                    $TANGO->lib_parse->parse($query['0']['post_content']),
                     $TANGO->lib_parse->parse($user['user_signature']),
                     $time_post['time'],
                     $thread_mod_tools,
