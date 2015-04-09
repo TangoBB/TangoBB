@@ -73,12 +73,23 @@ if ($PGET->g('delete_node')) {
         try {
             $MYSQL->query('DELETE FROM {prefix}forum_node WHERE id = :id');
             $MYSQL->bind('id', $d_node);
-            $qry_posts = $MYSQL->query('SELECT * FROM {prefix}forum_posts WHERE origin_node = :id');
+            $qry_posts = $MYSQL->query('SELECT id FROM {prefix}forum_posts WHERE origin_node = :id');
             foreach ($qry_posts as $post) {
                 $MYSQL->bind('id', $post['id']);
                 $MYSQL->query("DELETE FROM {prefix}forum_posts WHERE id = :id");
                 $MYSQL->bind('origin_thread', $post['id']);
                 $MYSQL->query("DELETE FROM {prefix}forum_posts WHERE origin_thread = :origin_thread");
+                // Deleting polls
+                $MYSQL->bind('thread_id', $post['id']);
+                $qry_polls = $MYSQL->query('SELECT id FROM {prefix}poll WHERE thread_id = :thread_id');
+                foreach ($qry_polls as $poll) {
+                    $MYSQL->bind('thread_id', $post['id']);
+                    $MYSQL->query('DELETE FROM {prefix}poll WHERE thread_id = :thread_id');
+                    $MYSQL->bind('poll_id', $poll['id']);
+                    $MYSQL->query('DELETE FROM {prefix}poll_answers WHERE poll_id = :poll_id');
+                    $MYSQL->bind('poll_id', $poll['id']);
+                    $MYSQL->query('DELETE FROM {prefix}poll_votes WHERE poll_id = :poll_id');
+                }
             }
             $MYSQL->bind('parent_node', $d_node);
             $qry_subs = $MYSQL->query('SELECT * FROM {prefix}forum_node WHERE parent_node = :parent_node');
@@ -86,14 +97,28 @@ if ($PGET->g('delete_node')) {
                 $MYSQL->bind('id', $sub['id']);
                 $MYSQL->query('DELETE FROM {prefix}forum_node WHERE id = :id');
                 $MYSQL->bind('id', $sub['id']);
-                $qry_posts = $MYSQL->query('SELECT * FROM {prefix}forum_posts WHERE origin_node = :id');
+                $qry_posts = $MYSQL->query('SELECT id FROM {prefix}forum_posts WHERE origin_node = :id');
                 foreach ($qry_posts as $post) {
                     $MYSQL->bind('id', $post['id']);
                     $MYSQL->query("DELETE FROM {prefix}forum_posts WHERE id = :id");
                     $MYSQL->bind('origin_thread', $post['id']);
                     $MYSQL->query("DELETE FROM {prefix}forum_posts WHERE origin_thread = :origin_thread");
+
+                    // Deleting polls
+                    $MYSQL->bind('thread_id', $post['id']);
+                    $qry_polls = $MYSQL->query('SELECT id FROM {prefix}poll WHERE thread_id = :thread_id');
+                    foreach ($qry_polls as $poll) {
+                        $MYSQL->bind('thread_id', $post['id']);
+                        $MYSQL->query('DELETE FROM {prefix}poll WHERE thread_id = :thread_id');
+                        $MYSQL->bind('poll_id', $poll['id']);
+                        $MYSQL->query('DELETE FROM {prefix}poll_answers WHERE poll_id = :poll_id');
+                        $MYSQL->bind('poll_id', $poll['id']);
+                        $MYSQL->query('DELETE FROM {prefix}poll_votes WHERE poll_id = :poll_id');
+                    }
                 }
             }
+            $MYSQL->bind('node_id', $d_node);
+            $MYSQL->query('DELETE FROM {prefix}labels WHERE node_id = :node_id');
             $notice .= $ADMIN->alert(
                 'Node <strong>' . $query['0']['node_name'] . '</strong> has been deleted!',
                 'success'
