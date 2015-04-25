@@ -21,7 +21,8 @@ class Tango_Session
         if ($this->check()) {
             $this->isLogged = true;
             $this->data = $TANGO->user($this->session['logged_user']);
-            $this->data['username_style'] = $TANGO->usergroup($this->data['user_group'], 'username_style', $this->data['username']);
+            $d_group    = ($this->data['display_group'] == 0)? $this->data['user_group'] : $this->data['display_group'];
+            $this->data['username_style'] = $TANGO->usergroup($d_group, 'username_style', $this->data['username']);
             if ($this->data['additional_permissions'] !== "0") {
                 $current_perms = $TANGO->usergroup($this->data['user_group'], 'permissions');
                 foreach ($this->data['additional_permissions'] as $ap) {

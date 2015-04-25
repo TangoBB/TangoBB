@@ -143,7 +143,10 @@ echo $ADMIN->box(
        <h4>Commands</h4>
        Change User\'s Usergroup: <code>cugroup &lt;username&gt; &lt;usergroup&gt;</code>
        <br />
-       Ban User: <code>ban &lt;username&gt;</code><br />
+       Change User\'s Display Group: <code>dugroup &lt;username&gt; &lt;usergroup&gt;</code>
+       <br />
+       Ban User: <code>ban &lt;username&gt;</code>
+       <br />
        Unban User: <code>unban &lt;username&gt;</code>'
 );
 

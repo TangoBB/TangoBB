@@ -65,3 +65,7 @@ CREATE TABLE `tan_poll_votes` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+ALTER TABLE `tan_users` ADD `display_group` INT NOT NULL AFTER `user_group`;
+
+INSERT INTO `tan_terminal` (`id`, `command_name`, `command_syntax`, `run_function`) VALUES (NULL, 'dugroup', 'dugroup %s %s', 'dugroup');
+

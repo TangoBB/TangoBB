@@ -27,6 +27,26 @@ function terminal_cugroup($username, $usergroup)
     }
 }
 
+function terminal_cdgroup($username $usergroup)
+{
+    global $MYSQL, $ADMIN;
+    if (!$g = usergroupExists($usergroup)) {
+        throw new Exception ('Usergroup does not exist.');
+    } else {
+        $MYSQL->bind('display_group', $g['id']);
+        $MYSQL->bind('username', $username);
+        try {
+            $MYSQL->query('UPDATE {prefix}users SET user_group = :user_group WHERE username = :username');
+            return $ADMIN->alert(
+                'User\'s display group has been changed!',
+                'success'
+            );
+        } catch (mysqli_sql_exception $e) {
+            throw new Exception ('Error changing user\'s usergroup.');
+        }
+    }
+}
+
 function terminal_ban($username)
 {
     global $MYSQL, $ADMIN;
