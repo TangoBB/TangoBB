@@ -14,7 +14,7 @@ echo '<div class="col-md-12">
         </div>
       </div>';
 
-$versions = @file_get_contents('http://api.codetana.com/iko/version_list.php'); //@jtPox insert the real IP here
+$versions = @file_get_contents('http://api.codetana.com/iko/version_list.php');
 if ($versions != '') {
     $versionList = explode("|", $versions);
     foreach ($versionList as $version) {
