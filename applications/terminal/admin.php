@@ -27,7 +27,7 @@ function terminal_cugroup($username, $usergroup)
     }
 }
 
-function terminal_cdgroup($username $usergroup)
+function terminal_dugroup($username, $usergroup)
 {
     global $MYSQL, $ADMIN;
     if (!$g = usergroupExists($usergroup)) {
@@ -36,7 +36,7 @@ function terminal_cdgroup($username $usergroup)
         $MYSQL->bind('display_group', $g['id']);
         $MYSQL->bind('username', $username);
         try {
-            $MYSQL->query('UPDATE {prefix}users SET user_group = :user_group WHERE username = :username');
+            $MYSQL->query('UPDATE {prefix}users SET display_group = :display_group WHERE username = :username');
             return $ADMIN->alert(
                 'User\'s display group has been changed!',
                 'success'
