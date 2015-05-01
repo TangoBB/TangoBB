@@ -6,7 +6,8 @@ require_once('../applications/wrapper.php');
 if (!$TANGO->perm->check('access_administration')) {
     redirect(SITE_URL);
 }//Checks if user has permission to create a thread.
-require_once('template/top.php');
+//require_once('template/top.php');
+echo $ADMIN->template('top');
 $notice = '';
 
 if (isset($_POST['run'])) {
@@ -150,5 +151,6 @@ echo $ADMIN->box(
        Unban User: <code>unban &lt;username&gt;</code>'
 );
 
-require_once('template/bot.php');
+//require_once('template/bot.php');
+echo $ADMIN->template('bot');
 ?>

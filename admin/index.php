@@ -6,7 +6,8 @@ require_once('../applications/wrapper.php');
 if (!$TANGO->perm->check('access_administration')) {
     redirect(SITE_URL);
 }//Checks if user has permission to create a thread.
-require_once('template/top.php');
+//require_once('template/top.php');
+echo $ADMIN->template('top');
 
 echo '<div class="col-md-12">
         <div class="page-header">
@@ -56,6 +57,7 @@ echo $ADMIN->box(
        To keep up with the updates on TangoBB, you can fork/watch the TangoBB Github repository or visit our website at <a href="http://tangobb.com">TangoBB.Com</a> regularly!'
 );
 
-require_once('template/bot.php');
+//require_once('template/bot.php');
+echo $ADMIN->template('bot');
 
 ?>

@@ -1,3 +1,6 @@
+<?php
+  global $ADMIN, $TANGO;
+?>
 </div>
 
               </div>

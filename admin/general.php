@@ -6,7 +6,8 @@ require_once('../applications/wrapper.php');
 if (!$TANGO->perm->check('access_administration')) {
     redirect(SITE_URL);
 }//Checks if user has permission to create a thread.
-require_once('template/top.php');
+//require_once('template/top.php');
+echo $ADMIN->template('top');
 $notice = '';
 
 function languagePackages()
@@ -41,6 +42,7 @@ if (isset($_POST['update'])) {
         $site_rules = $_POST['board_rules'];
         $enable_reg = (isset($_POST['register_enable'])) ? '1' : '0';
         $post_merge = (isset($_POST['post_merge'])) ? '1' : '0';
+        $flatui_ena = (isset($_POST['flatui_enable'])) ? '1' : '0';
         $number_subs = $_POST['number_subs'];
 
         $fb_app_id = $_POST['fb_app_id'];
@@ -98,7 +100,8 @@ if (isset($_POST['update'])) {
                 'smtp_address' => $smtp_add,
                 'smtp_port' => $smtp_port,
                 'smtp_username' => $smtp_user,
-                'smtp_password' => $smtp_pass
+                'smtp_password' => $smtp_pass,
+                'flat_ui_admin' => $flatui_ena
             ));
 
             try {
@@ -120,7 +123,8 @@ if (isset($_POST['update'])) {
                                                             smtp_address = :smtp_address,
                                                             smtp_port = :smtp_port,
                                                             smtp_username = :smtp_username,
-                                                            smtp_password = :smtp_password
+                                                            smtp_password = :smtp_password,
+                                                            flat_ui_admin = :flat_ui_admin
                                                             WHERE id = 1');
                 $notice .= $ADMIN->alert(
                     'Informations saved!',
@@ -144,8 +148,9 @@ $token = NoCSRF::generate('csrf_token');
 
 echo '<form action="" method="POST">';
 
-$reg_check = ($TANGO->data['register_enable'] == 1) ? ' CHECKED' : '';
-$merge_check = ($TANGO->data['post_merge'] == 1) ? ' CHECKED' : '';
+$reg_check    = ($TANGO->data['register_enable'] == 1) ? ' CHECKED' : '';
+$merge_check  = ($TANGO->data['post_merge'] == 1) ? ' CHECKED' : '';
+$flatui_check = ($TANGO->data['flat_ui_admin'])? 'CHECKED' : '';
 echo $ADMIN->box(
     'General Settings',
     $notice .
@@ -157,7 +162,8 @@ echo $ADMIN->box(
        <label for="number_subs">Number of shown subforums</label>
        <input type="text" class="form-control" name="number_subs" id="number_subs" value="' . $TANGO->data['number_subs'] . '" />
        <input type="checkbox" name="register_enable" value="1" id="reg_enable" ' . $reg_check . ' /> <label for="reg_enable">Enable Register</label><br />
-       <input type="checkbox" name="post_merge" value="1" id="post_merge" ' . $merge_check . ' /> <label for="post_merge">Merge Posts (<a href="#" title="Merge consecutive posts by the same user." id="tooltip">?</a>)</label>
+       <input type="checkbox" name="post_merge" value="1" id="post_merge" ' . $merge_check . ' /> <label for="post_merge">Merge Posts (<a href="#" title="Merge consecutive posts by the same user." id="tooltip">?</a>)</label><br />
+       <input type="checkbox" name="flatui_enable" value="1" id="flatui_enable" ' . $flatui_check . ' /> <label for="flatui_enable">Enable Flat UI for ACP (<a href="#" title="Use the old FlatUI interface on the administration panel." id="tooltip">?</a>)</label><br />
        <br />
        <label for="default_language">Default Languge</label><br />
        <select name="default_language" id="Default_language">
@@ -212,6 +218,7 @@ echo $ADMIN->box(
 
 echo '</form>';
 
-require_once('template/bot.php');
+//require_once('template/bot.php');
+echo $ADMIN->template('bot');
 
 ?>

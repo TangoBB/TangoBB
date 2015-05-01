@@ -1,3 +1,6 @@
+<?php
+  global $ADMIN, $TANGO;
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>

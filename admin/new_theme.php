@@ -7,7 +7,8 @@ if (!$TANGO->perm->check('access_administration')) {
     redirect(SITE_URL);
 }
 
-require_once('template/top.php');
+//require_once('template/top.php');
+echo $ADMIN->template('top');
 
 $notice = '';
 
@@ -86,6 +87,7 @@ echo $ADMIN->box(
     '6'
 );
 
-require_once('template/bot.php');
+//require_once('template/bot.php');
+echo $ADMIN->template('bot');
 
 ?>

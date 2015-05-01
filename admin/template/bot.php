@@ -1,4 +1,7 @@
-              </div>
+<?php
+  global $ADMIN, $TANGO;
+?>
+</div>
           </div>
       </div>
 

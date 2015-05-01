@@ -69,3 +69,5 @@ ALTER TABLE `tan_users` ADD `display_group` INT NOT NULL AFTER `user_group`;
 
 INSERT INTO `tan_terminal` (`id`, `command_name`, `command_syntax`, `run_function`) VALUES (NULL, 'dugroup', 'dugroup %s %s', 'dugroup');
 
+ALTER TABLE `tan_generic` ADD `flat_ui_admin` INT NOT NULL DEFAULT '0' AFTER `post_merge`;
+

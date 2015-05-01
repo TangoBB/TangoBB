@@ -1,0 +1,30 @@
+/*
+ * Admin Theme.
+ */
+ body {
+ 	font-size: 15px;
+ }
+
+ .container {
+ 	margin-top: 10px;
+ }
+
+.options {
+	margin-top: 10px;
+}
+
+ /* Logo */
+ .logo {
+ 	background: url('../img/TangoBB-dark.svg') no-repeat;
+    background-size: contain;
+ 	height: 50px;
+ 	width: 150px;
+     /* Margin */
+     margin: 0 auto;
+ }
+
+/* hs */
+h1, h2, h3, h4, h5 {
+    /* Margin */
+    margin: 0;
+}

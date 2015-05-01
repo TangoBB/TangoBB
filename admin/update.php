@@ -6,7 +6,8 @@ require_once('../applications/wrapper.php');
 if (!$TANGO->perm->check('access_administration')) {
     redirect(SITE_URL);
 }//Checks if user has permission to create a thread.
-require_once('template/top.php');
+//require_once('template/top.php');
+echo $ADMIN->template('top');
 $notice = '';
 
 $versions = @file_get_contents('http://api.codetana.com/iko/version_list.php'); //@jtPox insert the real IP here
@@ -58,6 +59,7 @@ if ($versions != '') {
 }
 
 
-require_once('template/bot.php');
+//require_once('template/bot.php');
+echo $ADMIN->template('bot');
 
 ?>

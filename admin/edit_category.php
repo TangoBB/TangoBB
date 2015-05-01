@@ -6,7 +6,8 @@ require_once('../applications/wrapper.php');
 if (!$TANGO->perm->check('access_administration')) {
     redirect(SITE_URL);
 }//Checks if user has permission to create a thread.
-require_once('template/top.php');
+//require_once('template/top.php');
+echo $ADMIN->template('top');
 $notice = '';
 
 function allowed_usergroups($groups)
@@ -115,5 +116,6 @@ if ($PGET->g('id')) {
     redirect(SITE_URL . '/admin');
 }
 
-require_once('template/bot.php');
+//require_once('template/bot.php');
+echo $ADMIN->template('bot');
 ?>
