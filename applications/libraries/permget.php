@@ -48,8 +48,9 @@ class Library_PermGET
      */
     public function s($with_id = false)
     {
+        $url        = ($this->isSSL())? 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] : 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         list($page) = sscanf(
-            'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
+            $url,
             SITE_URL . '/%s'
         );
         preg_match_all('/(.*).php/', $page, $verify);
@@ -87,6 +88,17 @@ class Library_PermGET
             return $r[0];
         } else {
             return '';
+        }
+    }
+
+    /*
+     * Check if the server is using a secure connection.
+     */
+    function isSSL() {
+        if( isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ) {
+            return true;
+        } else {
+            return false;
         }
     }
 
