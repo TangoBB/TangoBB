@@ -38,7 +38,7 @@ $SYNONYM = array(
     'XD' => ':laughingclosedeyes:',
 
     //cry
-    ':\'(' => ':cry:',
+    //':\'(' => ':cry:',
     ':-\'(' => ':cry:',
 
     //cool
@@ -50,7 +50,7 @@ $SYNONYM = array(
     ';-)' => ':wink:',
 
     //weary
-    ':/' => ':weary:',
+    //':/' => ':weary:',
     ':-/' => ':weary:',
     ':\\' => ':weary:',
     ':-\\' => ':weary:'

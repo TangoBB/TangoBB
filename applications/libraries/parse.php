@@ -158,7 +158,8 @@ class Library_Parse
 
         foreach ($ICONS as $var1 => $var2) {
             foreach ($var2 as $code => $translation) {
-                $result = str_replace($code, '<span style="font-size: 18px">' . $translation . '</span>', $result);
+                $result = str_replace(' ' . $code . ' ', '<span style="font-size: 18px">' . $translation . '</span>', $result);
+                //die('/(^|\s)(' . $code . ')(\s|\W|$)/g');
             }
         }
         $result = preg_replace(array_keys($this->custom_codes), array_values($this->custom_codes), $result);
