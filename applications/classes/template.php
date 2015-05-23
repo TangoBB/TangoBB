@@ -70,7 +70,7 @@ class Tango_Template
             </script>'
         );
 
-        if( $this->theme = $TANGO->data['site_theme'] ) {
+        if( $this->theme == $TANGO->data['site_theme'] ) {
            $MYSQL->bind('theme_name', $TANGO->data['site_theme']);
         } else {
 
@@ -305,7 +305,7 @@ class Tango_Template
         if( isset($this->json_data['templates'][$template]) ) {
             $return = $this->bladeSyntax($this->json_data['templates'][$template]);
             ob_start();
-            eval('?>' . $return . '<?php');
+            eval(' ?>' . $return . '<?php ');
             $return = ob_get_clean();
             ob_end_clean();
 
