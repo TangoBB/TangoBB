@@ -81,7 +81,7 @@ if (isset($user) && isset($userg) && isset($page_title)) {
 
     //Recent activity protocol
     $recent_activity = '';
-    $MYSQL->bind('post_user', $id);
+    $MYSQL->bind('post_user', $query['0']['id']);
     $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts WHERE post_user = :post_user ORDER BY post_time DESC LIMIT 15");
     foreach ($query as $ac) {
         //User created thread
