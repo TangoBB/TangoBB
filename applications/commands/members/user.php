@@ -10,6 +10,7 @@ if (!defined('BASEPATH')) {
 }
 $content = '';
 $page_title = '';
+$query      = null;
 
 if ($PGET->g('id')) {
     $id = clean($PGET->g('id'));
@@ -62,8 +63,9 @@ if ($PGET->g('id')) {
 } else {
     if ($TANGO->sess->isLogged) {
         $page_title .= $LANG['bb']['members']['profile_of'] . ' ' . $TANGO->sess->data['username'];
-        $userg = $TANGO->usergroup($TANGO->sess->data['user_group']);
-        $user = $TANGO->user($TANGO->sess->data['id']);
+        $userg      = $TANGO->usergroup($TANGO->sess->data['user_group']);
+        $user       = $TANGO->user($TANGO->sess->data['id']);
+        $query['0'] = $user;
     } else {
         redirect(SITE_URL . '/404.php');
     }
