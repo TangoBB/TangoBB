@@ -8,7 +8,8 @@ if (!defined('BASEPATH')) {
     die();
 }
 
-$page = (!$page) ? '1' : clean($PGET->g('page'));
+$page = (!$PGET->g('page')) ? '1' : clean($PGET->g('page'));
+//die($page);
 $sort = clean($PGET->g('sort'));
 
 $content = '';
@@ -71,9 +72,20 @@ $total_pages = ceil(fetchTotalMembers() / 20);
 
 $pag = '';
 if ($page != 1 && $total_pages > 1) {
-    $TANGO->tpl->addPagination(
+    /*$TANGO->tpl->addPagination(
         '<<',
         ($sort) ? SITE_URL . '/members.php/sort/' . $sort . '/page/' . $i : SITE_URL . '/members.php/page/' . intval($page - 1)
+    );*/
+    $pag .= $TANGO->tpl->entity(
+        'pagination_links',
+        array(
+            'url',
+            'page'
+        ),
+        array(
+            ($sort) ? SITE_URL . '/members.php/sort/' . $sort . '/page/' . $i : SITE_URL . '/members.php/page/' . intval($page - 1),
+            '&laquo;'
+        )
     );
 }
 if ($total_pages > 1) {
@@ -101,17 +113,39 @@ if ($total_pages > 1) {
                 );
             }
         } elseif (($i == 3 && $page != 1) || ($i == ($total_pages - 2) && $page != $total_pages)) {
-            $TANGO->tpl->addPagination(
+            /*$TANGO->tpl->addPagination(
                 '...',
                 '#'
+            );*/
+            $pag .= $TANGO->tpl->entity(
+                'pagination_links',
+                array(
+                    'url',
+                    'page'
+                ),
+                array(
+                    '#',
+                    '...'
+                )
             );
         }
     }
 }
 if ($page != $total_pages && $total_pages > 1) {
-    $TANGO->tpl->addPagination(
+    /*$TANGO->tpl->addPagination(
         '>>',
         ($sort) ? SITE_URL . '/members.php/sort/' . $sort . '/page/' . $i : SITE_URL . '/members.php/page/' . intval($page + 1)
+    );*/
+    $pag .= $TANGO->tpl->entity(
+        'pagination_links',
+        array(
+            'url',
+            'page'
+        ),
+        array(
+            ($sort) ? SITE_URL . '/members.php/sort/' . $sort . '/page/' . $i : SITE_URL . '/members.php/page/' . intval($page + 1),
+            '&raquo;'
+        )
     );
 }
 $content .= $TANGO->tpl->entity(

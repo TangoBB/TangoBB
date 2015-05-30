@@ -24,7 +24,8 @@ if ($PGET->g('theme')) {
             'theme_name' => $query['0']['theme_name'],
             'theme_version' => $query['0']['theme_version'],
             'templates' => $data['templates'],
-            'entities' => $data['entities']
+            'entities' => $data['entities'],
+            'buttons' => $data['buttons']
         );
 
 

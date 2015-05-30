@@ -84,7 +84,8 @@ if ($PGET->g('v')) {
                 'mod_tools',
                 'thread_notice',
                 'watch_link',
-                'flag'
+                'flag',
+                'poll'
             ),
             array(
                 $breadcrumb,
@@ -103,7 +104,8 @@ if ($PGET->g('v')) {
                 $thread_mod_tools,
                 '',
                 '',
-                '<span class="flag-icon flag-icon-' . strtolower($user['location']) . '"></span>'
+                '<span class="flag-icon flag-icon-' . strtolower($user['location']) . '"></span>',
+                ''
             )
         );
 

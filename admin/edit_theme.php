@@ -107,7 +107,7 @@ if( $PGET->g('theme') ) {
         }
 
         $btn     = '';
-        foreach( $json['buttons']as $name => $value ) {
+        foreach( $json['buttons'] as $name => $value ) {
             $value = htmlentities($value, ENT_NOQUOTES);
             $btn .= '<div class="panel panel-default">
                        <div class="panel-heading" role="tab" id="headingOne">

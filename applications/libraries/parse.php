@@ -158,7 +158,7 @@ class Library_Parse
 
         foreach ($ICONS as $var1 => $var2) {
             foreach ($var2 as $code => $translation) {
-                $result = str_replace(' ' . $code . ' ', '<span style="font-size: 18px">' . $translation . '</span>', $result);
+                $result = str_replace($code, '<span style="font-family:OpenSansEmoji;font-size:18px">' . $translation . '</span>', $result);
                 //die('/(^|\s)(' . $code . ')(\s|\W|$)/g');
             }
         }

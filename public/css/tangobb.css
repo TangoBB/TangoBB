@@ -28,3 +28,12 @@ ul.visitors_framed > li {
     /* Margin */
     margin: 5px;
 }
+
+/* Emoji Font */
+@font-face {
+    font-family: 'OpenSansEmoji';
+    src: url('../fonts/OpenSansEmoji.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}

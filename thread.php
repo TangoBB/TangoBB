@@ -39,6 +39,7 @@ if ($PGET->s(true)) {
         $poll_id = $qry_poll['0']['id'];
         $MYSQL->bind('poll_id', $poll_id);
         $user_voted = $MYSQL->query("SELECT user_id FROM {prefix}poll_votes WHERE poll_id = :poll_id");
+        $users      = array();
         foreach ($user_voted as $u) {
             $users[] = $u['user_id'];
         }
