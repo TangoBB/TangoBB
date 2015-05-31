@@ -60,7 +60,7 @@ if (isset($_POST['edit'])) {
                     $MYSQL->bind('user_avatar', $TANGO->sess->data['id'] . '.png');
                     $MYSQL->bind('id', $TANGO->sess->data['id']);
                     $MYSQL->query("UPDATE {prefix}users SET user_avatar = :user_avatar WHERE id = :id");
-                    $MYSQL->MYSQL->bind('id', $TANGO->sess->data['id']);
+                    $MYSQL->bind('id', $TANGO->sess->data['id']);
                     $MYSQL->query("UPDATE {prefix}users SET avatar_type = 0 WHERE id = :id");
                     $notice .= $TANGO->tpl->entity(
                         'success_notice',
