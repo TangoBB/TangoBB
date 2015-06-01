@@ -132,6 +132,33 @@ class Tango_Core
         }
     }
 
+    /*
+     * Retrieving language assets.
+     */
+    public function lang($string, $find = array(), $replace = array()) {
+        global $LANG;
+        $params = explode('.', $string);
+        $build  = '';
+        foreach( $params as $each ) {
+            $build .= '[\'' . $each . '\']';
+        }
+        $build = '$LANG' . $build . ';';
+        @eval('$build = ' . $build . ';');
+        if( empty($build) or !$build ) {
+            return false;
+        } else {
+
+            $f = array();
+            foreach( $find as $par ) {
+                $f[] = '%' . $par . '%';
+            }
+
+            $return = str_replace($f, $replace, $build);
+            return $return;
+
+        }
+    }
+
 }
 
 ?>
