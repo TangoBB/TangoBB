@@ -89,7 +89,7 @@ if ($check['php'] === true && $check['chmods'] === true) {
     </tr>
     <tr>
         <td>PHP Version</td>
-        <td><span class="label label-default">5.3.3 +</span></td>
+        <td><span class="label label-default">>= 5.3.7</span></td>
         <td><span class="label label-<?php echo $check['php_css']; ?>"><?php echo $check['php_version']; ?></span></td>
     </tr>
     <tr>
