@@ -2,7 +2,7 @@
     Checking your server.
 </div>
 <?php
-if (version_compare(PHP_VERSION, '5.3', '<')) {
+if (version_compare(PHP_VERSION, '5.5', '<')) {
     $check['php'] = false;
     $check['php_version'] = PHP_VERSION;
     $check['php_css'] = 'danger';
