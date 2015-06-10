@@ -12,7 +12,7 @@ $content = '';
 
 if ($PGET->g('thread')) {
 
-    $MYSQL->bind('id', $PET->g('thread'));
+    $MYSQL->bind('id', $PGET->g('thread'));
     $query = $MYSQL->query("SELECT * FROM {prefix}forum_posts");
 
     if (!empty($query)) {
