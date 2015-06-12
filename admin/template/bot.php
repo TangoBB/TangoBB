@@ -17,7 +17,7 @@
     <script type="text/javascript">
             $('.highlight').each(function(index) {
                 $(this).attr('id', 'code-' + index);
-                CodeMirror.fromTextArea(document.getElementById('code-' + index), {
+                var editor = CodeMirror.fromTextArea(document.getElementById('code-' + index), {
                         mode: "text/xml",
                         lineNumbers: true,
                         tabMode: "indent",
@@ -35,6 +35,9 @@
                         }
                     }
                 );
+                $('.collapse').on('shown.bs.collapse', function() {
+                  editor.refresh();
+                });
             });
     </script>
     <script src="<?php echo SITE_URL; ?>/public/js/bootstrap.min.js"></script>
