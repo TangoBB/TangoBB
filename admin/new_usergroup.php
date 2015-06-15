@@ -39,7 +39,7 @@ if (isset($_POST['new'])) {
 
         NoCSRF::check('csrf_token', $_POST);
         $name  = clean($_POST['g_name']);
-        $style = clean($_POST['g_style']);
+        $style = $_POST['g_style'];
         $perms = (!empty($_POST['permissions']))? $_POST['permissions'] : '';
 
         if (list_permissions() == $perms) {
