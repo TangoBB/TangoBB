@@ -2,6 +2,11 @@
 define('BASEPATH', 'Install');
 define('Install', '');
 require_once('../../applications/wrapper.php');
+
+if( version_compare(PHP_VERSION, '5.5.0', '<') ) {
+    require_once('../../applications/libraries/password.php');
+}
+
 require_once('../../applications/functions.php');
 ?>
 <div class="panel-heading">
