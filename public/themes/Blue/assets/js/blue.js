@@ -1,1 +1,0 @@
-$('.tooltip_toggle').tooltip();

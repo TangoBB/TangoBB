@@ -1,16 +1,9 @@
+ Hello! 
 [![TangoBB](https://raw.githubusercontent.com/Codetana/TangoBB/master/public/img/tangobb_logo.png "TangoBB")](http://iko.im "TangoBB")
-##The new simple bulletin board.
-Please note that this forum software will be as generic but a little complex on the theme design aspect as we want it to be very customizable for amateur web developers to learn.
-TangoBB is released under the MIT License.
+##2.0 Branch
+This branch facilitates the development of TangoBB 2.0. In this major development, we have decided that developing TangoBB in an MVC structure would be more appropriate. The list of planned dependencies will be listed down below.
 
-###Documentation
-The documentation can be found at the "Wiki" tab to the right!
+##Dependencies
 
-###Why are some classes named "Iko"?
-TangoBB's unofficial name is "Iko". The project has since been rebranded back to "TangoBB" due to popular demand.
-
-###Themes
-The theme repository can be located [here](https://github.com/Codetana/TangoBB-Themes).
-
-###Bitnami
-Use Bitnami? Soon you'll be able to install TangoBB (Iko) as a stack. [Vote here](https://bitnami.com/stack/iko).
+ - Laravel Framework
+ - More TBD
