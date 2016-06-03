@@ -4,7 +4,17 @@ This branch facilitates the development of TangoBB 2.0. In this major developmen
 
 ##Dependencies
 
- - Laravel Framework
- - [igaster/laravel-theme](https://github.com/igaster/laravel-theme)
- - [WysiBB Editor](https://github.com/wbb/wysibb)
- - More TBD
+- Laravel Framework
+- [igaster/laravel-theme](https://github.com/igaster/laravel-theme)
+- [WysiBB Editor](https://github.com/wbb/wysibb)
+- More TBD
+
+##Install
+*Do not use this in production.
+
+In order to try TangoBB 2.0 out in it's current development phase, you can clone the repository.
+####Commands to Run
+
+- `composer install`
+- `php artisan migrate`
+- `php artisan db:seed`

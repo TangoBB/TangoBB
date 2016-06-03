@@ -14,11 +14,11 @@ class CreateSettingsTable extends Migration
     {
         //Creating the settings table.
         Schema::create('settings', function(Blueprint $table) {
-            $table->primary('id');
+            $table->increments('id');
             $table->string('forum_name');
             $table->string('forum_theme');
             $table->timestamps();
-        })
+        });
     }
 
     /**

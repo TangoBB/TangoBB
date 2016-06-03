@@ -12,5 +12,9 @@ class SettingsTableSeeder extends Seeder
     public function run()
     {
         //
+    	DB::table('settings')->insert([
+    		'forum_name' => 'Forum',
+    		'forum_theme' => 'default'
+    		]);
     }
 }

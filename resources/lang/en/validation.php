@@ -95,6 +95,12 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'username' => [
+            'auth_permission' => 'You do not have permission to authenticate.'
+        ],
+        'password' => [
+            'auth_check' => 'Invalid authentication details.'
+        ]
     ],
 
     /*

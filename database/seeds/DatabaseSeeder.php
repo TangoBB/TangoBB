@@ -11,10 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
-        DB::table('settings')->insert([
-        	'forum_name' => 'Forum',
-        	'forum_theme' => 'default'
-        	]);
+        $this->call(UsersTableSeeder::class);
+        $this->call(CategoryTableSeeder::class);
+        $this->call(GroupTableSeeder::class);
+        $this->call(PermissionsTableSeeder::class);
+        $this->call(PostsTableSeeder::class);
+        $this->call(SettingsTableSeeder::class);
     }
 }

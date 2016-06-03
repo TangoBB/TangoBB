@@ -160,6 +160,14 @@ return [
          * Dependencies
          */
         igaster\laravelTheme\themeServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
+
+        /*
+         * TangoBB
+         */
+        App\Providers\ViewsServiceProvider::class,
+        App\Providers\ForumServiceProvider::class,
+        App\Providers\FormServiceProvider::class,
 
     ],
 
@@ -211,6 +219,12 @@ return [
          * Dependencies
          */
         'Theme' => igaster\laravelTheme\Facades\Theme::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+
+        /*
+         * TangoBB
+         */
+        'Bbcode' => App\Tango\Libraries\bbcode::class,
 
     ],
 
