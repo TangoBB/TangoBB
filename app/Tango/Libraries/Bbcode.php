@@ -58,7 +58,7 @@ class Bbcode
             $replace[] = $action['replace'];
         }
 
-        return htmlspecialchars(preg_replace($search, $replace, $string), ENT_NOQUOTES);
+        return preg_replace($search, $replace, htmlspecialchars($string, ENT_NOQUOTES));
     }
 
     public function editorButtons()
