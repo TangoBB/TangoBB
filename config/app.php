@@ -225,7 +225,7 @@ return [
         /*
          * TangoBB
          */
-        'Bbcode' => App\Tango\Libraries\bbcode::class,
+        'Bbcode' => App\Tango\Libraries\Bbcode::class,
 
     ],
 
