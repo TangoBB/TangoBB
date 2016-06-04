@@ -45,7 +45,7 @@
 			<div class="card">
 				<div class="card-block">
 					<h4 class="card-title"><a href="{{ route('Forum::Thread::Thread', ['slug' => $th->post_slug, 'id' => $th->id]) }}">{{ $th->post_name }}</a></h4>
-					<p class="card-text">{{ $app->Bbcode->strip($th->post_content) }}</p>
+					<p class="card-text">{{ substr($app->Bbcode->strip($th->post_content), 0, 50) }}...</p>
 				</div>
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item"><small class="text-muted">Last updated <span title="{{ date('D, F Y', strtotime($th->updated_at)) }}">{{ date('l, g:h a', strtotime($th->updated_at)) }}</span></small></li>
