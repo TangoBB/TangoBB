@@ -91,7 +91,7 @@ class AuthController extends Controller
     	if( $request->isMethod('post') )
     	{
     		$validator = $this->SignUpRequest($request);
-    		$validator = $this->LogRequest($request);
+    		//$validator = $this->LogRequest($request);
     		if( !is_object($validator) )
     		{
     			return redirect()->route('Index::Index');

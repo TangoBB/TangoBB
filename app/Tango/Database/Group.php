@@ -14,4 +14,6 @@ class Group extends Model
     	'group_style',
     	'group_permissions'
     ];
+
+    public $timestamps = true;
 }

@@ -8,24 +8,34 @@ $(document).ready(function() {
 			buttons: "{{ $editor_buttons }}"
 		};
 		$('#bbcode_editor').wysibb(wbbOpt);
+		//$('#bbcode_editor').val($('#bbcode_editor').bbcode());
 	});
 
 	$('form[data-process-method="json"]').on('submit', function(e) {
 		e.preventDefault();
 
-		$().after();
+		//$().after();
 		var alertSuccess = $('div[data-type="alert-success"]');
 		var alertFailure = $('div[data-type="alert-fail"]');
 
 		var loadSpan     = $('span[data-content="loader"]');
 		loadSpan.html(' <img src="' + loader + '" />');
 
+		var contentId    = $(this).attr('data-content-id');
+
 		var action      = $(this).attr('data-process-action');
 		var processUrl;
 		var redirectUrl = null;
+		var showHtml    = false;
 
 		//var serialData = $(this).find('input, select, textarea').serialize();
+		if($('#bbcode_editor').length)
+		{
+			$('#bbcode_editor').val($('#bbcode_editor').bbcode());
+		}
+
 		var serialData = $(this).serialize();
+		console.log(serialData);
 		//console.log($(this).serialize());
 
 		switch( action ) {
@@ -36,6 +46,15 @@ $(document).ready(function() {
 			break;
 			case 'signup':
 			processUrl = '{{ route('Json::Account::SignUp') }}';
+			break;
+
+			case 'thread.create':
+			processUrl = '{{ url('json/forum/thread/create/') }}/' + contentId;
+			break;
+
+			case 'thread.reply':
+			processUrl = '{{ url('json/forum/thread/reply/') }}/' + contentId;
+			showHtml   = true;
 			break;
 		}
 
@@ -61,6 +80,7 @@ $(document).ready(function() {
 		});
 
 		request.done(function(msg) {
+			console.log(msg);
 			var msg = jQuery.parseJSON(msg);
 			if( msg.success == 1 )
 			{
@@ -69,7 +89,15 @@ $(document).ready(function() {
 				{
 					if( typeof msg.action.displayText != 'undefined' && msg.action.displayText != null )
 					{
-						alertSuccess.html(msg.action.displayText).show();
+						console.log(msg.action.displayText);
+						if( showHtml === false )
+						{
+							alertSuccess.html(msg.action.displayText).show();
+						}
+						else
+						{
+							$('div[data-content-type="html-content"]').html(msg.action.displayText);
+						}
 					}
 
 					if( typeof msg.action.redirect != 'undefined' && msg.action.redirect != null )

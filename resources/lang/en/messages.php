@@ -14,5 +14,8 @@ return [
 	],
 	'logout' => [
 		'success' => 'You have been successfully logged out.'
+	],
+	'thread' => [
+		'reply_success' => 'Reply has been posted.'
 	]
 ];

@@ -13,4 +13,6 @@ class Settings extends Model
     	'forum_name',
     	'forum_theme'
     ];
+
+    public $timestamps = true;
 }

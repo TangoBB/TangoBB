@@ -6,6 +6,10 @@ nav.navbar {
 	margin-bottom: 20px;
 }
 
+#bbcode_editor {
+	min-height: 250px;
+}
+
 /* Jumbotron */
 .header-jumbotron {
 	/* Margin */

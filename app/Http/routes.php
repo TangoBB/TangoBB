@@ -38,8 +38,26 @@ Route::group(['as' => 'Json::', 'prefix' => 'json'], function() {
 
 		Route::post('signup', ['as' => 'SignUp', 'uses' => 'Account\AuthController@JsonSignUp']);
 	});
+
+	Route::group(['as' => 'Forum::', 'prefix' => 'forum'], function() {
+		Route::group(['as' => 'Thread::', 'prefix' => 'thread'], function() {
+			Route::post('create/{id}', ['as' => 'Create', 'uses' => 'Forum\Category@JsonPost']);
+
+			Route::post('reply/{id}', ['as' => 'Reply', 'uses' => 'Forum\Thread@JsonReply']);
+		});
+	});
 });
 
 Route::group(['as' => 'Forum::'], function() {
-	Route::get('category/{slug}.{id}', ['as' => 'Category', 'uses' => 'Forum\Category@Index']);
+	Route::group(['as' => 'Category::'], function() {
+		Route::get('category/{slug}.{id}', ['as' => 'Category', 'uses' => 'Forum\Category@Index']);
+
+		Route::get('/category/{slug}.{id}/post', ['as' => 'Post', 'uses' => 'Forum\Category@Post']);
+		Route::post('/category/{slug}.{id}/post', ['as' => 'Post.Post', 'uses' => 'Forum\Category@Post']);
+	});
+
+	Route::group(['as' => 'Thread::'], function() {
+		Route::get('thread/{slug}.{id}', ['as' => 'Thread', 'uses' => 'Forum\Thread@Index']);
+		Route::post('thread/{slug}.{id}', ['as' => 'Thread.Post', 'uses' => 'Forum\Thread@Index']);
+	});
 });

@@ -18,6 +18,8 @@ class Category extends Model
     	'allowed_usergroup'
     ];
 
+    public $timestamps = true;
+
     public function Posts()
     {
         return $this->hasMany('App\Tango\Database\Post', 'category_id', 'id');

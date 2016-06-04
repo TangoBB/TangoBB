@@ -23,11 +23,11 @@
 		<form action="{{ route('Account::SignUp') }}" data-process-method="json" data-process-action="signup" method="post">
 			<div class="form-group">
 				<label for="username">Username</label>
-				<input type="text" name="username" id="username" class="form-control" />
+				<input type="text" name="username" id="username" class="form-control" value="{{ old('username') }}" />
 			</div>
 			<div class="form-group">
 				<label for="email">Email</label>
-				<input type="text" name="email" id="email" class="form-control" />
+				<input type="text" name="email" id="email" class="form-control" value="{{ old('email') }}" />
 			</div>
 			<div class="form-group">
 				<label for="password">Password</label>

@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Tango\Database\Permission as Permission;
+use Auth;
 
 class User extends Authenticatable
 {
@@ -14,10 +15,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'excluded_permissions'
+    'name',
+    'email',
+    'password',
+    'excluded_permissions'
     ];
 
     /**
@@ -26,8 +27,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+    'password', 'remember_token',
     ];
+
+    public $timestamps = true;
 
     public function Group()
     {
@@ -39,20 +42,45 @@ class User extends Authenticatable
         return 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($user->email))) .  "&s=" . $size;
     }
 
-    public function hasPermission($user, $permission)
+    public function hasPermission($user = null, $permission)
     {
         $perm       = Permission::where('permission_name', '=', $permission)->first();
-        if( !empty($perm) )
-        {
-            $user_group = $user->Group()->first();
-            if( $user_group == "*" )
+        if( !empty($perm) ) {
+            $group_permissions    = '';
+            $excluded_permissions = '';
+            if( Auth::check() )
+            {
+                if( $user == null )
+                {
+                    $auth                 = Auth::User();
+                    $group_permissions    = $auth->Group()->first()['group_permissions'];
+                    $excluded_permissions = $auth->excluded_permissions;
+                }
+            }
+            else
+            {
+                if( $user == null )
+                {
+                    $group_permissions    = '1';//Give barebones permission to non-logged user.
+                    $excluded_permissions = '';
+                }
+            }
+
+            if( $user !== null )
+            {
+                $group_permissions    = $user->Group()->first()['group_permissions'];
+                $excluded_permissions = $user->excluded_permissions;
+            }
+
+            //die(var_dump($group_permissions));
+            if( $group_permissions == "*" )
             {
                 return true;
             }
             else
             {
-                $perms    = explode(',', $user_group['group_permissions']);
-                $ex_perms = explode(',', $user->excluded_permissions);
+                $perms    = explode(',', $group_permissions);
+                $ex_perms = explode(',', $excluded_permissions);
                 $ov_perms = [];
 
                 foreach( $perms as $p )
