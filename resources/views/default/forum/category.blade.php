@@ -41,7 +41,7 @@
 <div class="col-sm-9">
 	<div class="row">
 		@foreach( $threads as $th )
-		<div class="col-sm-4">
+		<div class="col-sm-4" data-thread-id="{{ $th->id }}">
 			<div class="card">
 				<div class="card-block">
 					<h4 class="card-title"><a href="{{ route('Forum::Thread::Thread', ['slug' => $th->post_slug, 'id' => $th->id]) }}">{{ $th->post_name }}</a></h4>
@@ -50,6 +50,16 @@
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item"><small class="text-muted">Last updated <span title="{{ date('D, F Y', strtotime($th->updated_at)) }}">{{ date('l, g:h a', strtotime($th->updated_at)) }}</span></small></li>
 					<li class="list-group-item"><small class="text-muted">Created by <a href="#">{{ $th->User()->first()['name'] }}</a></small></li>
+					@if( Auth::check() && Auth::User()->hasPermission(null, 'moderator.access') )
+					<li class="list-group-item">
+						<small class="text-muted">
+							Moderator:
+							@if( $app->auth->user()->hasPermission(null, 'moderator.delete.post') )
+								<a href="{{ route('Forum::Thread::Delete', ['id' => $th->id]) }}" data-thread-id="{{ $th->id }}" data-action="delete-thread">Delete</a>
+							@endif
+						</small>
+					</li>
+					@endif
 				</ul>
 			</div>
 		</div>

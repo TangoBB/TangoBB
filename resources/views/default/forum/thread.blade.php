@@ -32,15 +32,58 @@
 @endif
 
 <div class="col-sm-10">
-	<div class="card card-block" style="border-color:#55b346;">
-		<p class="card-text">
-			<img src="{{ App\User::Gravatar($thread->User()->first()) }}" class="img-circle" style="width:50px;height:50px;" />
-			<a href="#">{{ $thread->User()->first()->name }}</a>
-			<span class="text-muted" title="Last Edited {{ date('d M', strtotime($thread['updated_at'])) }}">{{ date('d M', strtotime($thread['updated_at'])) }}</span>
-		</p>
-		<p class="card-text">
-			{!! $app->Bbcode->renderText($thread['post_content']) !!}
-		</p>
+	<div class="card" style="border-color:#55b346;">
+		<div class="card-block">
+			<p class="card-text">
+				<img src="{{ App\User::Gravatar($thread->User()->first()) }}" class="img-circle" style="width:50px;height:50px;" />
+				<a href="#">{{ $thread->User()->first()->name }}</a>
+				<span class="text-muted" title="Last Edited {{ date('d M', strtotime($thread['updated_at'])) }}">{{ date('d M', strtotime($thread['updated_at'])) }}</span>
+			</p>
+			<div class="card-text" data-display-id="{{ $thread['id'] }}">
+				{!! $app->Bbcode->renderText($thread['post_content']) !!}
+			</div>
+		</div>
+		@if( Auth::check() )
+		@if( Auth::User()->can('update-post', $thread) || Auth::User()->hasPermission(null, 'moderator.edit.post') )
+		<div class="card-block" style="display:none;" data-edit-id="{{ $thread['id'] }}">
+			<p class="card-text"><hr size="1" /></p>
+			<h4 class="card-title">Edit Post</h4>
+			<p class="card-text">
+				<form method="POST" data-process-method="json" data-process-action="post.edit" data-content-id="{{ $thread['id'] }}">
+					<div class="form-group">
+						<textarea name="editor" class="bbcode_editor">{!! $thread['post_content'] !!}</textarea>
+					</div>
+					<div class="form-group">
+						<input type="hidden" name="_token" value="{{ csrf_token() }}" />
+						<input type="submit" value="Edit" class="btn btn-primary btn-sm" />
+					</div>
+				</form>
+			</p>
+		</div>
+		@endif
+		@endif
+		@if( Auth::check() )
+		<ul class="list-group list-group-flush">
+			@if( Auth::User()->id == $thread['posted_by'] )
+			<li class="list-group-item">
+				<small class="text-muted">
+					Options: <a href="{{ route('Forum::Thread::Edit', ['id' => $thread['id']]) }}" data-effect="edit" data-post-id="{{ $thread['id'] }}">Edit</a>
+				</small>
+			</li>
+			@endif
+			@if( Auth::User()->hasPermission(null, 'moderator.access') )
+			<li class="list-group-item">
+				<small class="text-muted">
+					Moderator:
+					@if( $app->auth->user()->hasPermission(null, 'moderator.delete.post') )
+					<a href="{{ route('Forum::Thread::Delete', ['id' => $thread['id']]) }}">Delete</a> |
+					<a href="{{ route('Forum::Thread::Edit', ['id' => $thread['id']]) }}" data-effect="edit" data-post-id="{{ $thread['id'] }}">Edit</a>
+					@endif
+				</small>
+			</li>
+			@endif
+		</ul>
+		@endif
 	</div>
 </div>
 
@@ -53,16 +96,59 @@
 </div>
 
 @foreach( $replies as $reply )
-<div class="col-sm-10">
-	<div class="card card-block">
-		<p class="card-text">
-			<img src="{{ App\User::Gravatar($reply->User()->first()) }}" class="img-circle" style="width:50px;height:50px;" />
-			<a href="#">{{ $reply->User()->first()->name }}</a>
-			<span class="text-muted" title="Last Edited {{ date('d M', strtotime($reply['updated_at'])) }}">{{ date('d M', strtotime($reply['updated_at'])) }}</span>
-		</p>
-		<p class="card-text">
-			{!! $app->Bbcode->renderText($reply['post_content']) !!}
-		</p>
+<div class="col-sm-10" data-thread-id="{{ $reply['id'] }}">
+	<div class="card">
+		<div class="card-block">
+			<p class="card-text">
+				<img src="{{ App\User::Gravatar($reply->User()->first()) }}" class="img-circle" style="width:50px;height:50px;" />
+				<a href="#">{{ $reply->User()->first()->name }}</a>
+				<span class="text-muted" title="Last Edited {{ date('d M', strtotime($reply['updated_at'])) }}">{{ date('d M', strtotime($reply['updated_at'])) }}</span>
+			</p>
+			<div class="card-text" data-display-id="{{ $reply['id'] }}">
+				{!! $app->Bbcode->renderText($reply['post_content']) !!}
+			</div>
+		</div>
+		@if( Auth::check() )
+		@if( Auth::User()->can('update-post', $thread) || Auth::User()->hasPermission(null, 'moderator.edit.post') )
+		<div class="card-block" style="display:none;" data-edit-id="{{ $reply['id'] }}">
+			<p class="card-text"><hr size="1" /></p>
+			<h4 class="card-title">Edit Post</h4>
+			<p class="card-text">
+				<form method="POST" data-process-method="json" data-process-action="post.edit" data-content-id="{{ $reply['id'] }}">
+					<div class="form-group">
+						<textarea name="editor" class="bbcode_editor">{!! $reply['post_content'] !!}</textarea>
+					</div>
+					<div class="form-group">
+						<input type="hidden" name="_token" value="{{ csrf_token() }}" />
+						<input type="submit" value="Edit" class="btn btn-primary btn-sm" />
+					</div>
+				</form>
+			</p>
+		</div>
+		@endif
+		@endif
+		@if( Auth::check() )
+		<ul class="list-group list-group-flush">
+			@if( Auth::User()->id == $reply['posted_by'] )
+			<li class="list-group-item">
+				<small class="text-muted">
+					Options: <a href="{{ route('Forum::Thread::Edit', ['id' => $reply['id']]) }}" data-effect="edit" data-post-id="{{ $reply['id'] }}">Edit</a>
+				</small>
+			</li>
+			@endif
+			@if( Auth::User()->hasPermission(null, 'moderator.access') )
+			<li class="list-group-item">
+				<small class="text-muted">
+					Moderator:
+					@if( $app->auth->user()->hasPermission(null, 'moderator.delete.post') )
+					<a href="{{ route('Forum::Thread::Delete', ['id' => $reply['id']]) }}" data-thread-id="{{ $reply['id'] }}" data-action="delete-thread">Delete</a> |
+					<a href="{{ route('Forum::Thread::Edit', ['id' => $reply['id']]) }}" data-effect="edit" data-post-id="{{ $reply['id'] }}">Edit</a>
+					@endif
+				</small>
+			</li>
+			@endif
+		</ul>
+		@endif
 	</div>
 </div>
 @endforeach
@@ -82,7 +168,7 @@
 		<div class="form-group">
 			<input type="hidden" name="title" value="RE: {{ $thread['post_name'] }}" />
 			<input type="hidden" name="_token" value="{{ csrf_token() }}" />
-			<input type="submit" value="Reply" class="btn btn-primary" />
+			<input type="submit" value="Reply" class="btn btn-primary" /><span data-content="loader"></span>
 		</div>
 	</form>
 </div>

@@ -12,13 +12,15 @@ use App\User as User;
 
 use Auth;
 use Validator;
+use Bbcode;
 
 class Thread extends Controller
 {
-	protected $user;
-	public function __construct(User $user)
+	protected $user, $bbcode;
+	public function __construct(User $user, Bbcode $bbcode)
 	{
 		$this->user = $user;
+		$this->bbcode = $bbcode;
 	}
 
     //
@@ -35,7 +37,7 @@ class Thread extends Controller
 		else
 		{
 			$title   = $request->only('title')['title'];
-			$content = htmlspecialchars($request->only('editor')['editor'], ENT_NOQUOTES);
+			$content = $request->only('editor')['editor'];
 			$sid     = Post::insertGetId([
 				'post_name' => $title,
 				'post_content' => $content,
@@ -49,6 +51,28 @@ class Thread extends Controller
 
 			$tTouch  = Post::find($id);
 			$tTouch->touch();
+
+			return $sid;
+		}
+	}
+
+	private function EditRequest($id, Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'editor' => 'bail|required',
+			]);
+		if( $validator->fails() )
+		{
+			return $validator;
+		}
+		else
+		{
+			$content = $request->only('editor')['editor'];
+			Post::where('id', '=', $id)->update(['post_content' => $content]);
+			$pTouch  = Post::find($id);
+			$pTouch->touch();
+
+			$sid = ($pTouch['post_type'] == 1)? $pTouch['id'] : $pTouch['post_id'];
 
 			return $sid;
 		}
@@ -87,7 +111,79 @@ class Thread extends Controller
 		}
 	}
 
+	public function Edit($id, Request $request)
+	{
+		$post = Post::findorfail($id);
+		if( Auth::User()->cannot('update-post', $post) || !$this->user->hasPermission(null, 'moderator.delete.post') ) { return abort(404); }
+
+		if( $request->isMethod('post') )
+		{
+			if( $post['post_type'] == 1 )
+			{
+				$slug = $post['post_slug'];
+				$id   = $post['id'];
+			}
+			else
+			{
+				$parent = Post::findorfail($post['post_id']);
+				$slug   = $parent['post_slug'];
+				$id     = $parent['id'];
+			}
+
+			$validator = $this->EditRequest($id, $request);
+			if( !is_object($validator) )
+			{
+				return redirect()->route('Forum::Thread::Thread', ['slug' => $slug, 'id' => $id])->with('success', trans('messages.thread.edit_success'));
+			}
+			else
+			{
+				return redirect()->route('Forum::Thread::Thread', ['slug' => $slug, 'id' => $id])->withErrors($validator);
+			}
+		}
+
+		return view('forum.editPost', ['post' => $post]);
+	}
+
+	public function Delete($id)
+	{
+		if( !$this->user->hasPermission(null, 'moderator.delete.post') ) { return abort(404); }
+
+		$thread = Post::findorfail($id);
+		$thread->Replies()->delete();
+		$thread->delete();
+
+		return redirect()->route('Index::Index')->with('success', trans('messages.thread.delete_success'));
+	}
+
 	//JSON
+	public function JsonDelete($id)
+	{
+		if( !$this->user->hasPermission(null, 'moderator.delete.post') ) { return abort(404); }
+
+		$output = [
+            'success' => 0,
+            'message' => [],
+            'action' => [
+                'displayText' => NULL,
+                'redirect' => NULL
+            ]
+        ];
+
+        $thread = Post::where('id', '=', $id)->first();
+
+        if( !empty($thread) )
+        {
+        	$thread = Post::where('id', '=', $id);
+        	$thread->first()->Replies()->delete();
+        	$thread->delete();
+        	//Post::where('id', '=', $id)->Replies()->delete();
+        	//Post::where('id', '=', $id)->delete();
+        	$output['success'] = 1;
+        }
+
+        return json_encode($output);
+	}
+
     public function JsonReply($id, Request $request)
     {
         if( !Auth::check() || !Auth::user()->hasPermission(null, 'post.reply') ) { return abort(404); }
@@ -128,5 +224,50 @@ class Thread extends Controller
             }
         }
         return json_encode($output);
+    }
+
+    public function JsonEdit($id, Request $request)
+    {
+    	$post = Post::findorfail($id);
+		if( !Auth::check() | Auth::User()->cannot('update-post', $post) || !$this->user->hasPermission(null, 'moderator.delete.post') ) { return abort(404); }
+		$output = [
+            'success' => 0,
+            'message' => [],
+            'action' => [
+                'displayText' => NULL,
+                'redirect' => NULL,
+                'additional_alert' => NULL
+            ]
+        ];
+
+        if( $request->isMethod('post') )
+        {
+            //die(var_dump($request->get('username')));
+            $validator = $this->EditRequest($id, $request);
+            if( !is_object($validator) )
+            {
+            	//Get updated post.
+                $post = Post::where('id', '=', $id)->first();
+                $output['success']                    = 1;
+                $output['action']['displayText']      = $this->bbcode->renderText($post['post_content']);
+                $output['action']['additionalAlert'] = trans('messages.thread.edit_success');
+            }
+            else
+            {
+                $errors = [];
+                foreach( $validator->errors()->messages() as $attribute => $errs )
+                {
+                    foreach( $errs as $err )
+                    {
+                        $errors[] = $err;
+                    }
+                }
+
+                $output['message'] = $errors;
+                //die(var_dump($errors));
+            }
+        }
+        //die(var_dump(json_encode($output, JSON_UNESCAPED_UNICODE)));
+        return json_encode($output, JSON_UNESCAPED_UNICODE);
     }
 }

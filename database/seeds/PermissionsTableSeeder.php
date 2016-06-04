@@ -16,6 +16,7 @@ class PermissionsTableSeeder extends Seeder
         	['permission_name' => 'post.view'],
         	['permission_name' => 'post.reply'],
         	['permission_name' => 'post.create'],
+            ['permission_name' => 'post.edit'],
         	['permission_name' => 'account.login'],
         	['permission_name' => 'account.change.password'],
         	['permission_name' => 'account.change.email'],

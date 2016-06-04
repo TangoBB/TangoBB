@@ -27,5 +27,16 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies($gate);
 
         //
+        //Checks if user can update post.
+        $gate->define('update-post', function($user, $post) {
+            if( $user->id == $post['posted_by'] && $user->hasPermission(null, 'post.edit') )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        });
     }
 }

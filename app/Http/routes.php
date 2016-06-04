@@ -28,7 +28,7 @@ Route::group(['as' => 'Account::', 'namespace' => 'Account', 'prefix' => 'accoun
 
 Route::group(['as' => 'Core::', 'prefix' => 'core', 'namespace' => 'Core', 'middleware'=>'setTheme:Core'], function() {
 	Route::group(['as' => 'Js::', 'prefix' => 'js', 'namespace' => 'Js'], function() {
-		Route::get('render', ['as' => 'RenderJavascript', 'uses' => 'Render@Render']);
+		Route::get('render.js', ['as' => 'RenderJavascript', 'uses' => 'Render@Render']);
 	});
 });
 
@@ -44,6 +44,10 @@ Route::group(['as' => 'Json::', 'prefix' => 'json'], function() {
 			Route::post('create/{id}', ['as' => 'Create', 'uses' => 'Forum\Category@JsonPost']);
 
 			Route::post('reply/{id}', ['as' => 'Reply', 'uses' => 'Forum\Thread@JsonReply']);
+
+			Route::get('delete/{id}', ['as' => 'DeleteThread', 'uses' => 'Forum\Thread@JsonDelete']);//Delete posts including all relations.
+
+			Route::post('editpost/{id}', ['as' => 'EditPost', 'uses' => 'Forum\Thread@JsonEdit']);//Edit posts.
 		});
 	});
 });
@@ -59,5 +63,10 @@ Route::group(['as' => 'Forum::'], function() {
 	Route::group(['as' => 'Thread::'], function() {
 		Route::get('thread/{slug}.{id}', ['as' => 'Thread', 'uses' => 'Forum\Thread@Index']);
 		Route::post('thread/{slug}.{id}', ['as' => 'Thread.Post', 'uses' => 'Forum\Thread@Index']);
+
+		Route::get('thread/{id}/delete', ['as' => 'Delete', 'uses' => 'Forum\Thread@Delete']);
+
+		Route::get('thread/{id}/edit', ['as' => 'Edit', 'uses' => 'Forum\Thread@Edit']);
+		Route::post('thread/{id}/edit', ['as' => 'Edit.Post', 'uses' => 'Forum\Thread@Edit']);
 	});
 });

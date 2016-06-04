@@ -10,7 +10,7 @@
         @if( Auth::check() )
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            <img src="{{ App\User::Gravatar(Auth::user()) }}" style="width:20px;height:20px;" /> {{ Auth::user()['name'] }}
+            <img src="{{ App\User::Gravatar(Auth::user()) }}" class="img-circle" style="width:20px;height:20px;" /> {{ Auth::user()['name'] }}
           </a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="#">Action</a>

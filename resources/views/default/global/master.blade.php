@@ -36,7 +36,7 @@
   </div>
 
   <footer class="footer">
-    Powered by TangoBB
+    <p>Powered by TangoBB</p>
   </footer>
 
   <!-- jQuery first, then Bootstrap JS. -->

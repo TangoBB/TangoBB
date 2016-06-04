@@ -68,6 +68,7 @@ class User extends Authenticatable
 
             if( $user !== null )
             {
+                //die(var_dump($user));
                 $group_permissions    = $user->Group()->first()['group_permissions'];
                 $excluded_permissions = $user->excluded_permissions;
             }

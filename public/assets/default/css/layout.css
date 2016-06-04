@@ -6,7 +6,7 @@ nav.navbar {
 	margin-bottom: 20px;
 }
 
-#bbcode_editor {
+#bbcode_editor, .bbcode_editor {
 	min-height: 250px;
 }
 

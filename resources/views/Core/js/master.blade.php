@@ -7,35 +7,41 @@ $(document).ready(function() {
 		var wbbOpt = {
 			buttons: "{{ $editor_buttons }}"
 		};
-		$('#bbcode_editor').wysibb(wbbOpt);
-		//$('#bbcode_editor').val($('#bbcode_editor').bbcode());
+		$('textarea.bbcode_editor, #bbcode_editor').wysibb(wbbOpt);
 	});
 
 	$('form[data-process-method="json"]').on('submit', function(e) {
 		e.preventDefault();
 
 		//$().after();
-		var alertSuccess = $('div[data-type="alert-success"]');
-		var alertFailure = $('div[data-type="alert-fail"]');
+		var alertSuccess  = $('div[data-type="alert-success"]');
+		var alertFailure  = $('div[data-type="alert-fail"]');
 
-		var loadSpan     = $('span[data-content="loader"]');
+		var loadSpan      = $('span[data-content="loader"]');
 		loadSpan.html(' <img src="' + loader + '" />');
 
-		var contentId    = $(this).attr('data-content-id');
+		var contentId     = $(this).attr('data-content-id');
 
-		var action      = $(this).attr('data-process-action');
+		var action        = $(this).attr('data-process-action');
 		var processUrl;
-		var redirectUrl = null;
-		var showHtml    = false;
+		var redirectUrl   = null;
+		var showHtml      = false;
+		var updateContent = false;
 
-		//var serialData = $(this).find('input, select, textarea').serialize();
-		if($('#bbcode_editor').length)
+		//$('textarea.bbcode_editor').sync();
+		if( $('textarea.bbcode_editor').length > 0 )
 		{
-			$('#bbcode_editor').val($('#bbcode_editor').bbcode());
+			$('textarea.bbcode_editor').each(function() {
+				$(this).sync();
+			});
+		}
+
+		if( $('#bbcode_editor').length > 0 )
+		{
+			$('#bbcode_editor').sync();
 		}
 
 		var serialData = $(this).serialize();
-		console.log(serialData);
 		//console.log($(this).serialize());
 
 		switch( action ) {
@@ -55,6 +61,11 @@ $(document).ready(function() {
 			case 'thread.reply':
 			processUrl = '{{ url('json/forum/thread/reply/') }}/' + contentId;
 			showHtml   = true;
+			break;
+
+			case 'post.edit':
+			processUrl    = '{{ url('json/forum/thread/editpost/') }}/' + contentId;
+			updateContent = true;
 			break;
 		}
 
@@ -89,14 +100,18 @@ $(document).ready(function() {
 				{
 					if( typeof msg.action.displayText != 'undefined' && msg.action.displayText != null )
 					{
-						console.log(msg.action.displayText);
-						if( showHtml === false )
+						if( showHtml )
 						{
-							alertSuccess.html(msg.action.displayText).show();
+							$('div[data-content-type="html-content"]').html(msg.action.displayText);
+						}
+						else if( updateContent )
+						{
+							$('div[data-display-id="' + contentId + '"]').html(msg.action.displayText);
+							alert(msg.action.additionalAlert);
 						}
 						else
 						{
-							$('div[data-content-type="html-content"]').html(msg.action.displayText);
+							alertSuccess.html(msg.action.displayText).show();
 						}
 					}
 
@@ -116,6 +131,46 @@ $(document).ready(function() {
 				}
 
 				alertFailure.html('<ul>' + outMsg + '</ul>').show();
+			}
+		});
+
+request.fail(function(jqXHR, textStatus) {
+	loadSpan.html('');
+	alertFailure.html(textStatus).show();
+});
+});
+
+	//Ajax Links
+	$('a[data-action="delete-thread"]').on('click', function(e) {
+		e.preventDefault();
+
+		var contentId = $(this).attr('data-thread-id');
+
+		var request = $.ajax({
+			url: '{{ url('json/forum/thread/delete/') }}/' + contentId,
+			method: 'get',
+			crossDomain: false,
+			statusCode: {
+				404: function() {
+					loadSpan.html('');
+					alertFailure.html('{{ trans('messages.global.404') }}').show();
+				},
+				403: function() {
+					loadSpan.html('');
+					alertFailure.html('{{ trans('messages.global.403') }}').show();
+				},
+				405: function() {
+					loadSpan.html('');
+					alertFailure.html('{{ trans('messages.global.405') }}').show();
+				}
+			}
+		});
+
+		request.done(function(msg) {
+			var msg = jQuery.parseJSON(msg);
+			if( msg.success == 1 )
+			{
+				$('div[data-thread-id="' + contentId + '"]').fadeOut();
 			}
 		});
 

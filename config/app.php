@@ -168,6 +168,7 @@ return [
         App\Providers\ViewsServiceProvider::class,
         App\Providers\ForumServiceProvider::class,
         App\Providers\FormServiceProvider::class,
+        App\Providers\PaginationServiceProvider::class,
 
     ],
 
