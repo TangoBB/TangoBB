@@ -228,8 +228,14 @@ class Thread extends Controller
 
     public function JsonEdit($id, Request $request)
     {
-    	$post = Post::findorfail($id);
-		if( !Auth::check() | Auth::User()->cannot('update-post', $post) || !$this->user->hasPermission(null, 'moderator.delete.post') ) { return abort(404); }
+    	$post = Post::findOrFail($id);
+    	if( !$this->user->hasPermission(null, 'moderator.delete.post') )
+    	{
+    		if(  !Auth::User()->can('update-post', $post) ) {
+    			return abort(404);
+    		}
+    	}
+
 		$output = [
             'success' => 0,
             'message' => [],

@@ -12,6 +12,7 @@ use App\user as User;
 use Validator;
 use Auth;
 use Hash;
+use DB;
 
 class AuthController extends Controller
 {
@@ -56,9 +57,12 @@ class AuthController extends Controller
     		$username = $request->only('username')['username'];
     		$email    = $request->only('email')['email'];
     		$password = Hash::make($request->only('password')['password']);
-    		User::insert(
+    		/*User::insert(
     			['name' => $username, 'email' => $email, 'password' => $password]
-    			);
+    			);*/
+            DB::table('users')->insert(
+                ['name' => $username, 'email' => $email, 'password' => $password, 'excluded_permissions' => '']
+                );
     		return true;
     	}
     }
