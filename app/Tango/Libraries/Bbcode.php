@@ -42,7 +42,7 @@ class Bbcode
         return $this;
     }
 
-    public static function strip($string)
+    public function strip($string)
     {
         return preg_replace('#\[[^\]]+\]#', '', $string);
     }
