@@ -20,6 +20,8 @@ class CreatePostTable extends Migration
             $table->integer('category_id')->default(NULL)->nullable();
             $table->integer('post_type')->default(1);//1 for thread starter. 2 for post.
             $table->integer('post_id')->default(NULL)->nullable();
+            $table->integer('is_locked')->default(0);
+            $table->integer('is_stickied')->default(0);
             $table->integer('posted_by');
             $table->timestamps();
         });

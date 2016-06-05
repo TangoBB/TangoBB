@@ -40,9 +40,13 @@ $(document).ready(function() {
 		var loadSpan      = $('span[data-content="loader"]');
 		loadSpan.html(' <img src="' + loader + '" />');
 
+		var contentId     = $(this).attr('data-content-id');
+
 		var action        = $(this).attr('data-process-action');
 		var processUrl;
 		var redirectUrl   = null;
+		var showHtml      = false;
+		var updateContent = false;
 
 		//$('textarea.bbcode_editor').sync();
 		if( $('textarea.bbcode_editor').length > 0 )
@@ -64,100 +68,25 @@ $(document).ready(function() {
 		{
 			case 'login':
 			processUrl = '{{ route('Json::Account::LogIn') }}';
-			//Method will be ran when success message is received from the JSON.
-			var successRequest  = function(msg) {
-				alertSuccess.html(msg.action.displayText).show();
-			};
-
-			//Method will be ran when error message is received from the JSON.
-			var errorRequest = function(msg) {
-				var outMsg = '';
-				for( i = 0; i < msg.message.length; i++ )
-				{
-					outMsg += '<li>' + msg.message[i] + '</li>';
-				}
-
-				alertFailure.html('<ul>' + outMsg + '</ul>').show();
-			};
+			//processUrl = '{{ url('json/account/login') }}';
+			//processUrl = '/json/account/login';
 			break;
-
 			case 'signup':
 			processUrl = '{{ route('Json::Account::SignUp') }}';
-			//Method will be ran when success message is received from the JSON.
-			var successRequest  = function(msg) {
-				alertSuccess.html(msg.action.displayText).show();
-			};
-
-			//Method will be ran when error message is received from the JSON.
-			var errorRequest = function(msg) {
-				var outMsg = '';
-				for( i = 0; i < msg.message.length; i++ )
-				{
-					outMsg += '<li>' + msg.message[i] + '</li>';
-				}
-
-				alertFailure.html('<ul>' + outMsg + '</ul>').show();
-			};
 			break;
 
 			case 'thread.create':
-			var contentId     = $(this).attr('data-content-id');
 			processUrl = '{{ url('json/forum/thread/create/') }}/' + contentId;
-			//Method will be ran when success message is received from the JSON.
-			var successRequest  = function(msg) {
-				alertSuccess.html(msg.action.displayText).show();
-			};
-
-			//Method will be ran when error message is received from the JSON.
-			var errorRequest = function(msg) {
-				var outMsg = '';
-				for( i = 0; i < msg.message.length; i++ )
-				{
-					outMsg += '<li>' + msg.message[i] + '</li>';
-				}
-
-				alertFailure.html('<ul>' + outMsg + '</ul>').show();
-			};
 			break;
 
 			case 'thread.reply':
-			var contentId     = $(this).attr('data-content-id');
 			processUrl = '{{ url('json/forum/thread/reply/') }}/' + contentId;
 			showHtml   = true;
-			//Method will be ran when success message is received from the JSON.
-			var successRequest = function(msg) {
-				$('div[data-content-type="html-content"]').html(msg.action.displayText);
-			};
-
-			//Method will be ran when error message is received from the JSON.
-			var errorRequest = function(msg) {
-				var outMsg = '';
-				for( i = 0; i < msg.message.length; i++ )
-				{
-					outMsg += '<li>' + msg.message[i] + '</li>';
-				}
-
-				alertFailure.html('<ul>' + outMsg + '</ul>').show();
-			};
 			break;
 
 			case 'post.edit':
-			var contentId     = $(this).attr('data-content-id');
 			processUrl    = '{{ url('json/forum/thread/editpost/') }}/' + contentId;
 			updateContent = true;
-			var successRequest = function(msg) {
-				$('div[data-display-id="' + contentId + '"]').html(msg.action.displayText);
-				alert(msg.action.additionalAlert);
-			};
-			var errorRequest = function(msg) {
-				var outMsg = '';
-				for( i = 0; i < msg.message.length; i++ )
-				{
-					outMsg += '<li>' + msg.message[i] + '</li>';
-				}
-
-				alertFailure.html('<ul>' + outMsg + '</ul>').show();
-			};
 			break;
 		}
 
@@ -227,17 +156,41 @@ $(document).ready(function() {
 			if( msg.success == 1 )
 			{
 				loadSpan.html('');
-				successRequest(msg);
+				if( typeof msg.action != 'undefined' && msg.action != null )
+				{
+					if( typeof msg.action.displayText != 'undefined' && msg.action.displayText != null )
+					{
+						if( showHtml )
+						{
+							$('div[data-content-type="html-content"]').html(msg.action.displayText);
+						}
+						else if( updateContent )
+						{
+							$('div[data-display-id="' + contentId + '"]').html(msg.action.displayText);
+							alert(msg.action.additionalAlert);
+						}
+						else
+						{
+							alertSuccess.html(msg.action.displayText).show();
+						}
+					}
+
+					if( typeof msg.action.redirect != 'undefined' && msg.action.redirect != null )
+					{
+						window.location.replace(msg.action.redirect);
+					}
+				}
 			}
 			else
 			{
 				loadSpan.html('');
-				errorRequest(msg);
-			}
+				var outMsg = '';
+				for( i = 0; i < msg.message.length; i++ )
+				{
+					outMsg += '<li>' + msg.message[i] + '</li>';
+				}
 
-			if( typeof msg.action.redirect != 'undefined' && msg.action.redirect != null )
-			{
-				window.location.replace(msg.action.redirect);
+				alertFailure.html('<ul>' + outMsg + '</ul>').show();
 			}
 		});
 

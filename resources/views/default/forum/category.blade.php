@@ -55,7 +55,7 @@
 						<small class="text-muted">
 							Moderator:
 							@if( $app->auth->user()->hasPermission(null, 'moderator.delete.post') )
-								<a href="{{ route('Forum::Thread::Delete', ['id' => $th->id]) }}" data-thread-id="{{ $th->id }}" data-action="delete-thread">Delete</a>
+								<a href="{{ route('Forum::Thread::Delete', ['id' => $th->id]) }}" data-link="json" data-thread-id="{{ $th->id }}" data-action="delete-thread">Delete</a>
 							@endif
 						</small>
 					</li>

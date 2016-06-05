@@ -22,7 +22,7 @@ class HomeController extends Controller
     	{
     		if( $cat['category_place'] == 1 )
     		{
-    			$thread = Category::find($cat['id'])->Posts()->orderBy('updated_at', 'desc')->limit(12)->get();
+    			$thread = Category::find($cat['id'])->Posts()->orderBy('is_stickied', 'desc')->orderBy('updated_at', 'desc')->limit(12)->get();
     		}
     	}
     	//die(var_dump($thread));

@@ -18,6 +18,7 @@ return [
 	'thread' => [
 		'reply_success' => 'Reply has been posted.',
 		'delete_success' => 'Thread has been deleted.',
-		'edit_success' => 'Post has been edited.'
+		'edit_success' => 'Post has been edited.',
+		'locked' => 'Thread is locked.'
 	]
 ];

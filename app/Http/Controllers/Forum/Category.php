@@ -56,7 +56,7 @@ class Category extends Controller
     	if( !empty($category) )
     	{
     		$categories = Cate::orderBy('category_place', 'asc')->get();
-            $threads    = $category->Posts()->where('post_type', '=', 1)->orderBy('updated_at', 'desc')->paginate('12');
+            $threads    = $category->Posts()->orderBy('is_stickied', 'desc')->orderBy('updated_at', 'desc')->paginate('12');
     		return view('forum.category', ['categories' => $categories, 'selected' => $category, 'threads' => $threads]);
     	}
     	else
@@ -77,6 +77,9 @@ class Category extends Controller
 
         if( !empty($category) )
         {
+            //Checks if user can post.
+            if( Auth::user()->cannot('post-in-category', $category) ) { return abort(404); }
+
             if( $request->isMethod('post') )
             {
                 $validator = $this->PostRequest($id, $request);

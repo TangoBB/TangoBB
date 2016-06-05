@@ -27,6 +27,20 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies($gate);
 
         //
+        //Checks if user can post in the category.
+        $gate->define('post-in-category', function($user, $category) {
+            $group = $user->Group()->first();
+            if( $category['allow_posting'] == "*" )
+            {
+                return true;
+            }
+            else
+            {
+                $allow = explode(',', $category['allow_posting']);
+                return in_array($group['id'], $allow);
+            }
+        });
+
         //Checks if user can update post.
         $gate->define('update-post', function($user, $post) {
             if( $user->id == $post['posted_by'] && $user->hasPermission(null, 'post.edit') )

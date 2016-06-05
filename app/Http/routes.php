@@ -32,6 +32,8 @@ Route::group(['as' => 'Core::', 'prefix' => 'core', 'namespace' => 'Core', 'midd
 	});
 });
 
+
+//JSON Requests
 Route::group(['as' => 'Json::', 'prefix' => 'json'], function() {
 	Route::group(['as' => 'Account::', 'prefix' => 'account'], function() {
 		Route::post('login', ['as' => 'LogIn', 'uses' => 'Account\AuthController@JsonLogIn']);
@@ -52,7 +54,9 @@ Route::group(['as' => 'Json::', 'prefix' => 'json'], function() {
 	});
 });
 
+//Forum
 Route::group(['as' => 'Forum::'], function() {
+	//Category
 	Route::group(['as' => 'Category::'], function() {
 		Route::get('category/{slug}.{id}', ['as' => 'Category', 'uses' => 'Forum\Category@Index']);
 
@@ -60,6 +64,7 @@ Route::group(['as' => 'Forum::'], function() {
 		Route::post('/category/{slug}.{id}/post', ['as' => 'Post.Post', 'uses' => 'Forum\Category@Post']);
 	});
 
+	//Thread
 	Route::group(['as' => 'Thread::'], function() {
 		Route::get('thread/{slug}.{id}', ['as' => 'Thread', 'uses' => 'Forum\Thread@Index']);
 		Route::post('thread/{slug}.{id}', ['as' => 'Thread.Post', 'uses' => 'Forum\Thread@Index']);
@@ -68,5 +73,8 @@ Route::group(['as' => 'Forum::'], function() {
 
 		Route::get('thread/{id}/edit', ['as' => 'Edit', 'uses' => 'Forum\Thread@Edit']);
 		Route::post('thread/{id}/edit', ['as' => 'Edit.Post', 'uses' => 'Forum\Thread@Edit']);
+
+		Route::get('thread/{id}/reply', ['as' => 'Reply', 'uses' => 'Forum\Thread@Reply']);
+		Route::post('thread/{id}/reply', ['as' => 'Reply.Post', 'uses' => 'Forum\Thread@Reply']);
 	});
 });

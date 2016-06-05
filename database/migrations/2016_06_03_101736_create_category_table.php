@@ -20,7 +20,8 @@ class CreateCategoryTable extends Migration
             $table->string('category_color', 6)->default('ffffff');
             $table->integer('category_place')->default(1);
             $table->text('category_tags')->default(NULL)->nullable();
-            $table->string('allowed_usergroup')->default('*');
+            $table->string('disallowed_usergroup')->default('4');//0 means guest.
+            $table->string('allow_posting')->default('*');//Allow groups to post in the category.
             $table->timestamps();
         });
     }
