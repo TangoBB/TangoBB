@@ -6,6 +6,10 @@ return [
 		'403' => 'You do not have access to the host.',
 		'405' => 'Method not allowed'
 	],
+	'change' => [
+		'password_success' => 'Password has been changed.',
+		'password_invalid' => 'Old password is invalid.'
+	],
 	'auth' => [
 		'success' => 'Successfully logged in. Redirecting...'
 	],

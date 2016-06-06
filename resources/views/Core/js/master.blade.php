@@ -147,7 +147,25 @@ $(document).ready(function() {
 			updateContent = true;
 			var successRequest = function(msg) {
 				$('div[data-display-id="' + contentId + '"]').html(msg.action.displayText);
-				alert(msg.action.additionalAlert);
+				//$('[data-type="edit-success-icon"]').html('<i class="fa fa-check-circle"></i>').fadeIn().delay(500).fadeOut();
+				$('[data-type="post-' + contentId + '-edit-success-symbol"]').fadeIn().delay(5000).fadeOut();//Fade in and out with a 5s delay.
+				//alert(msg.action.additionalAlert);
+			};
+			var errorRequest = function(msg) {
+				var outMsg = '';
+				for( i = 0; i < msg.message.length; i++ )
+				{
+					outMsg += '<li>' + msg.message[i] + '</li>';
+				}
+
+				alertFailure.html('<ul>' + outMsg + '</ul>').show();
+			};
+			break;
+
+			case "change.password":
+			var processUrl = '{{ route('Json::Account::Change::Password') }}';
+			var successRequest = function(msg) {
+				alertSuccess.html(msg.action.displayText).show();
 			};
 			var errorRequest = function(msg) {
 				var outMsg = '';

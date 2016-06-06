@@ -14,7 +14,7 @@
           </a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="#">Change Email</a>
-            <a class="dropdown-item" href="#">Edit Profile</a>
+            <a class="dropdown-item{{ ( Request::is('account/change/password') )? ' active' : '' }}" href="{{ route('Account::Change::Password') }}">Change Password</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">View Profile</a>
           </div>

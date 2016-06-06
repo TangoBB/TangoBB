@@ -58,7 +58,7 @@
 		@if( Auth::User()->can('update-post', $thread) || Auth::User()->hasPermission(null, 'moderator.edit.post') )
 		<div class="card-block" style="display:none;" data-edit-id="{{ $thread['id'] }}">
 			<p class="card-text"><hr size="1" /></p>
-			<h4 class="card-title">Edit Post</h4>
+			<h4 class="card-title">Edit Post <small data-type="post-{{ $thread['id'] }}-edit-success-symbol" style="display:none;" class="fa fa-check-circle text-success"></small></h4>
 			<p class="card-text">
 				<form method="POST" data-process-method="json" data-process-action="post.edit" data-content-id="{{ $thread['id'] }}">
 					<div class="form-group">
@@ -66,7 +66,7 @@
 					</div>
 					<div class="form-group">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}" />
-						<input type="submit" value="Edit" class="btn btn-primary btn-sm" />
+						<input type="submit" value="Edit" class="btn btn-primary btn-sm" /><span data-content="loader"></span>
 					</div>
 				</form>
 			</p>
@@ -135,7 +135,7 @@
 		@if( Auth::User()->can('update-post', $reply) )
 		<div class="card-block" style="display:none;" data-edit-id="{{ $reply['id'] }}">
 			<p class="card-text"><hr size="1" /></p>
-			<h4 class="card-title">Edit Post</h4>
+			<h4 class="card-title">Edit Post <small data-type="post-{{ $reply['id'] }}-edit-success-symbol" style="display:none;" class="fa fa-check-circle text-success"></small></h4>
 			<p class="card-text">
 				<form method="POST" data-process-method="json" data-process-action="post.edit" data-content-id="{{ $reply['id'] }}">
 					<div class="form-group">
@@ -143,7 +143,7 @@
 					</div>
 					<div class="form-group">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}" />
-						<input type="submit" value="Edit" class="btn btn-primary btn-sm" />
+						<input type="submit" value="Edit" class="btn btn-primary btn-sm" /><span data-content="loader"></span>
 					</div>
 				</form>
 			</p>

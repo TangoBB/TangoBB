@@ -24,6 +24,11 @@ Route::group(['as' => 'Account::', 'namespace' => 'Account', 'prefix' => 'accoun
 	Route::post('signup', ['as' => 'SignUp.Post', 'uses' => 'AuthController@JsonLogIn']);
 
 	Route::get('logout', ['as' => 'LogOut', 'uses' => 'AuthController@LogOut']);
+
+	Route::group(['as' => 'Change::', 'prefix' => 'change'], function() {
+		Route::get('password', ['as' => 'Password', 'uses' => 'Details@ChangePassword']);
+		Route::post('password', ['as' => 'Password.Post', 'uses' => 'Details@ChangePassword']);
+	});
 });
 
 Route::group(['as' => 'Core::', 'prefix' => 'core', 'namespace' => 'Core', 'middleware'=>'setTheme:Core'], function() {
@@ -39,6 +44,10 @@ Route::group(['as' => 'Json::', 'prefix' => 'json'], function() {
 		Route::post('login', ['as' => 'LogIn', 'uses' => 'Account\AuthController@JsonLogIn']);
 
 		Route::post('signup', ['as' => 'SignUp', 'uses' => 'Account\AuthController@JsonSignUp']);
+
+		Route::group(['as' => 'Change::', 'prefix' => 'change'], function() {
+			Route::post('password', ['as' => 'Password', 'uses' => 'Account\Details@JsonChangePassword']);
+		});
 	});
 
 	Route::group(['as' => 'Forum::', 'prefix' => 'forum'], function() {
