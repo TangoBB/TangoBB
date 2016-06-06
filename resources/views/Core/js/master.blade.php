@@ -255,6 +255,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		//Finding what action to do after the link is clicked.
+		var linkOrigin = $(this);
 		var dataAction = $(this).attr('data-action');
 
 		switch(dataAction)
@@ -265,6 +266,52 @@ $(document).ready(function() {
 			//Method will be ran when success message is received from the JSON.
 			var successFeedback  = function(msg) {
 				$('div[data-thread-id="' + contentId + '"]').fadeOut();
+			};
+
+			//Method will be ran when error message is received from the JSON.
+			var errorFeedback = function(msg) {
+			};
+			break;
+
+			case "stick-thread":
+			var contentId  = $(this).attr('data-thread-id');
+			var requestUrl = '{{ url('json/forum/thread/stick/') }}/' + contentId;
+
+			//Method will be ran when success message is received from the JSON.
+			var successFeedback  = function(msg) {
+				if( msg.action.result == 1 )
+				{
+					$('[data-type="post-' + contentId + '-stick-symbol"]').fadeIn();
+					linkOrigin.text('{{ trans('messages.thread.buttons.unstick') }}');
+				}
+				else
+				{
+					$('[data-type="post-' + contentId + '-stick-symbol"]').fadeOut();
+					linkOrigin.text('{{ trans('messages.thread.buttons.stick') }}');
+				}
+			};
+
+			//Method will be ran when error message is received from the JSON.
+			var errorFeedback = function(msg) {
+			};
+			break;
+
+			case "lock-thread":
+			var contentId  = $(this).attr('data-thread-id');
+			var requestUrl = '{{ url('json/forum/thread/lock/') }}/' + contentId;
+
+			//Method will be ran when success message is received from the JSON.
+			var successFeedback  = function(msg) {
+				if( msg.action.result == 1 )
+				{
+					$('[data-type="post-' + contentId + '-lock-symbol"]').fadeIn();
+					linkOrigin.text('{{ trans('messages.thread.buttons.unlock') }}');
+				}
+				else
+				{
+					$('[data-type="post-' + contentId + '-lock-symbol"]').fadeOut();
+					linkOrigin.text('{{ trans('messages.thread.buttons.lock') }}');
+				}
 			};
 
 			//Method will be ran when error message is received from the JSON.

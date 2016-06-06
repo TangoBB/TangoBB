@@ -26,7 +26,7 @@ class PermissionsTableSeeder extends Seeder
         	['permission_name' => 'moderator.delete.user'],
         	['permission_name' => 'moderator.user.ban'],
         	['permission_name' => 'moderator.edit.post'],
-            ['permission_name' => 'moderator.sticky.post'],
+            ['permission_name' => 'moderator.stick.post'],
             ['permission_name' => 'moderator.lock.post']
     		]);
     }

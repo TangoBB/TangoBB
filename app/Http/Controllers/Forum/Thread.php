@@ -197,7 +197,135 @@ class Thread extends Controller
 		return redirect()->route('Index::Index')->with('success', trans('messages.thread.delete_success'));
 	}
 
+	public function Stick($id)
+	{
+		if( !$this->user->hasPermission(null, 'moderator.stick.post') ) { return abort(404); }
+		$thread = Post::where([
+			['id', '=', $id],
+			['post_type', '=', 1]
+			])->first();
+		if( !empty($thread) )
+		{
+			if( $thread['is_stickied'] == 1 )
+			{
+				$update = Post::where('id', $id)->update(['is_stickied' => 0]);
+				return redirect()->route('Forum::Thread::Thread', ['slug' => $thread['post_slug'], 'id' => $id])->with('success', trans('messages.thread.unstick_success'));
+			}
+			else
+			{
+				$update = Post::where('id', $id)->update(['is_stickied' => 1]);
+				return redirect()->route('Forum::Thread::Thread', ['slug' => $thread['post_slug'], 'id' => $id])->with('success', trans('messages.thread.stick_success'));
+			}
+		}
+		else
+		{
+			return abort(404);
+		}
+	}
+
+	public function Lock($id)
+	{
+		if( !$this->user->hasPermission(null, 'moderator.lock.post') ) { return abort(404); }
+		$thread = Post::where([
+			['id', '=', $id],
+			['post_type', '=', 1]
+			])->first();
+		if( !empty($thread) )
+		{
+			if( $thread['is_locked'] == 1 )
+			{
+				$update = Post::where('id', $id)->update(['is_locked' => 0]);
+				return redirect()->route('Forum::Thread::Thread', ['slug' => $thread['post_slug'], 'id' => $id])->with('success', trans('messages.thread.unlock_success'));
+			}
+			else
+			{
+				$update = Post::where('id', $id)->update(['is_locked' => 1]);
+				return redirect()->route('Forum::Thread::Thread', ['slug' => $thread['post_slug'], 'id' => $id])->with('success', trans('messages.thread.lock_success'));
+			}
+		}
+		else
+		{
+			return abort(404);
+		}
+	}
+
 	//JSON
+	public function JsonLock($id)
+	{
+		if( !$this->user->hasPermission(null, 'moderator.lock.post') ) { return abort(404); }
+
+		$output = [
+		'success' => 0,
+		'message' => [],
+		'action' => [
+		'displayText' => NULL,
+		'redirect' => NULL,
+		'result' => 0
+		]
+		];
+
+		$thread = Post::where([
+			['id', '=', $id],
+			['post_type', '=', 1]
+			])->first();
+		if( !empty($thread) )
+		{
+			if( $thread['is_locked'] == 1 )
+			{
+				//die('here');
+				$update = Post::where('id', $id)->update(['is_locked' => 0]);
+				$output['success'] = 1;
+			}
+			else
+			{
+				//die('there');
+				$update = Post::where('id', $id)->update(['is_locked' => 1]);
+				$output['success'] = 1;
+				$output['action']['result'] = 1;
+			}
+		}
+
+		return json_encode($output);
+	}
+
+	public function JsonStick($id)
+	{
+		if( !$this->user->hasPermission(null, 'moderator.stick.post') ) { return abort(404); }
+
+		$output = [
+		'success' => 0,
+		'message' => [],
+		'action' => [
+		'displayText' => NULL,
+		'redirect' => NULL,
+		'result' => 0
+		]
+		];
+
+		$thread = Post::where([
+			['id', '=', $id],
+			['post_type', '=', 1]
+			])->first();
+		if( !empty($thread) )
+		{
+			if( $thread['is_stickied'] == 1 )
+			{
+				//die('here');
+				$update = Post::where('id', $id)->update(['is_stickied' => 0]);
+				$output['success'] = 1;
+			}
+			else
+			{
+				//die('there');
+				$update = Post::where('id', $id)->update(['is_stickied' => 1]);
+				$output['success'] = 1;
+				$output['action']['result'] = 1;
+			}
+		}
+
+		return json_encode($output);
+	}
+
 	public function JsonDelete($id)
 	{
 		if( !$this->user->hasPermission(null, 'moderator.delete.post') ) { return abort(404); }

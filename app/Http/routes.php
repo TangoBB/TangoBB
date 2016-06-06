@@ -50,6 +50,10 @@ Route::group(['as' => 'Json::', 'prefix' => 'json'], function() {
 			Route::get('delete/{id}', ['as' => 'DeleteThread', 'uses' => 'Forum\Thread@JsonDelete']);//Delete posts including all relations.
 
 			Route::post('editpost/{id}', ['as' => 'EditPost', 'uses' => 'Forum\Thread@JsonEdit']);//Edit posts.
+
+			Route::get('stick/{id}', ['as' => 'Stick', 'uses' => 'Forum\Thread@JsonStick']);
+
+			Route::get('lock/{id}', ['as' => 'Stick', 'uses' => 'Forum\Thread@JsonLock']);
 		});
 	});
 });
@@ -76,5 +80,9 @@ Route::group(['as' => 'Forum::'], function() {
 
 		Route::get('thread/{id}/reply', ['as' => 'Reply', 'uses' => 'Forum\Thread@Reply']);
 		Route::post('thread/{id}/reply', ['as' => 'Reply.Post', 'uses' => 'Forum\Thread@Reply']);
+
+		Route::get('thread/{id}/stick', ['as' => 'Stick', 'uses' => 'Forum\Thread@Stick']);
+
+		Route::get('thread/{id}/lock', ['as' => 'Lock', 'uses' => 'Forum\Thread@Lock']);
 	});
 });

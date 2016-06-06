@@ -78,7 +78,7 @@
 			@if( Auth::User()->id == $thread['posted_by'] )
 			<li class="list-group-item">
 				<small class="text-muted">
-					Options: <a href="{{ route('Forum::Thread::Edit', ['id' => $thread['id']]) }}" data-effect="edit" data-post-id="{{ $thread['id'] }}">Edit</a>
+					Options: <a href="{{ route('Forum::Thread::Edit', ['id' => $thread['id']]) }}" data-link="json" data-effect="edit" data-post-id="{{ $thread['id'] }}">Edit</a>
 				</small>
 			</li>
 			@endif
@@ -88,7 +88,15 @@
 					Moderator:
 					@if( $app->auth->user()->hasPermission(null, 'moderator.delete.post') )
 					<a href="{{ route('Forum::Thread::Delete', ['id' => $thread['id']]) }}">Delete</a> |
-					<a href="{{ route('Forum::Thread::Edit', ['id' => $thread['id']]) }}" data-effect="edit" data-post-id="{{ $thread['id'] }}">Edit</a>
+					@endif
+					@if( $app->auth->user()->hasPermission(null, 'moderator.edit.post') )
+					<a href="{{ route('Forum::Thread::Edit', ['id' => $thread['id']]) }}" data-effect="edit" data-post-id="{{ $thread['id'] }}">Edit</a> |
+					@endif
+					@if( $app->auth->user()->hasPermission(null, 'moderator.stick.post') )
+					<a href="{{ route('Forum::Thread::Stick', ['id' => $thread['id']]) }}" data-link="json" data-action="stick-thread" data-thread-id="{{ $thread['id'] }}">{{ ($thread['is_stickied'] == 1)? 'Unstick' : 'Stick' }}</a> |
+					@endif
+					@if( $app->auth->user()->hasPermission(null, 'moderator.lock.post') )
+					<a href="{{ route('Forum::Thread::Lock', ['id' => $thread['id']]) }}" data-link="json" data-action="lock-thread" data-thread-id="{{ $thread['id'] }}">{{ ($thread['is_locked'] == 1)? 'Unlock' : 'Lock' }}</a>
 					@endif
 				</small>
 			</li>
@@ -99,10 +107,14 @@
 </div>
 
 <div class="col-sm-2">
+	@if( $thread['is_locked'] == 1 )
+	<a href="#" class="btn btn-warning btn-block disabled">Thread Locked</a>
+	@else
 	@if( Auth::check() )
 	<a href="#reply_container" class="btn btn-info btn-block">Reply</a>
 	@else
 	<a href="#" class="btn btn-info btn-block disabled">Log In to Reply</a>
+	@endif
 	@endif
 </div>
 
@@ -166,6 +178,12 @@
 
 @if( Auth::check() )
 @if(Auth::User()->hasPermission(null, 'post.reply'))
+
+@if( $thread['is_locked'] == 1 )
+<div class="col-sm-10">
+	<div class="alert alert-warning">Thread is locked.</div>
+</div>
+@else
 <div class="col-sm-10">
 	<div class="reply" data-content-type="html-content"></div>
 
@@ -183,6 +201,8 @@
 		</div>
 	</form>
 </div>
+@endif
+
 @else
 <div class="col-sm-10">
 	<div class="alert alert-warning">

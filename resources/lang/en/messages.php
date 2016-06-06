@@ -19,6 +19,16 @@ return [
 		'reply_success' => 'Reply has been posted.',
 		'delete_success' => 'Thread has been deleted.',
 		'edit_success' => 'Post has been edited.',
-		'locked' => 'Thread is locked.'
+		'locked' => 'Thread is locked.',
+		'stick_success' => 'Thread has been stuck.',
+		'unstick_success' => 'Thread has been unstuck',
+		'lock_success' => 'Thread has been locked.',
+		'unlock_success' => 'Thread has been unlocked.',
+		'buttons' => [
+			'stick' => 'Stick',
+			'unstick' => 'Unstick',
+			'lock' => 'Lock',
+			'unlock' => 'Unlock'
+		]
 	]
 ];
