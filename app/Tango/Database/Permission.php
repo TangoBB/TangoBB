@@ -11,6 +11,8 @@ class Permission extends Model
 
     protected $fillable = [
     	'permission_name',
+    	'created_at',
+    	'updated_at'
     ];
 
     public $timestamps = true;

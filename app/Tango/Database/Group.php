@@ -12,7 +12,9 @@ class Group extends Model
     protected $fillable = [
     	'group_name',
     	'group_style',
-    	'group_permissions'
+    	'group_permissions',
+    	'created_at',
+    	'updated_at'
     ];
 
     public $timestamps = true;

@@ -15,7 +15,9 @@ class Category extends Model
     	'category_description',
     	'category_color',
     	'category_place',
-    	'allowed_usergroup'
+    	'allowed_usergroup',
+        'created_at',
+        'updated_at'
     ];
 
     public $timestamps = true;

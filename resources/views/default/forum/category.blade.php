@@ -40,6 +40,8 @@
 
 <div class="col-sm-9">
 	<div class="row">
+		@if( !empty($threads) )
+
 		@foreach( $threads as $th )
 		<div class="col-sm-4" data-thread-id="{{ $th->id }}">
 			<div class="card">
@@ -84,6 +86,14 @@
 			</div>
 		</div>
 		@endforeach
+
+		@else
+
+		<div class="alert alert-info">
+			Category is empty.
+		</div>
+
+		@endif
 	</div>
 </div>
 

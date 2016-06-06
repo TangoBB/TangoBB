@@ -11,7 +11,9 @@ class Settings extends Model
 
     protected $fillable = [
     	'forum_name',
-    	'forum_theme'
+    	'forum_theme',
+    	'created_at',
+    	'updated_at'
     ];
 
     public $timestamps = true;

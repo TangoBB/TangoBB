@@ -13,8 +13,12 @@ class User extends Model
     	'name',
     	'email',
     	'password',
-    	'excluded_permissions'
+    	'excluded_permissions',
+        'created_at',
+        'updated_at'
     ];
+
+    protected $timestamps = true;
 
     public function Group()
     {
