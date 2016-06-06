@@ -41,7 +41,15 @@
 					<p class="card-text">{{ substr($app->Bbcode->strip($th->post_content), 0, 50) }}...</p>
 				</div>
 				<ul class="list-group list-group-flush">
-					<li class="list-group-item"><small class="text-muted">Last updated <span title="{{ date('D, F Y', strtotime($th->updated_at)) }}">{{ date('l, g:h a', strtotime($th->updated_at)) }}</span></small></li>
+					<li class="list-group-item">
+						<small class="text-muted">Last updated <span title="{{ date('D, F Y', strtotime($th->updated_at)) }}">{{ date('l, g:h a', strtotime($th->updated_at)) }}</span></small>
+						@if( $th->is_stickied == 1 )
+						<small data-type="post-{{ $th->id }}-stick-symbol"><i class="fa fa-thumb-tack" title="Thread is stuck."></i></small>
+						@endif
+						@if( $th->is_locked == 1 )
+						<small data-type="post-{{ $th->id }}-lock-symbol"><i class="fa fa-lock" title="Thread is locked."></i></small>
+						@endif
+					</li>
 					<li class="list-group-item"><small class="text-muted">Created by <a href="#">{{ $th->User()->first()['name'] }}</a></small></li>
 				</ul>
 			</div>

@@ -15,7 +15,7 @@ class CreatePostTable extends Migration
         Schema::create('post', function (Blueprint $table) {
             $table->increments('id');
             $table->string('post_name');
-            $table->string('post_content');
+            $table->text('post_content');
             $table->string('post_slug');
             $table->integer('category_id')->default(NULL)->nullable();
             $table->integer('post_type')->default(1);//1 for thread starter. 2 for post.
