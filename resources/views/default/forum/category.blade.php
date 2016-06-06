@@ -20,7 +20,7 @@
 @endif
 
 <div class="col-sm-3">
-	@if( Auth::check() && Auth::user()->hasPermission(null, 'post.create') )
+	@if( Auth::check() && Auth::user()->hasPermission(null, 'post.create') && Auth::user()->can('post-in-category', $selected) )
 	<div class="form-group">
 		<a href="{{ route('Forum::Category::Post', ['slug' => $selected['category_slug'], 'id' => $selected['id']]) }}" class="btn btn-info btn-block">New Thread</a>
 	</div>
