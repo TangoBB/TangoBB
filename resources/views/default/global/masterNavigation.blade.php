@@ -13,11 +13,10 @@
             <img src="{{ App\User::Gravatar(Auth::user()) }}" class="img-circle" style="width:20px;height:20px;" /> {{ Auth::user()['name'] }}
           </a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="#">Change Email</a>
+            <a class="dropdown-item" href="#">Edit Profile</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
+            <a class="dropdown-item" href="#">View Profile</a>
           </div>
         </li>
         <li class="nav-item"><a class="nav-link" href="{{ route('Account::LogOut') }}">Log Out</a></li>

@@ -47,6 +47,10 @@ class AuthServiceProvider extends ServiceProvider
             {
                 return true;
             }
+            elseif( $user->hasPermission(null, 'moderator.edit.post') )
+            {
+                return true;
+            }
             else
             {
                 return false;

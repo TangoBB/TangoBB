@@ -132,7 +132,7 @@
 			</div>
 		</div>
 		@if( Auth::check() )
-		@if( Auth::User()->can('update-post', $thread) || Auth::User()->hasPermission(null, 'moderator.edit.post') )
+		@if( Auth::User()->can('update-post', $reply) )
 		<div class="card-block" style="display:none;" data-edit-id="{{ $reply['id'] }}">
 			<p class="card-text"><hr size="1" /></p>
 			<h4 class="card-title">Edit Post</h4>
