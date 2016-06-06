@@ -40,7 +40,7 @@
 
 <div class="col-sm-9">
 	<div class="row">
-		@if( !empty($threads) )
+		@if( $threads )
 
 		@foreach( $threads as $th )
 		<div class="col-sm-4" data-thread-id="{{ $th->id }}">
