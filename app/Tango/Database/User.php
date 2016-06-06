@@ -18,7 +18,7 @@ class User extends Model
         'updated_at'
     ];
 
-    protected $timestamps = true;
+    public $timestamps = true;
 
     public function Group()
     {

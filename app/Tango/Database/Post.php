@@ -21,7 +21,7 @@ class Post extends Model
         'updated_at'
     ];
 
-    protected $timestamps = true;
+    public $timestamps = true;
 
     public function User()
     {
