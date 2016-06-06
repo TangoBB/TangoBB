@@ -40,7 +40,7 @@
 
 <div class="col-sm-9">
 	<div class="row">
-		@if( $threads )
+		@if( !$threads->isEmpty() )
 
 		@foreach( $threads as $th )
 		<div class="col-sm-4" data-thread-id="{{ $th->id }}">
@@ -89,8 +89,10 @@
 
 		@else
 
-		<div class="alert alert-info">
-			Category is empty.
+		<div class="col-sm-12">
+			<div class="alert alert-info">
+				Category is empty.
+			</div>
 		</div>
 
 		@endif
