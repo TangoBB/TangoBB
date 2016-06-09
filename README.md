@@ -1,4 +1,7 @@
 [![TangoBB](https://raw.githubusercontent.com/Codetana/TangoBB/master/public/img/tangobb_logo.png "TangoBB")](http://iko.im "TangoBB")
+##New branch!
+Check out our 2.0 branch now for the latest developments!
+
 ##The new simple bulletin board.
 Please note that this forum software will be as generic but a little complex on the theme design aspect as we want it to be very customizable for amateur web developers to learn.
 TangoBB is released under the MIT License.
