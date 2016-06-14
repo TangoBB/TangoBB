@@ -28,6 +28,9 @@ Route::group(['as' => 'Account::', 'namespace' => 'Account', 'prefix' => 'accoun
 	Route::group(['as' => 'Change::', 'prefix' => 'change'], function() {
 		Route::get('password', ['as' => 'Password', 'uses' => 'Details@ChangePassword']);
 		Route::post('password', ['as' => 'Password.Post', 'uses' => 'Details@ChangePassword']);
+
+		Route::get('email', ['as' => 'Email', 'uses' => 'Details@ChangeEmail']);
+		Route::post('email', ['as' => 'Email.Post', 'uses' => 'Details@ChangeEmail']);
 	});
 });
 
@@ -41,28 +44,30 @@ Route::group(['as' => 'Core::', 'prefix' => 'core', 'namespace' => 'Core', 'midd
 //JSON Requests
 Route::group(['as' => 'Json::', 'prefix' => 'json'], function() {
 	Route::group(['as' => 'Account::', 'prefix' => 'account'], function() {
-		Route::post('login', ['as' => 'LogIn', 'uses' => 'Account\AuthController@JsonLogIn']);
+		Route::post('login', ['as' => 'LogIn', 'uses' => 'Core\Ajax\AuthAjax@LogIn']);
 
-		Route::post('signup', ['as' => 'SignUp', 'uses' => 'Account\AuthController@JsonSignUp']);
+		Route::post('signup', ['as' => 'SignUp', 'uses' => 'Core\Ajax\AuthAjax@SignUp']);
 
 		Route::group(['as' => 'Change::', 'prefix' => 'change'], function() {
-			Route::post('password', ['as' => 'Password', 'uses' => 'Account\Details@JsonChangePassword']);
+			Route::post('password', ['as' => 'Password', 'uses' => 'Core\Ajax\Details@ChangePassword']);
+
+			Route::post('email', ['as' => 'Email', 'uses' => 'Core\Ajax\Details@ChangeEmail']);
 		});
 	});
 
 	Route::group(['as' => 'Forum::', 'prefix' => 'forum'], function() {
 		Route::group(['as' => 'Thread::', 'prefix' => 'thread'], function() {
-			Route::post('create/{id}', ['as' => 'Create', 'uses' => 'Forum\Category@JsonPost']);
+			Route::post('create/{id}', ['as' => 'Create', 'uses' => 'Core\Ajax\Forum\Category@Post']);
 
-			Route::post('reply/{id}', ['as' => 'Reply', 'uses' => 'Forum\Thread@JsonReply']);
+			Route::post('reply/{id}', ['as' => 'Reply', 'uses' => 'Core\Ajax\Forum\Thread@Reply']);
 
-			Route::get('delete/{id}', ['as' => 'DeleteThread', 'uses' => 'Forum\Thread@JsonDelete']);//Delete posts including all relations.
+			Route::get('delete/{id}', ['as' => 'DeleteThread', 'uses' => 'Core\Ajax\Forum\Thread@Delete']);//Delete posts including all relations.
 
-			Route::post('editpost/{id}', ['as' => 'EditPost', 'uses' => 'Forum\Thread@JsonEdit']);//Edit posts.
+			Route::post('editpost/{id}', ['as' => 'EditPost', 'uses' => 'Core\Ajax\Forum\Thread@Edit']);//Edit posts.
 
-			Route::get('stick/{id}', ['as' => 'Stick', 'uses' => 'Forum\Thread@JsonStick']);
+			Route::get('stick/{id}', ['as' => 'Stick', 'uses' => 'Core\Ajax\Forum\Thread@Stick']);
 
-			Route::get('lock/{id}', ['as' => 'Stick', 'uses' => 'Forum\Thread@JsonLock']);
+			Route::get('lock/{id}', ['as' => 'Stick', 'uses' => 'Core\Ajax\Forum\Thread@Lock']);
 		});
 	});
 });

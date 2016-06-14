@@ -6,6 +6,7 @@ This branch facilitates the development of TangoBB 2.0. In this major developmen
 
 - Laravel Framework
 - [igaster/laravel-theme](https://github.com/igaster/laravel-theme)
+- [guzzlehttp/guzzle](https://github.com/guzzle/guzzle)
 - [WysiBB Editor](https://github.com/wbb/wysibb)
 - More TBD
 

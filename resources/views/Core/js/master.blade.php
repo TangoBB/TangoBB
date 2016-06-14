@@ -177,6 +177,22 @@ $(document).ready(function() {
 				alertFailure.html('<ul>' + outMsg + '</ul>').show();
 			};
 			break;
+
+			case "change.email":
+			var processUrl = '{{ route('Json::Account::Change::Email') }}';
+			var successRequest = function(msg) {
+				alertSuccess.html(msg.action.displayText).show();
+			};
+			var errorRequest = function(msg) {
+				var outMsg = '';
+				for( i = 0; i < msg.message.length; i++ )
+				{
+					outMsg += '<li>' + msg.message[i] + '</li>';
+				}
+
+				alertFailure.html('<ul>' + outMsg + '</ul>').show();
+			};
+			break;
 		}
 
 		var request = $.ajax({

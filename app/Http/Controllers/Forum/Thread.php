@@ -190,11 +190,22 @@ class Thread extends Controller
 	{
 		if( !$this->user->hasPermission(null, 'moderator.delete.post') ) { return abort(404); }
 
-		$thread = Post::findorfail($id);
+		$thread      = Post::findorfail($id);
+		$thread_type = $thread->post_type;
+		$thread_slug = $thread->post_slug;
+		$thread_id   = $thread->post_id;
 		$thread->Replies()->delete();
 		$thread->delete();
 
-		return redirect()->route('Index::Index')->with('success', trans('messages.thread.delete_success'));
+		if( $thread_type == 1 )
+		{
+			return redirect()->route('Index::Index')->with('success', trans('messages.thread.delete_success'));
+		}
+		else
+		{
+			$thread = Post::findorfail($thread_id);
+			return redirect()->route('Forum::Thread::Thread', ['slug' => $thread->post_slug, 'id' => $thread->id])->with('success', trans('messages.post.delete_success'));
+		}
 	}
 
 	public function Stick($id)
@@ -247,211 +258,5 @@ class Thread extends Controller
 		{
 			return abort(404);
 		}
-	}
-
-	//JSON
-	public function JsonLock($id)
-	{
-		if( !$this->user->hasPermission(null, 'moderator.lock.post') ) { return abort(404); }
-
-		$output = [
-		'success' => 0,
-		'message' => [],
-		'action' => [
-		'displayText' => NULL,
-		'redirect' => NULL,
-		'result' => 0
-		]
-		];
-
-		$thread = Post::where([
-			['id', '=', $id],
-			['post_type', '=', 1]
-			])->first();
-		if( !empty($thread) )
-		{
-			if( $thread['is_locked'] == 1 )
-			{
-				//die('here');
-				$update = Post::where('id', $id)->update(['is_locked' => 0]);
-				$output['success'] = 1;
-			}
-			else
-			{
-				//die('there');
-				$update = Post::where('id', $id)->update(['is_locked' => 1]);
-				$output['success'] = 1;
-				$output['action']['result'] = 1;
-			}
-		}
-
-		return json_encode($output);
-	}
-
-	public function JsonStick($id)
-	{
-		if( !$this->user->hasPermission(null, 'moderator.stick.post') ) { return abort(404); }
-
-		$output = [
-		'success' => 0,
-		'message' => [],
-		'action' => [
-		'displayText' => NULL,
-		'redirect' => NULL,
-		'result' => 0
-		]
-		];
-
-		$thread = Post::where([
-			['id', '=', $id],
-			['post_type', '=', 1]
-			])->first();
-		if( !empty($thread) )
-		{
-			if( $thread['is_stickied'] == 1 )
-			{
-				//die('here');
-				$update = Post::where('id', $id)->update(['is_stickied' => 0]);
-				$output['success'] = 1;
-			}
-			else
-			{
-				//die('there');
-				$update = Post::where('id', $id)->update(['is_stickied' => 1]);
-				$output['success'] = 1;
-				$output['action']['result'] = 1;
-			}
-		}
-
-		return json_encode($output);
-	}
-
-	public function JsonDelete($id)
-	{
-		if( !$this->user->hasPermission(null, 'moderator.delete.post') ) { return abort(404); }
-
-		$output = [
-		'success' => 0,
-		'message' => [],
-		'action' => [
-		'displayText' => NULL,
-		'redirect' => NULL
-		]
-		];
-
-		$thread = Post::where('id', '=', $id)->first();
-
-		if( !empty($thread) )
-		{
-			$thread = Post::where('id', '=', $id);
-			$thread->first()->Replies()->delete();
-			$thread->delete();
-        	//Post::where('id', '=', $id)->Replies()->delete();
-        	//Post::where('id', '=', $id)->delete();
-			$output['success'] = 1;
-		}
-
-		return json_encode($output);
-	}
-
-	public function JsonReply($id, Request $request)
-	{
-		if( !Auth::check() || !Auth::user()->hasPermission(null, 'post.reply') ) { return abort(404); }
-        //header("Access-Control-Allow-Origin: *");
-        //header('Access-Control-Allow-Credentials: true');
-		$output = [
-		'success' => 0,
-		'message' => [],
-		'action' => [
-		'displayText' => NULL,
-		'redirect' => NULL
-		]
-		];
-
-		if( $request->isMethod('post') )
-		{
-            //die(var_dump($request->get('username')));
-			$validator = $this->ReplyRequest($id, $request);
-			if( !is_object($validator) )
-			{
-				if( $validator == 0 )
-				{
-					$output['success']   = 0;
-					$output['message'][] = trans('messages.thread.locked');
-				}
-				else
-				{
-					$post = Post::where('id', '=', $validator)->first();
-					$output['success']               = 1;
-					$output['action']['displayText'] = view('requests.post', ['post' => $post])->render();
-				}
-			}
-			else
-			{
-				$errors = [];
-				foreach( $validator->errors()->messages() as $attribute => $errs )
-				{
-					foreach( $errs as $err )
-					{
-						$errors[] = $err;
-					}
-				}
-
-				$output['message'] = $errors;
-                //die(var_dump($errors));
-			}
-		}
-		return json_encode($output);
-	}
-
-	public function JsonEdit($id, Request $request)
-	{
-		$post = Post::findOrFail($id);
-		if( !$this->user->hasPermission(null, 'moderator.delete.post') )
-		{
-			if(  !Auth::User()->can('update-post', $post) ) {
-				return abort(404);
-			}
-		}
-
-		$output = [
-		'success' => 0,
-		'message' => [],
-		'action' => [
-		'displayText' => NULL,
-		'redirect' => NULL,
-		'additional_alert' => NULL
-		]
-		];
-
-		if( $request->isMethod('post') )
-		{
-            //die(var_dump($request->get('username')));
-			$validator = $this->EditRequest($id, $request);
-			if( !is_object($validator) )
-			{
-            	//Get updated post.
-				$post = Post::where('id', '=', $id)->first();
-				$output['success']                    = 1;
-				$output['action']['displayText']      = $this->bbcode->renderText($post['post_content']);
-				$output['action']['additionalAlert'] = trans('messages.thread.edit_success');
-			}
-			else
-			{
-				$errors = [];
-				foreach( $validator->errors()->messages() as $attribute => $errs )
-				{
-					foreach( $errs as $err )
-					{
-						$errors[] = $err;
-					}
-				}
-
-				$output['message'] = $errors;
-                //die(var_dump($errors));
-			}
-		}
-        //die(var_dump(json_encode($output, JSON_UNESCAPED_UNICODE)));
-		return json_encode($output, JSON_UNESCAPED_UNICODE);
 	}
 }

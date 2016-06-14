@@ -32,6 +32,13 @@ class Bbcode
         ]
     ];
 
+    private $custom = [];
+
+    /*
+     * INPUT
+     * $search = [url={SELTEXT}]{SELTEXT}[/url]
+     8 $replace = <a href="{SELTEXT}">{SELTEXT}</a>
+     */
     public function register($name = "", $search, $replace)
     {
         $codes[$name] = [

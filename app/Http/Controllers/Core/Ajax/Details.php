@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Account;
+namespace App\Http\Controllers\Core\Ajax;
 
 use Illuminate\Http\Request;
 
@@ -15,7 +15,6 @@ use App\User as User;
 
 class Details extends Controller
 {
-    //
     //Controller functions.
 	private function ChangePasswordRequest(Request $request)
 	{
@@ -68,51 +67,94 @@ class Details extends Controller
 		}
 	}
 
-	//Controller Pages.
+	//JSON
 	public function ChangePassword(Request $request)
 	{
 		if( !Auth::check() ) { return abort(404); }
+		$validator = $this->ChangePasswordRequest($request);
 
-		if( $request->isMethod('post') )
+		$output = [
+		'success' => 0,
+		'message' => [],
+		'action' => [
+		'displayText' => NULL,
+		'redirect' => NULL,
+		'additional_alert' => NULL
+		]
+		];
+
+		if( !is_object($validator) )
 		{
-			$validator = $this->ChangePasswordRequest($request);
-			if( !is_object($validator) )
+			if( $validator == 1 )
 			{
-				if( $validator == 1 )
-				{
-					return redirect()->route('Account::Change::Password')->with('success', trans('messages.change.password_success'));
-				}
-				else
-				{
-					return redirect()->route('Account::Change::Password')->with('error', trans('messages.change.password_invalid'));
-				}
+				$output['success']               = 1;
+				$output['action']['displayText'] = trans('messages.change.password_success');
 			}
 			else
 			{
-				return redirect()->route('Account::Change::Password')->withErrors($validator);
+				$output['success']   = 0;
+				$output['message'][] = trans('messages.change.password_invalid');
 			}
 		}
+		else
+		{
+			$errors = [];
+			foreach( $validator->errors()->messages() as $attribute => $errs )
+			{
+				foreach( $errs as $err )
+				{
+					$errors[] = $err;
+				}
+			}
 
-		return view('account.changePassword');
+			$output['message'] = $errors;
+		}
+
+		return json_encode($output);
 	}
 
 	public function ChangeEmail(Request $request)
 	{
 		if( !Auth::check() ) { return abort(404); }
+		$validator = $this->ChangeEmailRequest($request);
 
-		if( $request->isMethod('post') )
+		$output = [
+		'success' => 0,
+		'message' => [],
+		'action' => [
+		'displayText' => NULL,
+		'redirect' => NULL,
+		'additional_alert' => NULL
+		]
+		];
+
+		if( !is_object($validator) )
 		{
-			$validator = $this->ChangeEmailRequest($request);
 			if( $validator == 1 )
 			{
-				return redirect()->route('Account::Change::Email')->with('success', trans('messages.change.email_success'));
+				$output['success']               = 1;
+				$output['action']['displayText'] = trans('messages.change.email_success');
 			}
 			else
 			{
-				return redirect()->route('Account::Change::Email')->with('success', trans('messages.change.email_failure'));
+				$output['success']   = 0;
+				$output['message'][] = trans('messages.change.email_failure');
 			}
 		}
+		else
+		{
+			$errors = [];
+			foreach( $validator->errors()->messages() as $attribute => $errs )
+			{
+				foreach( $errs as $err )
+				{
+					$errors[] = $err;
+				}
+			}
 
-		return view('account.changeEmail');
+			$output['message'] = $errors;
+		}
+
+		return json_encode($output);
 	}
 }

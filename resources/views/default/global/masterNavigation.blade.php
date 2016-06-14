@@ -9,11 +9,11 @@
         <li class="nav-item{{ (Request::is('/') || Request::is('category/*') || Request::is('thread/*'))? ' active' : '' }}"><a class="nav-link" href="{{ route('Index::Index') }}">Home</a></li>
         @if( Auth::check() )
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle{{ ( Request::is('account/*') )? ' active' : '' }}" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             <img src="{{ App\User::Gravatar(Auth::user()) }}" class="img-circle" style="width:20px;height:20px;" /> {{ Auth::user()['name'] }}
           </a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Change Email</a>
+            <a class="dropdown-item{{ ( Request::is('account/change/email') )? ' active' : '' }}" href="{{ route('Account::Change::Email') }}">Change Email</a>
             <a class="dropdown-item{{ ( Request::is('account/change/password') )? ' active' : '' }}" href="{{ route('Account::Change::Password') }}">Change Password</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">View Profile</a>

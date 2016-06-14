@@ -101,48 +101,4 @@ class Category extends Controller
             return abort(404);
         }
     }
-
-    //JSON
-    public function JsonPost($id, Request $request)
-    {
-        if( !Auth::check() || !Auth::user()->hasPermission(null, 'post.create') ) { return abort(404); }
-        //header("Access-Control-Allow-Origin: *");
-        //header('Access-Control-Allow-Credentials: true');
-        $output = [
-            'success' => 0,
-            'message' => [],
-            'action' => [
-                'displayText' => NULL,
-                'redirect' => NULL
-            ]
-        ];
-
-        if( $request->isMethod('post') )
-        {
-            //die(var_dump($request->get('username')));
-            $validator = $this->PostRequest($id, $request);
-            if( !is_object($validator) )
-            {
-                $thread = Post::where('id', '=', $validator)->first();
-                $output['success']               = 1;
-                $output['action']['redirect']    = route('Forum::Thread::Thread', ['slug' => $thread['post_slug'], 'id' => $thread['id']]);
-            }
-            else
-            {
-                $errors = [];
-                foreach( $validator->errors()->messages() as $attribute => $errs )
-                {
-                    foreach( $errs as $err )
-                    {
-                        $errors[] = $err;
-                    }
-                }
-
-                $output['message'] = $errors;
-                //die(var_dump($errors));
-            }
-        }
-
-        return json_encode($output);
-    }
 }

@@ -8,7 +8,9 @@ return [
 	],
 	'change' => [
 		'password_success' => 'Password has been changed.',
-		'password_invalid' => 'Old password is invalid.'
+		'password_invalid' => 'Old password is invalid.',
+		'email_success' => 'Email has been changed.',
+		'email_failure' => 'Email has been taken or you are using it.'
 	],
 	'auth' => [
 		'success' => 'Successfully logged in. Redirecting...'
@@ -34,5 +36,8 @@ return [
 			'lock' => 'Lock',
 			'unlock' => 'Unlock'
 		]
+	],
+	'post' => [
+		'delete_success' => 'Post has been deleted.'
 	]
 ];
